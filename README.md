@@ -1,11 +1,13 @@
-## このプロジェクトが行うこと
+## このプロジェクトが行うこと What This Project Does
 販売管理システム Creative Vision.net のWPFクライアントを提供します
+This project provides a WPF client for the sales management system Creative Vision.net.
 
-## このプロジェクトが有益な理由
+## このプロジェクトが有益な理由 Why This Project is Beneficial
 BSD 3-Clause License が適用されるオープンソースプロジェクトです。
 誰でも自由に改変し使用することが可能です。
+This is an open-source project licensed under the BSD 3-Clause License. Anyone is free to modify and use it.
 
-## このプロジェクトの開発スケジュール
+## このプロジェクトの開発スケジュール Project Development Schedule
 <pre>
 2025/05/01 プロジェクト正式開始：既存CV.netに対しクライアント側をBiz/BrowserからWPFに全面移行する
 2025/05/12 クローズドリポジトリ作成、プロジェクト基本構成の組み立て、一部モジュールのテスト
@@ -22,10 +24,10 @@ BSD 3-Clause License が適用されるオープンソースプロジェクト�
 		(ユーザメリット)初期費用の大幅削減、開発会社依存リスクの削減
 </pre>
 
-## このプロジェクトに関するヘルプをどこで得るか
+## このプロジェクトに関するヘルプをどこで得るか Where to Get Help with This Project
 (内容検討中...)
 
-## このプロジェクトのメンテナンス者とコントリビューター
+## このプロジェクトのメンテナンス者とコントリビューター Maintainers and Contributors of This Project
 <pre>
 GitHub Desktop をインストールし、自分のアカウントで連携します。
 collaboratorとして参加リクエストします。
@@ -35,7 +37,4 @@ collaboratorとして参加リクエストします。
 最終確認がとれれば、mainブランチにmergeします(merge pull request)。
 チームの作業内容を共有するため、originブランチをfetchします。
 </pre>
-
-
-
 
