@@ -164,6 +164,9 @@ $RECYCLE.BIN/
 # =========================
 wrk/
 *.pdf
-appsettings.DevU*.json
+appsettings.Dev*.json
 appsettings.Local*.json
-
+appsettings.Debug.json
+appsettings.Release.json
+local_*.*
+ftp_*.*
