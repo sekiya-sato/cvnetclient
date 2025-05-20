@@ -1,0 +1,37 @@
+﻿/* ============================================================================
+ * Cvnet8wpfclient.exe : AppData.cs
+ * Created by Sekiya.Sato 2025/05/20
+ * 説明: アプリケーション共通データの定義
+ * 使用ライブラリ [Library used]:
+ *		CommunityToolkit.Mvvm : LICENCE = MIT
+ * ============================================================================  */
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CvnetClient.Models {
+	public class AppData {
+		public static string AppName { get; set; } = "CvnetClient";
+		public static string AppVer { get; set; } = "1.0.0";
+		public static string AppPath { get; set; } = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+		public static string AppExePath { get; set; } = System.IO.Path.Combine(AppPath, AppName + ".exe");
+		public static string AppDataPath { get; set; } = System.IO.Path.Combine(AppPath, "data");
+		public static string AppConfigPath { get; set; } = System.IO.Path.Combine(AppDataPath, "appsettings.json");
+		public static IConfigurationSection AppConfig { get; set; }
+		public static string Url { get; set; }
+
+		static AppData() {
+			// 設定ファイル読み込み
+			IConfiguration config = new ConfigurationBuilder()
+				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.Build();
+			AppConfig = config.GetSection("AppSetting");
+			Url = AppConfig["Url"] ?? string.Empty;
+		}
+
+
+	}
+}

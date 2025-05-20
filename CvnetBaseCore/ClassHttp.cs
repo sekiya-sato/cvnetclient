@@ -36,6 +36,8 @@ namespace CvnetBaseCore {
 		private string v_AddUrl = "";
 		private string v_randid = "";
 		private CookieContainer v_cc = new CookieContainer();
+		public static string Description = "Cvnetサーバ用class (.NET Framework4.7以前)";
+		public static string NetFramework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
 		/// <summary>
 		/// SQLEXE戻り値用struct

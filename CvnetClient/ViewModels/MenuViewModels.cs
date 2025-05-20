@@ -18,11 +18,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
+using CvnetClient.Models;
+using System.Diagnostics;
 
 namespace CvnetClient.ViewModels {
 	public partial class MenuViewModels : ObservableObject {
 		[ObservableProperty]
-		string exeVer = Extra.NetFramework;
+		string exeVer = ClassHttp.NetFramework;
 		[ObservableProperty]
 		List<MenuData>? listMenu;
 		[ObservableProperty]
@@ -37,11 +39,7 @@ namespace CvnetClient.ViewModels {
 			// 選択メニュー初期化
 			SelectedMenu = ListMenu[0];
 			// 設定ファイル読み込み
-			IConfiguration config = new ConfigurationBuilder()
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-				.Build();
-			IConfigurationSection section = config.GetSection("AppSetting");
-			BottomMessage = section["Url"];
+			BottomMessage = AppData.Url;
 		}
 		[RelayCommand]
 		public void Exit() {
@@ -49,7 +47,6 @@ namespace CvnetClient.ViewModels {
 		}
 		[RelayCommand]
 		public void DoTest() {
-			Extra.DoShomething();
 		}
 		[RelayCommand]
 		public void DoTest2() {
@@ -61,7 +58,9 @@ namespace CvnetClient.ViewModels {
 		}
 		[RelayCommand]
 		public void DoServerLogin() {
-			Extra.DoShomething();
+			var http= new ClassHttp(AppData.Url);
+			var ret = http.Login(0, AppData.AppConfig["LoginId"]??string.Empty, AppData.AppConfig["LoginPass"]?? string.Empty);
+			Debug.WriteLine($"ログインステータス＝{ret}");
 		}
 	}
 }
