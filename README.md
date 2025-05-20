@@ -24,8 +24,11 @@ This is an open-source project licensed under the BSD 3-Clause License. Anyone i
 		(ユーザメリット)初期費用の大幅削減、開発会社依存リスクの削減
 </pre>
 
-## このプロジェクトに関するヘルプをどこで得るか Where to Get Help with This Project
-(内容検討中...)
+## このプロジェクトでの技術的トピック What is This Project Technical Topic
+- MVVMでのダイアログ呼び出し問題の画期的な解決
+- ViewModelからViewを判断するための方法
+- 3TierにおけるGUI画面とデータ分離の指針
+- MVVMのViewでコードビハインドの完全排除
 
 ## このプロジェクトのメンテナンス者とコントリビューター Maintainers and Contributors of This Project
 <pre>
