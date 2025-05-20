@@ -1,0 +1,302 @@
+﻿<Window
+	x:Class="CvnetClient.Views.MasterMeishoView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:CvnetClient.Views"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+	Title="名称マスタ"
+	Width="800"
+	Height="480"
+	Background="#F4F4FF"
+	FontFamily="Meiryo UI"
+	mc:Ignorable="d">
+	<Window.DataContext>
+		<vm:MenuViewModels />
+	</Window.DataContext>
+	<Grid Margin="8">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="380" />
+			<ColumnDefinition Width="16" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="40" />
+			<RowDefinition Height="20" />
+		</Grid.RowDefinitions>
+
+		<!--  左上 検索  -->
+		<StackPanel
+			Grid.Row="0"
+			Grid.Column="0"
+			Margin="0,0,0,4"
+			Orientation="Horizontal">
+			<Label
+				Padding="4,2"
+				Background="#CFFFCF"
+				Content="名称区分" />
+			<ComboBox Width="160" Margin="2,0" />
+			<Label
+				Margin="8,0,0,0"
+				Padding="4,2"
+				Background="#CFFFCF"
+				Content="名称CD" />
+			<TextBox Width="80" Margin="2,0" />
+			<Button
+				Width="32"
+				Margin="2,0"
+				Content="&lt;&lt;" />
+			<Button
+				Width="32"
+				Margin="2,0"
+				Content="&gt;&gt;" />
+			<Button
+				Width="100"
+				Margin="8,0,0,0"
+				Content="表示更新(F5)" />
+		</StackPanel>
+
+		<!--  左下 リスト  -->
+		<DataGrid
+			Grid.Row="1"
+			Grid.Column="0"
+			Margin="0,0,0,0"
+			AutoGenerateColumns="False"
+			HeadersVisibility="Column"
+			SelectionMode="Single">
+			<DataGrid.Columns>
+				<DataGridTextColumn
+					Width="80"
+					Binding="{Binding NameCd}"
+					Header="名称CD" />
+				<DataGridTextColumn
+					Width="*"
+					Binding="{Binding Name}"
+					Header="名称" />
+				<DataGridTextColumn
+					Width="100"
+					Binding="{Binding ShortName}"
+					Header="略称" />
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<!--  右 詳細  -->
+		<Border
+			Grid.Row="0"
+			Grid.RowSpan="2"
+			Grid.Column="2"
+			Padding="12"
+			Background="#F8F8FF"
+			BorderBrush="#B0B0B0"
+			BorderThickness="2"
+			CornerRadius="8">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100" />
+					<ColumnDefinition Width="180" />
+					<ColumnDefinition Width="100" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="28" />
+					<RowDefinition Height="40" />
+				</Grid.RowDefinitions>
+
+				<Label
+					Grid.Row="0"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="名称区分" />
+				<TextBox
+					Grid.Row="0"
+					Grid.Column="1"
+					Background="#F7FFDF"
+					Text="ATT" />
+				<Button
+					Grid.Row="0"
+					Grid.Column="3"
+					Width="100"
+					HorizontalAlignment="Right"
+					Content="区分一括印刷" />
+
+				<Label
+					Grid.Row="1"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="名称CD" />
+				<TextBox
+					Grid.Row="1"
+					Grid.Column="1"
+					Text="3" />
+
+				<Label
+					Grid.Row="2"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="名称" />
+				<TextBox
+					Grid.Row="2"
+					Grid.Column="1"
+					Text="レーション製品" />
+
+				<Label
+					Grid.Row="3"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="略称" />
+				<TextBox
+					Grid.Row="3"
+					Grid.Column="1"
+					Text="レーション" />
+
+				<Label
+					Grid.Row="4"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="ランク" />
+				<TextBox Grid.Row="4" Grid.Column="1" />
+
+				<Label
+					Grid.Row="5"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="連番" />
+				<TextBox Grid.Row="5" Grid.Column="1" />
+
+				<Label
+					Grid.Row="6"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="カナ" />
+				<TextBox Grid.Row="6" Grid.Column="1" />
+
+				<Label
+					Grid.Row="7"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="POS区分" />
+				<TextBox
+					Grid.Row="7"
+					Grid.Column="1"
+					Text="0" />
+				<TextBlock
+					Grid.Row="7"
+					Grid.Column="2"
+					Grid.ColumnSpan="2"
+					VerticalAlignment="Center"
+					Foreground="Gray"
+					Text="0 出力する, 9 削除指示, 10 出力しない" />
+
+				<Label
+					Grid.Row="8"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="登録日時" />
+				<TextBox
+					Grid.Row="8"
+					Grid.Column="1"
+					Background="#FFF7DF"
+					Text="2016/10/18 19:25:13" />
+
+				<Label
+					Grid.Row="9"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="更新日時" />
+				<TextBox
+					Grid.Row="9"
+					Grid.Column="1"
+					Background="#FFF7DF"
+					Text="2020/06/18 12:00:53" />
+
+				<Label
+					Grid.Row="10"
+					Grid.Column="0"
+					Padding="4,2"
+					Background="#CFFFCF"
+					Content="最終修正者" />
+				<TextBox
+					Grid.Row="10"
+					Grid.Column="1"
+					Text="." />
+			</Grid>
+		</Border>
+
+		<!--  右下 ボタン  -->
+		<StackPanel
+			Grid.Row="2"
+			Grid.Column="2"
+			Margin="0,8,0,0"
+			HorizontalAlignment="Left"
+			Orientation="Horizontal">
+			<Button
+				Width="90"
+				Margin="4"
+				Content="修正(F6)" />
+			<Button
+				Width="90"
+				Margin="4"
+				Content="削除(F7)" />
+			<Button
+				Width="90"
+				Margin="4"
+				Content="追加(F8)" />
+			<Button
+				Width="90"
+				Margin="4"
+				Content="印刷(F9)" />
+		</StackPanel>
+
+		<!--  戻るボタン  -->
+		<Button
+			Grid.Row="2"
+			Grid.Column="2"
+			Width="120"
+			Height="32"
+			Margin="0,0,8,8"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Bottom"
+			Command="{Binding ExitCommand}"
+			Content="戻る(ESC)" />
+
+		<!--  下部バー  -->
+		<Border
+			Grid.Row="3"
+			Grid.Column="0"
+			Grid.ColumnSpan="3"
+			Height="24"
+			Margin="0,8,0,0"
+			VerticalAlignment="Bottom"
+			Background="#E0E0FF">
+			<TextBlock
+				Margin="8,0,0,0"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				FontSize="12"
+				Foreground="#666"
+				Text="リスト選択行データ取得" />
+		</Border>
+	</Grid>
+</Window>

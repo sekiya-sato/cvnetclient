@@ -1,0 +1,202 @@
+﻿<Window
+	x:Class="CvnetClient.Views.AnalyzeCpaView1"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:CvnetClient.Views"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Title="T.L-アナライザー"
+	Width="1000"
+	Height="800"
+	Background="#E6E6FF"
+	mc:Ignorable="d">
+	<Grid Margin="8">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="320" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<!--  条件指定  -->
+		<GroupBox
+			Grid.Row="0"
+			Margin="0,0,0,4"
+			Header="条件指定">
+			<Grid Margin="4">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Label VerticalAlignment="Center" Content="期間" />
+				<DatePicker Margin="4,0" SelectedDate="2025/05/01" />
+				<Label
+					Margin="4,0"
+					VerticalAlignment="Center"
+					Content="～" />
+				<DatePicker Margin="4,0" SelectedDate="2026/04/30" />
+				<StackPanel Margin="16,0,0,0" Orientation="Horizontal">
+					<RadioButton Content="在庫" GroupName="Kbn" />
+					<RadioButton
+						Margin="8,0,0,0"
+						Content="売上"
+						GroupName="Kbn" />
+					<RadioButton
+						Margin="8,0,0,0"
+						Content="前年対比"
+						GroupName="Kbn" />
+					<RadioButton
+						Margin="8,0,0,0"
+						Content="同曜日"
+						GroupName="Kbn" />
+					<Label Margin="8,0,0,0" Content="0行消し" />
+					<RadioButton
+						Margin="8,0,0,0"
+						Content="しない"
+						GroupName="RowDel" />
+					<RadioButton
+						Margin="8,0,0,0"
+						Content="する"
+						GroupName="RowDel" />
+				</StackPanel>
+				<StackPanel
+					Grid.Column="4"
+					HorizontalAlignment="Right"
+					Orientation="Vertical">
+					<Button
+						Width="160"
+						Margin="0,0,0,2"
+						Content="お気に入りの追加(F7)" />
+					<Button
+						Width="160"
+						Margin="0,0,0,2"
+						Content="お気に入りの変更(F8)" />
+					<Button Width="160" Content="条件追加(F11)" />
+				</StackPanel>
+			</Grid>
+		</GroupBox>
+
+		<!--  条件操作1,2  -->
+		<StackPanel
+			Grid.Row="1"
+			Margin="0,0,0,4"
+			Orientation="Vertical">
+			<!--  条件操作1  -->
+			<GroupBox Margin="0,0,0,4" Header="条件操作1">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<StackPanel Margin="4" Orientation="Horizontal">
+						<Button Margin="0,0,4,0" Content="挿入" />
+						<Button Margin="0,0,4,0" Content="削除" />
+						<Button Content="コピー" />
+						<Label Margin="8,0,0,0" Content="検索項目" />
+					</StackPanel>
+					<TextBox
+						Grid.Column="1"
+						Margin="4"
+						Background="#0000CC"
+						Foreground="White"
+						Text="選択項目のコード(FROM)" />
+				</Grid>
+			</GroupBox>
+			<!--  条件操作2  -->
+			<GroupBox Header="条件操作2">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<StackPanel Margin="4" Orientation="Horizontal">
+						<Button Margin="0,0,4,0" Content="挿入" />
+						<Button Margin="0,0,4,0" Content="削除" />
+						<Button Content="コピー" />
+						<Label Margin="8,0,0,0" Content="検索項目" />
+					</StackPanel>
+					<TextBox
+						Grid.Column="1"
+						Margin="4"
+						Background="#0000CC"
+						Foreground="White"
+						Text="選択項目のコード(FROM)" />
+				</Grid>
+			</GroupBox>
+		</StackPanel>
+
+		<!--  集計項目選択  -->
+		<GroupBox
+			Grid.Row="2"
+			Margin="0,0,0,4"
+			Header="集計項目">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="2*" />
+					<ColumnDefinition Width="2*" />
+					<ColumnDefinition Width="4*" />
+				</Grid.ColumnDefinitions>
+				<StackPanel Grid.Column="0" Margin="4">
+					<Label Background="#CCFFCC" Content="集計項目(タテ)" />
+					<ListBox Height="180">
+						<ListBoxItem>仕入先#01</ListBoxItem>
+						<ListBoxItem>仕入先#02</ListBoxItem>
+						<ListBoxItem>仕入先#03</ListBoxItem>
+						<ListBoxItem>仕入先#04</ListBoxItem>
+					</ListBox>
+				</StackPanel>
+				<StackPanel Grid.Column="1" Margin="4">
+					<Label Background="#CCFFCC" Content="集計項目(ヨコ)" />
+					<RadioButton Content="月次" GroupName="Yoko" />
+					<RadioButton Content="週次" GroupName="Yoko" />
+					<ListBox Height="140">
+						<ListBoxItem>仕入先#05</ListBoxItem>
+						<ListBoxItem>仕入先#06</ListBoxItem>
+						<ListBoxItem>仕入先#07</ListBoxItem>
+					</ListBox>
+				</StackPanel>
+				<StackPanel Grid.Column="2" Margin="4">
+					<Label Background="#CCFFCC" Content="集計項目" />
+					<WrapPanel>
+						<CheckBox Content="倉庫基準" />
+						<CheckBox Content="在庫基準" />
+						<CheckBox Content="取引先基準" />
+						<CheckBox Content="前年基準" />
+						<CheckBox Content="予算基準" />
+						<CheckBox Content="集計基準" />
+						<CheckBox Content="情報基準" />
+						<CheckBox Content="配分基準" />
+					</WrapPanel>
+					<ScrollViewer Height="120">
+						<UniformGrid Columns="4">
+							<CheckBox Content="集計項目1" />
+							<CheckBox Content="集計項目2" />
+							<CheckBox Content="集計項目3" />
+							<CheckBox Content="集計項目4" />
+							<CheckBox Content="集計項目5" />
+							<CheckBox Content="集計項目6" />
+							<CheckBox Content="集計項目7" />
+							<CheckBox Content="集計項目8" />
+						</UniformGrid>
+					</ScrollViewer>
+				</StackPanel>
+			</Grid>
+		</GroupBox>
+
+		<!--  下部ボタン  -->
+		<StackPanel
+			Grid.Row="3"
+			Margin="0,8,0,0"
+			HorizontalAlignment="Right"
+			Orientation="Horizontal">
+			<Button
+				Width="120"
+				Margin="0,0,8,0"
+				Content="実行(Enter)" />
+			<Button Width="120" Content="戻る(ESC)" />
+		</StackPanel>
+	</Grid>
+</Window>

@@ -1,0 +1,130 @@
+﻿<Window
+	x:Class="CvnetClient.Views.LoginView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:CvnetClient.Views"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+	Title="ログイン画面"
+	Width="420"
+	Height="260"
+	Background="#D6D6FF"
+	FontFamily="Meiryo UI"
+	ResizeMode="NoResize"
+	WindowStartupLocation="CenterScreen"
+	mc:Ignorable="d">
+	<Window.DataContext>
+		<vm:MenuViewModels />
+	</Window.DataContext>
+	<Grid Margin="0">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30" />
+			<RowDefinition Height="40" />
+			<RowDefinition Height="40" />
+			<RowDefinition Height="50" />
+			<RowDefinition Height="30" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="30" />
+			<ColumnDefinition Width="100" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="30" />
+		</Grid.ColumnDefinitions>
+
+		<!--  LOGIN ID  -->
+		<Label
+			Grid.Row="1"
+			Grid.Column="1"
+			Padding="4,0"
+			VerticalAlignment="Center"
+			Background="#CCFFCC"
+			Content="LOGIN ID" />
+		<TextBox
+			Grid.Row="1"
+			Grid.Column="2"
+			Height="24"
+			Margin="0,0,8,0"
+			VerticalAlignment="Center" />
+
+		<!--  パスワード  -->
+		<Label
+			Grid.Row="2"
+			Grid.Column="1"
+			Padding="4,0"
+			VerticalAlignment="Center"
+			Background="#CCFFCC"
+			Content="パスワード" />
+		<PasswordBox
+			Grid.Row="2"
+			Grid.Column="2"
+			Height="24"
+			Margin="0,0,8,0"
+			VerticalAlignment="Center" />
+
+		<!--  ボタン  -->
+		<StackPanel
+			Grid.Row="3"
+			Grid.Column="1"
+			Grid.ColumnSpan="2"
+			Margin="0,8,0,0"
+			HorizontalAlignment="Center"
+			Orientation="Horizontal">
+			<Button
+				Width="140"
+				Height="32"
+				Margin="0,0,16,0"
+				Command="{Binding DoServerLoginCommand}"
+				Content="OK(Enter)" />
+			<Button
+				Width="140"
+				Height="32"
+				Command="{Binding ExitCommand}"
+				Content="キャンセル(ESC)" />
+		</StackPanel>
+
+		<!--  Felica注意  -->
+		<TextBlock
+			Grid.Row="4"
+			Grid.Column="1"
+			Grid.ColumnSpan="2"
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			FontSize="13"
+			Foreground="Blue"
+			Text="※FelicaカードをReader/Writerにかざして下さい。" />
+
+		<!--  ライセンス情報  -->
+		<Border
+			Grid.Row="5"
+			Grid.Column="1"
+			Grid.ColumnSpan="2"
+			Margin="0,8,0,0"
+			Padding="6"
+			HorizontalAlignment="Center"
+			Background="#FFD6EBFF"
+			BorderBrush="#FFCCCCCC"
+			BorderThickness="1"
+			CornerRadius="4">
+			<StackPanel>
+				<TextBlock
+					FontSize="13"
+					Text="===== ライセンス情報 ====="
+					TextAlignment="Center" />
+				<TextBlock
+					FontSize="13"
+					Text="株式会社DTP 様"
+					TextAlignment="Center" />
+				<TextBlock
+					FontSize="13"
+					Text="期限:2100/04/01 00:00:00"
+					TextAlignment="Center" />
+				<TextBlock
+					FontSize="13"
+					Text="(残り 27350日)"
+					TextAlignment="Center" />
+			</StackPanel>
+		</Border>
+	</Grid>
+</Window>
