@@ -350,7 +350,7 @@ namespace CvnetBaseCore {
 				}
 				//System.Diagnostics.Debug.WriteLine("HttpPostのヘッダ情報(UTF-8)==" + req.RequestUri.ToString());
 				byte[] wrkbytes = res.Headers.ToByteArray();
-				System.Diagnostics.Debug.WriteLine(Encoding.UTF8.GetString(wrkbytes));
+				//System.Diagnostics.Debug.WriteLine(Encoding.UTF8.GetString(wrkbytes));
 				res.Close();
 				res = null;
 				req = null;
@@ -459,7 +459,7 @@ namespace CvnetBaseCore {
 				}
 				// System.Diagnostics.Debug.WriteLine("HttpPostのヘッダ情報(UTF-8)==" + req.RequestUri.ToString());
 				byte[] wrkbytes = res.Headers.ToByteArray();
-				System.Diagnostics.Debug.WriteLine(Encoding.UTF8.GetString(wrkbytes));
+				// System.Diagnostics.Debug.WriteLine(Encoding.UTF8.GetString(wrkbytes));
 				res.Close();
 				res = null;
 				req = null;

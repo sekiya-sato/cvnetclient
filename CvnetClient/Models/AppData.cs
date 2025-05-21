@@ -5,9 +5,11 @@
  * 使用ライブラリ [Library used]:
  *		CommunityToolkit.Mvvm : LICENCE = MIT
  * ============================================================================  */
+using CvnetBaseCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,9 @@ namespace CvnetClient.Models {
 		public static string AppConfigPath { get; set; } = System.IO.Path.Combine(AppDataPath, "appsettings.json");
 		public static IConfigurationSection AppConfig { get; set; }
 		public static string Url { get; set; }
+		public static ClassHttp? Http { get; set; }
+		public static DataTable MasterSysKanri { get; set; } = new DataTable();
+		public static DataTable MasterSysTax { get; set; } = new DataTable();
 
 		static AppData() {
 			// 設定ファイル読み込み

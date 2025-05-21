@@ -5,17 +5,23 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:CvnetClient.Views"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
 	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 	Title="名称マスタ"
-	Width="800"
-	Height="480"
+	Width="980"
+	Height="570"
 	Background="#F4F4FF"
 	FontFamily="Meiryo UI"
 	mc:Ignorable="d">
 	<Window.DataContext>
-		<vm:MenuViewModels />
+		<vm:MasterMeishoViewModel />
 	</Window.DataContext>
-	<Grid Margin="8">
+	<behaviors:Interaction.Triggers>
+		<behaviors:EventTrigger EventName="ContentRendered">
+			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+		</behaviors:EventTrigger>
+	</behaviors:Interaction.Triggers>
+	<Grid Margin="4">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="380" />
 			<ColumnDefinition Width="16" />
@@ -32,20 +38,27 @@
 		<StackPanel
 			Grid.Row="0"
 			Grid.Column="0"
+			Grid.ColumnSpan="3"
 			Margin="0,0,0,4"
 			Orientation="Horizontal">
 			<Label
 				Padding="4,2"
 				Background="#CFFFCF"
 				Content="名称区分" />
-			<ComboBox Width="160" Margin="2,0" />
+			<ComboBox Width="160" Margin="2,0" ItemsSource="{Binding ListKubun}" SelectedItem="{Binding SelectKubun}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
 			<Label
 				Margin="8,0,0,0"
 				Padding="4,2"
 				Background="#CFFFCF"
 				Content="名称CD" />
 			<TextBox Width="80" Margin="2,0" />
-			<Button
+			<Button Grid.ColumnSpan="2"
 				Width="32"
 				Margin="2,0"
 				Content="&lt;&lt;" />
@@ -56,6 +69,7 @@
 			<Button
 				Width="100"
 				Margin="8,0,0,0"
+				Command="{Binding SearchCommand}"
 				Content="表示更新(F5)" />
 		</StackPanel>
 
@@ -85,14 +99,13 @@
 
 		<!--  右 詳細  -->
 		<Border
-			Grid.Row="0"
-			Grid.RowSpan="2"
+			Grid.Row="1"
 			Grid.Column="2"
 			Padding="12"
 			Background="#F8F8FF"
 			BorderBrush="#B0B0B0"
 			BorderThickness="2"
-			CornerRadius="8">
+			CornerRadius="8" Margin="0,10,0,0">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="100" />
@@ -274,7 +287,7 @@
 			Grid.Row="2"
 			Grid.Column="2"
 			Width="120"
-			Height="32"
+			Height="28"
 			Margin="0,0,8,8"
 			HorizontalAlignment="Right"
 			VerticalAlignment="Bottom"

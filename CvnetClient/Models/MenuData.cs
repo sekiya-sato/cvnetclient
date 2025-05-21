@@ -13,9 +13,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Cvnet8client;
 
-namespace Cvnet8client.Models {
+namespace CvnetClient.Models {
 	public partial class MenuData : ObservableObject {
 		public static Action<MenuData>? SelectSelectedChangedAction;
 		[ObservableProperty]
@@ -38,7 +37,6 @@ namespace Cvnet8client.Models {
 		public bool IsDialog = false;
 
 		static public List<MenuData> Initmenu() { // ctl+Hで^\s*\nを正規表現検索して空行を削除 
-												  // [Use Ctrl+H to search for ^\s*\n with a regular expression to remove empty lines]
 			var menu = new List<MenuData>();
 			menu = [
 				new MenuData {
@@ -47,6 +45,7 @@ namespace Cvnet8client.Models {
 					SubItems=[
 						new MenuData{
 							Header="名称マスタメンテ",
+							ViewType = typeof(Views.MasterMeishoView),
 							IsDialog = false,
 						},
 						new MenuData{
@@ -147,7 +146,7 @@ namespace Cvnet8client.Models {
 				},
 				new MenuData {
 					Header = "■ 管理メニュー",
-					Color = "Blue",
+					Color = "Red",
 					SubItems=[
 						new MenuData{
 							Header="社員LOGINマスタ(管理者用)",
