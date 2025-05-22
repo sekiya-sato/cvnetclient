@@ -29,29 +29,47 @@ namespace CvnetClient.ViewModels {
 
 
 		[RelayCommand]
-		public void Init() {
+		void Init() {
 			LoginId = AppData.AppConfig["LoginId"]?? string.Empty;
 			LoginPassword = AppData.AppConfig["LoginPass"] ?? string.Empty;
 		}
 		[RelayCommand]
-		public void Exit() {
+		void Exit() {
 			ClientLib.Exit(this);
 		}
 		[RelayCommand]
-		public void DoLogin() {
-			var http = new ClassHttp(AppData.Url);
-			var ret = http.Login(0, LoginId??  string.Empty,LoginPassword?? string.Empty);
+		void DoLogin() {
+			var http = AppData.Http ?? new ClassHttp(AppData.Url);
+			var ret = http.Login(0, LoginId ?? string.Empty, LoginPassword ?? string.Empty);
 			AppData.Http = http;
 			Debug.WriteLine($"ログインステータス＝{ret}");
 			if(ret == 0) {
 				MessageBox.Show("ログイン成功しました");
 				AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
+				var win = ClientLib.GetActiveView(this);
+				if(win != null) 
+					win.DialogResult = true;
 				Exit();
 			}
 			else {
 				MessageBox.Show("ログインできませんでした");
 			}
+		}
+		/// <summary>
+		/// AppDataからId,Passを取得してログインする
+		/// </summary>
+		/// <returns></returns>
+		public int AutoLogin() {
+			Init();
+			var http = AppData.Http ?? new ClassHttp(AppData.Url);
+			var ret = http.Login(0, LoginId ?? string.Empty, LoginPassword ?? string.Empty);
+			AppData.Http = http;
+			if(ret == 0) {
+				AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
+				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
+			}
+			return ret;
 		}
 	}
 }

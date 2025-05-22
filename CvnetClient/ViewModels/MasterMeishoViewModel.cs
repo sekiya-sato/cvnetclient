@@ -7,39 +7,230 @@
  * ============================================================================  */
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CvnetBaseCore;
 using CvnetClient.Models;
+using CvnetClient.Views;
 using System;
+using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace CvnetClient.ViewModels {
-	public partial class MasterMeishoViewModel : ObservableObject {
+	public partial class MasterMeishoViewModel : BaseViewModel {
 		[ObservableProperty]
 		List<string>? listKubun;
 		[ObservableProperty]
 		string? selectKubun;
+		[ObservableProperty]
+		string? startCode;
+		[ObservableProperty]
+		ObservableCollection<MasterMeisho>? listMeisho;
+		[ObservableProperty]
+		MasterMeisho? selectedMeisho;
 
+		[ObservableProperty]
+		MasterMeisho? editMeisho;
+		partial void OnSelectedMeishoChanged(MasterMeisho? value) {
+			// 選択行が変わったらEditMeishoにディープコピー
+			if (value != null)
+				EditMeisho = Common.CloneObject(value);
+			else
+				EditMeisho = null;
+		}
+
+		string sql_p3 = """
+				select * from(select A.SEQ_NO, A.VDATE_CREATE, A.VDATE_UPDATE, A.名称CD, A.名称, A.略称, A.ランク, A.連番, A.カナ, A.POS区分,
+				(A.入力社員CD || ' ' || (select B.名前 from HC$MASTER_SHAIN B where B.社員CD = A.入力社員CD)) 最終修正者
+				from HC$Master_MEISHO A where A.名称区分=:1 and A.名称CD{0}:2 order by A.名称CD {1}) where rownum<={2}
+			""";
+		// 前検索： {0} は <= {1}は desc {2}はAppData.maxQueryCnt
+		// 後検索および通常： {0} は >= {1}は asc {2}はAppData.maxQueryCnt
+		/// <summary>
+		/// 初期化
+		/// </summary>
 		[RelayCommand]
-		public void Init() {
+		void Init() {
 			var kubun = AppData.Http?.AspxSqlQuery("""
 				select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='IDX'  and a.ランク>= '1' order by a.名称CD
 				""", new string[0]);
-			if(kubun != null) {
+			if (kubun != null) {
 				ListKubun = (from DataRow dr in kubun.Rows
 							 select string.Format($"{dr["名称CD"]} {dr["名称"]}")
 							 ).ToList();
 				SelectKubun = ListKubun[0];
 			}
-
+		}
+		/// <summary>
+		/// 一覧表示
+		/// </summary>
+		[RelayCommand]
+		void DoList() {
+			if (string.IsNullOrEmpty(SelectKubun)) return;
+			subList(string.IsNullOrEmpty(StartCode) ? "." : StartCode, ">=", "asc", AppData.maxQueryCnt);
+		}
+		void subList(string startCd, string sql_P1, string sql_P2, int sql_P3) {
+			if (string.IsNullOrEmpty(SelectKubun)) return;
+			var kubun = SelectKubun.Split(' ')[0];
+			var sql = string.Format(sql_p3, sql_P1, sql_P2, sql_P3);
+			var retData = AppData.Http?.AspxSqlQuery(sql, new string[] { kubun, startCd });
+			if (retData == null || retData.Rows.Count == 0) return;
+			var list = (from DataRow dr in retData.Rows
+						select new MasterMeisho {
+							SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
+							VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
+							VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"]),
+							Kubun = kubun,
+							MeishoCd = dr["名称CD"].ToString() ?? string.Empty,
+							Meisho = dr["名称"].ToString() ?? string.Empty,
+							RyakuShou = dr["略称"].ToString() ?? string.Empty,
+							Rank = dr["ランク"].ToString() ?? string.Empty,
+							Renban = dr["連番"].ToString() ?? string.Empty,
+							Kana = dr["カナ"].ToString() ?? string.Empty,
+							PosKubun = dr["POS区分"].ToString() ?? string.Empty,
+							SaishuuShuuseiSha = dr["最終修正者"].ToString() ?? string.Empty
+						}).OrderBy(c => c.MeishoCd).ToList();
+			Common.ConvertDotStringDel(list);
+			ListMeisho = new ObservableCollection<MasterMeisho>(list);
+			if (ListMeisho.Count > 0) {
+				SelectedMeisho = ListMeisho[0];
+			}
 		}
 		[RelayCommand]
-		public void Exit() {
-			ClientLib.Exit(this);
+		void BackList() {
+			if (string.IsNullOrEmpty(SelectKubun)) return;
+			var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
+			if(ListMeisho != null && ListMeisho.Count>0) {
+				startcd = ListMeisho.Min(c=>c.MeishoCd);
+			}
+			subList(startcd, "<=", "desc", AppData.maxQueryCnt);
+		}
+		[RelayCommand]
+		void NextList() {
+			if (string.IsNullOrEmpty(SelectKubun)) return;
+			var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
+			if (ListMeisho != null && ListMeisho.Count > 0) {
+				startcd = ListMeisho.Max(c => c.MeishoCd);
+			}
+			subList(startcd, ">=", "asc", AppData.maxQueryCnt);
+
+		}
+
+
+		/// <summary>
+		/// レコード挿入
+		/// </summary>
+		[RelayCommand]
+		void DoInsert() {
+			var item = Common.CloneObject(EditMeisho);
+			Common.ConvertDotStringAdd(item);
+			var ret = AppData.Http.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_MEISHO", 0, "0",
+				new string[] { "名称区分", "名称CD", "名称", "略称", "ランク", "連番", "カナ", "POS区分" },
+				new string[] { item.Kubun, item.MeishoCd, item.Meisho,item.RyakuShou, item.Rank, item.Renban, item.Kana, item.PosKubun });
+			if (ret.Code == 0) {
+				item.SeqNo = ret.NewSeq;
+				item.VdateUpdate = decimal.Parse(ret.VDate);
+				item.VdateCreate = item.VdateUpdate;
+				Common.ConvertDotStringDel(item);
+				ListMeisho.Add(item);
+				SelectedMeisho = item;
+			}
+			else {
+				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+		/// <summary>
+		/// レコード修正
+		/// </summary>
+		[RelayCommand]
+		void DoUpdate() {
+			var item = Common.CloneObject(EditMeisho);
+			Common.ConvertDotStringAdd(item);
+			var ret = AppData.Http.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_MEISHO", item.SeqNo, item.VdateUpdate.ToString(),
+				new string[] { "名称区分", "名称CD", "名称", "略称", "ランク", "連番", "カナ", "POS区分" },
+				new string[] { item.Kubun, item.MeishoCd, item.Meisho, item.RyakuShou, item.Rank, item.Renban, item.Kana, item.PosKubun });
+			if (ret.Code == 0) {
+				Common.ConvertDotStringDel(item);
+				SelectedMeisho.VdateUpdate = decimal.Parse(ret.VDate);
+				SelectedMeisho.Kubun = item.Kubun;
+				SelectedMeisho.MeishoCd = item.MeishoCd;
+				SelectedMeisho.Meisho = item.Meisho;
+				SelectedMeisho.RyakuShou = item.RyakuShou;
+				SelectedMeisho.Rank = item.Rank;
+				SelectedMeisho.Renban = item.Renban;
+				SelectedMeisho.Kana = item.Kana;
+				SelectedMeisho.PosKubun = item.PosKubun;
+			}
+			else {
+				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+		/// <summary>
+		/// レコード削除
+		/// </summary>
+		[RelayCommand]
+		void DoDelete() {
+			var ret = AppData.Http.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_MEISHO", EditMeisho.SeqNo, EditMeisho.VdateUpdate.ToString(),
+				new string[0], new string[0] );
+			if (ret.Code == 0) {
+				ListMeisho.Remove(SelectedMeisho);
+				var item = ListMeisho.Where(c => c.MeishoCd == ListMeisho.Min(c => c.MeishoCd)).FirstOrDefault();
+				selectedMeisho = item;
+			}
+			else {
+				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+		string printsql = """
+				select A.SEQ_NO,SUBSTR(GET_VDATE(a.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_CREATE),10,6) 作成日時,
+				SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時,
+				A.名称区分 ||' '|| (SELECT m.名称 FROM HC$Master_MEISHO m WHERE m.名称区分='IDX' AND m.名称CD=A.名称区分) 名称区分,
+				A.名称CD,A.名称,A.略称,A.ランク,A.連番,A.カナ,CASE WHEN (A.POS区分=0) THEN '0 出力する' WHEN (A.POS区分=9) 
+				THEN '9 削除指示' WHEN (A.POS区分=10) THEN '10 出力しない' ELSE '.' END POS区分,
+				(A.入力社員CD ||' '|| (select B.名前 from HC$MASTER_SHAIN B where B.社員CD=A.入力社員CD)) 最終修正者 
+				from HC$Master_MEISHO A  where A.名称区分 =:1  
+				""";
+		/// <summary>
+		/// PDF印刷
+		/// </summary>
+		[RelayCommand]
+		async Task DoPrintAsync() {
+			var cdlist = string.Join(",", ListMeisho.Select(c => $"'{c.MeishoCd}'"));
+			var ret = AppData.Http.AspxSqlQueryCsv(string.Format(printsql+ " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] {SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
+			if(ret.Split('\n').Length < 2) {
+				MessageBox.Show("PDFデータがありません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			var ret1 = ret.Split('\n');
+			var url = AppData.Http.URLroot + ret1[0]+"/data.pdf";
+			await Task.Delay(1000); // PDF生成待ち
+			var win = new WebpdfView();
+			var vm = win.DataContext as WebpdfViewModel;
+			vm.Pdfdata = url;
+			ClientLib.ShowDialogView(win, this);
+		}
+		[RelayCommand]
+		async Task DoPrintAllAsync() {
+			var ret = AppData.Http.AspxSqlQueryCsv(printsql + " order by A.名称CD", new string[] { SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
+			if (ret.Split('\n').Length < 2) {
+				MessageBox.Show("PDFデータがありません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			var ret1 = ret.Split('\n');
+			var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
+			await Task.Delay(1000); // PDF生成待ち
+			var win = new WebpdfView();
+			var vm = win.DataContext as WebpdfViewModel;
+			vm.Pdfdata = url;
+			ClientLib.ShowDialogView(win, this);
 		}
 	}
-
 }

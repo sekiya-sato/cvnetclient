@@ -25,6 +25,8 @@ namespace CvnetClient.Models {
 		public static IConfigurationSection AppConfig { get; set; }
 		public static string Url { get; set; }
 		public static ClassHttp? Http { get; set; }
+		public static int maxQueryCnt { get; set; } = 40;
+		public static int maxPrintCnt { get; set; } = 110;
 		public static DataTable MasterSysKanri { get; set; } = new DataTable();
 		public static DataTable MasterSysTax { get; set; } = new DataTable();
 
@@ -35,6 +37,7 @@ namespace CvnetClient.Models {
 				.Build();
 			AppConfig = config.GetSection("AppSetting");
 			Url = AppConfig["Url"] ?? string.Empty;
+			Http = new ClassHttp(AppData.Url);
 		}
 
 

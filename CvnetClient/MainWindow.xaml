@@ -137,8 +137,8 @@
 			VerticalAlignment="Center"
 			FontSize="16"
 			FontWeight="Bold"
-			IsTabStop="False"
 			Foreground="{Binding SelectedMenu.Color}"
+			IsTabStop="False"
 			Text="{Binding SelectedMenu.Header, StringFormat='&lt;&lt; {0} >>'}"
 			TextAlignment="Center" />
 

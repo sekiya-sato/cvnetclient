@@ -650,6 +650,7 @@ namespace CvnetBaseCore {
 					aspxfile = "user/isqlqfw" + AspxUserFlg.ToString("00") + ".aspx";
 				}
 				vals["fm"] = p_form;
+				vals["pdf"] = "1";
 			}
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
@@ -676,6 +677,7 @@ namespace CvnetBaseCore {
 					aspxfile = "user/isqlqfw" + AspxUserFlg.ToString("00") + ".aspx";
 				}
 				vals["fm"] = p_form;
+				vals["pdf"] = "1";
 			}
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
@@ -710,6 +712,7 @@ namespace CvnetBaseCore {
 				aspxfile = "user/isqlqry2" + AspxUserFlg.ToString("00") + ".aspx";
 			}
 			vals["fm"] = p_form;
+			vals["pdf"] = "1";
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
 					string keyname = "p" + (i + 1).ToString();
@@ -742,6 +745,7 @@ namespace CvnetBaseCore {
 				aspxfile = "user/isqlqry2" + AspxUserFlg.ToString("00") + ".aspx";
 			}
 			vals["fm"] = p_form;
+			vals["pdf"] = "1";
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
 					string keyname = "p" + (i + 1).ToString();
@@ -902,6 +906,7 @@ namespace CvnetBaseCore {
 			}
 			return bitmap;
 		}
+
 		/// <summary>
 		/// JSON文字列(UTF8)をアップロードする(圧縮無し)
 		/// </summary>
