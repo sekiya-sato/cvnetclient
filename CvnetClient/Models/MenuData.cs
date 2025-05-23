@@ -157,6 +157,7 @@ namespace CvnetClient.Models {
 						},
 						new MenuData{
 							Header="システム管理マスタ(管理者用)",
+							ViewType = typeof(Views.MasterSystemKanriView),
 							IsDialog = false,
 						},
 						new MenuData{

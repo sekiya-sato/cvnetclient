@@ -111,7 +111,7 @@ namespace CvnetClient.ViewModels {
 			if(ListMeisho != null && ListMeisho.Count>0) {
 				startcd = ListMeisho.Min(c=>c.MeishoCd);
 			}
-			subList(startcd, "<=", "desc", AppData.maxQueryCnt);
+			subList(startcd!, "<=", "desc", AppData.maxQueryCnt);
 		}
 		[RelayCommand]
 		void NextList() {
@@ -120,7 +120,7 @@ namespace CvnetClient.ViewModels {
 			if (ListMeisho != null && ListMeisho.Count > 0) {
 				startcd = ListMeisho.Max(c => c.MeishoCd);
 			}
-			subList(startcd, ">=", "asc", AppData.maxQueryCnt);
+			subList(startcd!, ">=", "asc", AppData.maxQueryCnt);
 
 		}
 
@@ -132,15 +132,16 @@ namespace CvnetClient.ViewModels {
 		void DoInsert() {
 			var item = Common.CloneObject(EditMeisho);
 			Common.ConvertDotStringAdd(item);
-			var ret = AppData.Http.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_MEISHO", 0, "0",
+			if (item == null) return;
+			var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_MEISHO", 0, "0",
 				new string[] { "名称区分", "名称CD", "名称", "略称", "ランク", "連番", "カナ", "POS区分" },
-				new string[] { item.Kubun, item.MeishoCd, item.Meisho,item.RyakuShou, item.Rank, item.Renban, item.Kana, item.PosKubun });
+				new string[] { item.Kubun!, item.MeishoCd!, item.Meisho!,item.RyakuShou!, item.Rank!, item.Renban!, item.Kana!, item.PosKubun! });
 			if (ret.Code == 0) {
 				item.SeqNo = ret.NewSeq;
 				item.VdateUpdate = decimal.Parse(ret.VDate);
 				item.VdateCreate = item.VdateUpdate;
 				Common.ConvertDotStringDel(item);
-				ListMeisho.Add(item);
+				ListMeisho!.Add(item);
 				SelectedMeisho = item;
 			}
 			else {
@@ -154,20 +155,23 @@ namespace CvnetClient.ViewModels {
 		void DoUpdate() {
 			var item = Common.CloneObject(EditMeisho);
 			Common.ConvertDotStringAdd(item);
-			var ret = AppData.Http.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_MEISHO", item.SeqNo, item.VdateUpdate.ToString(),
+			if(item == null) return;
+			var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_MEISHO", item.SeqNo, item.VdateUpdate.ToString(),
 				new string[] { "名称区分", "名称CD", "名称", "略称", "ランク", "連番", "カナ", "POS区分" },
-				new string[] { item.Kubun, item.MeishoCd, item.Meisho, item.RyakuShou, item.Rank, item.Renban, item.Kana, item.PosKubun });
+				new string[] { item!.Kubun!, item.MeishoCd!, item.Meisho!, item.RyakuShou!, item.Rank!, item.Renban!, item.Kana!, item.PosKubun! });
 			if (ret.Code == 0) {
 				Common.ConvertDotStringDel(item);
-				SelectedMeisho.VdateUpdate = decimal.Parse(ret.VDate);
-				SelectedMeisho.Kubun = item.Kubun;
-				SelectedMeisho.MeishoCd = item.MeishoCd;
-				SelectedMeisho.Meisho = item.Meisho;
-				SelectedMeisho.RyakuShou = item.RyakuShou;
-				SelectedMeisho.Rank = item.Rank;
-				SelectedMeisho.Renban = item.Renban;
-				SelectedMeisho.Kana = item.Kana;
-				SelectedMeisho.PosKubun = item.PosKubun;
+				if(SelectedMeisho != null) {
+					SelectedMeisho.VdateUpdate = decimal.Parse(ret.VDate);
+					SelectedMeisho.Kubun = item.Kubun;
+					SelectedMeisho.MeishoCd = item.MeishoCd;
+					SelectedMeisho.Meisho = item.Meisho;
+					SelectedMeisho.RyakuShou = item.RyakuShou;
+					SelectedMeisho.Rank = item.Rank;
+					SelectedMeisho.Renban = item.Renban;
+					SelectedMeisho.Kana = item.Kana;
+					SelectedMeisho.PosKubun = item.PosKubun;
+				}
 			}
 			else {
 				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -178,12 +182,15 @@ namespace CvnetClient.ViewModels {
 		/// </summary>
 		[RelayCommand]
 		void DoDelete() {
-			var ret = AppData.Http.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_MEISHO", EditMeisho.SeqNo, EditMeisho.VdateUpdate.ToString(),
+			if(EditMeisho == null) return;
+			var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_MEISHO", EditMeisho.SeqNo, EditMeisho.VdateUpdate.ToString(),
 				new string[0], new string[0] );
 			if (ret.Code == 0) {
-				ListMeisho.Remove(SelectedMeisho);
-				var item = ListMeisho.Where(c => c.MeishoCd == ListMeisho.Min(c => c.MeishoCd)).FirstOrDefault();
-				selectedMeisho = item;
+				if(SelectedMeisho!= null) {
+					ListMeisho!.Remove(SelectedMeisho);
+					var item = ListMeisho.Where(c => c.MeishoCd == ListMeisho.Min(c => c.MeishoCd)).FirstOrDefault();
+					SelectedMeisho = item;
+				}
 			}
 			else {
 				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -203,32 +210,36 @@ namespace CvnetClient.ViewModels {
 		/// </summary>
 		[RelayCommand]
 		async Task DoPrintAsync() {
+			if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
 			var cdlist = string.Join(",", ListMeisho.Select(c => $"'{c.MeishoCd}'"));
-			var ret = AppData.Http.AspxSqlQueryCsv(string.Format(printsql+ " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] {SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
+			var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(printsql+ " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] {SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
 			if(ret.Split('\n').Length < 2) {
 				MessageBox.Show("PDFデータがありません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 			var ret1 = ret.Split('\n');
 			var url = AppData.Http.URLroot + ret1[0]+"/data.pdf";
-			await Task.Delay(1000); // PDF生成待ち
+			await Task.Delay(1500); // PDF生成待ち
 			var win = new WebpdfView();
 			var vm = win.DataContext as WebpdfViewModel;
+			if(vm == null) return;
 			vm.Pdfdata = url;
 			ClientLib.ShowDialogView(win, this);
 		}
 		[RelayCommand]
 		async Task DoPrintAllAsync() {
-			var ret = AppData.Http.AspxSqlQueryCsv(printsql + " order by A.名称CD", new string[] { SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
+			if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
+			var ret = AppData.Http!.AspxSqlQueryCsv(printsql + " order by A.名称CD", new string[] { SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
 			if (ret.Split('\n').Length < 2) {
 				MessageBox.Show("PDFデータがありません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 			var ret1 = ret.Split('\n');
 			var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
-			await Task.Delay(1000); // PDF生成待ち
+			await Task.Delay(1500); // PDF生成待ち
 			var win = new WebpdfView();
 			var vm = win.DataContext as WebpdfViewModel;
+			if (vm == null) return;
 			vm.Pdfdata = url;
 			ClientLib.ShowDialogView(win, this);
 		}

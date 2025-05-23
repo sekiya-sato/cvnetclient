@@ -4,6 +4,7 @@
  * 説明: PDF表示画面
  * 使用ライブラリ
  *		CommunityToolkit.Mvvm : LICENCE = MIT
+ *		Microsoft.Web.WebView2 : LICENCE = https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.3240.44/license
  * ============================================================================  */
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;

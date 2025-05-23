@@ -19,28 +19,26 @@ namespace CvnetClient.Models {
 		[ObservableProperty]
 		long seqNo;
 		[ObservableProperty]
-		string kubun;
-		[ObservableProperty]
-		string meishoCd;
-		[ObservableProperty]
-		string meisho;
-		[ObservableProperty]
-		string ryakuShou;
-		[ObservableProperty]
-		string rank;
-		[ObservableProperty]
-		string renban;
-		[ObservableProperty]
-		string kana;
-		[ObservableProperty]
-		string posKubun;
-		[ObservableProperty]
-		string saishuuShuuseiSha;
-		[ObservableProperty]
 		decimal vdateCreate;
 		[ObservableProperty]
 		decimal vdateUpdate;
+		[ObservableProperty]
+		string? kubun;
+		[ObservableProperty]
+		string? meishoCd;
+		[ObservableProperty]
+		string? meisho;
+		[ObservableProperty]
+		string? ryakuShou;
+		[ObservableProperty]
+		string? rank;
+		[ObservableProperty]
+		string?	renban;
+		[ObservableProperty]
+		string? kana;
+		[ObservableProperty]
+		string? posKubun;
+		[ObservableProperty]
+		string? saishuuShuuseiSha;
 	}
-
-
 }
