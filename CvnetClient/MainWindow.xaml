@@ -8,7 +8,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 	Title="Creative Vision.net"
-	Width="1250"
+	Width="1150"
 	Height="800"
 	Background="#D6D6FF"
 	FocusManager.FocusedElement="{Binding ElementName=MenuSub}"
