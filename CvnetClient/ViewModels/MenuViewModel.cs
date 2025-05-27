@@ -12,10 +12,13 @@ using CvnetClient.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -59,12 +62,15 @@ namespace CvnetClient.ViewModels {
 			// 設定ファイル読み込み
 			BottomMessage = AppData.Url;
 			var isLogin = false;
-			if (AppData.AppConfig["AutoLogin"] == "True") {
-				var loginvm = new LoginViewModel();
-				var ret = loginvm.AutoLogin();
-				if (ret == 0) {
-					isLogin = true;
-					BottomMessage += $" ログイン時間{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
+			// ClickOnceかどうかの判定
+			if (Environment.GetEnvironmentVariable("ClickOnce_IsNetworkDeployed")?.ToLower() != "true") {
+				if (AppData.AppConfig["AutoLogin"] == "True") {
+					var loginvm = new LoginViewModel();
+					var ret = loginvm.AutoLogin();
+					if (ret == 0) {
+						isLogin = true;
+						BottomMessage += $" ログイン時間{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
+					}
 				}
 			}
 			if (!isLogin) { // ログインしていない場合、ログイン画面の表示

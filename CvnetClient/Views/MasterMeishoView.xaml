@@ -1,13 +1,13 @@
 ﻿<Window
+	x:Class="CvnetClient.Views.MasterMeishoView"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:local="clr-namespace:CvnetClient.Views"
-	xmlns:utils="clr-namespace:CvnetClient.Utils"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+	xmlns:utils="clr-namespace:CvnetClient.Utils"
 	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
-	x:Class="CvnetClient.Views.MasterMeishoView"
 	Title="名称マスタ"
 	Width="980"
 	Height="570"
@@ -15,7 +15,7 @@
 	FontFamily="Meiryo UI"
 	mc:Ignorable="d">
 	<Window.Resources>
-		<utils:VdateConverter x:Key="VdateConverter"/>
+		<utils:VdateConverter x:Key="VdateConverter" />
 	</Window.Resources>
 	<Window.DataContext>
 		<vm:MasterMeishoViewModel />
@@ -49,10 +49,14 @@
 				Padding="4,2"
 				Background="#CFFFCF"
 				Content="名称区分" />
-			<ComboBox Width="160" Margin="2,0" ItemsSource="{Binding ListKubun}" SelectedItem="{Binding SelectKubun}">
+			<ComboBox
+				Width="160"
+				Margin="2,0"
+				ItemsSource="{Binding ListKubun}"
+				SelectedItem="{Binding SelectKubun}">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
-						<TextBlock Text="{Binding}"/>
+						<TextBlock Text="{Binding}" />
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
@@ -61,16 +65,20 @@
 				Padding="4,2"
 				Background="#CFFFCF"
 				Content="名称CD" />
-			<TextBox Width="80" Margin="2,0" Text="{Binding StartCode}" />
-			<Button Grid.ColumnSpan="2"
+			<TextBox
+				Width="80"
+				Margin="2,0"
+				Text="{Binding StartCode}" />
+			<Button
+				Grid.ColumnSpan="2"
 				Width="32"
 				Margin="2,0"
-					Command="{Binding BackListCommand}"
+				Command="{Binding BackListCommand}"
 				Content="&lt;&lt;" />
 			<Button
 				Width="32"
 				Margin="2,0"
-					Command="{Binding NextListCommand}"
+				Command="{Binding NextListCommand}"
 				Content="&gt;&gt;" />
 			<Button
 				Width="100"
@@ -83,22 +91,29 @@
 		<DataGrid
 			Grid.Row="1"
 			Grid.Column="0"
-	Background="#FFFFFF"
-			
 			Margin="0,0,0,0"
-                d:ItemsSource="{d:SampleData ItemCount=5}"
-                    IsReadOnly="True"
-                    IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding ListMeisho}"
-                    SelectedItem="{Binding SelectedMeisho}"
-
+			d:ItemsSource="{d:SampleData ItemCount=5}"
 			AutoGenerateColumns="False"
+			Background="#FFFFFF"
 			HeadersVisibility="Column"
+			IsReadOnly="True"
+			IsSynchronizedWithCurrentItem="True"
+			ItemsSource="{Binding ListMeisho}"
+			SelectedItem="{Binding SelectedMeisho}"
 			SelectionMode="Single">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="名称CD" Binding="{Binding MeishoCd}" Width="80"/>
-				<DataGridTextColumn Header="名称" Binding="{Binding Meisho}" Width="*"/>
-				<DataGridTextColumn Header="略称" Binding="{Binding RyakuShou}" Width="100"/>
+				<DataGridTextColumn
+					Width="80"
+					Binding="{Binding MeishoCd}"
+					Header="名称CD" />
+				<DataGridTextColumn
+					Width="*"
+					Binding="{Binding Meisho}"
+					Header="名称" />
+				<DataGridTextColumn
+					Width="100"
+					Binding="{Binding RyakuShou}"
+					Header="略称" />
 			</DataGrid.Columns>
 		</DataGrid>
 
@@ -106,10 +121,11 @@
 		<Border
 			Grid.Row="1"
 			Grid.Column="2"
+			Margin="0,10,0,0"
 			Padding="12"
 			BorderBrush="#B0B0B0"
 			BorderThickness="2"
-			CornerRadius="8" Margin="0,10,0,0">
+			CornerRadius="8">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="100" />
@@ -188,8 +204,9 @@
 					Padding="4,2"
 					Background="#CFFFCF"
 					Content="ランク" />
-				<TextBox Grid.Row="4" Grid.Column="1"
-						 
+				<TextBox
+					Grid.Row="4"
+					Grid.Column="1"
 					Text="{Binding EditMeisho.Rank}" />
 
 
@@ -199,7 +216,9 @@
 					Padding="4,2"
 					Background="#CFFFCF"
 					Content="連番" />
-				<TextBox Grid.Row="5" Grid.Column="1" 
+				<TextBox
+					Grid.Row="5"
+					Grid.Column="1"
 					Text="{Binding EditMeisho.Renban}" />
 
 				<Label
@@ -238,7 +257,7 @@
 					Grid.Row="8"
 					Grid.Column="1"
 					Background="#FFF7DF"
-    Text="{Binding EditMeisho.VdateCreate, Converter={StaticResource VdateConverter}}" />
+					Text="{Binding EditMeisho.VdateCreate, Converter={StaticResource VdateConverter}}" />
 				<Label
 					Grid.Row="9"
 					Grid.Column="0"
@@ -249,7 +268,7 @@
 					Grid.Row="9"
 					Grid.Column="1"
 					Background="#FFF7DF"
-    Text="{Binding EditMeisho.VdateUpdate, Converter={StaticResource VdateConverter}}" />
+					Text="{Binding EditMeisho.VdateUpdate, Converter={StaticResource VdateConverter}}" />
 
 				<Label
 					Grid.Row="10"
@@ -303,8 +322,8 @@
 			HorizontalAlignment="Right"
 			VerticalAlignment="Bottom"
 			Command="{Binding ExitCommand}"
-			IsCancel="True"
-			Content="戻る(ESC)" />
+			Content="戻る(ESC)"
+			IsCancel="True" />
 
 		<!--  下部バー  -->
 		<Border

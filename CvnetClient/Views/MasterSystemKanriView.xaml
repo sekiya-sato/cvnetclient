@@ -15,7 +15,7 @@
 	<Window.DataContext>
 		<vm:MasterSystemKanriViewModel />
 	</Window.DataContext>
-	<Grid Margin="8" >
+	<Grid Margin="8">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" MinHeight="516" />
 			<RowDefinition Height="Auto" />
@@ -566,9 +566,10 @@
 		<!--  ボタンエリア  -->
 		<StackPanel
 			Grid.Row="1"
+			Width="324"
 			Margin="0,8,0,0"
 			HorizontalAlignment="Right"
-			Orientation="Horizontal" Width="324">
+			Orientation="Horizontal">
 			<Button
 				Width="100"
 				Height="32"

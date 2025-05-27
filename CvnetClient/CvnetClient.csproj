@@ -37,6 +37,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\WebTextView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.Debug.json">
       <DependentUpon>appsettings.json</DependentUpon>
       <SubType>Designer</SubType>

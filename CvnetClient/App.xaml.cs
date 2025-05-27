@@ -7,6 +7,7 @@
  *	開発メモ [Development notes]:
  *		アプリケーション共通でXAMLでの言語表示を変更
  * ============================================================================  */
+using CvnetBaseCore;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -24,6 +25,33 @@ namespace CvnetClient {
 				XmlLanguage language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
 				FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(language));
 			}
+		}
+		/// <summary>
+		/// catch 漏れの例外が発生した時に呼ばれます。
+		/// </summary>
+		/// <param name="sender">呼び出し元）</param>
+		/// <param name="e">Handled フラグを立てないとアプリが強制終了します。原因は Exception プロパティに記載。</param>
+		private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e) {
+			var log = NLog.LogManager.GetCurrentClassLogger();
+			log.Error(e.Exception, string.Format("catch漏れの例外による終了 ----------.\n"));
+			e.Handled = true;
+			App.Current.Shutdown(-9999);
+		}
+		/// <summary>
+		/// 例外が発生する前にとらえる（「ストア メタデータ "CurrentBind" が無効です」が多発する？）
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void CurrentDomain_FirstChanceException(
+						  object sender,
+						  System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e) {
+			var log = NLog.LogManager.GetCurrentClassLogger();
+				log.Error(e.Exception, "FirstChanceException例外が{0}で発生。/{1}/{2}/",
+					e.Exception?.TargetSite?.Name,
+					(string.IsNullOrEmpty(e.Exception?.Message) ? "" : "【Msg】" + e.Exception.Message),
+					(string.IsNullOrEmpty(e.Exception?.Source) ? "" : "【Src】" + e.Exception.Source),
+					(string.IsNullOrEmpty(e.Exception?.StackTrace) ? "" : "【Trace】" + e.Exception.StackTrace) // Traceは長いので書き出さない
+					);
 		}
 	}
 }

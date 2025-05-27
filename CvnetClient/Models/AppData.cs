@@ -13,6 +13,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Configuration;
 
 namespace CvnetClient.Models {
 	public class AppData {
@@ -31,15 +33,14 @@ namespace CvnetClient.Models {
 		public static DataTable MasterSysTax { get; set; } = new DataTable();
 
 		static AppData() {
+			var settingfile = "appsettings.json";
 			// 設定ファイル読み込み
 			IConfiguration config = new ConfigurationBuilder()
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				.AddJsonFile(settingfile, optional: true, reloadOnChange: true)
 				.Build();
 			AppConfig = config.GetSection("AppSetting");
-			Url = AppConfig["Url"] ?? string.Empty;
+			Url = AppConfig["Url"] ?? "https://localhost/";
 			Http = new ClassHttp(AppData.Url);
 		}
-
-
 	}
 }
