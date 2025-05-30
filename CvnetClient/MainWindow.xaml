@@ -25,6 +25,10 @@
 			Key="F11"
 			Command="{Binding DoTestCommand}"
 			Modifiers="Shift" />
+		<KeyBinding
+			Key="F10"
+			Command="{Binding DoSettingCommand}"
+			Modifiers="Shift" />
 	</Window.InputBindings>
 	<behaviors:Interaction.Triggers>
 		<behaviors:EventTrigger EventName="ContentRendered">

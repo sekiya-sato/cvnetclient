@@ -1,0 +1,110 @@
+﻿<Window
+	x:Class="CvnetClient.Views.SystemSettingView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+	Title="設定画面"
+	Width="600"
+	Height="400"
+	Background="#F0F8FF"
+	FontFamily="Meiryo UI"
+	ResizeMode="NoResize"
+	WindowStartupLocation="CenterOwner">
+	<Window.DataContext>
+		<vm:SystemSettingViewModel />
+	</Window.DataContext>
+	<behaviors:Interaction.Triggers>
+		<behaviors:EventTrigger EventName="ContentRendered">
+			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+		</behaviors:EventTrigger>
+	</behaviors:Interaction.Triggers>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="60" />
+			<ColumnDefinition Width="120" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="60" />
+		</Grid.ColumnDefinitions>
+
+		<!--  URL  -->
+		<Label
+			Grid.Row="1"
+			Grid.Column="1"
+			Padding="4,0"
+			VerticalAlignment="Center"
+			Background="#CCFFCC"
+			Content="URL" />
+		<TextBox
+			Grid.Row="1"
+			Grid.Column="2"
+			Height="28"
+			Margin="0,0,8,0"
+			VerticalAlignment="Center"
+			Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" />
+
+		<!--  ID  -->
+		<Label
+			Grid.Row="2"
+			Grid.Column="1"
+			Padding="4,0"
+			VerticalAlignment="Center"
+			Background="#CCFFCC"
+			Content="ID" />
+		<TextBox
+			Grid.Row="2"
+			Grid.Column="2"
+			Height="28"
+			Margin="0,0,8,0"
+			VerticalAlignment="Center"
+			Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}" />
+
+		<!--  パスワード  -->
+		<Label
+			Grid.Row="3"
+			Grid.Column="1"
+			Padding="4,0"
+			VerticalAlignment="Center"
+			Background="#CCFFCC"
+			Content="パスワード" />
+		<TextBox
+			Grid.Row="3"
+			Grid.Column="2"
+			Height="28"
+			Margin="0,0,8,0"
+			VerticalAlignment="Center"
+			Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
+
+		<!--  ボタン  -->
+		<StackPanel
+			Grid.Row="4"
+			Grid.Column="1"
+			Grid.ColumnSpan="2"
+			Margin="0,8,0,0"
+			HorizontalAlignment="Center"
+			Orientation="Horizontal">
+			<Button
+				Width="140"
+				Height="36"
+				Margin="0,0,16,0"
+				Command="{Binding OkCommand}"
+				Content="確定"
+				IsDefault="True" />
+			<Button
+				Width="140"
+				Height="36"
+				Command="{Binding CancelCommand}"
+				Content="キャンセル"
+				IsCancel="True" />
+		</StackPanel>
+	</Grid>
+</Window>

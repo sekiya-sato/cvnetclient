@@ -6,6 +6,7 @@
  *		NLog : LICENCE = BSD 3-Clause
  * 開発メモ
  * ============================================================================  */
+using CvnetClient.ViewModels;
 using System.Windows;
 
 namespace CvnetClient {
@@ -88,18 +89,76 @@ namespace CvnetClient {
                 Exit(vm);
 			}
 		}
+		/// <summary>
+		/// OK,Cancelの確認メッセージを表示する
+		/// </summary>
+		/// <param name="vm"></param>
+		/// <param name="message"></param>
+		/// <param name="title"></param>
+		/// <param name="fontSize"></param>
+		/// <returns></returns>
+		public static bool MessageBox(object vm, string message, string title = "確認", double fontSize = 18) {
+			var v = new Views.CustomMessageBox(message, title, fontSize);
+			v.Owner = GetActiveView(vm);
+			var ret = v.ShowDialog();
+			if (ret == true)
+				return true;
+			else 
+				return false; // キャンセルの場合はfalseを返す [Return false for cancel]
+		}
+		/// <summary>
+		/// Yes,Noの確認メッセージを表示する
+		/// </summary>
+		/// <param name="vm"></param>
+		/// <param name="message"></param>
+		/// <param name="title"></param>
+		/// <param name="fontSize"></param>
+		/// <returns></returns>
+		public static bool MessageBoxYesno(object vm, string message, string title = "確認", double fontSize = 18) {
+			var v = new Views.CustomMessageBox(message, title, fontSize);
+			v.Owner = GetActiveView(vm);
+			var subvm = v.DataContext as CustomMessageBoxViewModel;
+			if(subvm != null) {
+				subvm.BtnOkText = "Yes"; // Yes button text
+				subvm.BtnCancelText = "No"; // No button text
+			}
+			var ret = v.ShowDialog();
+			if (ret == true)
+				return true;
+			else
+				return false; // キャンセルの場合はfalseを返す [Return false for cancel]
+		}
+		/// <summary>
+		/// OKボタンのみの確認メッセージを表示する
+		/// </summary>
+		/// <param name="vm"></param>
+		/// <param name="message"></param>
+		/// <param name="fontSize"></param>
+		/// <returns></returns>
+		public static bool MessageBoxOk(object vm, string message, string title = "確認", double fontSize = 18) {
+			var v = new Views.CustomMessageBox(message, "確認", fontSize);
+			v.Owner = GetActiveView(vm);
+			var subvm = v.DataContext as CustomMessageBoxViewModel;
+			if (subvm != null) {
+				subvm.BtnOkEnabled = false; // 位置的にCancelボタンのみ表示
+				subvm.BtnCancelEnabled = true;
+				subvm.BtnCancelText = "OK";
+			}
+			v.ShowDialog();
+			return true;
+		}
 
-        /// <summary>
-        /// Viewを親として子Windowをオープンする
-        /// [Open a child Window with the View as its parent]
-        /// </summary>
-        /// <param name="childWin">子Window</param> [Child Window]
-        /// <param name="loc">表示位置</param> [Display position]
-        /// <param name="IsDialog">true=ダイアログとして表示 false=独立Windowsとして表示</param> 
+		/// <summary>
+		/// Viewを親として子Windowをオープンする
+		/// [Open a child Window with the View as its parent]
+		/// </summary>
+		/// <param name="childWin">子Window</param> [Child Window]
+		/// <param name="loc">表示位置</param> [Display position]
+		/// <param name="IsDialog">true=ダイアログとして表示 false=独立Windowsとして表示</param> 
 		/// [true = Display as a dialog, false = Display as an independent Window]
-        /// <param name="IsShowTaskbar">true=タスクバーに表示 false=表示しない</param>
+		/// <param name="IsShowTaskbar">true=タスクバーに表示 false=表示しない</param>
 		/// [true = Display in the taskbar, false = Do not display]
-        /// IsShowTaskbar
+		/// IsShowTaskbar
 		public static bool? ShowDialogView(Window childWin,object? myVm, WindowStartupLocation loc = WindowStartupLocation.CenterOwner, bool IsDialog = true, bool IsShowTaskbar=false) {
 			if(myVm !=null)
 	            childWin.Owner = GetActiveView(myVm);

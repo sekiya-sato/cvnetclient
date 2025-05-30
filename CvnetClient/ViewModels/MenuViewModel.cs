@@ -62,6 +62,7 @@ namespace CvnetClient.ViewModels {
 			// 設定ファイル読み込み
 			BottomMessage = AppData.Url;
 			var isLogin = false;
+
 			// ClickOnceかどうかの判定
 			if (Environment.GetEnvironmentVariable("ClickOnce_IsNetworkDeployed")?.ToLower() != "true") {
 				if (AppData.AppConfig["AutoLogin"] == "True") {
@@ -93,6 +94,10 @@ namespace CvnetClient.ViewModels {
 		[RelayCommand]
 		void DoLogin() {
 			ClientLib.ShowDialogView(new Views.LoginView(), this);
+		}
+		[RelayCommand]
+		void DoSetting() {
+			ClientLib.ShowDialogView(new Views.SystemSettingView(), this);
 		}
 		#region テストしたいときに使う Shift+F11で実行
 		[RelayCommand]

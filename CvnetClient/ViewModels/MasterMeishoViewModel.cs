@@ -76,6 +76,8 @@ namespace CvnetClient.ViewModels {
 		void DoList() {
 			if (string.IsNullOrEmpty(SelectKubun)) return;
 			subList(string.IsNullOrEmpty(StartCode) ? "." : StartCode, ">=", "asc", AppData.maxQueryCnt);
+			if(ListMeisho == null || ListMeisho.Count == 0) 
+				ClientLib.MessageBoxOk(this, "データがありません");
 		}
 		void subList(string startCd, string sql_P1, string sql_P2, int sql_P3) {
 			if (string.IsNullOrEmpty(SelectKubun)) return;
@@ -112,6 +114,8 @@ namespace CvnetClient.ViewModels {
 				startcd = ListMeisho.Min(c=>c.MeishoCd);
 			}
 			subList(startcd!, "<=", "desc", AppData.maxQueryCnt);
+			if (ListMeisho == null || ListMeisho.Count == 0)
+				ClientLib.MessageBoxOk(this, "データがありません");
 		}
 		[RelayCommand]
 		void NextList() {
@@ -121,7 +125,8 @@ namespace CvnetClient.ViewModels {
 				startcd = ListMeisho.Max(c => c.MeishoCd);
 			}
 			subList(startcd!, ">=", "asc", AppData.maxQueryCnt);
-
+			if (ListMeisho == null || ListMeisho.Count == 0)
+				ClientLib.MessageBoxOk(this, "データがありません");
 		}
 
 
@@ -130,6 +135,8 @@ namespace CvnetClient.ViewModels {
 		/// </summary>
 		[RelayCommand]
 		void DoInsert() {
+			if(!ClientLib.MessageBox(this, "新規登録しますか？")) return;
+
 			var item = Common.CloneObject(EditMeisho);
 			Common.ConvertDotStringAdd(item);
 			if (item == null) return;
@@ -153,6 +160,7 @@ namespace CvnetClient.ViewModels {
 		/// </summary>
 		[RelayCommand]
 		void DoUpdate() {
+			if (!ClientLib.MessageBox(this, "修正しますか？")) return;
 			var item = Common.CloneObject(EditMeisho);
 			Common.ConvertDotStringAdd(item);
 			if(item == null) return;
@@ -171,6 +179,7 @@ namespace CvnetClient.ViewModels {
 					SelectedMeisho.Renban = item.Renban;
 					SelectedMeisho.Kana = item.Kana;
 					SelectedMeisho.PosKubun = item.PosKubun;
+					EditMeisho = Common.CloneObject(SelectedMeisho); // 選択行の内容をEditMeishoに反映
 				}
 			}
 			else {
@@ -182,7 +191,8 @@ namespace CvnetClient.ViewModels {
 		/// </summary>
 		[RelayCommand]
 		void DoDelete() {
-			if(EditMeisho == null) return;
+			if (!ClientLib.MessageBox(this, "削除しますか？")) return;
+			if (EditMeisho == null) return;
 			var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_MEISHO", EditMeisho.SeqNo, EditMeisho.VdateUpdate.ToString(),
 				new string[0], new string[0] );
 			if (ret.Code == 0) {
@@ -210,6 +220,7 @@ namespace CvnetClient.ViewModels {
 		/// </summary>
 		[RelayCommand]
 		async Task DoPrintAsync() {
+			if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
 			if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
 			var cdlist = string.Join(",", ListMeisho.Select(c => $"'{c.MeishoCd}'"));
 			var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(printsql+ " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] {SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
@@ -228,6 +239,7 @@ namespace CvnetClient.ViewModels {
 		}
 		[RelayCommand]
 		async Task DoPrintAllAsync() {
+			if (!ClientLib.MessageBox(this, "全件印刷しますか？")) return;
 			if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
 			var ret = AppData.Http!.AspxSqlQueryCsv(printsql + " order by A.名称CD", new string[] { SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
 			if (ret.Split('\n').Length < 2) {
