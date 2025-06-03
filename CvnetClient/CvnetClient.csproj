@@ -58,6 +58,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="v02Shiire\" />
+  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="set projdir=$(ProjectDir)&#xD;&#xA;set projcfg=$(Configuration)&#xD;&#xA;set projout=$(OutDir)&#xD;&#xA;call app-post-build.bat&#xD;&#xA;" />
   </Target>

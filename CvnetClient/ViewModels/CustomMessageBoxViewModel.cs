@@ -1,45 +1,42 @@
+/* ============================================================================
+ * Cvnet8wpfclient.exe : CustomMessageBoxViewModel.cs
+ * Created by Sekiya.Sato 2025/06/02
+ * 説明: 汎用メッセージボックス
+ * 使用ライブラリ [Library used]:
+ *		CommunityToolkit.Mvvm : LICENCE = MIT
+ * ============================================================================  */
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
 
-namespace CvnetClient.ViewModels
-{
-    public partial class CustomMessageBoxViewModel : ObservableObject
-    {
-        [ObservableProperty]
-        string message;
+namespace CvnetClient.ViewModels;
 
-        [ObservableProperty]
-        string title;
+public partial class CustomMessageBoxViewModel : ObservableObject {
+    [ObservableProperty]
+    string? message;
 
-        [ObservableProperty]
-        double fontSize = 16;
+    [ObservableProperty]
+    string? title;
 
-		[ObservableProperty]
-		string btnOkText = "OK";
-		[ObservableProperty]
-		string btnCancelText = "キャンセル";
+    [ObservableProperty]
+    double fontSize = 16;
 
-		[ObservableProperty]
-		bool btnOkEnabled = true;
-		[ObservableProperty]
-		bool btnCancelEnabled = true;
+    [ObservableProperty]
+    string btnOkText = "OK";
+    [ObservableProperty]
+    string btnCancelText = "キャンセル";
 
-		public ICommand OkCommand { get; }
-        public ICommand CancelCommand { get; }
+    [ObservableProperty]
+    bool btnOkEnabled = true;
+    [ObservableProperty]
+    bool btnCancelEnabled = true;
 
-        public CustomMessageBoxViewModel(string message, string title = "メッセージ", double fontSize = 16)
-        {
-            Message = message;
-            Title = title;
-            FontSize = fontSize;
-            OkCommand = new RelayCommand(OnOk);
-            CancelCommand = new RelayCommand(OnCancel);
-        }
+    [RelayCommand]
+    void Ok() {
+			ClientLib.ExitDialogResult(this, true);
+		}
 
-        public event Action<bool?>? RequestClose;
-
-        void OnOk() => RequestClose?.Invoke(true);
-        void OnCancel() => RequestClose?.Invoke(false);
-    }
+		[RelayCommand]
+    void Cancel() {
+        ClientLib.Exit(this);
+		}
 }

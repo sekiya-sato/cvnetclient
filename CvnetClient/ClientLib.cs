@@ -1,7 +1,7 @@
 ﻿/* ============================================================================
  * CvnetClient.exe : ClientLib.cs
  * Created by Sekiya.Sato 2025/05/13
- * 説明: メインメニュー画面
+ * 説明: ViewModel側からViewを操作するためのクラス
  * 使用ライブラリ
  *		NLog : LICENCE = BSD 3-Clause
  * 開発メモ
@@ -17,7 +17,7 @@ namespace CvnetClient {
 	public class ClientLib
     {
 		/// <summary>
-		/// アクティブなWindowを閉じる
+		/// 自分のViewを閉じる
 		/// [Close the active Window]
 		/// </summary>
 		/// <param name="vm">ViewModelインスタンス</param>
@@ -36,7 +36,7 @@ namespace CvnetClient {
         /// </summary>
         public static void ExitAll()
         {
-            foreach (var win in Application.Current.Windows.OfType<Window>())
+            foreach (var win in Application.Current.Windows.OfType<Window>().Reverse())
             {
                 win.Close();
             }
@@ -49,7 +49,7 @@ namespace CvnetClient {
 		public static void ExitAllWithoutMe(object vm) {
 			var myview = GetActiveView(vm);
 			var parent = myview?.Owner;
-			foreach (var win in Application.Current.Windows.OfType<Window>()) {
+			foreach (var win in Application.Current.Windows.OfType<Window>().Reverse()) {
 				if (win != myview && win != parent)
 					win.Close();
 			}
@@ -65,8 +65,10 @@ namespace CvnetClient {
 			var activeWins = Application.Current.Windows.OfType<Window>().Reverse();
 			foreach (var ac in activeWins) {
 				var myVm = ac.DataContext;
-				if (myVm == vm)
+				if (myVm == vm) {
 					myWin = ac;
+					return myWin;
+				}
 			}
 			return myWin;
 		}
@@ -98,8 +100,14 @@ namespace CvnetClient {
 		/// <param name="fontSize"></param>
 		/// <returns></returns>
 		public static bool MessageBox(object vm, string message, string title = "確認", double fontSize = 18) {
-			var v = new Views.CustomMessageBox(message, title, fontSize);
+			var v = new Views.CustomMessageBox();
 			v.Owner = GetActiveView(vm);
+			var subvm = v.DataContext as CustomMessageBoxViewModel;
+			if(subvm != null) {
+				subvm.Message = message; // メッセージを設定 [Set the message]
+				subvm.Title = title; // タイトルを設定 [Set the title]
+				subvm.FontSize = fontSize; // フォントサイズを設定 [Set the font size]
+			}
 			var ret = v.ShowDialog();
 			if (ret == true)
 				return true;
@@ -115,10 +123,13 @@ namespace CvnetClient {
 		/// <param name="fontSize"></param>
 		/// <returns></returns>
 		public static bool MessageBoxYesno(object vm, string message, string title = "確認", double fontSize = 18) {
-			var v = new Views.CustomMessageBox(message, title, fontSize);
+			var v = new Views.CustomMessageBox();
 			v.Owner = GetActiveView(vm);
 			var subvm = v.DataContext as CustomMessageBoxViewModel;
-			if(subvm != null) {
+			if (subvm != null) {
+				subvm.Message = message; // メッセージを設定 [Set the message]
+				subvm.Title = title; // タイトルを設定 [Set the title]
+				subvm.FontSize = fontSize; // フォントサイズを設定 [Set the font size]
 				subvm.BtnOkText = "Yes"; // Yes button text
 				subvm.BtnCancelText = "No"; // No button text
 			}
@@ -136,10 +147,13 @@ namespace CvnetClient {
 		/// <param name="fontSize"></param>
 		/// <returns></returns>
 		public static bool MessageBoxOk(object vm, string message, string title = "確認", double fontSize = 18) {
-			var v = new Views.CustomMessageBox(message, "確認", fontSize);
+			var v = new Views.CustomMessageBox();
 			v.Owner = GetActiveView(vm);
 			var subvm = v.DataContext as CustomMessageBoxViewModel;
 			if (subvm != null) {
+				subvm.Message = message; // メッセージを設定 [Set the message]
+				subvm.Title = title; // タイトルを設定 [Set the title]
+				subvm.FontSize = fontSize; // フォントサイズを設定 [Set the font size]
 				subvm.BtnOkEnabled = false; // 位置的にCancelボタンのみ表示
 				subvm.BtnCancelEnabled = true;
 				subvm.BtnCancelText = "OK";
@@ -147,7 +161,28 @@ namespace CvnetClient {
 			v.ShowDialog();
 			return true;
 		}
-
+		/// <summary>
+		/// OKボタンのみのエラー確認メッセージを表示する
+		/// </summary>
+		/// <param name="vm"></param>
+		/// <param name="message"></param>
+		/// <param name="fontSize"></param>
+		/// <returns></returns>
+		public static bool MessageBoxError(object vm, string message, string title = "エラー", double fontSize = 18) {
+			var v = new Views.CustomMessageBox();
+			v.Owner = GetActiveView(vm);
+			var subvm = v.DataContext as CustomMessageBoxViewModel;
+			if (subvm != null) {
+				subvm.Message = message; // メッセージを設定 [Set the message]
+				subvm.Title = title; // タイトルを設定 [Set the title]
+				subvm.FontSize = fontSize; // フォントサイズを設定 [Set the font size]
+				subvm.BtnOkEnabled = false; // 位置的にCancelボタンのみ表示
+				subvm.BtnCancelEnabled = true;
+				subvm.BtnCancelText = "OK";
+			}
+			v.ShowDialog();
+			return true;
+		}
 		/// <summary>
 		/// Viewを親として子Windowをオープンする
 		/// [Open a child Window with the View as its parent]
@@ -211,19 +246,19 @@ namespace CvnetClient {
 				return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 			}
 		}
-        /// <summary>
-        /// マウスカーソルをWaitにして処理を実行する
-        /// [Change the mouse cursor to "Wait" and execute the process]
-        /// </summary>
-        /// <param name="method"></param>
-        /// <returns></returns>
-        public static TimeSpan WaitCursor(Action method) {
-			var start = DateTime.Now;
-			System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-			method();
-			System.Windows.Input.Mouse.OverrideCursor = null;
-			var span = DateTime.Now - start;
-			return span;
+		/// <summary>
+		/// マウスカーソルをWiaitに変更する(重そうな処理の前に実行)
+		/// </summary>
+		public static void CursorToWait() {
+					System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 		}
+		/// <summary>
+		/// マウスカーソルをもとに戻す
+		/// </summary>
+		public static void CursorToNormal() {
+			System.Windows.Input.Mouse.OverrideCursor = null;
+		}
+
+
 	}
 }

@@ -44,7 +44,7 @@ namespace CvnetClient.ViewModels {
 			AppData.Http = http;
 			Debug.WriteLine($"ログインステータス＝{ret}");
 			if(ret == 0) {
-				MessageBox.Show("ログイン成功しました");
+				ClientLib.MessageBoxOk(this, "ログイン成功しました");
 				AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
 				var win = ClientLib.GetActiveView(this);
@@ -53,7 +53,7 @@ namespace CvnetClient.ViewModels {
 				Exit();
 			}
 			else {
-				MessageBox.Show("ログインできませんでした");
+				ClientLib.MessageBoxOk(this, "ログインできませんでした");
 			}
 		}
 		/// <summary>

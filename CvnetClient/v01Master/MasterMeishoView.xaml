@@ -25,6 +25,13 @@
 			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
 		</behaviors:EventTrigger>
 	</behaviors:Interaction.Triggers>
+	<Window.InputBindings>
+		<KeyBinding Key="F5" Command="{Binding DoListCommand}" />
+		<KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
+		<KeyBinding Key="F7" Command="{Binding DoDeleteCommand}" />
+		<KeyBinding Key="F8" Command="{Binding DoInsertCommand}" />
+		<KeyBinding Key="F9" Command="{Binding DoPrintCommand}" />
+	</Window.InputBindings>
 	<Grid Margin="4">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="380" />
@@ -192,7 +199,7 @@
 					Grid.Column="0"
 					Padding="4,2"
 					Background="#CFFFCF"
-					Content="略称" />
+					Content="{Binding LabelRyakusho}" />
 				<TextBox
 					Grid.Row="3"
 					Grid.Column="1"
@@ -203,7 +210,7 @@
 					Grid.Column="0"
 					Padding="4,2"
 					Background="#CFFFCF"
-					Content="ランク" />
+					Content="{Binding LabelDispFlg}" />
 				<TextBox
 					Grid.Row="4"
 					Grid.Column="1"
@@ -215,7 +222,7 @@
 					Grid.Column="0"
 					Padding="4,2"
 					Background="#CFFFCF"
-					Content="連番" />
+					Content="{Binding LabelRenban}" />
 				<TextBox
 					Grid.Row="5"
 					Grid.Column="1"
@@ -226,7 +233,7 @@
 					Grid.Column="0"
 					Padding="4,2"
 					Background="#CFFFCF"
-					Content="カナ" />
+					Content="{Binding LabelKana}" />
 				<TextBox Grid.Row="6" Grid.Column="1" />
 
 				<Label

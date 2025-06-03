@@ -2,6 +2,7 @@
  * CvnetClient.exe : MasterMeishoViewModel.cs
  * Created by Sekiya.Sato 2025/05/21
  * 説明: 名称マスター画面
+ *			SubDlg_01_mei.crsと互換
  * 使用ライブラリ
  *		CommunityToolkit.Mvvm : LICENCE = MIT
  * ============================================================================  */
@@ -10,6 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Views;
+using Newtonsoft.Json.Linq;
 using System;
 using System.CodeDom;
 using System.Collections;
@@ -30,15 +32,96 @@ namespace CvnetClient.ViewModels {
 		List<string>? listKubun;
 		[ObservableProperty]
 		string? selectKubun;
+		partial void OnSelectKubunChanged(string? value) {
+			// 区分が変わったらStartCodeを初期化
+			if (value != null) {
+				StartCode = string.Empty;
+			}
+			var kubun = SelectKubun?.Split(' ')[0].ToString() ?? " ";
+			if (kubun.StartsWith("IDX")) {
+				LabelRyakusho = "略称";
+				LabelDispFlg = "表示FLG";
+				LabelRenban = "連番";
+				LabelKana = "カナ";
+			}
+			else if (kubun.StartsWith("COL") || kubun.StartsWith("GTI")) {
+				LabelRyakusho = "略称";
+				LabelDispFlg = "表示色No";
+				LabelRenban = "連番";
+				LabelKana = "カナ";
+			}
+			else if (kubun.StartsWith("BRD")) {
+				LabelRyakusho = "略称";
+				LabelDispFlg = "JANﾒｰｶCD";
+				LabelRenban = "連番";
+				LabelKana = "ｻｲｽﾞ区分";
+			}
+			else if (kubun.StartsWith("ITM")) {
+				LabelRyakusho = "略称";
+				LabelDispFlg = "表示FLG";
+				LabelRenban = "連番";
+				LabelKana = "ｻｲｽﾞ区分";
+			}
+			else if (kubun.StartsWith("ZCL")) {
+				LabelRyakusho = "略称";
+				LabelDispFlg = "警告日数";
+				LabelRenban = "有効期限日数";
+				LabelKana = "カナ";
+			}
+			else if (kubun.StartsWith("ISS")) {
+				LabelRyakusho = "略称";
+				LabelDispFlg = "受取金額";
+				LabelRenban = "印紙金額";
+				LabelKana = "カナ";
+			}
+			else if (kubun.StartsWith("PRK")) {
+				LabelRyakusho = "しきい額(00円以上)";
+				LabelDispFlg = "ランク";
+				LabelRenban = "連番";
+				LabelKana = "カナ";
+			}
+			else if (kubun.StartsWith("PT1")) {
+				LabelRyakusho = "P付与倍率";
+				LabelDispFlg = "S付与倍率";
+				LabelRenban = "連番";
+			}
+			else if (kubun.StartsWith("RK1")) {
+				LabelRyakusho = "日from";
+				LabelDispFlg = "日to";
+				LabelRenban = "連番";
+				LabelKana = "カナ";
+			}
+			else if (kubun.StartsWith("RK2")) {
+				LabelRyakusho = "回数from";
+				LabelDispFlg = "回数to";
+				LabelRenban = "連番";
+				LabelKana = "カナ";
+			}
+			else if (kubun.StartsWith("RK3")) {
+				LabelRyakusho = "金額from";
+				LabelDispFlg = "金額to";
+				LabelRenban = "連番";
+				LabelKana = "カナ";
+			
+			}
+			else {
+				LabelRyakusho = "略称";
+				LabelDispFlg = "表示FLG";
+				LabelRenban = "連番";
+				LabelKana = "カナ";
+
+			}
+		}
+
 		[ObservableProperty]
 		string? startCode;
 		[ObservableProperty]
 		ObservableCollection<MasterMeisho>? listMeisho;
+		/// <summary>
+		/// 現在選択されているMeishoオブジェクト
+		/// </summary>
 		[ObservableProperty]
 		MasterMeisho? selectedMeisho;
-
-		[ObservableProperty]
-		MasterMeisho? editMeisho;
 		partial void OnSelectedMeishoChanged(MasterMeisho? value) {
 			// 選択行が変わったらEditMeishoにディープコピー
 			if (value != null)
@@ -46,6 +129,21 @@ namespace CvnetClient.ViewModels {
 			else
 				EditMeisho = null;
 		}
+		/// <summary>
+		/// 修正用の一時的なMeishoオブジェクト
+		/// </summary>
+		[ObservableProperty]
+		MasterMeisho? editMeisho;
+
+		[ObservableProperty]
+		string labelRyakusho ="略称"; // ラベルの初期値
+		[ObservableProperty]
+		string labelDispFlg = "表示FLG";
+		[ObservableProperty]
+		string labelRenban = "連番";
+		[ObservableProperty]
+		string labelKana = "カナ";
+
 
 		string sql_p3 = """
 				select * from(select A.SEQ_NO, A.VDATE_CREATE, A.VDATE_UPDATE, A.名称CD, A.名称, A.略称, A.ランク, A.連番, A.カナ, A.POS区分,
@@ -152,7 +250,7 @@ namespace CvnetClient.ViewModels {
 				SelectedMeisho = item;
 			}
 			else {
-				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+				ClientLib.MessageBoxError(this, ret.Code.ToString());
 			}
 		}
 		/// <summary>
@@ -183,7 +281,7 @@ namespace CvnetClient.ViewModels {
 				}
 			}
 			else {
-				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+				ClientLib.MessageBoxError(this, ret.Code.ToString());
 			}
 		}
 		/// <summary>
@@ -203,7 +301,7 @@ namespace CvnetClient.ViewModels {
 				}
 			}
 			else {
-				MessageBox.Show(ret.Code.ToString(), "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+				ClientLib.MessageBoxError(this, ret.Code.ToString());
 			}
 		}
 		string printsql = """
@@ -221,11 +319,12 @@ namespace CvnetClient.ViewModels {
 		[RelayCommand]
 		async Task DoPrintAsync() {
 			if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
+			ClientLib.CursorToWait();
 			if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
 			var cdlist = string.Join(",", ListMeisho.Select(c => $"'{c.MeishoCd}'"));
 			var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(printsql+ " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] {SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
 			if(ret.Split('\n').Length < 2) {
-				MessageBox.Show("PDFデータがありません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+				ClientLib.MessageBoxError(this, "PDFデータがありません");
 				return;
 			}
 			var ret1 = ret.Split('\n');
@@ -235,15 +334,17 @@ namespace CvnetClient.ViewModels {
 			var vm = win.DataContext as WebpdfViewModel;
 			if(vm == null) return;
 			vm.Pdfdata = url;
+			ClientLib.CursorToNormal();
 			ClientLib.ShowDialogView(win, this);
 		}
 		[RelayCommand]
 		async Task DoPrintAllAsync() {
 			if (!ClientLib.MessageBox(this, "全件印刷しますか？")) return;
+			ClientLib.CursorToWait();
 			if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
 			var ret = AppData.Http!.AspxSqlQueryCsv(printsql + " order by A.名称CD", new string[] { SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
 			if (ret.Split('\n').Length < 2) {
-				MessageBox.Show("PDFデータがありません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+				ClientLib.MessageBoxError(this, "PDFデータがありません");
 				return;
 			}
 			var ret1 = ret.Split('\n');
@@ -253,6 +354,7 @@ namespace CvnetClient.ViewModels {
 			var vm = win.DataContext as WebpdfViewModel;
 			if (vm == null) return;
 			vm.Pdfdata = url;
+			ClientLib.CursorToNormal();
 			ClientLib.ShowDialogView(win, this);
 		}
 	}
