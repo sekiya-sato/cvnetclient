@@ -62,7 +62,7 @@ namespace CvnetClient.ViewModels {
 			// 設定ファイル読み込み
 			BottomMessage = AppData.Url;
 			var isLogin = false;
-
+			debugPreLogin();
 			// ClickOnceかどうかの判定
 			if (Environment.GetEnvironmentVariable("ClickOnce_IsNetworkDeployed")?.ToLower() != "true") {
 				if (AppData.AppConfig["AutoLogin"] == "True") {
@@ -79,6 +79,7 @@ namespace CvnetClient.ViewModels {
 					BottomMessage += $" ログイン時間{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
 				}
 			}
+			debugPostLogin();
 		}
 		[RelayCommand]
 		void Exit() {
@@ -119,5 +120,24 @@ namespace CvnetClient.ViewModels {
 			}
 		}
 		#endregion
+		/// <summary>
+		/// ログイン処理の前にデバッグ用の処理を追加する
+		/// </summary>
+		void debugPreLogin() {
+		
+		}
+		/// <summary>
+		/// ログイン処理の後にデバッグ用の処理を追加する
+		/// </summary>
+		void debugPostLogin() {
+			/*
+			var view = new Views.MeishoSelectView();
+			var vm = view.DataContext as MeishoSelectViewModel;
+			vm.Init(MeishoSelectViewModel.SearchType.Meisho, "1", "COL");
+			if (vm != null) {
+				ClientLib.ShowDialogView(view, this);
+			}
+			*/
+		}
 	}
 }

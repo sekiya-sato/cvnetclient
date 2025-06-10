@@ -366,6 +366,8 @@ namespace CvnetClient.Models {
 						},
 						new MenuData{
 							Header="商品仕入入力",
+							ViewType = typeof(Views.ShiireInputView),
+							IsDialog = false,
 						},
 						new MenuData{
 							Header="仕入返品入力",
