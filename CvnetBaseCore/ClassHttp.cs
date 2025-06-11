@@ -300,10 +300,10 @@ namespace CvnetBaseCore {
 			string param = "";
 			int cnt = 0;
 			foreach (string k in v_vals.Keys) {
-				param += String.Format("{0}{1}={2}", ((cnt > 0) ? "&" : ""), k, v_vals[k]);
+				param += String.Format("{0}{1}={2}", ((cnt > 0) ? "&" : ""), k, System.Web.HttpUtility.UrlEncode(v_vals[k].ToString(), v_defaultEncode));
 				cnt++;
 			}
-			byte[] data = Encoding.GetEncoding("Shift_JIS").GetBytes(param);
+			byte[] data = v_defaultEncode.GetBytes(param);
 			// オレオレ証明対応
 			if (System.Net.ServicePointManager.ServerCertificateValidationCallback == null) {
 				System.Net.ServicePointManager.ServerCertificateValidationCallback +=
@@ -409,10 +409,10 @@ namespace CvnetBaseCore {
 			string param = "";
 			int cnt = 0;
 			foreach (string k in v_vals.Keys) {
-				param += String.Format("{0}{1}={2}", ((cnt > 0) ? "&" : ""), k, v_vals[k]);
+				param += String.Format("{0}{1}={2}", ((cnt > 0) ? "&" : ""), k, System.Web.HttpUtility.UrlEncode(v_vals[k].ToString(), v_defaultEncode));
 				cnt++;
 			}
-			byte[] data = Encoding.GetEncoding("Shift_JIS").GetBytes(param);
+			byte[] data = v_defaultEncode.GetBytes(param);
 			// オレオレ証明対応
 			if (System.Net.ServicePointManager.ServerCertificateValidationCallback == null) {
 				System.Net.ServicePointManager.ServerCertificateValidationCallback +=
@@ -651,6 +651,7 @@ namespace CvnetBaseCore {
 				}
 				vals["fm"] = p_form;
 				vals["pdf"] = "1";
+				vals["ps"] = "1";
 			}
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
@@ -678,6 +679,7 @@ namespace CvnetBaseCore {
 				}
 				vals["fm"] = p_form;
 				vals["pdf"] = "1";
+				vals["ps"] = "1";
 			}
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
@@ -713,6 +715,7 @@ namespace CvnetBaseCore {
 			}
 			vals["fm"] = p_form;
 			vals["pdf"] = "1";
+			vals["ps"] = "1";
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
 					string keyname = "p" + (i + 1).ToString();
@@ -746,6 +749,7 @@ namespace CvnetBaseCore {
 			}
 			vals["fm"] = p_form;
 			vals["pdf"] = "1";
+			vals["ps"] = "1";
 			if (p_param != null && p_param.Length > 0) {
 				for (int i = 0; i < p_param.Length; i++) {
 					string keyname = "p" + (i + 1).ToString();
