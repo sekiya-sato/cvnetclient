@@ -875,14 +875,6 @@ namespace CvnetBaseCore {
 			}
 			return HttpPost(aspxfile, vals);
 		}
-		/// <summary>
-		/// 最大取得件数(default1000)を制限したSQL文を返す
-		/// </summary>
-		/// <param name="sqlstr"></param>
-		/// <returns></returns>
-		public string GetSqlStringUsingMax(string sqlstr) {
-			return ("select * from (" + sqlstr + ") where rownum<=" + MaxCnt.ToString());
-		}
 #if false
 		private static bool ColumnEqual(object A, object B) {
 			if (A == DBNull.Value && B == DBNull.Value) //  both are DBNull.Value

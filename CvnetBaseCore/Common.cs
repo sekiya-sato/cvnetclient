@@ -179,6 +179,15 @@ namespace CvnetBaseCore {
 			var dst = JsonConvert.DeserializeObject<T>(jsonstr);
 			return dst ?? new T();
 		}
+		/// <summary>
+		/// 最大取得件数(default1000)を制限したSQL文を返す
+		/// </summary>
+		/// <param name="sqlstr"></param>
+		/// <param name="maxcnt"></param>
+		/// <returns></returns>
+		public static string GetSqlStringUsingMax(string sqlstr, int maxcnt) {
+			return ("select * from (" + sqlstr + ") where rownum<=" + maxcnt.ToString());
+		}
 
 
 	}

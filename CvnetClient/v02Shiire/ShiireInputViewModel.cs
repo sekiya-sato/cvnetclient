@@ -19,8 +19,18 @@ namespace CvnetClient.ViewModels {
 		[ObservableProperty] ObservableCollection<string>? torihikiKubunList = new() { "10 d“ü", "20 •Ô•i" };
 		[ObservableProperty] string? selectedTorihikiKubun;
 		[ObservableProperty] string? manualInputNo;
-		[ObservableProperty] string? shiireSakiCode;
-		[ObservableProperty] string? shiireSakiName;
+		[ObservableProperty] string? shiireCodeFrom;
+		[ObservableProperty] string? shiireNameFrom;
+		[ObservableProperty] string? shiireCodeTo = "999999";
+		[ObservableProperty] string? shiireNameTo;
+		[ObservableProperty] string? shohinCodeFrom;
+		[ObservableProperty] string? shohinNameFrom;
+		[ObservableProperty] string? shohinCodeTo = "zzzzzzz";
+		[ObservableProperty] string? shohinNameTo;
+		[ObservableProperty] string? tantoCodeFrom;
+		[ObservableProperty] string? tantoNameFrom;
+		[ObservableProperty] string? tantoCodeTo = "999999";
+		[ObservableProperty] string? tantoNameTo;
 		[ObservableProperty] bool isShuukei;
 		[ObservableProperty] bool isMishouninOnly = true;
 		[ObservableProperty] bool isAll;
@@ -35,8 +45,8 @@ namespace CvnetClient.ViewModels {
 		[ObservableProperty] bool isDetailMode;
 		[ObservableProperty] string statusMessage = "ƒŠƒXƒg‘I‘ğsƒf[ƒ^æ“¾";
 
-		string sqlstr = $"""
-			select * from (
+		string sqlstr =Common.GetSqlStringUsingMax(
+			$"""
 			select A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE,A.è“ü—Í“`•[NO,A.İŒÉŒvã“ú,A.Š|Œvã“ú,A.æˆø‹æ•ª,A.“ü—ÍĞˆõCD,A.‘qŒÉCD,
 			A.æˆøæCD1,A.Š|—¦1,A.ŠOÅ‘ÎÛ‹àŠz,A.”—Ê‡Œv,A.–¾×‹àŠz‡Œv,A.“àÅÁ”ïÅ,A.ŠOÅÁ”ïÅ,A.ã‘ã‡Œv,A.‰º‘ã‡Œv,A.ƒƒ‚,
 			A.Š|ŒvãFLG,A.“`•[ˆ—‹æ•ª,A.MOD_SEQ,A.ŠÖ˜A“`•[NO,A.ŠÖ˜A“`•[NO2,A.—ˆŠ¨FLG,A.İŒÉŒvãFLG,A.Á”ïÅ—¦,B.–¼‘O ’S“––¼,
@@ -47,8 +57,8 @@ namespace CvnetClient.ViewModels {
 			A.SEQ_NO between :1 and :2 and A.İŒÉŒvã“ú between :3 and :4 and A.æˆø‹æ•ª between :5 and :6 and 
 			A.ŠÖ˜A“`•[NO between :7 and :8 and A.ŠÖ˜A“`•[NO2 between :9 and :10 and A.æˆøæCD1 between :11 and :12 and 
 			A.‘qŒÉCD between :13 and :14 and A.è“ü—Í“`•[NO between :15 and :16 and A.“ü—ÍĞˆõCD between :17 and :18 and 
-			A.“`•[ˆ—‹æ•ª=3 ORDER BY A.SEQ_NO DESC) where rownum<={AppData.maxQueryCnt}
-			""";
+			A.“`•[ˆ—‹æ•ª=3 ORDER BY A.SEQ_NO DESC
+			""", AppData.maxQueryCnt);
 		/*
 		string sqlstr = $"""
 			select A.*,B.–¼‘O ’S“––¼
@@ -76,7 +86,7 @@ namespace CvnetClient.ViewModels {
 				"10","99", // æˆø‹æ•ª 10=d“ü,20=•Ô•i
 				"0", "9999999999", // ŠÖ˜A“`•[NO1
 				"0", "9999999999", // ŠÖ˜A“`•[NO2
-				ShiireSakiCode ?? "0", ShiireSakiCode ??"9999999999", // d“üæCD1
+				ShiireCodeFrom ?? "0", ShiireCodeTo ??"9999999999", // d“üæCD1
 				".","9999999999", // ‘qŒÉCD
 				ManualInputNo ?? ".", ManualInputNo ?? "9999999999", // è“ü—Í“`•[NO
 				".", ".9999999999", // “ü—ÍĞˆõCD
