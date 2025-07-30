@@ -115,7 +115,7 @@ namespace CvnetBaseCore {
 					continue;
 				pinfo.ForEach(p => {
 					if (p.PropertyType.ToString() == "System.String") {
-						var tmp_val = p.GetValue(item, null).ToString();
+						var tmp_val = p.GetValue(item, null)?.ToString();
 						if(string.IsNullOrEmpty(tmp_val)) return;
 						tmp_val = tmp_val.Trim();
 						if (tmp_val == ".") tmp_val = "";

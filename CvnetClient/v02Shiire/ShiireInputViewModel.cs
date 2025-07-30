@@ -23,6 +23,10 @@ namespace CvnetClient.ViewModels {
 		[ObservableProperty] string? shiireNameFrom;
 		[ObservableProperty] string? shiireCodeTo = "999999";
 		[ObservableProperty] string? shiireNameTo;
+		[ObservableProperty] string? sokoCodeFrom;
+		[ObservableProperty] string? sokoNameFrom;
+		[ObservableProperty] string? sokoCodeTo = "999999";
+		[ObservableProperty] string? sokoNameTo;
 		[ObservableProperty] string? shohinCodeFrom;
 		[ObservableProperty] string? shohinNameFrom;
 		[ObservableProperty] string? shohinCodeTo = "zzzzzzz";
@@ -45,7 +49,7 @@ namespace CvnetClient.ViewModels {
 		[ObservableProperty] bool isDetailMode;
 		[ObservableProperty] string statusMessage = "リスト選択行データ取得";
 
-		string sqlstr =Common.GetSqlStringUsingMax(
+		string sqlstr =
 			$"""
 			select A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE,A.手入力伝票NO,A.在庫計上日,A.掛計上日,A.取引区分,A.入力社員CD,A.倉庫CD,
 			A.取引先CD1,A.掛率1,A.外税対象金額,A.数量合計,A.明細金額合計,A.内税消費税,A.外税消費税,A.上代合計,A.下代合計,A.メモ,
@@ -57,19 +61,8 @@ namespace CvnetClient.ViewModels {
 			A.SEQ_NO between :1 and :2 and A.在庫計上日 between :3 and :4 and A.取引区分 between :5 and :6 and 
 			A.関連伝票NO between :7 and :8 and A.関連伝票NO2 between :9 and :10 and A.取引先CD1 between :11 and :12 and 
 			A.倉庫CD between :13 and :14 and A.手入力伝票NO between :15 and :16 and A.入力社員CD between :17 and :18 and 
-			A.伝票処理区分=3 ORDER BY A.SEQ_NO DESC
-			""", AppData.maxQueryCnt);
-		/*
-		string sqlstr = $"""
-			select A.*,B.名前 担当名
-			from HC$Tran_TORI0 A,HC$MASTER_SHAIN B
-			where 
-			(A.入力社員CD=B.社員CD(+)) and
-			A.SEQ_NO between :1 and :2 and A.在庫計上日 between :3 and :4 and 
-			A.伝票処理区分=3 ORDER BY A.SEQ_NO DESC
+			A.伝票処理区分=3 __SUBSQL__ ORDER BY A.SEQ_NO DESC
 			""";
-		*/
-
 
 		/// 一覧表示
 		/// </summary>
@@ -87,11 +80,19 @@ namespace CvnetClient.ViewModels {
 				"0", "9999999999", // 関連伝票NO1
 				"0", "9999999999", // 関連伝票NO2
 				ShiireCodeFrom ?? "0", ShiireCodeTo ??"9999999999", // 仕入先CD1
-				".","9999999999", // 倉庫CD
+				SokoCodeFrom ?? "0", SokoCodeTo ??"9999999999", // 倉庫CD
 				ManualInputNo ?? ".", ManualInputNo ?? "9999999999", // 手入力伝票NO
 				".", ".9999999999", // 入力社員CD
 				};
-			var retData = AppData.Http?.AspxSqlQuery(sqlstr, para);
+			var subsql = "";
+			if(ShohinCodeFrom != null && ShohinCodeFrom!="." && ShohinCodeTo != null && ShohinCodeTo != "zzzzzzz") {
+				subsql = string.Format(
+					" and EXISTS (SELECT 'X' FROM HC$TRAN_TORI1 E WHERE A.SEQ_NO=E.ヘッダNO AND E.商品CD BETWEEN '{0}' AND '{1}')"
+					, ShohinCodeFrom, ShohinCodeTo);
+			}
+			var sql = sqlstr.Replace("__SUBSQL__", subsql);
+			sql = Common.GetSqlStringUsingMax(sql, AppData.maxQueryCnt);
+			var retData = AppData.Http?.AspxSqlQuery(sql, para);
 
 			if (retData == null || retData.Rows.Count == 0) return;
 			var list = (from DataRow dr in retData.Rows
@@ -142,6 +143,34 @@ namespace CvnetClient.ViewModels {
 			// ここで詳細画面にデータをセットする処理を追加する
 			// 例: LoadShiireDetails(current);
 		}
+		[RelayCommand]
+		void SelectShiireFrom() {
+			var view = new Views.MeishoSelectView();
+			var vm = view.DataContext as MeishoSelectViewModel;
+			if (vm == null) return;
+			vm.Init(MeishoSelectViewModel.SearchType.Shiire, ShiireCodeFrom??".");
+			if (ClientLib.ShowDialogView(view, this) == true) {
+				if(vm.SelectedItem!= null) {
+					ShiireCodeFrom = vm.SelectedItem.MeishoCd;
+					ShiireNameFrom = vm.SelectedItem.Meisho;
+				}
+			}
+		}
+		[RelayCommand]
+		void SelectShiireTo() {
+			var view = new Views.MeishoSelectView();
+			var vm = view.DataContext as MeishoSelectViewModel;
+			if (vm == null) return;
+			vm.Init(MeishoSelectViewModel.SearchType.Shiire, ShiireCodeTo ?? ".");
+			if (ClientLib.ShowDialogView(view, this) == true) {
+				if (vm.SelectedItem != null) {
+					ShiireCodeTo = vm.SelectedItem.MeishoCd;
+					ShiireNameTo = vm.SelectedItem.Meisho;
+				}
+			}
+		}
+
+
 
 	}
 

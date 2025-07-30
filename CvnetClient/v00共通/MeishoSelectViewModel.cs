@@ -43,16 +43,14 @@ namespace CvnetClient.ViewModels {
 			if (string.IsNullOrWhiteSpace(SearchText)) {
 				SearchText = ".";
 			}
-			if (SearchTp == SearchType.Meisho) {
-				var dt = AppData.Http?.AspxSqlQuery(sqlStr, new string[] { SearchText });
-				if (dt != null && dt.Rows.Count > 0) {
-					List = new ObservableCollection<MasterMeisho>(dt.Rows.Cast<DataRow>().Select(row => new MasterMeisho {
-						MeishoCd = row.Field<string>("名称CD"),
-						Meisho = row.Field<string>("名称"),
-						RyakuShou = row.Field<string>("略称")
-					}));
-					SelectedItem = List.FirstOrDefault();
-				}
+			var dt = AppData.Http?.AspxSqlQuery(sqlStr, new string[] { SearchText });
+			if (dt != null && dt.Rows.Count > 0) {
+				List = new ObservableCollection<MasterMeisho>(dt.Rows.Cast<DataRow>().Select(row => new MasterMeisho {
+					MeishoCd = row.Field<string>("名称CD"),
+					Meisho = row.Field<string>("名称"),
+					RyakuShou = row.Field<string>("略称")
+				}));
+				SelectedItem = List.FirstOrDefault();
 			}
 		}
 

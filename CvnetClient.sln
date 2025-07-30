@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertText", "ConvertText\ConvertText.csproj", "{D7082626-F426-40BB-8F50-6E00FD85E72B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4F26CA24-F040-464C-9F1B-CA658E0BC198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F26CA24-F040-464C-9F1B-CA658E0BC198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F26CA24-F040-464C-9F1B-CA658E0BC198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7082626-F426-40BB-8F50-6E00FD85E72B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7082626-F426-40BB-8F50-6E00FD85E72B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7082626-F426-40BB-8F50-6E00FD85E72B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7082626-F426-40BB-8F50-6E00FD85E72B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
