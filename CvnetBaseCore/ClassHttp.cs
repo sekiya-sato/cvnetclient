@@ -638,7 +638,7 @@ namespace CvnetBaseCore {
 		/// <param name="p_form">PrintStreamフォーム名(ex. nouhin.qfm)</param>
 		/// <param name="AspxUserFlg">UserFlg</param>
 		/// <returns></returns>
-		public DataTable AspxSqlQuery(string sqlstr_cmd, string[] p_param, string p_form = null, int AspxUserFlg = -1) {
+		public DataTable AspxSqlQuery(string sqlstr_cmd, string[] p_param = null, string p_form = null, int AspxUserFlg = -1) {
 			Hashtable vals = new Hashtable();
 			vals.Add("rd", v_randid);
 			vals.Add("qs", sqlstr_cmd);

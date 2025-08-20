@@ -571,7 +571,7 @@
 						<TextBox
 							Grid.Column="1"
 							Margin="2"
-							Text="{Binding ShiireSaki}" />
+							Text="{Binding EditShiireSaki}" />
 						<Button
 							Grid.Column="2"
 							Width="30"

@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertText", "ConvertText\ConvertText.csproj", "{D7082626-F426-40BB-8F50-6E00FD85E72B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassSatoo", "ClassSatoo\ClassSatoo.csproj", "{522A16B1-9245-4B67-8385-7546E10854E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D7082626-F426-40BB-8F50-6E00FD85E72B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7082626-F426-40BB-8F50-6E00FD85E72B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7082626-F426-40BB-8F50-6E00FD85E72B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{522A16B1-9245-4B67-8385-7546E10854E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{522A16B1-9245-4B67-8385-7546E10854E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{522A16B1-9245-4B67-8385-7546E10854E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{522A16B1-9245-4B67-8385-7546E10854E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

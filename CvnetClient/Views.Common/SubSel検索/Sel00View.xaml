@@ -1,0 +1,89 @@
+﻿<Window x:Class="CvnetClient.Views.Sel00View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels" 
+		Title="選択画面"
+		Height="450" 
+		Width="480"
+		FontFamily="Meiryo UI"
+		mc:Ignorable="d" >
+	<Window.DataContext>
+		<vm:Sel00ViewModel />
+	</Window.DataContext>
+	<behaviors:Interaction.Triggers>
+		<behaviors:EventTrigger EventName="ContentRendered">
+			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+		</behaviors:EventTrigger>
+	</behaviors:Interaction.Triggers>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="*"  />
+			<ColumnDefinition Width="10" />
+		</Grid.ColumnDefinitions>
+
+		<DataGrid Grid.Row="0" Grid.Column="1"
+				  d:ItemsSource="{d:SampleData ItemCount= 5}"
+				  IsReadOnly="True" 
+				  HeadersVisibility="Column"
+				  IsSynchronizedWithCurrentItem="True"
+				  ItemsSource="{Binding ListSel00}"
+				  SelectedItem="{Binding SelectSel00}"
+				  SelectionMode="Single">
+			<DataGrid.ColumnHeaderStyle>
+				<Style TargetType="DataGridColumnHeader">
+					<Setter Property="Background" Value="Black" />
+					<Setter Property="BorderBrush" Value="White" />
+					<Setter Property="BorderThickness" Value="1" />
+					<Setter Property="Foreground" Value="white" />
+				</Style>
+			</DataGrid.ColumnHeaderStyle>
+			<DataGrid.Columns>
+				<DataGridTextColumn Width="150"
+									Binding="{Binding code}"
+									Header=" ｺｰﾄ" />
+				<DataGridTextColumn Width="200"
+									Binding="{Binding name}"
+									Header=" 名称" />
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<StackPanel Grid.Row="1" Grid.Column="1" 
+					Orientation="Horizontal" 
+					Margin="0, 5, 0, 0">
+			<Button Width="40" 
+					Command="{Binding NextListCommand}"
+					Content="&gt;&gt;" 
+					Margin="0,0,5,0"/>
+			<Button Width="40" 
+					Command="{Binding TopListCommand}"
+					Content="Top"
+					Margin="0,0,5,0"/>
+			<TextBox Width="100"
+					 Text="{Binding Textmeisho}"
+				     Background="#F7FFDF" 
+					 Margin="0,0,5,0"/>
+			<Button Width="80" 
+					Command="{Binding NameSearchCommand}"
+					Content="名称検索" 
+					Margin="0,0,5,0"/>
+			<Button Width="100" 
+					Command="{Binding DoSearchCommand}"
+					Content="選択実行 (Enter)" 
+					Margin="0,0,5,0"/>
+			<Button Width="80" 
+					Command="{Binding DoSearchCommand}"
+					Content="戻る (ESC)" />
+		</StackPanel>
+		
+	</Grid>
+</Window>

@@ -12,6 +12,18 @@
 
   <ItemGroup>
     <None Remove="cvnet.ico" />
+    <None Remove="Images\button_icon\add_icon.png" />
+    <None Remove="Images\button_icon\back_icon.png" />
+    <None Remove="Images\button_icon\calendar_icon.png" />
+    <None Remove="Images\button_icon\clear_button.png" />
+    <None Remove="Images\button_icon\delete_icon.png" />
+    <None Remove="Images\button_icon\enter_icon.png" />
+    <None Remove="Images\button_icon\json_icon.png" />
+    <None Remove="Images\button_icon\next_icon.png" />
+    <None Remove="Images\button_icon\printer_icon.png" />
+    <None Remove="Images\button_icon\refresh_icon.png" />
+    <None Remove="Images\button_icon\search_icon.png" />
+    <None Remove="Images\button_icon\update_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,18 +34,38 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.5" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3240.44" />
+    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3405.78" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CvnetBaseCore\CvnetBaseCore.csproj" />
+    <Reference Include="ClassSatoo">
+      <HintPath>..\ClassSatoo\bin\Debug\net9.0\ClassSatoo.dll</HintPath>
+    </Reference>
+    <Reference Include="CvnetBaseCore">
+      <HintPath>..\CvnetBaseCore\bin\Debug\net9.0\CvnetBaseCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="cvnet.ico" />
+    <Resource Include="Images\button_icon\add_icon.png" />
+    <Resource Include="Images\button_icon\back_icon.png" />
+    <Resource Include="Images\button_icon\calendar_icon.png" />
+    <Resource Include="Images\button_icon\clear_button.png" />
+    <Resource Include="Images\button_icon\delete_icon.png" />
+    <Resource Include="Images\button_icon\enter_icon.png" />
+    <Resource Include="Images\button_icon\json_icon.png" />
+    <Resource Include="Images\button_icon\next_icon.png" />
+    <Resource Include="Images\button_icon\printer_icon.png" />
+    <Resource Include="Images\button_icon\refresh_icon.png" />
+    <Resource Include="Images\button_icon\search_icon.png" />
+    <Resource Include="Images\button_icon\update_icon.png" />
   </ItemGroup>
 
   <ItemGroup>

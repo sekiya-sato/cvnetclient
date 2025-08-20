@@ -19,6 +19,6 @@ namespace CvnetClient.Views {
 	public partial class MasterMeishoView : Window {
 		public MasterMeishoView() {
 			InitializeComponent();
-		}
-	}
+		} 
+    }
 }

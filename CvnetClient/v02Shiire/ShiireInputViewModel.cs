@@ -6,7 +6,6 @@ using Microsoft.Xaml.Behaviors;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Diagnostics;
 
 namespace CvnetClient.ViewModels {
 	public partial class ShiireInputViewModel : ObservableObject {
@@ -49,8 +48,6 @@ namespace CvnetClient.ViewModels {
 		[ObservableProperty] bool isListMode = true;
 		[ObservableProperty] bool isDetailMode;
 		[ObservableProperty] string statusMessage = "リスト選択行データ取得";
-
-		DataTable? RawList; // 生データ
 
 		string sqlstr =
 			$"""
@@ -98,7 +95,6 @@ namespace CvnetClient.ViewModels {
 			var retData = AppData.Http?.AspxSqlQuery(sql, para);
 
 			if (retData == null || retData.Rows.Count == 0) return;
-			RawList = retData;
 			var list = (from DataRow dr in retData.Rows
 						select new ShiireRow {
 							DenpyoNo = dr["SEQ_NO"].ToString(),
@@ -124,19 +120,13 @@ namespace CvnetClient.ViewModels {
 		void OpenSearch() {
 			/* 実装 */
 		}
-		[RelayCommand] void Edit() {
-			/* 実装 */
-			SelectedTabIndex = 1; // 詳細タブに切り替え
-			StatusMessage = "選択行データ取得";
-
-
-
-		}
+		[RelayCommand] void OpenEdit() { /* 実装 */ }
 		[RelayCommand] void SelectShiireSaki() { /* 実装 */ }
 		[RelayCommand] void Search() { /* 実装 */ }
 		[RelayCommand] void UpdateSelectedFlag() { /* 実装 */ }
 		[RelayCommand] void Print() { /* 実装 */ }
 		[RelayCommand] void ExportCsv() { /* 実装 */ }
+		[RelayCommand] void Edit() { /* 実装 */ }
 		[RelayCommand] void Delete() { /* 実装 */ }
 		[RelayCommand]
 		void Close() {

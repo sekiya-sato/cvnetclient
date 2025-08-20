@@ -12,13 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views {
-	/// <summary>
-	/// Window1.xaml の相互作用ロジック
-	/// </summary>
-	public partial class ShiireInputView : Window {
-		public ShiireInputView() {
-			InitializeComponent();
-		} 
+namespace CvnetClient.Views
+{
+    /// <summary>
+    /// Interaction logic for MasterShohinView.xaml
+    /// </summary>
+    public partial class MasterShohinView : Window
+    {
+        public MasterShohinView()
+        {
+            InitializeComponent();
+        }
     }
 }

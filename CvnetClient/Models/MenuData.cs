@@ -56,8 +56,10 @@ namespace CvnetClient.Models {
 							Header="仕入先マスタメンテ",
 							IsDialog = false,
 						},
-							new MenuData{
+						new MenuData{
 							Header="商品マスタ(新規登録) / (照会・修正）",
+							ViewType = typeof(Views.MasterShohinView),
+							IsDialog = false,
 						},
 							new MenuData{
 							Header="商品マスタ絵型更新",

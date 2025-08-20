@@ -41,4 +41,13 @@ namespace CvnetClient.Models {
 		[ObservableProperty]
 		string? saishuuShuuseiSha;
 	}
+	public partial class MasterShohin : ObservableObject
+	{
+        [ObservableProperty]
+        long seqNo;
+        [ObservableProperty]
+        decimal vdateCreate;
+        [ObservableProperty]
+        decimal vdateUpdate; 
+    }
 }

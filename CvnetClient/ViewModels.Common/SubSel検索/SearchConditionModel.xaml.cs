@@ -10,15 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views {
-	/// <summary>
-	/// Window1.xaml の相互作用ロジック
-	/// </summary>
-	public partial class ShiireInputView : Window {
-		public ShiireInputView() {
-			InitializeComponent();
-		} 
+namespace CvnetClient.ViewModels.Common.SubSel検索
+{
+    /// <summary>
+    /// Interaction logic for SearchConditionModel.xaml
+    /// </summary>
+    public partial class SearchConditionModel : UserControl
+    {
+        public SearchConditionModel()
+        {
+            InitializeComponent();
+        }
     }
 }

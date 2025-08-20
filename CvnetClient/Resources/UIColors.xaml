@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<!--Font Colors-->
+	<SolidColorBrush x:Key="TitleColor" Color="White"/>
+	<SolidColorBrush x:Key="SubTitleColor" Color="White"/>
+	<SolidColorBrush x:Key="TitleLabelColor" Color="White" />
+	<SolidColorBrush x:Key="plainTextColor0" Color="White" />
+</ResourceDictionary>

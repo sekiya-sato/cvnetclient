@@ -30,7 +30,7 @@ namespace CvnetClient.Models {
 		public static int maxQueryCnt { get; set; } = 40;
 		public static int maxPrintCnt { get; set; } = 110;
 		public static DataTable MasterSysKanri { get; set; } = new DataTable();
-		public static DataTable MasterSysTax { get; set; } = new DataTable();
+		public static DataTable MasterSysTax { get; set; } = new DataTable(); 
 
 		static AppData() {
 			var settingfile = "appsettings.json";
