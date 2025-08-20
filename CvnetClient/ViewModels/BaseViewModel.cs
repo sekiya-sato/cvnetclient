@@ -16,6 +16,7 @@ namespace CvnetClient.ViewModels {
 		/// </summary>
 		[RelayCommand]
 		void Exit() {
+			//
 			ClientLib.Exit(this);
 		}
 	}
