@@ -12,7 +12,7 @@
 		Background="#D6D6FF"
 		FontFamily="Meiryo UI"
 		Width="1440"
-		Height="1240"
+		Height="1000"
 		WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<utils:VdateConverter x:Key="VdateConverter" />
@@ -74,12 +74,12 @@
 									Background="#7E82FC">
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="商品CD" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -87,12 +87,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0" 
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="ﾒｰｶｰ品番" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -103,12 +103,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 											Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="商品名" />
-								<TextBox Height="40" Width="495"
+								<TextBox Height="30" Width="495"
 											 Margin="5,0,0,0" 
 											 HorizontalAlignment="Left"
 											 VerticalAlignment="Top"
@@ -119,12 +119,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="略称" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -132,12 +132,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="絵型名1" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -148,12 +148,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="旧コード" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -161,12 +161,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" /> 
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="絵型名2" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 IsEnabled="False"
 										 HorizontalAlignment="Left"
@@ -178,12 +178,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="JAN連番" />
-								<TextBox Height="40" Width="150"
+								<TextBox Height="30" Width="150"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -191,7 +191,7 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<TextBox Height="40" Width="150"
+								<TextBox Height="30" Width="150"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -202,12 +202,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="年度" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -215,12 +215,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="製品番号" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -231,12 +231,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="ブランド" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -244,12 +244,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="アイテム" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -260,12 +260,12 @@
 							</StackPanel> 
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="シーズン" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -273,12 +273,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="素材" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -289,12 +289,12 @@
 							</StackPanel> 
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="ﾃﾞｻﾞｲﾅｰ" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -302,12 +302,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85"
+								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="原産国" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -318,12 +318,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="展示会" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -331,12 +331,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="メーカー" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -347,12 +347,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足1" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -360,12 +360,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足2" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -376,12 +376,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足3" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -389,12 +389,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足4" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -405,12 +405,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足5" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -418,12 +418,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足6" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -434,12 +434,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足7" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -447,12 +447,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足8" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -463,12 +463,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足9" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -476,12 +476,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="40" Width="85" 
+								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足10" />
-								<TextBox Height="40" Width="300"
+								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -492,12 +492,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="元上代" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -505,12 +505,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="上代" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -518,12 +518,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="加工工賃" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -534,12 +534,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalAlignment="Top"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="仕入価格" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -547,12 +547,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="原価" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -560,12 +560,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="営業原価" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -576,12 +576,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="外貨仕入価格" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -589,24 +589,24 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="在庫管理" />
-								<ComboBox Width="200" Height="40"
+								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="セール区分" />
-								<ComboBox Width="200" Height="40"
+								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center" 
@@ -616,24 +616,24 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="売上基準自動補充" />
-								<ComboBox Width="200" Height="40"
+								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value" 
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Button Height="40" Width="85"  
+								<Button Height="30" Width="85"  
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="基準倉庫CD" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -641,12 +641,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="納品区分" />
-								<ComboBox Width="200" Height="40"
+								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -656,36 +656,36 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="EC連携" />
-								<ComboBox Width="200" Height="40"
+								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="EC取置" />
-								<ComboBox Width="200" Height="40"
+								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="仕入区分" />
-								<ComboBox Width="200" Height="40"
+								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"  
@@ -695,24 +695,24 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化計算" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化掛率" />
-								<TextBox Height="40" Width="150"
+								<TextBox Height="30" Width="150"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -720,24 +720,24 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化桁切" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化端数" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -747,48 +747,48 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="POS送信区分" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value" 
 										  SelectedValuePath="Key" 
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="代表品番FLG" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="商品区分FLG" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="軽減税率" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
@@ -798,7 +798,7 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
@@ -808,7 +808,7 @@
 											Style="{StaticResource DatePickerStyle}"
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center" />
-								<Label Height="40" Width="85" 
+								<Label Height="30" Width="85" 
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
@@ -818,12 +818,12 @@
 											Style="{StaticResource DatePickerStyle}"
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="ｻｲｽﾞ表示" />
-								<ComboBox Width="150" Height="40"
+								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -831,12 +831,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="作成日" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -844,12 +844,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="修正日" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -857,12 +857,12 @@
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="40" Width="85"
+								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="最終修正者" />
-								<TextBox Height="40" Width="200"
+								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
@@ -873,32 +873,32 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-								<Button Height="40" Width="120"
+								<Button Height="30" Width="120"
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="品質表示(S+F10)" />
-								<Button Height="40" Width="120"
+								<Button Height="30" Width="120"
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="原価枝番(S+F11)" />
-								<Button Height="40" Width="120" 
+								<Button Height="30" Width="120" 
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="色サイズ展開(S+F12)" />
-								<Button Height="40" Width="120" 
+								<Button Height="30" Width="120" 
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="発注入力" />
-								<Button Height="40" Width="120"
+								<Button Height="30" Width="120"
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
 										Content="仕入入力" />
-								<Button Height="40" Width="120"  
+								<Button Height="30" Width="120"  
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
@@ -917,7 +917,7 @@
 									BorderThickness="1">
 								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
-									<Button Height="40"   
+									<Button Height="30"   
 											VerticalAlignment="Bottom"
 											Foreground="{StaticResource TitleLabelColor}"
 											Content="Upload..." />
@@ -932,7 +932,7 @@
 									BorderThickness="1">
 								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
-									<Button Height="40"   
+									<Button Height="30"   
 											VerticalAlignment="Bottom"
 											Foreground="{StaticResource TitleLabelColor}"
 											Content="Upload..." />
@@ -948,7 +948,7 @@
 								Background="#7E82FC">
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
@@ -958,7 +958,7 @@
 										Style="{StaticResource DatePickerStyle}"
 										HorizontalAlignment="Center" 
 										VerticalAlignment="Center" />
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
@@ -968,7 +968,7 @@
 										Style="{StaticResource DatePickerStyle}"
 										HorizontalAlignment="Center" 
 										VerticalAlignment="Center" />
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
@@ -981,7 +981,7 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
@@ -991,7 +991,7 @@
 									Style="{StaticResource DatePickerStyle}"
 									HorizontalAlignment="Center" 
 									VerticalAlignment="Center" />
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
@@ -1004,12 +1004,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備01" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1017,12 +1017,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備02" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1033,12 +1033,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備03" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1046,12 +1046,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備04" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1062,12 +1062,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備05" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1075,12 +1075,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備06" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1091,12 +1091,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備07" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1104,12 +1104,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備08" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1120,12 +1120,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備09" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1133,12 +1133,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備10" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1149,12 +1149,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備11" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1162,12 +1162,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備12" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1178,12 +1178,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備13" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1191,12 +1191,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備14" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1207,12 +1207,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備15" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1220,12 +1220,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備16" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1236,12 +1236,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備17" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1249,12 +1249,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備18" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1265,12 +1265,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備19" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1278,12 +1278,12 @@
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
 									 TextWrapping="Wrap" />
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備20" />
-							<TextBox Height="40" Width="300"
+							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1294,12 +1294,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
 								   Content="メモ" />
-							<TextBox Height="40" Width="700"
+							<TextBox Height="30" Width="700"
 								 Margin="5,0,0,0"
 								 HorizontalAlignment="Left"
 								 VerticalAlignment="Top"
@@ -1310,24 +1310,24 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
 								   Content="ゼロ単価区分" />
-							<ComboBox Width="200" Height="40"
+							<ComboBox Width="200" Height="30"
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center" 
 									  DisplayMemberPath="Value" 
 									  SelectedValuePath="Key" 
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<Button Height="40" Width="85"  
+							<Button Height="30" Width="85"  
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="男女区分" />
-							<TextBox Height="40" Width="200"
+							<TextBox Height="30" Width="200"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1338,36 +1338,36 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
 								   Content="消費税計算方法" />
-							<ComboBox Width="200" Height="40"
+							<ComboBox Width="200" Height="30"
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center"
 									  DisplayMemberPath="Value"
 									  SelectedValuePath="Key"
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<Label Height="40" Width="85"
+							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
 								   Foreground="{StaticResource TitleLabelColor}"
 								   Content="下札サイズ" />
-							<ComboBox Width="200" Height="40"
+							<ComboBox Width="200" Height="30"
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center" 
 									  DisplayMemberPath="Value" 
 									  SelectedValuePath="Key" 
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
 									Foreground="{StaticResource TitleLabelColor}" 
 									Content="洗濯表示" />
-							<TextBox Height="40" Width="200"
+							<TextBox Height="30" Width="200"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
@@ -1378,7 +1378,7 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="40" Width="85"
+							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
 									Foreground="{StaticResource TitleLabelColor}" 

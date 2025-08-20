@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
 using System.Collections.ObjectModel;
@@ -13,6 +14,12 @@ namespace CvnetClient.ViewModels
         { 
         
         }
+
+        [ObservableProperty]
+        ObservableCollection<MasterShohin>? listShohin;
+
+        [ObservableProperty]
+        MasterShohin? selectedShohin;
 
         string sql_collist = """
                商品CD,商品名,略称,旧コード,展示会CD,ブランドCD,アイテムCD,シーズンCD,素材CD,
@@ -80,6 +87,42 @@ namespace CvnetClient.ViewModels
             WHERE A.商品CD{0}:1
             ORDER BY A.商品CD {1}
             ) WHERE ROWNUM<={2}
-            """; 
+            """;
+
+        /// <summary>
+		/// 一覧表示
+		/// </summary>
+        void subList(string startCd, string sql_P1, string sql_P2, int sql_P3)
+        { 
+            var sql = string.Format(sql_query, sql_P1, sql_P2, sql_P3);
+            var retData = AppData.Http?.AspxSqlQuery(sql, new string[] { startCd });
+            if (retData == null || retData.Rows.Count == 0) return;
+            var list = (from DataRow dr in retData.Rows
+                        select new MasterShohin
+                        {
+                            SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
+                            VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
+                            VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"]),
+                            ProductCD = dr["商品CD"].ToString() ?? string.Empty,
+                            ProductName = dr["商品名"].ToString() ?? string.Empty,
+                            Abbreviation = dr["略称"].ToString() ?? string.Empty,
+                            OldCode = dr["旧コード"].ToString() ?? string.Empty,
+                            ExhibitCD = dr["展示会CD"].ToString() ?? string.Empty,
+                            BrandCD = dr["ブランドCD"].ToString() ?? string.Empty,
+                            ItemCD = dr["アイテムCD"].ToString() ?? string.Empty,
+                            SeasonCD = dr["シーズンCD"].ToString() ?? string.Empty,
+                            MaterialCD = dr["素材CD"].ToString() ?? string.Empty,
+                            DesignCD = dr["デザイナーCD"].ToString() ?? string.Empty,
+                            ManufactCD = dr["メーカーCD"].ToString() ?? string.Empty,
+                            MadeInCD = dr["原産国CD"].ToString() ?? string.Empty,
+
+                        }).OrderBy(c => c.ProductCD).ToList();
+            Common.ConvertDotStringDel(list);
+            ListShohin = new ObservableCollection<MasterShohin>(list);
+            if (ListShohin.Count > 0)
+            {
+                SelectedShohin = ListShohin[0];
+            }
+        }
     }
 }
