@@ -13,7 +13,7 @@ namespace CvnetClient.Models
     public partial class Sel00Model : ObservableObject
     {
         [ObservableProperty]
-        long code;
+        string? code;
         [ObservableProperty]
         string? name;
     }

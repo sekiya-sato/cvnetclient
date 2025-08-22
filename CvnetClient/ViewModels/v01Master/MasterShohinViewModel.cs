@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input; 
+using CommunityToolkit.Mvvm.Input;
+using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Views;
 using System.Collections.ObjectModel;
@@ -11,8 +12,10 @@ namespace CvnetClient.ViewModels
     {
         [RelayCommand]
         void Init()
-        { 
-            
+        {
+            EditProduct = new MasterShohin();
+            InvMngmentList = cvnet.ComboItem_00<int>("する");
+            EditProduct.InvMngmentFLG = InvMngmentList.FirstOrDefault().Key;
         }
 
         [ObservableProperty]
@@ -245,11 +248,19 @@ namespace CvnetClient.ViewModels
             }
         }
 
-        #region
+        #region Combobox List
+        /// <summary>
+        /// 在庫管理 List
+        /// </summary>
+        [ObservableProperty]
+        public Dictionary<int, string>? m_InvMngmentList;
+        #endregion
+
+        #region Dialog Search
         [RelayCommand]
         public void SelBrand()
-        {  
-
+        {
+           var get_sel00 = GetSel00("ブランド");
         }
         private Sel00ViewModel GetSel00(string mstname)
         { 

@@ -39,7 +39,7 @@ namespace CvnetClient.ViewModels
             {
                 var model = new Sel00Model
                 {
-                    Code = row[0] != DBNull.Value ? Convert.ToInt64(row[0]) : 0,
+                    Code = row[0] != DBNull.Value ? row[0].ToString() : string.Empty,
                     Name = row[1] != DBNull.Value ? row[1].ToString() : string.Empty
                 };
                 ListSel00.Add(model);

@@ -246,6 +246,7 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
+										Command="{Binding SelBrandCommand}"
 										Content="ブランド" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -742,8 +743,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding InvMngmentList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.InvMngmentFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
