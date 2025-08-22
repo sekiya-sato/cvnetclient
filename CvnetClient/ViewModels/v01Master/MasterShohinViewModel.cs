@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
+using CommunityToolkit.Mvvm.Input; 
 using CvnetClient.Models;
+using CvnetClient.Views;
 using System.Collections.ObjectModel;
 using System.Data; 
 
@@ -12,27 +12,31 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void Init()
         { 
-        
+            
         }
 
         [ObservableProperty]
-        ObservableCollection<MasterShohin>? listShohin;
+        ObservableCollection<MasterShohin>? listProduct;
+
+        /// <summary>
+		/// 修正用の一時的なProductオブジェクト
+		/// </summary>
+		[ObservableProperty]
+        MasterShohin? editProduct;
 
         [ObservableProperty]
-        MasterShohin? selectedShohin;
+        MasterShohin? selectedProduct;
 
         string sql_collist = """
-               商品CD,商品名,略称,旧コード,展示会CD,ブランドCD,アイテムCD,シーズンCD,素材CD,
-               デザイナーCD,メーカーCD,原産国CD,
-               元上代,上代,売変日,原価,営業原価,加工工賃,デリバリー日,納品日,店頭投入日,
-               JANコード1,JANコード2,JANコード3,洗濯表示,絵型名,メモ,消費税計算方法,在庫管理FLG,消費税CD,
+               商品CD,商品名,略称,旧コード,展示会CD,ブランドCD,アイテムCD,シーズンCD,素材CD,デザイナーCD,
+               メーカーCD,原産国CD,元上代,上代,売変日,原価,営業原価,加工工賃,デリバリー日,納品日,
+               店頭投入日,JANコード1,JANコード2,JANコード3,洗濯表示,絵型名,メモ,消費税計算方法,在庫管理FLG,消費税CD, 
                名称CD01,名称CD02,名称CD03,名称CD04,名称CD05,名称CD06,名称CD07,名称CD08,名称CD09,名称CD10,
                自動配分FLG,販売期限,商品区分FLG,商品サイズ区分,基準倉庫CD,ゼロ単価区分,JAN先頭桁,POS区分,
                予備01,予備02,予備03,予備04,予備05,予備06,予備07,予備08,予備09,予備10,
                予備11,予備12,予備13,予備14,予備15,予備16,予備17,予備18,予備19,予備20,
-               仕入区分,消化桁切指定,消化端数区分,消化計算区分,消化掛率,男女区分,コラボ出力区分,
-               代表品番FLG, セール区分,リピート日,メーカー品番,
-               仕入価格,納品区分,絵型名2,販売開始日,外貨単価,EC連携,EC取置
+               仕入区分,消化桁切指定,消化端数区分,消化計算区分,消化掛率,男女区分,コラボ出力区分,代表品番FLG, セール区分,リピート日,
+               メーカー品番,仕入価格,納品区分,絵型名2,販売開始日,外貨単価,EC連携,EC取置
         """;
 
         string sql_query = """
@@ -114,15 +118,149 @@ namespace CvnetClient.ViewModels
                             MaterialCD = dr["素材CD"].ToString() ?? string.Empty,
                             DesignCD = dr["デザイナーCD"].ToString() ?? string.Empty,
                             ManufactCD = dr["メーカーCD"].ToString() ?? string.Empty,
-                            MadeInCD = dr["原産国CD"].ToString() ?? string.Empty,
+                            MadeInCD = dr["原産国CD"].ToString() ?? string.Empty, 
+                            OriPrice = long.Parse(dr["元上代"].ToString()), 
+                            Price = long.Parse(dr["上代"].ToString()),
+                            PriceChgDate = dr["売変日"].ToString() ?? string.Empty,
+                            Cost = long.Parse(dr["原価"].ToString()),
+                            OpCostPrice = long.Parse(dr["営業原価"].ToString()),
+                            ManufactFee = long.Parse(dr["加工工賃"].ToString()),
+                            CustDeliDate = dr["デリバリー日"].ToString() ?? string.Empty,
+                            DeliveryDate = dr["納品日"].ToString() ?? string.Empty,
+                            InitLaunchDate = dr["店頭投入日"].ToString() ?? string.Empty,
+                            JanCode1 = dr["JANコード1"].ToString() ?? string.Empty,
+                            JanCode2 = dr["JANコード2"].ToString() ?? string.Empty,
+                            JanCode3 = dr["JANコード3"].ToString() ?? string.Empty,
+                            CareLabel = dr["洗濯表示"].ToString() ?? string.Empty,
+                            ImgName = dr["絵型名"].ToString() ?? string.Empty,
+                            Memo = dr["メモ"].ToString() ?? string.Empty,
+                            TaxCalcMethod = long.Parse(dr["消費税計算方法"].ToString()),
+                            InvMngmentFLG = Convert.ToInt32(dr["在庫管理FLG"]),
+                            TaxCD = long.Parse(dr["消費税CD"].ToString()),
+                            NameCD01 = dr["名称CD01"].ToString() ?? string.Empty,
+                            NameCD02 = dr["名称CD02"].ToString() ?? string.Empty,
+                            NameCD03 = dr["名称CD03"].ToString() ?? string.Empty,
+                            NameCD04 = dr["名称CD04"].ToString() ?? string.Empty,
+                            NameCD05 = dr["名称CD05"].ToString() ?? string.Empty,
+                            NameCD06 = dr["名称CD06"].ToString() ?? string.Empty,
+                            NameCD07 = dr["名称CD07"].ToString() ?? string.Empty,
+                            NameCD08 = dr["名称CD08"].ToString() ?? string.Empty,
+                            NameCD09 = dr["名称CD09"].ToString() ?? string.Empty,
+                            NameCD10 = dr["名称CD10"].ToString() ?? string.Empty,
+                            AutoDistFLG = Convert.ToInt32(dr["自動配分FLG"]),
+                            SalesPeriod = dr["販売期限"].ToString() ?? string.Empty,
+                            ProdCateFLG = Convert.ToInt32(dr["商品区分FLG"]),
+                            ProdSizeCate = dr["商品サイズ区分"].ToString() ?? string.Empty,
+                            StandWareCD = dr["基準倉庫CD"].ToString() ?? string.Empty,
+                            ZeroPriceCate = Convert.ToInt32(dr["ゼロ単価区分"]),
+                            Jan1stdigit = dr["JAN先頭桁"].ToString() ?? string.Empty,
+                            PosCate = Convert.ToInt32(dr["POS区分"]),
+                            Reserve01 = dr["予備01"].ToString() ?? string.Empty,
+                            Reserve02 = dr["予備02"].ToString() ?? string.Empty,
+                            Reserve03 = dr["予備03"].ToString() ?? string.Empty,
+                            Reserve04 = dr["予備04"].ToString() ?? string.Empty,
+                            Reserve05 = dr["予備05"].ToString() ?? string.Empty,
+                            Reserve06 = dr["予備06"].ToString() ?? string.Empty,
+                            Reserve07 = dr["予備07"].ToString() ?? string.Empty,
+                            Reserve08 = dr["予備08"].ToString() ?? string.Empty,
+                            Reserve09 = dr["予備09"].ToString() ?? string.Empty,
+                            Reserve10 = dr["予備10"].ToString() ?? string.Empty,
+                            Reserve11 = dr["予備11"].ToString() ?? string.Empty,
+                            Reserve12 = dr["予備12"].ToString() ?? string.Empty,
+                            Reserve13 = dr["予備13"].ToString() ?? string.Empty,
+                            Reserve14 = dr["予備14"].ToString() ?? string.Empty,
+                            Reserve15 = dr["予備15"].ToString() ?? string.Empty,
+                            Reserve16 = dr["予備16"].ToString() ?? string.Empty,
+                            Reserve17 = dr["予備17"].ToString() ?? string.Empty,
+                            Reserve18 = dr["予備18"].ToString() ?? string.Empty,
+                            Reserve19 = dr["予備19"].ToString() ?? string.Empty,
+                            Reserve20 = dr["予備20"].ToString() ?? string.Empty,
+                            PurchaseCate = Convert.ToInt32(dr["仕入区分"]),
+                            DgCutOffSpec = Convert.ToInt32(dr["消化桁切指定"]),
+                            DgCalcCate = Convert.ToInt32(dr["消化計算区分"]),
+                            ConsignPurcRate = Convert.ToInt32(dr["消化掛率"]),
+                            CollabOutCate = Convert.ToInt32(dr["コラボ出力区分"]),
+                            RepresentNoFLG = Convert.ToInt32(dr["代表品番FLG"]),
+                            SalesCate = Convert.ToInt32(dr["セール区分"]),
+                            RepeatDate = dr["リピート日"].ToString() ?? string.Empty,
+                            MakerNo = dr["メーカー品番"].ToString() ?? string.Empty,
+                            PurchasePrice = long.Parse(dr["仕入価格"].ToString()),
+                            DeliveryCate = Convert.ToInt32(dr["納品区分"]),
+                            ImgName2 = dr["絵型名2"].ToString() ?? string.Empty,
+                            SaleStDate = dr["販売開始日"].ToString() ?? string.Empty,
+                            ForeignCurPrice = long.Parse(dr["外貨単価"].ToString()),
+                            EcConnect = Convert.ToInt32(dr["EC連携"]),
+                            EcReserve = Convert.ToInt32(dr["EC取置"]),
 
+                            ExhibitName = dr["展示会名"].ToString() ?? string.Empty,
+                            BrandName = dr["ブランド名"].ToString() ?? string.Empty,
+                            ItemName = dr["アイテム名"].ToString() ?? string.Empty,
+                            SeasonName = dr["シーズン名"].ToString() ?? string.Empty,
+                            MaterialName = dr["素材名"].ToString() ?? string.Empty,
+                            DesignName = dr["デザイナー名"].ToString() ?? string.Empty,
+                            ManufactName = dr["メーカー名"].ToString() ?? string.Empty,
+                            MadeInName = dr["原産国名"].ToString() ?? string.Empty,
+                            SubName01 = dr["補足01名"].ToString() ?? string.Empty,
+                            SubName02 = dr["補足02名"].ToString() ?? string.Empty,
+                            SubName03 = dr["補足03名"].ToString() ?? string.Empty,
+                            SubName04 = dr["補足04名"].ToString() ?? string.Empty,
+                            SubName05 = dr["補足05名"].ToString() ?? string.Empty,
+                            SubName06 = dr["補足06名"].ToString() ?? string.Empty,
+                            SubName07 = dr["補足07名"].ToString() ?? string.Empty,
+                            SubName08 = dr["補足08名"].ToString() ?? string.Empty,
+                            SubName09 = dr["補足09名"].ToString() ?? string.Empty,
+                            SubName10 = dr["補足10名"].ToString() ?? string.Empty,
+                            StockName = dr["倉庫名"].ToString() ?? string.Empty,
+                            ModifiedBy = dr["最終修正者"].ToString() ?? string.Empty,
+                            GenderCateName = dr["男女区分名"].ToString() ?? string.Empty,
+                            CareLabelName = dr["洗濯表示名"].ToString() ?? string.Empty,
+                            Approval = dr["承認"].ToString() ?? string.Empty,
+                            CostChgHistFLG = Convert.ToInt32(dr["商品原価変更履歴有無FLG"]),
+                            ReserveName01 = dr["予備01名"].ToString() ?? string.Empty,
+                            ReserveName02 = dr["予備02名"].ToString() ?? string.Empty,
+                            ReserveName03 = dr["予備03名"].ToString() ?? string.Empty,
+                            ReserveName04 = dr["予備04名"].ToString() ?? string.Empty,
+                            ReserveName05 = dr["予備05名"].ToString() ?? string.Empty,
+                            ReserveName06 = dr["予備06名"].ToString() ?? string.Empty,
+                            ReserveName07 = dr["予備07名"].ToString() ?? string.Empty,
+                            ReserveName08 = dr["予備08名"].ToString() ?? string.Empty,
+                            ReserveName09 = dr["予備09名"].ToString() ?? string.Empty,
+                            ReserveName10 = dr["予備10名"].ToString() ?? string.Empty,
+                            ReserveName11 = dr["予備11名"].ToString() ?? string.Empty,
+                            ReserveName12 = dr["予備12名"].ToString() ?? string.Empty,
+                            ReserveName13 = dr["予備13名"].ToString() ?? string.Empty,
+                            ReserveName14 = dr["予備14名"].ToString() ?? string.Empty,
+                            ReserveName15 = dr["予備15名"].ToString() ?? string.Empty,
+                            ReserveName16 = dr["予備16名"].ToString() ?? string.Empty,
+                            ReserveName17 = dr["予備17名"].ToString() ?? string.Empty,
+                            ReserveName18 = dr["予備18名"].ToString() ?? string.Empty,
+                            ReserveName19 = dr["予備19名"].ToString() ?? string.Empty,
+                            ReserveName20 = dr["予備20名"].ToString() ?? string.Empty
                         }).OrderBy(c => c.ProductCD).ToList();
-            Common.ConvertDotStringDel(list);
-            ListShohin = new ObservableCollection<MasterShohin>(list);
-            if (ListShohin.Count > 0)
+            //Common.ConvertDotStringDel(list);
+            ListProduct = new ObservableCollection<MasterShohin>(list);
+            if (ListProduct.Count > 0)
             {
-                SelectedShohin = ListShohin[0];
+                SelectedProduct = ListProduct[0];
             }
         }
+
+        #region
+        [RelayCommand]
+        public void SelBrand()
+        {  
+
+        }
+        private Sel00ViewModel GetSel00(string mstname)
+        { 
+            var view = new Sel00View();
+            var vm = view.DataContext as Sel00ViewModel;
+            if (view == null || vm == null) return null;
+            vm.Mstname = mstname; 
+            var ret = ClientLib.ShowDialogView(view, this);
+            if (ret != true) return null;
+            return vm;
+        }
+        #endregion
     }
 }

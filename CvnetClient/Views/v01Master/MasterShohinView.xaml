@@ -83,7 +83,8 @@
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="商品CD：Data"   
+										 d:Text="商品CD：Data"    
+										 Text="{Binding EditProduct.ProductCD}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
@@ -97,6 +98,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="ﾒｰｶｰ品番：Data"   
+										 Text="{Binding EditProduct.MakerNo}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
@@ -113,6 +115,7 @@
 											 HorizontalAlignment="Left"
 											 VerticalAlignment="Top"
 											 d:Text="商品名：Data"   
+											 Text="{Binding EditProduct.ProductName}"
 											 Foreground="{StaticResource plainTextColor0}"
 											 Style="{StaticResource WinTextBox}"   
 											 TextWrapping="Wrap" />
@@ -129,6 +132,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="略称：Data"   
+										 Text="{Binding EditProduct.Abbreviation}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
@@ -142,6 +146,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="絵型名1：Data"   
+										 Text="{Binding EditProduct.ImgName}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
@@ -157,7 +162,8 @@
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="旧コード：Data"   
+										 d:Text="旧コード：Data"
+										 Text="{Binding EditProduct.OldCode}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" /> 
@@ -172,6 +178,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="絵型名2：Data"   
+										 Text="{Binding EditProduct.ImgName2}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" />
@@ -188,6 +195,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="JAN連番：Data"   
+										 Text="{Binding EditProduct.Jan1stdigit}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
@@ -195,7 +203,8 @@
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="JAN連番：Data"   
+										 d:Text="JAN連番：Data"
+										 Text="{Binding EditProduct.JanCode2}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" /> 
@@ -211,7 +220,8 @@
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="年度：Data"   
+										 d:Text="年度：Data"    
+										 Text="{Binding EditProduct.JanCode1}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
@@ -225,6 +235,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="製品番号：Data"   
+										 Text=""
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" />
@@ -243,7 +254,14 @@
 										 d:Text="ブランド：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap" >
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.BrandCD" />
+											<Binding Path="EditProduct.BrandName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -256,7 +274,14 @@
 										 d:Text="アイテム：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.ItemCD" />
+											<Binding Path="EditProduct.ItemName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel> 
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -272,7 +297,14 @@
 										 d:Text="シーズン：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.SeasonCD" />
+											<Binding Path="EditProduct.SeasonName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -285,7 +317,14 @@
 										 d:Text="素材：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.MaterialCD" />
+											<Binding Path="EditProduct.MaterialName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel> 
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -301,7 +340,14 @@
 										 d:Text="ﾃﾞｻﾞｲﾅｰ：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.DesignCD" />
+											<Binding Path="EditProduct.DesignName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -314,7 +360,14 @@
 										 d:Text="原産国：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.MadeInCD" />
+											<Binding Path="EditProduct.MadeInName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -330,7 +383,14 @@
 										 d:Text="展示会：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.ExhibitCD" />
+											<Binding Path="EditProduct.ExhibitName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -343,7 +403,14 @@
 										 d:Text="メーカー：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.ManufactCD" />
+											<Binding Path="EditProduct.ManufactName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -359,7 +426,14 @@
 										 d:Text="補足1：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD01" />
+											<Binding Path="EditProduct.SubName01" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -372,7 +446,14 @@
 										 d:Text="補足2：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD02" />
+											<Binding Path="EditProduct.SubName02" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -388,7 +469,14 @@
 										 d:Text="補足3：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD03" />
+											<Binding Path="EditProduct.SubName03" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -401,7 +489,14 @@
 										 d:Text="補足4：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD04" />
+											<Binding Path="EditProduct.SubName04" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -417,7 +512,14 @@
 										 d:Text="補足5：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD05" />
+											<Binding Path="EditProduct.SubName05" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -430,7 +532,14 @@
 										 d:Text="補足6：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD06" />
+											<Binding Path="EditProduct.SubName06" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -446,7 +555,14 @@
 										 d:Text="補足7：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD07" />
+											<Binding Path="EditProduct.SubName07" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -459,7 +575,14 @@
 										 d:Text="補足8：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD08" />
+											<Binding Path="EditProduct.SubName08" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -475,7 +598,14 @@
 										 d:Text="補足9：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD09" />
+											<Binding Path="EditProduct.SubName09" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
@@ -488,7 +618,14 @@
 										 d:Text="補足10：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD10" />
+											<Binding Path="EditProduct.SubName10" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
@@ -502,6 +639,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="元上代：Data" 
+										 Text="{Binding EditProduct.OriPrice}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
@@ -515,6 +653,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="上代：Data" 
+										 Text="{Binding EditProduct.Price}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
@@ -528,6 +667,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="加工工賃：Data" 
+										 Text="{Binding EditProduct.ManufactFee}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
@@ -536,7 +676,7 @@
 										Margin="0,5,0,0">
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
-									   VerticalAlignment="Top"
+									   VerticalContentAlignment="Center"
 									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="仕入価格" />
 								<TextBox Height="30" Width="200"
@@ -544,6 +684,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="仕入価格：Data" 
+										 Text="{Binding EditProduct.PurchasePrice}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
@@ -557,6 +698,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="原価：Data" 
+										 Text="{Binding EditProduct.Cost}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
@@ -570,6 +712,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="営業原価：Data" 
+										 Text="{Binding EditProduct.OpCostPrice}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
@@ -586,6 +729,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="外貨仕入価格：Data" 
+										 Text="{Binding EditProduct.ForeignCurPrice}"
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
