@@ -14,8 +14,26 @@ namespace CvnetClient.ViewModels
         void Init()
         {
             EditProduct = new MasterShohin();
+
+            #region Set ComboList
+            // Set 在庫管理 ComboList
             InvMngmentList = cvnet.ComboItem_00<int>("する");
             EditProduct.InvMngmentFLG = InvMngmentList.FirstOrDefault().Key;
+            // Set セール区分 ComboList
+            SalesCateList = new Dictionary<int, string>
+            {
+                {  0, "0 プロパー商品" },
+                {  1, "1 セール商品" }
+            };
+            EditProduct.SalesCate = SalesCateList.FirstOrDefault().Key;
+            // Set 売上基準自動補充 ComboList
+            AutoDistList = new Dictionary<int, string>
+            {
+                {  0, "0 自動補充しない" },
+                {  1, "1 自動補充する" }
+            };
+            EditProduct.AutoDistFLG = AutoDistList.FirstOrDefault().Key;
+            #endregion
         }
 
         [ObservableProperty]
@@ -247,30 +265,183 @@ namespace CvnetClient.ViewModels
                 SelectedProduct = ListProduct[0];
             }
         }
+         
+        partial void OnAutoDistListChanged(Dictionary<int, string> value)
+        { 
+            
+        }
 
         #region Combobox List
         /// <summary>
-        /// 在庫管理 List
+        /// 在庫管理
         /// </summary>
         [ObservableProperty]
         public Dictionary<int, string>? m_InvMngmentList;
+
+        /// <summary>
+        /// セール区分
+        /// </summary>
+        [ObservableProperty]
+        public Dictionary<int, string>? m_salesCateList;
+
+        /// <summary>
+        /// autoDistFLG
+        /// </summary>
+        [ObservableProperty]
+        public Dictionary<int, string>? m_autoDistList;
         #endregion
 
         #region Dialog Search
         [RelayCommand]
         public void SelBrand()
         {
-           var get_sel00 = GetSel00("ブランド");
+            var get_sel00 = AppData.DlgService.GetSel00("ブランド");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.BrandCD = get_sel00.SelectSel00?.Code;
+                EditProduct.BrandName = get_sel00?.SelectSel00?.Name;
+            }
         }
-        private Sel00ViewModel GetSel00(string mstname)
-        { 
-            var view = new Sel00View();
-            var vm = view.DataContext as Sel00ViewModel;
-            if (view == null || vm == null) return null;
-            vm.Mstname = mstname; 
-            var ret = ClientLib.ShowDialogView(view, this);
-            if (ret != true) return null;
-            return vm;
+        [RelayCommand]
+        public void SelItem()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("アイテム");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.ItemCD = get_sel00.SelectSel00?.Code;
+                EditProduct.ItemName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelSeason()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("シーズン");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.SeasonCD = get_sel00.SelectSel00?.Code;
+                EditProduct.SeasonName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelMaterial()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("素材");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.MaterialCD = get_sel00.SelectSel00?.Code;
+                EditProduct.MaterialName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelDesign()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("デザイナー");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.DesignCD = get_sel00.SelectSel00?.Code;
+                EditProduct.DesignName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelMadeIn()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("原産国");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.MadeInCD = get_sel00.SelectSel00?.Code;
+                EditProduct.MadeInName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelExhibit()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("展示会");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.ExhibitCD = get_sel00.SelectSel00?.Code;
+                EditProduct.ExhibitName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelManufact()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("メーカー");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.ManufactCD = get_sel00.SelectSel00?.Code;
+                EditProduct.ManufactName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelName(string parameter)
+        {
+            if (string.IsNullOrEmpty(parameter)) return;
+            var param2 = new string[1]; param2[0] = parameter;
+            var get_sel00 = AppData.DlgService.GetSel00("名称", null, param2);
+            if (get_sel00 != null && EditProduct != null)
+            {
+                if (parameter == "B01")
+                {
+                    EditProduct.NameCD01 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName01 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B02")
+                {
+                    EditProduct.NameCD02 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName02 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B03")
+                {
+                    EditProduct.NameCD03 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName03 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B04")
+                {
+                    EditProduct.NameCD04 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName04 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B05")
+                {
+                    EditProduct.NameCD05 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName05 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B06")
+                {
+                    EditProduct.NameCD06 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName06 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B07")
+                {
+                    EditProduct.NameCD07 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName07 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B08")
+                {
+                    EditProduct.NameCD08 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName08 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B09")
+                {
+                    EditProduct.NameCD09 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName09 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B10")
+                {
+                    EditProduct.NameCD10 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName10 = get_sel00?.SelectSel00?.Name;
+                }
+            } 
+        }
+        [RelayCommand]
+        public void SelStandWare()
+        {
+            // Note: Require Call SelTok to get ID before Start GetSell00 
+            var get_sel00 = AppData.DlgService.GetSel00("倉庫");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.StandWareCD = get_sel00.SelectSel00?.Code;
+                EditProduct.StockName = get_sel00?.SelectSel00?.Name;
+            }
         }
         #endregion
     }
