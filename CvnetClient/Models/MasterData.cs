@@ -190,10 +190,14 @@ namespace CvnetClient.Models {
 		[ObservableProperty]
 		int dgCutOffSpec; //消化桁切指定
 		[ObservableProperty]
+		int consignPurcCate; //消化端数区分
+        [ObservableProperty]
 		int dgCalcCate; //消化計算区分
 		[ObservableProperty]
 		int consignPurcRate; //消化掛率
 		[ObservableProperty]
+		int genderCate; //男女区分
+        [ObservableProperty]
 		int collabOutCate; //コラボ出力区分
 		[ObservableProperty]
 		int representNoFLG; //代表品番FLG

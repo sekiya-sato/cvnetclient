@@ -33,6 +33,45 @@ namespace CvnetClient.ViewModels
                 {  1, "1 自動補充する" }
             };
             EditProduct.AutoDistFLG = AutoDistList.FirstOrDefault().Key;
+            // Set 納品区分 ComboList
+            DeliverCateList = new Dictionary<int, string>
+            {
+                {  0, "0 倉庫入庫" },
+                {  1, "1 店舗入庫" }
+            };
+            EditProduct.DeliveryCate = DeliverCateList.FirstOrDefault().Key;
+            // Set EC連携 ComboList 
+            EcConnectList = new Dictionary<int, string>
+            {
+                {  0, "0 連携しない" },
+                {  1, "1 連携する" }
+            };
+            EditProduct.EcConnect = EcConnectList.FirstOrDefault().Key;
+            // Set EC取置 ComboList
+            EcReserveList = new Dictionary<int, string>
+            {
+                {  0, "0 取置しない" },
+                {  1, "1 取置する" }
+            };
+            EditProduct.EcReserve = EcReserveList.FirstOrDefault().Key;
+            // Set 仕入区分 ComboList
+            PurchCateList = cvnet.ComboItem_00<int>("仕入区分");
+            EditProduct.PurchaseCate = PurchCateList.FirstOrDefault().Key;
+            // Set 消化計算 ComboList
+            DgCalcList = new Dictionary<int, string>
+            {
+                {  0, "0 仕入価格代入" },
+                {  1, "1 掛率計算" }
+            };
+            EditProduct.DgCalcCate = DgCalcList.FirstOrDefault().Key;
+            // Set 消化桁切 ComboList
+            DgCutOffList = cvnet.ComboItem_00<int>("桁切");
+            EditProduct.DgCutOffSpec = DgCutOffList.FirstOrDefault().Key;
+            // Set 消化端数 ComboList
+            ConPurcCateList = cvnet.ComboItem_00<int>("端数");
+            EditProduct.ConsignPurcCate = ConPurcCateList.FirstOrDefault().Key;
+            // Set POS区分 ComboList
+
             #endregion
         }
 
@@ -198,8 +237,10 @@ namespace CvnetClient.ViewModels
                             Reserve20 = dr["予備20"].ToString() ?? string.Empty,
                             PurchaseCate = Convert.ToInt32(dr["仕入区分"]),
                             DgCutOffSpec = Convert.ToInt32(dr["消化桁切指定"]),
+                            ConsignPurcCate = Convert.ToInt32(dr["消化端数区分"]),
                             DgCalcCate = Convert.ToInt32(dr["消化計算区分"]),
                             ConsignPurcRate = Convert.ToInt32(dr["消化掛率"]),
+                            GenderCate = Convert.ToInt32(dr["男女区分"]),
                             CollabOutCate = Convert.ToInt32(dr["コラボ出力区分"]),
                             RepresentNoFLG = Convert.ToInt32(dr["代表品番FLG"]),
                             SalesCate = Convert.ToInt32(dr["セール区分"]),
@@ -271,24 +312,37 @@ namespace CvnetClient.ViewModels
             
         }
 
-        #region Combobox List
-        /// <summary>
-        /// 在庫管理
-        /// </summary>
+        #region Combobox List 
+        // 在庫管理 
         [ObservableProperty]
         public Dictionary<int, string>? m_InvMngmentList;
-
-        /// <summary>
-        /// セール区分
-        /// </summary>
+        // セール区分 
         [ObservableProperty]
         public Dictionary<int, string>? m_salesCateList;
-
-        /// <summary>
-        /// autoDistFLG
-        /// </summary>
+        // autoDistFLG 
         [ObservableProperty]
         public Dictionary<int, string>? m_autoDistList;
+        // 納品区分 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_deliverCateList;
+        // EC連携 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_ecConnectList;
+        // EC取置 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_ecReserveList;
+        // 仕入区分
+        [ObservableProperty]
+        public Dictionary<int, string>? m_purchCateList;
+        // 消化計算
+        [ObservableProperty]
+        public Dictionary<int, string>? m_dgCalcList;
+        // 消化桁切
+        [ObservableProperty]
+        public Dictionary<int, string>? m_dgCutOffList;
+        // 消化端数
+        [ObservableProperty]
+        public Dictionary<int, string>? m_ConPurcCateList;
         #endregion
 
         #region Dialog Search

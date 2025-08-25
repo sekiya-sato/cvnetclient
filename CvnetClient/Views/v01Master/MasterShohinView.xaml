@@ -836,8 +836,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DeliverCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DeliveryCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -851,8 +853,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding EcConnectList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.EcConnect}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -863,8 +867,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding EcReserveList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.EcReserve}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -875,8 +881,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"  
+										  ItemsSource="{Binding PurchCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.PurchaseCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -890,8 +898,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DgCalcList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DgCalcCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -915,8 +925,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DgCutOffList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DgCutOffSpec}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -927,8 +939,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ConPurcCateList}"
 										  DisplayMemberPath="Value"
-										  SelectedValuePath="Key"
+									  	  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ConsignPurcCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
