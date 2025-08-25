@@ -47,14 +47,6 @@
 					<Setter Property="Foreground" Value="white" />
 				</Style>
 			</DataGrid.ColumnHeaderStyle>
-			<DataGrid.Columns>
-				<DataGridTextColumn Width="150"
-									Binding="{Binding code}"
-									Header=" ｺｰﾄ" />
-				<DataGridTextColumn Width="200"
-									Binding="{Binding name}"
-									Header=" 名称" />
-			</DataGrid.Columns>
 		</DataGrid>
 
 		<StackPanel Grid.Row="1" Grid.Column="1" 
