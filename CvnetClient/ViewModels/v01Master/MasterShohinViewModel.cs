@@ -71,7 +71,47 @@ namespace CvnetClient.ViewModels
             ConPurcCateList = cvnet.ComboItem_00<int>("端数");
             EditProduct.ConsignPurcCate = ConPurcCateList.FirstOrDefault().Key;
             // Set POS区分 ComboList
-
+            PosCateList = new Dictionary<int, string>
+            {
+                {  0, "0 通常" },
+                {  9, "9 POSﾏｽﾀ削除指示" },
+                { 10, "10 出力しない" },
+            };
+            EditProduct.PosCate = PosCateList.FirstOrDefault().Key;
+            // Set 代表品番FLG ComboList
+            RepresNoFlgList = new Dictionary<int, string>
+            {
+                {  0, "0 通常商品" },
+                {  1, "1 代表品番商品" }
+            };
+            EditProduct.RepresentNoFLG = RepresNoFlgList.FirstOrDefault().Key;
+            // Set 商品区分FLG ComboList
+            ProdCateFlgList = new Dictionary<int, string>
+            {
+                {  0, "0 通常" },
+                {  1, "1 商品外" }
+            };
+            EditProduct.ProdCateFLG = ProdCateFlgList.FirstOrDefault().Key;
+            // Set 消費税計算方法 ComboList
+            TaxCalcList = new Dictionary<int, string>
+            {
+                {  1, "1 通常税率" },
+                {  2, "2 軽減税率" }
+            };
+            EditProduct.TaxCalcMethod = TaxCalcList.FirstOrDefault().Key;
+            // Set 商品サイズ区分 ComboList 
+            
+            var prod_list = new Dictionary<string, string>();
+            string sql_query = "select 名称CD, 名称 from hc$master_meisho where 名称区分='IDX' and (名称CD like 'US%' or 名称CD='SIZ' ) order by 名称CD";
+            var get_prodSiz = AppData.Http?.AspxSqlQuery(sql_query, null);
+            foreach (DataRow row in get_prodSiz.Rows)
+            {
+                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
+                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
+                prod_list.Add(key, string.Format("{0} {1}", key, value));
+            }
+            ProdSizCateList = prod_list;
+            EditProduct.ProdSizeCate = ProdSizCateList.FirstOrDefault().Key;
             #endregion
         }
 
@@ -342,7 +382,22 @@ namespace CvnetClient.ViewModels
         public Dictionary<int, string>? m_dgCutOffList;
         // 消化端数
         [ObservableProperty]
-        public Dictionary<int, string>? m_ConPurcCateList;
+        public Dictionary<int, string>? m_conPurcCateList;
+        // POS区分
+        [ObservableProperty]
+        public Dictionary<int, string>? m_posCateList;
+        // 代表品番FLG
+        [ObservableProperty]
+        public Dictionary<int, string>? m_represNoFlgList;
+        // 商品区分FLG
+        [ObservableProperty]
+        public Dictionary<int, string>? m_prodCateFlgList;
+        // 消費税計算方法
+        [ObservableProperty]
+        public Dictionary<int, string>? m_taxCalcList;
+        // 商品サイズ区分
+        [ObservableProperty]
+        public Dictionary<string, string>? m_prodSizCateList;
         #endregion
 
         #region Dialog Search

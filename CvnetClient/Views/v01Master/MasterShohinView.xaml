@@ -956,8 +956,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  DisplayMemberPath="Value" 
-										  SelectedValuePath="Key" 
+										  ItemsSource="{Binding PosCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.PosCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -968,8 +970,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding RepresNoFlgList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.RepresentNoFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -980,8 +984,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ProdCateFlgList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ProdCateFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -992,8 +998,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding TaxCalcList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.TaxCalcMethod}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -1025,8 +1033,12 @@
 									   Content="ｻｲｽﾞ表示" />
 								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
-										  VerticalAlignment="Top"  
+										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ProdSizCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ProdSizeCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
