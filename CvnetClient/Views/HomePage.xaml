@@ -1,0 +1,176 @@
+﻿<Page x:Class="CvnetClient.Views.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CvnetClient.Views"
+      xmlns:utils="clr-namespace:CvnetClient.Utils"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="1120"
+      Title="ホーム">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Section -->
+        <Border HorizontalAlignment="Center"
+                BorderBrush="#ccc"
+                BorderThickness="0,0,0,1"
+                Padding="20,10"
+                CornerRadius="10,0,0,0"
+                Grid.Row="0">
+            <TextBlock Text="メインメニュー"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#333"/>
+        </Border>
+
+        <ScrollViewer Grid.Row="1">
+            <WrapPanel ItemWidth="200" ItemHeight="60" Margin="10">
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="マスタ"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Master.png"
+                utils:StripButtonHelper.StripColor="#cacaee"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="マスタ補助"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/MasterHojo.png"
+                utils:StripButtonHelper.StripColor="#cacaee"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="管理メニュー"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Management.png"
+                utils:StripButtonHelper.StripColor="#cacaee"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="予算"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Budget.png"
+                utils:StripButtonHelper.StripColor="#e9c9d4"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="本発注/入荷予定"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Shipping.png"
+                utils:StripButtonHelper.StripColor="#e9c9d4"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="発注"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/OrderBy.png"
+                utils:StripButtonHelper.StripColor="#c9e9e6"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="仕入"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Supply.png"
+                utils:StripButtonHelper.StripColor="#c9e9e6"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="受注/展示会"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/OrderFrom.png"
+                utils:StripButtonHelper.StripColor="#c9e9e6"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="売上"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Sales.png"
+                utils:StripButtonHelper.StripColor="#c9e9e6"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="配分"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Allocation.png"
+                utils:StripButtonHelper.StripColor="#c9e9e6"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="在庫管理"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/StockManagement.png"
+                utils:StripButtonHelper.StripColor="#c9eacf"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="棚卸"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/StockTaking.png"
+                utils:StripButtonHelper.StripColor="#c9eacf"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="売上分析1"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/SalesAnalysis1.png"
+                utils:StripButtonHelper.StripColor="#e9e8c9"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="売上分析2"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/SalesAnalysis2.png"
+                utils:StripButtonHelper.StripColor="#e9e8c9"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="C.P.A"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/CPA.png"
+                utils:StripButtonHelper.StripColor="#e9e8c9"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="HHT"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/HHT.png"
+                utils:StripButtonHelper.StripColor="#eecdbc"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="掛管理"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/MoneyManagement.png"
+                utils:StripButtonHelper.StripColor="#eecdbc"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="月次/更新処理"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Monthly.png"
+                utils:StripButtonHelper.StripColor="#eecdbc"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="Loyal Customer"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/LoyalCustomer.png"
+                utils:StripButtonHelper.StripColor="#eecdbc"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="Time-Navi"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/TimeNavi.png"
+                utils:StripButtonHelper.StripColor="#eecdbc"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="店舗"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Shop.png"
+                utils:StripButtonHelper.StripColor="#70a1c4"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="物流"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Logistics.png"
+                utils:StripButtonHelper.StripColor="#70a1c4"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="CVPOS用帳票"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/CVPOS.png"
+                utils:StripButtonHelper.StripColor="#70a1c4"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="オプション"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Noti.png"
+                utils:StripButtonHelper.StripColor="#70a1c4"/>
+
+                <Button Style="{StaticResource StripButtonStyle}" 
+                Content="---"
+                utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Calendar.png"
+                utils:StripButtonHelper.StripColor="#70a1c4"/>
+            </WrapPanel>
+        </ScrollViewer>
+
+        <Border Background="#f5f5f5"
+                BorderBrush="#ccc"
+                BorderThickness="1,1,1,0"
+                Padding="10,5"
+                Grid.Row="2">
+            <DockPanel>
+                <TextBlock Text="https://ap03.dtpnet.co.jp/cv.net_user00/" 
+                           Foreground="Blue"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+            </DockPanel>
+        </Border>
+
+    </Grid>
+</Page>

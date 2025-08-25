@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:local="clr-namespace:CvnetClient"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
 	StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
@@ -17,12 +18,25 @@
 				<ResourceDictionary Source="/Resources/UITextBox.xaml"/>
 
 				<!-- Pilih tema warna -->
-				<materialDesign:BundledTheme BaseTheme="Light"
-											 PrimaryColor="Blue"
+				<materialDesign:BundledTheme BaseTheme="Dark"
+											 PrimaryColor="Purple"
 											 SecondaryColor="Lime"/>
 
 				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
+
+            <FontFamily x:Key="AppFontFamily">
+                pack://application:,,,/CvnetClient;component/Fonts/#Noto Sans JP
+            </FontFamily>
+
+            <sys:Double x:Key="AppFontSize">16</sys:Double>
+            <FontWeight x:Key="AppFontWeight">Bold</FontWeight>
+
+            <Style TargetType="TextBlock" x:Key="NotoSansJPText">
+                <Setter Property="FontFamily" Value="{StaticResource NotoSansJP}" />
+            </Style>
+
 		</ResourceDictionary>
+        
 	</Application.Resources>
 </Application>

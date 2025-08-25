@@ -53,8 +53,15 @@ namespace CvnetClient {
 					(string.IsNullOrEmpty(e.Exception?.StackTrace) ? "" : "【Trace】" + e.Exception.StackTrace) // Traceは長いので書き出さない
 					);
 		}
-	}
+        public static void ApplyTheme(string themeFile)
+        {
+            var dict = new ResourceDictionary { Source = new Uri($"/Themes/{themeFile}", UriKind.Relative) };
+            Current.Resources.MergedDictionaries.Clear();
+            Current.Resources.MergedDictionaries.Add(dict);
+        }
+    }
 }
+
 
 
 

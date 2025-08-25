@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#E0F7FA"/>
+    <!-- biru muda -->
+    <SolidColorBrush x:Key="ForegroundBrush" Color="#006064"/>
+    <!-- biru gelap -->
+
+    <SolidColorBrush x:Key="AccentBrush" Color="#0097A7"/>
+    <!-- teal -->  
+</ResourceDictionary>

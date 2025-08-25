@@ -442,4 +442,56 @@
 		</Setter>
 	</Style>
 
+    <!--MainMenu Button-->
+    <Style x:Key="StripButtonStyle" TargetType="Button">
+        <Setter Property="Margin" Value="8,4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="LightGray"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        SnapsToDevicePixels="True">
+                        <Grid>
+                            <!-- Strip warna kiri -->
+                            <Border x:Name="Strip"
+                                Width="10"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,0"
+                                CornerRadius="6,0,0,6"
+                                Background="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                                     Path=(util:StripButtonHelper.StripColor)}" />
+
+                            <!-- Isi button -->
+                            <StackPanel Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
+                                <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                                    Path=(util:StripButtonHelper.Icon)}"
+                                   Width="28" Height="28"
+                                   Margin="0,0,8,0"/>
+                                <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              RecognizesAccessKey="True"
+                                              TextElement.FontFamily="{DynamicResource AppFontFamily}"
+											  TextElement.FontWeight="{DynamicResource AppFontWeight}"
+											  TextElement.FontSize="{DynamicResource AppFontSize}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Triggers -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#f9f9f9"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#ececec"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

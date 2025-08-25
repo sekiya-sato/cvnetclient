@@ -12,6 +12,15 @@
 
   <ItemGroup>
     <None Remove="cvnet.ico" />
+    <None Remove="Fonts\NotoSansJP-Black.ttf" />
+    <None Remove="Fonts\NotoSansJP-Bold.ttf" />
+    <None Remove="Fonts\NotoSansJP-ExtraBold.ttf" />
+    <None Remove="Fonts\NotoSansJP-ExtraLight.ttf" />
+    <None Remove="Fonts\NotoSansJP-Light.ttf" />
+    <None Remove="Fonts\NotoSansJP-Medium.ttf" />
+    <None Remove="Fonts\NotoSansJP-Regular.ttf" />
+    <None Remove="Fonts\NotoSansJP-SemiBold.ttf" />
+    <None Remove="Fonts\NotoSansJP-Thin.ttf" />
     <None Remove="Images\button_icon\add_icon.png" />
     <None Remove="Images\button_icon\back_icon.png" />
     <None Remove="Images\button_icon\calendar_icon.png" />
@@ -24,12 +33,52 @@
     <None Remove="Images\button_icon\refresh_icon.png" />
     <None Remove="Images\button_icon\search_icon.png" />
     <None Remove="Images\button_icon\update_icon.png" />
+    <None Remove="Images\mainmenu_icon\Allocation.png" />
+    <None Remove="Images\mainmenu_icon\Budget.png" />
+    <None Remove="Images\mainmenu_icon\Calendar.png" />
+    <None Remove="Images\mainmenu_icon\CVPOS.png" />
+    <None Remove="Images\mainmenu_icon\HHT.png" />
+    <None Remove="Images\mainmenu_icon\Home.png" />
+    <None Remove="Images\mainmenu_icon\Logistics.png" />
+    <None Remove="Images\mainmenu_icon\LoyalCustomer.png" />
+    <None Remove="Images\mainmenu_icon\Management.png" />
+    <None Remove="Images\mainmenu_icon\Master.png" />
+    <None Remove="Images\mainmenu_icon\MasterHojo.png" />
+    <None Remove="Images\mainmenu_icon\MoneyManagement.png" />
+    <None Remove="Images\mainmenu_icon\Monthly.png" />
+    <None Remove="Images\mainmenu_icon\Noti.png" />
+    <None Remove="Images\mainmenu_icon\OrderBy.png" />
+    <None Remove="Images\mainmenu_icon\OrderFrom.png" />
+    <None Remove="Images\mainmenu_icon\Sales.png" />
+    <None Remove="Images\mainmenu_icon\SalesAnalysis1.png" />
+    <None Remove="Images\mainmenu_icon\SalesAnalysis2.png" />
+    <None Remove="Images\mainmenu_icon\Settings.png" />
+    <None Remove="Images\mainmenu_icon\Shipping.png" />
+    <None Remove="Images\mainmenu_icon\Shop.png" />
+    <None Remove="Images\mainmenu_icon\StockManagement.png" />
+    <None Remove="Images\mainmenu_icon\StockTaking.png" />
+    <None Remove="Images\mainmenu_icon\Supply.png" />
+    <None Remove="Images\mainmenu_icon\TimeNavi.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="cvnet.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\NotoSansJP-Black.ttf" />
+    <Resource Include="Fonts\NotoSansJP-Bold.ttf" />
+    <Resource Include="Fonts\NotoSansJP-ExtraBold.ttf" />
+    <Resource Include="Fonts\NotoSansJP-ExtraLight.ttf" />
+    <Resource Include="Fonts\NotoSansJP-Light.ttf" />
+    <Resource Include="Fonts\NotoSansJP-Medium.ttf" />
+    <Resource Include="Fonts\NotoSansJP-Regular.ttf" />
+    <Resource Include="Fonts\NotoSansJP-SemiBold.ttf" />
+    <Resource Include="Fonts\NotoSansJP-Thin.ttf" />
+    <Resource Include="Images\mainmenu_icon\Calendar.png" />
+    <Resource Include="Images\mainmenu_icon\Master.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,6 +116,31 @@
     <Resource Include="Images\button_icon\refresh_icon.png" />
     <Resource Include="Images\button_icon\search_icon.png" />
     <Resource Include="Images\button_icon\update_icon.png" />
+    <Resource Include="Images\mainmenu_icon\Allocation.png" />
+    <Resource Include="Images\mainmenu_icon\Budget.png" />
+    <Resource Include="Images\mainmenu_icon\CPA.png" />
+    <Resource Include="Images\mainmenu_icon\CVPOS.png" />
+    <Resource Include="Images\mainmenu_icon\HHT.png" />
+    <Resource Include="Images\mainmenu_icon\Home.png" />
+    <Resource Include="Images\mainmenu_icon\Logistics.png" />
+    <Resource Include="Images\mainmenu_icon\LoyalCustomer.png" />
+    <Resource Include="Images\mainmenu_icon\Management.png" />
+    <Resource Include="Images\mainmenu_icon\MasterHojo.png" />
+    <Resource Include="Images\mainmenu_icon\MoneyManagement.png" />
+    <Resource Include="Images\mainmenu_icon\Monthly.png" />
+    <Resource Include="Images\mainmenu_icon\Noti.png" />
+    <Resource Include="Images\mainmenu_icon\OrderBy.png" />
+    <Resource Include="Images\mainmenu_icon\OrderFrom.png" />
+    <Resource Include="Images\mainmenu_icon\Sales.png" />
+    <Resource Include="Images\mainmenu_icon\SalesAnalysis1.png" />
+    <Resource Include="Images\mainmenu_icon\SalesAnalysis2.png" />
+    <Resource Include="Images\mainmenu_icon\Settings.png" />
+    <Resource Include="Images\mainmenu_icon\Shipping.png" />
+    <Resource Include="Images\mainmenu_icon\Shop.png" />
+    <Resource Include="Images\mainmenu_icon\StockManagement.png" />
+    <Resource Include="Images\mainmenu_icon\StockTaking.png" />
+    <Resource Include="Images\mainmenu_icon\Supply.png" />
+    <Resource Include="Images\mainmenu_icon\TimeNavi.png" />
   </ItemGroup>
 
   <ItemGroup>
