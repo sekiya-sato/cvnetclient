@@ -104,7 +104,7 @@ namespace CvnetClient.Models {
 		[ObservableProperty]
 		string? memo; //メモ
 		[ObservableProperty]
-		long taxCalcMethod; //消費税計算方法
+		int taxCalcMethod; //消費税計算方法
 		[ObservableProperty]
 		int invMngmentFLG; //在庫管理FLG
 		[ObservableProperty]
@@ -196,7 +196,7 @@ namespace CvnetClient.Models {
 		[ObservableProperty]
 		int consignPurcRate; //消化掛率
 		[ObservableProperty]
-		int genderCate; //男女区分
+		string genderCate; //男女区分
         [ObservableProperty]
 		int collabOutCate; //コラボ出力区分
 		[ObservableProperty]
