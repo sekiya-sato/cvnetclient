@@ -266,6 +266,7 @@
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
+										Command="{Binding SelItemCommand}"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="アイテム" />
 								<TextBox Height="30" Width="300"
@@ -290,6 +291,7 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
+										Command="{Binding SelSeasonCommand}"
 										Content="シーズン" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -309,7 +311,8 @@
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
+										Foreground="{StaticResource TitleLabelColor}"
+										Command="{Binding SelMaterialCommand}"
 										Content="素材" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -332,7 +335,8 @@
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
+										Foreground="{StaticResource TitleLabelColor}"
+										Command="{Binding SelDesignCommand}"
 										Content="ﾃﾞｻﾞｲﾅｰ" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -353,6 +357,7 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
+										Command="{Binding SelMadeInCommand}"
 										Content="原産国" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -376,6 +381,7 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelExhibitCommand}"
 										Content="展示会" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -396,6 +402,7 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
+										Command="{Binding SelManufactCommand}"
 										Content="メーカー" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -419,6 +426,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B01"
 										Content="補足1" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -439,6 +448,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B02"
 										Content="補足2" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -461,7 +472,9 @@
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
+										Foreground="{StaticResource TitleLabelColor}" 
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B03"
 										Content="補足3" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -482,6 +495,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B04"
 										Content="補足4" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -505,6 +520,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B05"
 										Content="補足5" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -525,6 +542,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B06"
 										Content="補足6" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -548,6 +567,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B07"
 										Content="補足7" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -568,6 +589,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B08"
 										Content="補足8" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -590,7 +613,9 @@
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
+										Foreground="{StaticResource TitleLabelColor}" 
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B09"
 										Content="補足9" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -611,6 +636,8 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
+										Command="{Binding SelNameCommand}"
+										CommandParameter="B10"
 										Content="補足10" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -757,8 +784,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center" 
+										  ItemsSource="{Binding SalesCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.SalesCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -766,19 +795,22 @@
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
+									   Foreground="{StaticResource TitleLabelColor}" 
 									   Content="売上基準自動補充" />
 								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding AutoDistList}"
 										  DisplayMemberPath="Value" 
-										  SelectedValuePath="Key"
+										  SelectedValuePath="Key" 
+										  SelectedValue="{Binding EditProduct.AutoDistFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Button Height="30" Width="85"  
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
+										Command="{Binding SelStandWareCommand}"
 										Content="基準倉庫CD" />
 								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
@@ -787,7 +819,14 @@
 										 d:Text="基準倉庫CD：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap" />
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.StandWareCD" />
+											<Binding Path="EditProduct.StockName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
@@ -797,8 +836,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DeliverCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DeliveryCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -812,8 +853,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding EcConnectList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.EcConnect}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -824,8 +867,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding EcReserveList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.EcReserve}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -836,8 +881,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"  
+										  ItemsSource="{Binding PurchCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.PurchaseCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -851,8 +898,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DgCalcList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DgCalcCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -876,8 +925,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DgCutOffList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DgCutOffSpec}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -888,8 +939,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ConPurcCateList}"
 										  DisplayMemberPath="Value"
-										  SelectedValuePath="Key"
+									  	  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ConsignPurcCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -903,8 +956,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  DisplayMemberPath="Value" 
-										  SelectedValuePath="Key" 
+										  ItemsSource="{Binding PosCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.PosCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -915,8 +970,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding RepresNoFlgList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.RepresentNoFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -927,8 +984,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ProdCateFlgList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ProdCateFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -939,8 +998,10 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding TaxCalcList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.TaxCalcMethod}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -972,8 +1033,12 @@
 									   Content="ｻｲｽﾞ表示" />
 								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
-										  VerticalAlignment="Top"  
+										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ProdSizCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ProdSizeCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 

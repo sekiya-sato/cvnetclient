@@ -11,18 +11,6 @@ namespace CvnetClient.Views
         public Sel00View()
         {
             InitializeComponent();
-        }
-
-        public static object ShowPopup()
-        { 
-            var view = new Sel00View();
-            var vm = view.DataContext as Sel00ViewModel;
-
-            //Ensure vm can close the window 
-            vm.RequestClose += (s, e) => view.DialogResult = e;
-
-            bool? result = view.ShowDialog();
-            return result == true ? vm.SelectSel00 : null;
-        }
+        } 
     }
 }

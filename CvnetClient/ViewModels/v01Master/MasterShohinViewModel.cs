@@ -14,8 +14,105 @@ namespace CvnetClient.ViewModels
         void Init()
         {
             EditProduct = new MasterShohin();
+
+            #region Set ComboList
+            // Set 在庫管理 ComboList
             InvMngmentList = cvnet.ComboItem_00<int>("する");
             EditProduct.InvMngmentFLG = InvMngmentList.FirstOrDefault().Key;
+            // Set セール区分 ComboList
+            SalesCateList = new Dictionary<int, string>
+            {
+                {  0, "0 プロパー商品" },
+                {  1, "1 セール商品" }
+            };
+            EditProduct.SalesCate = SalesCateList.FirstOrDefault().Key;
+            // Set 売上基準自動補充 ComboList
+            AutoDistList = new Dictionary<int, string>
+            {
+                {  0, "0 自動補充しない" },
+                {  1, "1 自動補充する" }
+            };
+            EditProduct.AutoDistFLG = AutoDistList.FirstOrDefault().Key;
+            // Set 納品区分 ComboList
+            DeliverCateList = new Dictionary<int, string>
+            {
+                {  0, "0 倉庫入庫" },
+                {  1, "1 店舗入庫" }
+            };
+            EditProduct.DeliveryCate = DeliverCateList.FirstOrDefault().Key;
+            // Set EC連携 ComboList 
+            EcConnectList = new Dictionary<int, string>
+            {
+                {  0, "0 連携しない" },
+                {  1, "1 連携する" }
+            };
+            EditProduct.EcConnect = EcConnectList.FirstOrDefault().Key;
+            // Set EC取置 ComboList
+            EcReserveList = new Dictionary<int, string>
+            {
+                {  0, "0 取置しない" },
+                {  1, "1 取置する" }
+            };
+            EditProduct.EcReserve = EcReserveList.FirstOrDefault().Key;
+            // Set 仕入区分 ComboList
+            PurchCateList = cvnet.ComboItem_00<int>("仕入区分");
+            EditProduct.PurchaseCate = PurchCateList.FirstOrDefault().Key;
+            // Set 消化計算 ComboList
+            DgCalcList = new Dictionary<int, string>
+            {
+                {  0, "0 仕入価格代入" },
+                {  1, "1 掛率計算" }
+            };
+            EditProduct.DgCalcCate = DgCalcList.FirstOrDefault().Key;
+            // Set 消化桁切 ComboList
+            DgCutOffList = cvnet.ComboItem_00<int>("桁切");
+            EditProduct.DgCutOffSpec = DgCutOffList.FirstOrDefault().Key;
+            // Set 消化端数 ComboList
+            ConPurcCateList = cvnet.ComboItem_00<int>("端数");
+            EditProduct.ConsignPurcCate = ConPurcCateList.FirstOrDefault().Key;
+            // Set POS区分 ComboList
+            PosCateList = new Dictionary<int, string>
+            {
+                {  0, "0 通常" },
+                {  9, "9 POSﾏｽﾀ削除指示" },
+                { 10, "10 出力しない" },
+            };
+            EditProduct.PosCate = PosCateList.FirstOrDefault().Key;
+            // Set 代表品番FLG ComboList
+            RepresNoFlgList = new Dictionary<int, string>
+            {
+                {  0, "0 通常商品" },
+                {  1, "1 代表品番商品" }
+            };
+            EditProduct.RepresentNoFLG = RepresNoFlgList.FirstOrDefault().Key;
+            // Set 商品区分FLG ComboList
+            ProdCateFlgList = new Dictionary<int, string>
+            {
+                {  0, "0 通常" },
+                {  1, "1 商品外" }
+            };
+            EditProduct.ProdCateFLG = ProdCateFlgList.FirstOrDefault().Key;
+            // Set 消費税計算方法 ComboList
+            TaxCalcList = new Dictionary<int, string>
+            {
+                {  1, "1 通常税率" },
+                {  2, "2 軽減税率" }
+            };
+            EditProduct.TaxCalcMethod = TaxCalcList.FirstOrDefault().Key;
+            // Set 商品サイズ区分 ComboList 
+            
+            var prod_list = new Dictionary<string, string>();
+            string sql_query = "select 名称CD, 名称 from hc$master_meisho where 名称区分='IDX' and (名称CD like 'US%' or 名称CD='SIZ' ) order by 名称CD";
+            var get_prodSiz = AppData.Http?.AspxSqlQuery(sql_query, null);
+            foreach (DataRow row in get_prodSiz.Rows)
+            {
+                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
+                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
+                prod_list.Add(key, string.Format("{0} {1}", key, value));
+            }
+            ProdSizCateList = prod_list;
+            EditProduct.ProdSizeCate = ProdSizCateList.FirstOrDefault().Key;
+            #endregion
         }
 
         [ObservableProperty]
@@ -180,8 +277,10 @@ namespace CvnetClient.ViewModels
                             Reserve20 = dr["予備20"].ToString() ?? string.Empty,
                             PurchaseCate = Convert.ToInt32(dr["仕入区分"]),
                             DgCutOffSpec = Convert.ToInt32(dr["消化桁切指定"]),
+                            ConsignPurcCate = Convert.ToInt32(dr["消化端数区分"]),
                             DgCalcCate = Convert.ToInt32(dr["消化計算区分"]),
                             ConsignPurcRate = Convert.ToInt32(dr["消化掛率"]),
+                            GenderCate = Convert.ToInt32(dr["男女区分"]),
                             CollabOutCate = Convert.ToInt32(dr["コラボ出力区分"]),
                             RepresentNoFLG = Convert.ToInt32(dr["代表品番FLG"]),
                             SalesCate = Convert.ToInt32(dr["セール区分"]),
@@ -247,30 +346,211 @@ namespace CvnetClient.ViewModels
                 SelectedProduct = ListProduct[0];
             }
         }
+         
+        partial void OnAutoDistListChanged(Dictionary<int, string> value)
+        { 
+            
+        }
 
-        #region Combobox List
-        /// <summary>
-        /// 在庫管理 List
-        /// </summary>
+        #region Combobox List 
+        // 在庫管理 
         [ObservableProperty]
         public Dictionary<int, string>? m_InvMngmentList;
+        // セール区分 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_salesCateList;
+        // autoDistFLG 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_autoDistList;
+        // 納品区分 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_deliverCateList;
+        // EC連携 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_ecConnectList;
+        // EC取置 
+        [ObservableProperty]
+        public Dictionary<int, string>? m_ecReserveList;
+        // 仕入区分
+        [ObservableProperty]
+        public Dictionary<int, string>? m_purchCateList;
+        // 消化計算
+        [ObservableProperty]
+        public Dictionary<int, string>? m_dgCalcList;
+        // 消化桁切
+        [ObservableProperty]
+        public Dictionary<int, string>? m_dgCutOffList;
+        // 消化端数
+        [ObservableProperty]
+        public Dictionary<int, string>? m_conPurcCateList;
+        // POS区分
+        [ObservableProperty]
+        public Dictionary<int, string>? m_posCateList;
+        // 代表品番FLG
+        [ObservableProperty]
+        public Dictionary<int, string>? m_represNoFlgList;
+        // 商品区分FLG
+        [ObservableProperty]
+        public Dictionary<int, string>? m_prodCateFlgList;
+        // 消費税計算方法
+        [ObservableProperty]
+        public Dictionary<int, string>? m_taxCalcList;
+        // 商品サイズ区分
+        [ObservableProperty]
+        public Dictionary<string, string>? m_prodSizCateList;
         #endregion
 
         #region Dialog Search
         [RelayCommand]
         public void SelBrand()
         {
-           var get_sel00 = GetSel00("ブランド");
+            var get_sel00 = AppData.DlgService.GetSel00("ブランド");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.BrandCD = get_sel00.SelectSel00?.Code;
+                EditProduct.BrandName = get_sel00?.SelectSel00?.Name;
+            }
         }
-        private Sel00ViewModel GetSel00(string mstname)
-        { 
-            var view = new Sel00View();
-            var vm = view.DataContext as Sel00ViewModel;
-            if (view == null || vm == null) return null;
-            vm.Mstname = mstname; 
-            var ret = ClientLib.ShowDialogView(view, this);
-            if (ret != true) return null;
-            return vm;
+        [RelayCommand]
+        public void SelItem()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("アイテム");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.ItemCD = get_sel00.SelectSel00?.Code;
+                EditProduct.ItemName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelSeason()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("シーズン");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.SeasonCD = get_sel00.SelectSel00?.Code;
+                EditProduct.SeasonName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelMaterial()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("素材");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.MaterialCD = get_sel00.SelectSel00?.Code;
+                EditProduct.MaterialName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelDesign()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("デザイナー");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.DesignCD = get_sel00.SelectSel00?.Code;
+                EditProduct.DesignName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelMadeIn()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("原産国");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.MadeInCD = get_sel00.SelectSel00?.Code;
+                EditProduct.MadeInName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelExhibit()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("展示会");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.ExhibitCD = get_sel00.SelectSel00?.Code;
+                EditProduct.ExhibitName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelManufact()
+        {
+            var get_sel00 = AppData.DlgService.GetSel00("メーカー");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.ManufactCD = get_sel00.SelectSel00?.Code;
+                EditProduct.ManufactName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelName(string parameter)
+        {
+            if (string.IsNullOrEmpty(parameter)) return;
+            var param2 = new string[1]; param2[0] = parameter;
+            var get_sel00 = AppData.DlgService.GetSel00("名称", null, param2);
+            if (get_sel00 != null && EditProduct != null)
+            {
+                if (parameter == "B01")
+                {
+                    EditProduct.NameCD01 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName01 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B02")
+                {
+                    EditProduct.NameCD02 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName02 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B03")
+                {
+                    EditProduct.NameCD03 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName03 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B04")
+                {
+                    EditProduct.NameCD04 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName04 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B05")
+                {
+                    EditProduct.NameCD05 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName05 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B06")
+                {
+                    EditProduct.NameCD06 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName06 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B07")
+                {
+                    EditProduct.NameCD07 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName07 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B08")
+                {
+                    EditProduct.NameCD08 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName08 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B09")
+                {
+                    EditProduct.NameCD09 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName09 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "B10")
+                {
+                    EditProduct.NameCD10 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.SubName10 = get_sel00?.SelectSel00?.Name;
+                }
+            } 
+        }
+        [RelayCommand]
+        public void SelStandWare()
+        {
+            // Note: Require Call SelTok to get ID before Start GetSell00 
+            var get_sel00 = AppData.DlgService.GetSel00("倉庫");
+            if (get_sel00 != null && EditProduct != null)
+            {
+                EditProduct.StandWareCD = get_sel00.SelectSel00?.Code;
+                EditProduct.StockName = get_sel00?.SelectSel00?.Name;
+            }
         }
         #endregion
     }

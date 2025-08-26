@@ -1651,7 +1651,7 @@ namespace CvnetBaseCore
                     v_retu = "名称CD||' '||名称 一覧";
                 }
                 sql_query = "select " + v_retu + " from HC$MASTER_MEISHO ";
-                sql_query += " where 名称区分='" + v_para2 + "' order by 名称区分,名称CD";
+                sql_query += " where 名称区分='" + v_para2[0] + "' order by 名称区分,名称CD";
                 ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
             }
             else if (p_kubun == "名称")
@@ -1666,7 +1666,7 @@ namespace CvnetBaseCore
                     v_retu = "名称CD||' '||名称 一覧,名称CD,名称,略称";
                 }
                 sql_query = "select " + v_retu + "  from HC$MASTER_MEISHO ";
-                sql_query += " where 名称区分='" + v_para2 + "' order by 名称区分,名称CD";
+                sql_query += " where 名称区分='" + v_para2[0] + "' order by 名称区分,名称CD";
                 ret_csv = AppData.Http?.AspxSqlQuery(sql_query);
             }
             else if (p_kubun == "シフト1")
@@ -2046,7 +2046,7 @@ namespace CvnetBaseCore
                     v_retu = "名称CD||' '||名称 一覧,名称CD,名称,略称";
                 }
                 sql_query = "select " + v_retu + "  from HC$MASTER_MEISHO ";
-                sql_query += " where 名称区分='" + v_para2 + "' order by 名称区分,名称CD";
+                sql_query += " where 名称区分='" + v_para2[0] + "' order by 名称区分,名称CD";
                 ret_csv = AppData.Http?.AspxSqlQuery(sql_query);
             }
             else if (p_kubun == "店・卸営業")
