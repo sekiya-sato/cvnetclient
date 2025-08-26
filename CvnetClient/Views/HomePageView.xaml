@@ -216,7 +216,7 @@
                 Padding="10,5"
                 Grid.Row="2">
             <DockPanel>
-                <TextBlock Text="Beyond Code, Into Innovation" 
+                <TextBlock Text="Beyond Code, Into Innovation — A DTP creation, designed for your success." 
                            Foreground="Blue"
                            FontWeight="Bold"
                            VerticalAlignment="Center"/>
