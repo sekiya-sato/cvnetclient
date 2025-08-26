@@ -24,5 +24,17 @@ namespace CvnetClient.Views
         {
             InitializeComponent();
         }
+
+        private void MainMenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                string title = btn.Content.ToString();
+                string pageId = btn.Tag?.ToString();
+
+                // Navigate ke DynamicPage sambil pass Title & PageId
+                this.NavigationService?.Navigate(new DynamicPageView(title, pageId));
+            }
+        }
     }
 }
