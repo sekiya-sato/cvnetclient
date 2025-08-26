@@ -32,7 +32,7 @@ namespace CvnetBaseCore
         public static string BizUrl = string.Empty;
 
         public static Array HelfDef;
-        public static Array MstDialog; /* マスタ取得用専用ダイアログ保存 */
+        public static Dictionary<string, string> MstDialog; /* マスタ取得用専用ダイアログ保存 */
         public static int TanaFlg = 0; /* 棚卸の基準　0:月次、1:棚卸日指定 */
         public static int PosFlg = 0; /* POSの実行　0:POS連携なし、1:TEC 、2:三谷*/
         public static int YosanFlg = 0; /* 0 店別ブランド別の予算、1 日別の予算*/
@@ -42,6 +42,24 @@ namespace CvnetBaseCore
         public static string[] OrgMenuSub; 	/* オリジナルサブメニュー定義 .*/
         /* CRSを起動する場合には必ずこのエントリに登録し、かつユーザ毎の起動設定をしなければならない */
         public static OrgMenuDef orgMenuDef = new OrgMenuDef();
+
+        /// <summary>
+        /// Represent Biz menu_next inital setup
+        /// </summary>
+        public cvnet()
+        {
+            ComboListFLg = 1;
+            ComboListFlg2 = 0;
+            ComboListFlg3 = 1;
+            MstDialog = new Dictionary<string, string> {
+                { "商品", "SelShoView" },
+                { "得意先", "SelTokView@店種区分 between 1 and 3" },
+                { "Ac得意先", "SelTokView@店種区分 between 1 and 3 and 出荷停止FLG=0" },
+                { "全得意先", "SelTokView@出荷停止FLG=0" },
+                { "店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8)" },
+                { "Ac店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8) and 出荷停止FLG=0" },
+            }; 
+        }
 
         /// <summary>
         /// ■関数 GetSqlDisp = 最大取得件数を制限したSQL文を返す(表示用)
