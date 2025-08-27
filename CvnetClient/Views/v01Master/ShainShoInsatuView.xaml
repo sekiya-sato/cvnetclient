@@ -18,6 +18,10 @@
     <Window.DataContext>
         <vm:UsrlistViewModel />
     </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <!--<RowDefinition Height="Auto"/>-->
