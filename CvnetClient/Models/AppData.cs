@@ -29,7 +29,8 @@ namespace CvnetClient.Models {
 		public static IConfigurationSection AppConfig { get; set; }
 		public static string Url { get; set; }
 		public static ClassHttp? Http { get; set; }
-		public static cvnet cvnet { get; set; }
+		public static cvnet cvnet { get; set; } = new cvnet();
+		public static ClassEtc? ClassEtc { get; set; } = new ClassEtc(); 	
 		public static IDialogService DlgService { get; } = new DialogService();
 		public static int maxQueryCnt { get; set; } = 40;
 		public static int maxPrintCnt { get; set; } = 110;

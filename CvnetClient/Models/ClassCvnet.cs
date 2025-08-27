@@ -58,7 +58,30 @@ namespace CvnetBaseCore
                 { "全得意先", "SelTokView@出荷停止FLG=0" },
                 { "店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8)" },
                 { "Ac店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8) and 出荷停止FLG=0" },
+                { "勤怠店舗", "SelTokView@店種区分 IN (0,3,6,9)" },
+                { "倉庫", "SelTokView@(店種区分=0 OR 倉庫区分=9)" },
+                { "Ac倉庫", "SelTokView@(店種区分=0 OR 倉庫区分=9) and 出荷停止FLG=0" },
+                { "倉庫2", "SelTokView@店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)@名称CD01=:1" },
+                { "Ac倉庫2", "SelTokView@店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)@名称CD01=:1 and 出荷停止FLG=0" },
+                { "仕入先", "SelSirView" },
+                { "請求", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@出荷停止FLG=0 and ( (締日=:1 and 入金予定日!='0') or (締日2=:2 and 入金予定日2!='0') or (締日3=:3 and 入金予定日3!='0') )" },
+                { "Ac請求", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@締日=:1 and 出荷停止FLG=0" },
+                { "請求先登録", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@得意先CD=:1" },
+                { "支払", "SelTokView@(仕入先CD=支払先CD or 支払先CD='.')@締日=:1" },
+                { "支払先登録", "SelSirView@(仕入先CD=支払先CD or 支払先CD='.')@仕入先CD=:1" },
+                { "Ac移動倉庫", "SelTokView@店種区分<9  and 出荷停止FLG=0" },
+                { "移動倉庫", "SelTokView@店種区分<9" },
+                { "Ac取置倉庫", "SelTokView@在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7 and 出荷停止FLG=0" },
+                { "取置倉庫", "SelTokView@在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7" },
+                { "担当", "SelUsrView@就業FLG='0'" },
+                { "営業担当", "SelUsrView@営業FLG=1 and 就業FLG='0'" },
+                { "顧客", "SelKokyakuView" },
+                { "ポイント", "SelPointView" },
+                { "請求単位得意先", "SelTokView@店種区分 between 1 and 3 and 消費税計算方法=0" },
+                { "支払単位仕入先", "SelSirView@消費税計算方法=0" },
             }; 
+
+
         }
 
         /// <summary>
@@ -2797,5 +2820,5 @@ namespace CvnetBaseCore
         public string CrsName { get; set; } = string.Empty;
         public string CrsPara { get; set; } = string.Empty;
         public int UserFlg { get; set; }
-    }
+    } 
 }
