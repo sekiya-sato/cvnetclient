@@ -31,10 +31,6 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         string exeVer = ClassHttp.NetFramework;
         [ObservableProperty]
-        List<MenuData>? listMenu;
-        [ObservableProperty]
-        MenuData? selectedMenu;
-        [ObservableProperty]
         string? bottomMessage;
         [ObservableProperty]
         DateTime? dateNow;
@@ -56,15 +52,6 @@ namespace CvnetClient.ViewModels
         public bool IsSettingsSelected => CurrentPage is SettingPage;
 
         public MainMenuViewModel() {
-            // デザイン時にも使用するため、コンストラクタで初期化処理を行う
-            // メニュー初期化
-            ListMenu = MenuData.Initmenu();
-            // 選択メニュー初期化
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-                SelectedMenu = ListMenu[1];
-            else
-                selectedMenu = ListMenu[0];
-            // 日時更新タイマー初期化
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += (s, e) => DateNow = DateTime.Now;
             timer.Start();

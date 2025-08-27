@@ -10,29 +10,28 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for HomePage.xaml
+    /// Interaction logic for ShainShoInsatuView.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class ShainShoInsatuView : Window
     {
-        public HomePage()
+        public ShainShoInsatuView()
         {
             InitializeComponent();
         }
 
-        private void MainMenuButton_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn)
-            {
-                string title = btn.Content.ToString();
-                string pageId = btn.Tag?.ToString();
-                this.NavigationService?.Navigate(new DynamicPageView(title, pageId));
-            }
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

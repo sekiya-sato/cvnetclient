@@ -32,8 +32,7 @@
                 pack://application:,,,/CvnetClient;component/Fonts/#Noto Sans JP
             </FontFamily>
 
-            <sys:Double x:Key="AppFontSize">16</sys:Double>
-            <sys:Double x:Key="MenuFontSize">14</sys:Double>
+            
             <FontWeight x:Key="AppFontWeight">Bold</FontWeight>
 
             <Style TargetType="TextBlock" x:Key="NotoSansJPText">

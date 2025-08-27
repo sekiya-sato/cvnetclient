@@ -8,7 +8,7 @@
         xmlns:utils="clr-namespace:CvnetClient.Utils"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow1" Height="600" Width="1120">
+        Title="CV.net" Height="600" Width="1120">
     
     <Window.DataContext>
         <vm:MainMenuViewModel />

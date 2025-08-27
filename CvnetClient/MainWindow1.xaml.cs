@@ -36,7 +36,5 @@ namespace CvnetClient
                 vm.OnNavigated(e);
             }
         }
-
-
     }
 }
