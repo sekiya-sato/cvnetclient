@@ -12,6 +12,11 @@ namespace CvnetClient.ViewModels
     {
         [ObservableProperty]
         List<ListFlexItem>? listFlex = new List<ListFlexItem>();
-         
+
+        [ObservableProperty]
+        ListFlexConfig? listConfig = new ListFlexConfig();
+
+        [ObservableProperty]
+        string? whereClaus;
     }
 }

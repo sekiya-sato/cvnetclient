@@ -29,10 +29,8 @@
 				<DataGridTemplateColumn Header="検索項目" Width="3*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<ComboBox SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-								<ComboBoxItem Content="Item1"/>
-								<ComboBoxItem Content="Item2"/>
-								<ComboBoxItem Content="Item3"/>
+							<ComboBox ItemsSource="{Binding SearchItems, RelativeSource={RelativeSource AncestorType=UserControl}}"
+								      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"> 
 							</ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>

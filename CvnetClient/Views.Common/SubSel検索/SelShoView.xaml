@@ -61,8 +61,10 @@
         </materialDesign:Card>
 
         <!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="1" 
+		<uc:ListFlexView Grid.Row="1"
+						 Config="{Binding ListConfig}"
 						 Rows="{Binding ListFlex}" 
+						 QueryString="{Binding WhereClaus, Mode=TwoWay}"
 						 GridHeight="240" />
 
 		<!-- Action Buttons -->
