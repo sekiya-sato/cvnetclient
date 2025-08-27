@@ -149,7 +149,7 @@ namespace CvnetClient.ViewModels
             var win = new WebpdfView();
             var vm = win.DataContext as WebpdfViewModel;
             if (vm == null) return;
-            //vm.Pdfdata = url;
+            vm.Pdfdata = url;
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
