@@ -30,6 +30,8 @@
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<ComboBox ItemsSource="{Binding SearchItems, RelativeSource={RelativeSource AncestorType=UserControl}}"
+									  DisplayMemberPath="Value"
+									  SelectedValuePath="Key"
 								      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"> 
 							</ComboBox>
 						</DataTemplate>
@@ -43,7 +45,7 @@
 				<DataGridTemplateColumn Header="一覧" Width="0.5*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Content="List" Click="ListFrom_Click"/>
+							<Button Content="一覧" Click="ListFrom_Click"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
@@ -55,7 +57,7 @@
 				<DataGridTemplateColumn Header="一覧" Width="0.5*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Content="List" Click="ListTo_Click"/>
+							<Button Content="一覧" Click="ListTo_Click"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>

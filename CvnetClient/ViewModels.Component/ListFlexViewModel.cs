@@ -33,7 +33,7 @@ namespace CvnetClient.ViewModels.Component
     }
     
     /// <summary>
-    /// 
+    /// DataGrid Item Class
     /// </summary>
     public class ListFlexItem : INotifyPropertyChanged
     {
@@ -69,5 +69,14 @@ namespace CvnetClient.ViewModels.Component
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+
+    /// <summary>
+    /// ListFlexView Type_Def Item
+    /// </summary>
+    public class TypeDefItem
+    { 
+        public string column_name { get; set; }
+        public string data_type { get; set; }
     }
 }

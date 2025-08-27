@@ -1,7 +1,7 @@
-﻿using CvnetBaseCore;
-using CvnetClient.Models;
+﻿using CvnetClient.Models;
 using CvnetClient.ViewModels.Component;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,10 +11,13 @@ namespace CvnetClient.Views.Component
     /// Interaction logic for ListFlexView.xaml
     /// </summary>
     public partial class ListFlexView : UserControl
-    {  
+    {
+        private ObservableCollection<TypeDefItem> Type_Def;
+
         public ListFlexView()
         {
             InitializeComponent();
+            Type_Def = new ObservableCollection<TypeDefItem>();
             Rows = new ObservableCollection<ListFlexItem>();
             Rows.CollectionChanged += (s, e) => UpdateQuery(); 
         }
@@ -76,12 +79,12 @@ namespace CvnetClient.Views.Component
         // ComboBox Items
         public static readonly DependencyProperty SearchItemsProperty =
             DependencyProperty.Register(nameof(SearchItems),
-                typeof(IEnumerable<string>),
+                typeof(Dictionary<string,string>),
                 typeof(ListFlexView),
                 new PropertyMetadata(null)); 
-        public IEnumerable<string> SearchItems
+        public Dictionary<string, string> SearchItems
         {
-            get => (IEnumerable<string>)GetValue(SearchItemsProperty);
+            get => (Dictionary<string, string>)GetValue(SearchItemsProperty);
             set => SetValue(SearchItemsProperty, value);
         }
 
@@ -125,11 +128,11 @@ namespace CvnetClient.Views.Component
         private void OnInit(ListFlexConfig config)
         { 
             Rows.Clear(); 
-            SearchItems = new List<string>();
+            SearchItems = new Dictionary<string, string>();
 
             List<string> v_col = new List<string>();
             string tb_name = "";
-            string qs = "select 名称,名称CD from hc$master_meisho where 名称区分 = 'IDX' ";
+            string qs = "select 名称CD, 名称 from hc$master_meisho where 名称区分 = 'IDX' ";
             if (config.flag == 0)
             {
                 if (AppData.cvnet.config.oroshi != 0)
@@ -167,7 +170,35 @@ namespace CvnetClient.Views.Component
                 tb_name = "hc$master_shain";
             }
             qs += " and ランク > '0' order by 名称CD";
+            var unit_list = AppData.Http?.AspxSqlQuery(qs);
+            foreach (DataRow row in unit_list.Rows)
+            {
+                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
+                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
+                SearchItems.Add(key, string.Format("{0} {1}", key, value));
+            }
 
+            if (config.flag == 1)
+            {
+                SearchItems.Add("", "営業担当CD");
+                SearchItems.Add("", "請求先CD");
+            }
+            else if (config.flag == 2) 
+                SearchItems.Add("", "支払先CD"); 
+
+            string sql = "select column_name, lower(data_type) as data_type from all_tab_columns where lower(table_name) = '" + tb_name + "'"
+                       + " group by column_name,data_type order by max(column_id)";
+            var ret_csv2 = AppData.Http?.AspxSqlQuery(sql);
+            if (ret_csv2 != null && ret_csv2.Rows.Count > 0)
+            {
+                var list = (from DataRow dr in ret_csv2.Rows
+                            select new TypeDefItem
+                            {
+                                column_name = dr["column_name"].ToString() ?? string.Empty,
+                                data_type = dr["data_type"].ToString() ?? string.Empty
+                            }).OrderBy(c => c.column_name).ToList();
+                Type_Def = new ObservableCollection<TypeDefItem>(list);
+            }
         }
 
         private void AddRow_Click(object sender, RoutedEventArgs e)
