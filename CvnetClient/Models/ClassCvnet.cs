@@ -5,43 +5,43 @@ namespace CvnetBaseCore
 {
     public class cvnet
     {
-        public static int UserFlg = 0;  /* ユーザ別フラグ0-52(0=Package,1=Abl,2=Shirt,..) .*/
-        public static int UserFlg2 = 0; /* ユーザ別フラグ2 0=本番用, 1以上=仮 .*/
-        public static int MaxCntDisp = 40; /* オンライン系一覧件数 .*/
-        public static int MaxCntPrint = 120; /* 帳票系一覧件数 .*/
-        public static int Preview = 1; /* 1:ﾌﾟﾚﾋﾞｭｰあり,0:ﾌﾟﾚﾋﾞｭｰなし .*/
-        public static string FormTitleFontKind = "ＭＳ Ｐ明朝";
-        public static int FormTitleFontFace = 3;
-        public static string MenuXml = "menu_user01.xml"; /* メニュー用XMLファイル */
-        public static string SdMenuXml = "menu_sd_user00.xml";	/* メニュー用XMLファイル(mobile版) */
-        public static int ReadmeFlg = 1; /* Readme参照フラグ2 0=表示, 1=非表示 .*/
-        public static int MaxZaikoNissu = 100; /* 最大在庫日数 .*/
+        public int UserFlg = 0;  /* ユーザ別フラグ0-52(0=Package,1=Abl,2=Shirt,..) .*/
+        public int UserFlg2 = 0; /* ユーザ別フラグ2 0=本番用, 1以上=仮 .*/
+        public int MaxCntDisp = 40; /* オンライン系一覧件数 .*/
+        public int MaxCntPrint = 120; /* 帳票系一覧件数 .*/
+        public int Preview = 1; /* 1:ﾌﾟﾚﾋﾞｭｰあり,0:ﾌﾟﾚﾋﾞｭｰなし .*/
+        public string FormTitleFontKind = "ＭＳ Ｐ明朝";
+        public int FormTitleFontFace = 3;
+        public string MenuXml = "menu_user01.xml"; /* メニュー用XMLファイル */
+        public string SdMenuXml = "menu_sd_user00.xml";	/* メニュー用XMLファイル(mobile版) */
+        public int ReadmeFlg = 1; /* Readme参照フラグ2 0=表示, 1=非表示 .*/
+        public int MaxZaikoNissu = 100; /* 最大在庫日数 .*/
 
-        public static int PassLength = 8; /* パスワード文字数下限値 */
-        public static int MaxErrCnt = 4; /* ログイン制御回数 */
+        public int PassLength = 8; /* パスワード文字数下限値 */
+        public int MaxErrCnt = 4; /* ログイン制御回数 */
 
         /* 初期設定フラグレコード */
-        public static Config config = new Config();
-        public static int ImpDateDiff = 7; /* 範囲指定時に補正する日付の日数 .*/
-        public static int LoginDialogFlag = 1;
-        public static int VerClear = 0; /* 起動時にキャッシュクリアしたかどうか .*/
+        public Config config = new Config();
+        public int ImpDateDiff = 7; /* 範囲指定時に補正する日付の日数 .*/
+        public int LoginDialogFlag = 1;
+        public int VerClear = 0; /* 起動時にキャッシュクリアしたかどうか .*/
 
-        public static int ComboListFLg = 0; /* BtListのOnTouchでの一覧表示FLG 1:ダイアログ表示 */
-        public static int ComboListFlg2 = 0; /* ComboKey押下時はコンボボックス内で一覧表示 */
-        public static int ComboListFlg3 = 0; /* 伝票内での一覧表示 */
-        public static string BizUrl = string.Empty;
+        public int ComboListFLg = 0; /* BtListのOnTouchでの一覧表示FLG 1:ダイアログ表示 */
+        public int ComboListFlg2 = 0; /* ComboKey押下時はコンボボックス内で一覧表示 */
+        public int ComboListFlg3 = 0; /* 伝票内での一覧表示 */
+        public string BizUrl = string.Empty;
 
-        public static Array HelfDef;
-        public static Dictionary<string, string> MstDialog; /* マスタ取得用専用ダイアログ保存 */
-        public static int TanaFlg = 0; /* 棚卸の基準　0:月次、1:棚卸日指定 */
-        public static int PosFlg = 0; /* POSの実行　0:POS連携なし、1:TEC 、2:三谷*/
-        public static int YosanFlg = 0; /* 0 店別ブランド別の予算、1 日別の予算*/
-        public static int YosanFlg2 = 0; /* 0 予算表 ブランド項目なし 1 予算表ブランド項目あり*/
-        public static int JdaihenFlg = 0; /* 0 色サイズ展開無し、1 色サイズ展開あり */
+        public Array HelfDef;
+        public Dictionary<string, string> MstDialog; /* マスタ取得用専用ダイアログ保存 */
+        public int TanaFlg = 0; /* 棚卸の基準　0:月次、1:棚卸日指定 */
+        public int PosFlg = 0; /* POSの実行　0:POS連携なし、1:TEC 、2:三谷*/
+        public int YosanFlg = 0; /* 0 店別ブランド別の予算、1 日別の予算*/
+        public int YosanFlg2 = 0; /* 0 予算表 ブランド項目なし 1 予算表ブランド項目あり*/
+        public int JdaihenFlg = 0; /* 0 色サイズ展開無し、1 色サイズ展開あり */
 
-        public static string[] OrgMenuSub; 	/* オリジナルサブメニュー定義 .*/
+        public string[] OrgMenuSub; 	/* オリジナルサブメニュー定義 .*/
         /* CRSを起動する場合には必ずこのエントリに登録し、かつユーザ毎の起動設定をしなければならない */
-        public static OrgMenuDef orgMenuDef = new OrgMenuDef();
+        public OrgMenuDef orgMenuDef = new OrgMenuDef();
 
         /// <summary>
         /// Represent Biz menu_next inital setup
@@ -58,7 +58,92 @@ namespace CvnetBaseCore
                 { "全得意先", "SelTokView@出荷停止FLG=0" },
                 { "店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8)" },
                 { "Ac店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8) and 出荷停止FLG=0" },
-            }; 
+                { "勤怠店舗", "SelTokView@店種区分 IN (0,3,6,9)" },
+                { "倉庫", "SelTokView@(店種区分=0 OR 倉庫区分=9)" },
+                { "Ac倉庫", "SelTokView@(店種区分=0 OR 倉庫区分=9) and 出荷停止FLG=0" },
+                { "倉庫2", "SelTokView@店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)@名称CD01=:1" },
+                { "Ac倉庫2", "SelTokView@店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)@名称CD01=:1 and 出荷停止FLG=0" },
+                { "仕入先", "SelSirView" },
+                { "請求", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@出荷停止FLG=0 and ( (締日=:1 and 入金予定日!='0') or (締日2=:2 and 入金予定日2!='0') or (締日3=:3 and 入金予定日3!='0') )" },
+                { "Ac請求", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@締日=:1 and 出荷停止FLG=0" },
+                { "請求先登録", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@得意先CD=:1" },
+                { "支払", "SelTokView@(仕入先CD=支払先CD or 支払先CD='.')@締日=:1" },
+                { "支払先登録", "SelSirView@(仕入先CD=支払先CD or 支払先CD='.')@仕入先CD=:1" },
+                { "Ac移動倉庫", "SelTokView@店種区分<9  and 出荷停止FLG=0" },
+                { "移動倉庫", "SelTokView@店種区分<9" },
+                { "Ac取置倉庫", "SelTokView@在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7 and 出荷停止FLG=0" },
+                { "取置倉庫", "SelTokView@在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7" },
+                { "担当", "SelUsrView@就業FLG='0'" },
+                { "営業担当", "SelUsrView@営業FLG=1 and 就業FLG='0'" },
+                { "顧客", "SelKokyakuView" },
+                { "ポイント", "SelPointView" },
+                { "請求単位得意先", "SelTokView@店種区分 between 1 and 3 and 消費税計算方法=0" },
+                { "支払単位仕入先", "SelSirView@消費税計算方法=0" },
+            };
+
+            /***** 汎用検索設定 *****/
+
+            /* 商品分類検索BOX追加項目 */
+            AppData.ClassEtc.SearchShohinCols = new string[7];
+            AppData.ClassEtc.SearchShohinCols[0] = "上代";
+            AppData.ClassEtc.SearchShohinCols[1] = "原価";
+            AppData.ClassEtc.SearchShohinCols[2] = "JANコード1";
+            AppData.ClassEtc.SearchShohinCols[3] = "店頭投入日";
+            AppData.ClassEtc.SearchShohinCols[4] = "リピート日";
+            AppData.ClassEtc.SearchShohinCols[5] = "メーカー品番";
+            AppData.ClassEtc.SearchShohinCols[6] = "商品CD";
+
+            /* 得意先分類検索BOX追加項目 */
+            AppData.ClassEtc.SearchTokuiCols = new string[7];
+            AppData.ClassEtc.SearchTokuiCols[0] = "店種区分";
+            AppData.ClassEtc.SearchTokuiCols[1] = "営業担当CD";
+            AppData.ClassEtc.SearchTokuiCols[2] = "請求先CD";
+            AppData.ClassEtc.SearchTokuiCols[3] = "締日";
+            AppData.ClassEtc.SearchTokuiCols[4] = "入金予定月";
+            AppData.ClassEtc.SearchTokuiCols[5] = "入金予定日";
+            AppData.ClassEtc.SearchTokuiCols[6] = "出荷停止FLG";
+
+            /* 仕入先分類検索BOX追加項目 */
+            AppData.ClassEtc.SearchSiireCols = new string[6];
+            AppData.ClassEtc.SearchSiireCols[0] = "発注停止FLG";
+            AppData.ClassEtc.SearchSiireCols[1] = "仕入区分";
+            AppData.ClassEtc.SearchSiireCols[2] = "支払先CD";
+            AppData.ClassEtc.SearchSiireCols[3] = "締日";
+            AppData.ClassEtc.SearchSiireCols[4] = "支払予定月";
+            AppData.ClassEtc.SearchSiireCols[5] = "支払予定日";
+
+            AppData.ClassEtc.ListFlexPara = new List<CsvItem>()
+            {
+                new CsvItem { col01 = "大分類" },
+                new CsvItem { col01 = "中分類" },
+                new CsvItem { col01 = "仕入先" },
+                new CsvItem { col01 = "シーズン" },
+                new CsvItem { col01 = "JANコード1" },
+                new CsvItem { col01 = "ｱｲﾃﾑ" },
+                new CsvItem { col01 = "店頭投入日" },
+                new CsvItem { col01 = "リピート日" },
+                new CsvItem { col01 = "商品CD" },
+            };
+
+            AppData.ClassEtc.Bunrui_List0 = new List<CsvItem>()
+            {
+                new CsvItem { col01 = "大分類" },
+                new CsvItem { col01 = "中分類" },
+                new CsvItem { col01 = "仕入先" },
+                new CsvItem { col01 = "シーズン" },
+                new CsvItem { col01 = "JANコード1" },
+                new CsvItem { col01 = "ｱｲﾃﾑ" },
+                new CsvItem { col01 = "店頭投入日" },
+                new CsvItem { col01 = "リピート日" },
+                new CsvItem { col01 = "商品CD" },
+            };
+
+            AppData.ClassEtc.SearchShohinStr = new string[1];
+            AppData.ClassEtc.SearchShohinStr[0] = "商品CD";
+
+            MstDialog.Add("siire", "SelSirView");
+            MstDialog.Add("tokui", "SelTokView");
+            MstDialog.Add("社員", "SelUsrView");
         }
 
         /// <summary>
@@ -69,7 +154,7 @@ namespace CvnetBaseCore
         /// <returns>戻値 String = 件数制限されたSQL文</returns>
         public static string GetSqlDisp(string p_querystr, int p_line = 0)
         {
-            string ret_sqlstrwrk = "select * from (" + p_querystr + ") where rownum<=" + ((p_line == 0) ? cvnet.MaxCntDisp : p_line);
+            string ret_sqlstrwrk = "select * from (" + p_querystr + ") where rownum<=" + ((p_line == 0) ? AppData.cvnet.MaxCntDisp : p_line);
             return ret_sqlstrwrk;
         }
 
@@ -791,7 +876,7 @@ namespace CvnetBaseCore
             /* 協和バッグ */
             int v_next = 0;
 
-            if (UserFlg == 56)
+            if (AppData.cvnet.UserFlg == 56)
             {
                 if (p_kubun == "ブランド")
                 {
@@ -1575,7 +1660,7 @@ namespace CvnetBaseCore
                     sql_query += " and メーカーCD='" + ClassSatoo.SHAIN_CD + "'";
                 }
                 /* ｴｽﾗｸﾞｼﾞｭｰﾙのみ */
-                if (config.UserFlg == 56) sql_query += " and 承認FLG=1";
+                if (AppData.cvnet.UserFlg == 56) sql_query += " and 承認FLG=1";
 
                 sql_query += " order by 商品CD";
                 sql_query = GetSqlDisp(sql_query);
@@ -2631,11 +2716,11 @@ namespace CvnetBaseCore
         public static string GetQueryStrHoujin(string arias = "")
         {
             string col_str = string.Empty;
-            if (config.MultiCoop != null && config.MultiCoop >= 0)
+            if (AppData.cvnet.config.MultiCoop != null && AppData.cvnet.config.MultiCoop >= 0)
             {
                 col_str += " and ( ";
                 if (arias != "" || arias != null) col_str += arias + ".";
-                col_str += "法人CD='" + config.MultiCoop + "' ";
+                col_str += "法人CD='" + AppData.cvnet.config.MultiCoop + "' ";
                 col_str += " or ";
                 if (arias != "" || arias != null) col_str += arias + ".";
                 col_str += "法人CD='.') ";
@@ -2805,5 +2890,5 @@ namespace CvnetBaseCore
         public string CrsName { get; set; } = string.Empty;
         public string CrsPara { get; set; } = string.Empty;
         public int UserFlg { get; set; }
-    }
+    } 
 }

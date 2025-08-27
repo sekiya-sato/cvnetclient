@@ -428,6 +428,12 @@ namespace CvnetClient.ViewModels
 
         #region Dialog Search
         [RelayCommand]
+        public void SelDspUpdate()
+        {
+            AppData.DlgService.GetSelSho();
+        }
+
+        [RelayCommand]
         public void SelBrand()
         {
             var get_sel00 = AppData.DlgService.GetSel00("ブランド");
