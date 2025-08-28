@@ -20,5 +20,10 @@ namespace CvnetClient.Views {
 		public LoginView() {
 			InitializeComponent();
 		}
-	}
+
+        private void LoginIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+    }
 }
