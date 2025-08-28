@@ -31,15 +31,15 @@
 						<DataTemplate>
 							<ComboBox ItemsSource="{Binding SearchItems, RelativeSource={RelativeSource AncestorType=UserControl}}"
 									  DisplayMemberPath="Value"
-									  SelectedValuePath="Key"
-								      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"> 
+									  SelectedValuePath="Value"
+								      SelectedValue="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"> 
 							</ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 
 				<!-- 選択項目のコード(FROM) -->
-				<DataGridTextColumn Header="選択項目のコード(FROM)" Binding="{Binding FromValue}" Width="2*"/>
+				<DataGridTextColumn Header="選択項目のコード(FROM)" Binding="{Binding FromValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="2*"/>
 
 				<!-- 一覧 (FROM) -->
 				<DataGridTemplateColumn Header="一覧" Width="0.5*">
@@ -51,7 +51,7 @@
 				</DataGridTemplateColumn>
 
 				<!-- 選択項目のコード(TO) -->
-				<DataGridTextColumn Header="選択項目のコード(TO)" Binding="{Binding ToValue}" Width="2*"/>
+				<DataGridTextColumn Header="選択項目のコード(TO)" Binding="{Binding ToValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="2*"/>
 
 				<!-- 一覧 (TO) -->
 				<DataGridTemplateColumn Header="一覧" Width="0.5*">

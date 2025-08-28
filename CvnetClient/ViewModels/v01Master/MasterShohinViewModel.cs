@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
-using CvnetClient.Models; 
+using CvnetClient.Models;
+using CvnetClient.Views;
 using System.Collections.ObjectModel;
 using System.Data; 
 
@@ -430,7 +431,12 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void SelDspUpdate()
         {
-            AppData.DlgService.GetSelSho();
+            //AppData.DlgService.GetSelSho();
+            var view = new SelShoView();
+            var vm = view.DataContext as SelShoViewModel;
+            if (view == null || vm == null) return;
+
+            var ret = ClientLib.ShowDialogView(view, this);
         }
 
         [RelayCommand]
