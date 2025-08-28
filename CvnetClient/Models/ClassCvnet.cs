@@ -1093,7 +1093,15 @@ namespace CvnetBaseCore
                     v_retu = "社員CD||' '||名前 社員DATA";
                 }
                 sql_query = "select " + v_retu + " from HC$MASTER_SHAIN ";
-                sql_query += " where 社員CD>=:1 and 就業FLG='0' order by 社員CD";
+                if (v_para != null)
+                {
+                    sql_query += " where 社員CD>=:1 and 就業FLG='0' order by 社員CD";
+                }
+                else { 
+                    sql_query += " where 就業FLG='0' order by 社員CD";
+                }
+
+                    
                 sql_query = GetSqlDisp(sql_query);
                 ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
             }

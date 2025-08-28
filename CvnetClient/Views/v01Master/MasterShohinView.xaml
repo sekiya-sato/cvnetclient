@@ -274,7 +274,6 @@
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Command="{Binding SelItemCommand}"
 										Foreground="{StaticResource TitleLabelColor}" 
 										Content="アイテム" />
 								<TextBox Height="30" Width="300"
@@ -299,7 +298,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelSeasonCommand}"
 										Content="シーズン" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -319,8 +317,7 @@
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"
-										Command="{Binding SelMaterialCommand}"
+										Foreground="{StaticResource TitleLabelColor}" 
 										Content="素材" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -343,8 +340,7 @@
 								<Button Height="30" Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"
-										Command="{Binding SelDesignCommand}"
+										Foreground="{StaticResource TitleLabelColor}" 
 										Content="ﾃﾞｻﾞｲﾅｰ" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -365,7 +361,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelMadeInCommand}"
 										Content="原産国" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -389,7 +384,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelExhibitCommand}"
 										Content="展示会" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -410,7 +404,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelManufactCommand}"
 										Content="メーカー" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -434,8 +427,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B01"
 										Content="補足1" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -456,8 +447,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B02"
 										Content="補足2" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -480,9 +469,7 @@
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B03"
+										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足3" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -503,8 +490,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B04"
 										Content="補足4" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -528,8 +513,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B05"
 										Content="補足5" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -550,8 +533,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B06"
 										Content="補足6" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -575,8 +556,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B07"
 										Content="補足7" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -597,8 +576,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B08"
 										Content="補足8" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -621,9 +598,7 @@
 								<Button Height="30" Width="85" 
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B09"
+										Foreground="{StaticResource TitleLabelColor}"  
 										Content="補足9" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -644,8 +619,6 @@
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B10"
 										Content="補足10" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
@@ -792,10 +765,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center" 
-										  ItemsSource="{Binding SalesCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.SalesCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -803,22 +774,19 @@
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}" 
+									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="売上基準自動補充" />
 								<ComboBox Width="200" Height="30"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding AutoDistList}"
 										  DisplayMemberPath="Value" 
-										  SelectedValuePath="Key" 
-										  SelectedValue="{Binding EditProduct.AutoDistFLG}"
+										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Button Height="30" Width="85"  
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
 										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelStandWareCommand}"
 										Content="基準倉庫CD" />
 								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
@@ -827,14 +795,7 @@
 										 d:Text="基準倉庫CD：Data" 
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}" 
-										 TextWrapping="Wrap">
-									<TextBox.Text>
-										<MultiBinding StringFormat='{}{0} {1}'>
-											<Binding Path="EditProduct.StandWareCD" />
-											<Binding Path="EditProduct.StockName" />
-										</MultiBinding>
-									</TextBox.Text>
-								</TextBox>
+										 TextWrapping="Wrap" />
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
@@ -844,10 +805,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding DeliverCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.DeliveryCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -861,10 +820,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding EcConnectList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.EcConnect}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -875,10 +832,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding EcReserveList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.EcReserve}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -889,10 +844,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"  
-										  ItemsSource="{Binding PurchCateList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.PurchaseCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -906,10 +859,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding DgCalcList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.DgCalcCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -933,10 +884,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding DgCutOffList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.DgCutOffSpec}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -947,10 +896,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding ConPurcCateList}"
 										  DisplayMemberPath="Value"
-									  	  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.ConsignPurcCate}"
+										  SelectedValuePath="Key"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -964,10 +911,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding PosCateList}"
-										  DisplayMemberPath="Value"
-										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.PosCate}"
+										  DisplayMemberPath="Value" 
+										  SelectedValuePath="Key" 
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -978,10 +923,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding RepresNoFlgList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.RepresentNoFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -992,10 +935,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding ProdCateFlgList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.ProdCateFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 								<Label Height="30" Width="85"
 									   Margin="5,0,0,0"
@@ -1006,10 +947,8 @@
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding TaxCDList}"
 										  DisplayMemberPath="Value"
 										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.TaxCD}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -1041,12 +980,8 @@
 									   Content="ｻｲｽﾞ表示" />
 								<ComboBox Width="150" Height="30"
 										  Margin="5,0,0,0"
-										  VerticalAlignment="Top"
+										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
-										  ItemsSource="{Binding ProdSizCateList}"
-										  DisplayMemberPath="Value"
-										  SelectedValuePath="Key"
-										  SelectedValue="{Binding EditProduct.ProdSizeCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -1227,9 +1162,7 @@
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y01"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備01" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1238,20 +1171,11 @@
 									 d:Text="予備01：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve01" />
-										<Binding Path="EditProduct.ReserveName01" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y02"
 									Content="予備02" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1260,14 +1184,7 @@
 									 d:Text="予備02：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve02" />
-										<Binding Path="EditProduct.ReserveName02" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1275,8 +1192,6 @@
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y03"
 									Content="予備03" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1285,20 +1200,11 @@
 									 d:Text="予備03：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve03" />
-										<Binding Path="EditProduct.ReserveName03" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y04"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備04" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1307,14 +1213,7 @@
 									 d:Text="予備04：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve04" />
-										<Binding Path="EditProduct.ReserveName04" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1322,8 +1221,6 @@
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y05"
 									Content="予備05" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1332,20 +1229,11 @@
 									 d:Text="予備05：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve05" />
-										<Binding Path="EditProduct.ReserveName05" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y06"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備06" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1354,23 +1242,14 @@
 									 d:Text="予備06：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve06" />
-										<Binding Path="EditProduct.ReserveName06" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y07"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備07" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1379,20 +1258,11 @@
 									 d:Text="予備07：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve07" />
-										<Binding Path="EditProduct.ReserveName07" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y08"
 									Content="予備08" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1401,23 +1271,14 @@
 									 d:Text="予備08：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve08" />
-										<Binding Path="EditProduct.ReserveName08" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y09"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備09" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1426,20 +1287,11 @@
 									 d:Text="予備09：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve09" />
-										<Binding Path="EditProduct.ReserveName09" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y10"
 									Content="予備10" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1448,14 +1300,7 @@
 									 d:Text="予備10：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve10" />
-										<Binding Path="EditProduct.ReserveName10" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1463,8 +1308,6 @@
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y11"
 									Content="予備11" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1473,20 +1316,11 @@
 									 d:Text="予備11：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve11" />
-										<Binding Path="EditProduct.ReserveName11" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y12"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備12" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1495,14 +1329,7 @@
 									 d:Text="予備12：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve12" />
-										<Binding Path="EditProduct.ReserveName12" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1510,8 +1337,6 @@
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y13"
 									Content="予備13" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1520,20 +1345,11 @@
 									 d:Text="予備13：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve13" />
-										<Binding Path="EditProduct.ReserveName13" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y14"
 									Content="予備14" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1542,14 +1358,7 @@
 									 d:Text="予備14：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve14" />
-										<Binding Path="EditProduct.ReserveName14" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1557,8 +1366,6 @@
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y15"
 									Content="予備15" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1567,20 +1374,11 @@
 									 d:Text="予備15：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve15" />
-										<Binding Path="EditProduct.ReserveName15" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y16"
 									Content="予備16" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1589,14 +1387,7 @@
 									 d:Text="予備16：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve16" />
-										<Binding Path="EditProduct.ReserveName16" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1604,8 +1395,6 @@
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y17"
 									Content="予備17" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1614,20 +1403,11 @@
 									 d:Text="予備17：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve17" />
-										<Binding Path="EditProduct.ReserveName17" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
 									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y18"
 									Content="予備18" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1636,23 +1416,14 @@
 									 d:Text="予備18：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve18" />
-										<Binding Path="EditProduct.ReserveName18" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y19"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備19" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1661,20 +1432,11 @@
 									 d:Text="予備19：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve19" />
-										<Binding Path="EditProduct.ReserveName19" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y20"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="予備20" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
@@ -1683,14 +1445,7 @@
 									 d:Text="予備20：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.Reserve20" />
-										<Binding Path="EditProduct.ReserveName20" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1700,14 +1455,13 @@
 								   Foreground="{StaticResource TitleLabelColor}"
 								   Content="メモ" />
 							<TextBox Height="30" Width="700"
-									 Margin="5,0,0,0"
-									 HorizontalAlignment="Left"
-									 VerticalAlignment="Top"
-									 d:Text="メモ：Data" 
-									 Text="{Binding EditProduct.Memo}"
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
-									 TextWrapping="Wrap" />
+								 Margin="5,0,0,0"
+								 HorizontalAlignment="Left"
+								 VerticalAlignment="Top"
+								 d:Text="メモ：Data" 
+								 Foreground="{StaticResource plainTextColor0}"
+								 Style="{StaticResource WinTextBox}"
+								 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1720,33 +1474,22 @@
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center" 
-									  ItemsSource="{Binding ZeroPriCateList}"
 									  DisplayMemberPath="Value" 
 									  SelectedValuePath="Key" 
-									  SelectedValue="{Binding EditProduct.ZeroPriceCate}"
 									  Style="{StaticResource SearchableComboBox1}"/>
 							<Button Height="30" Width="85"  
 									Margin="5,0,0,0"
 									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"  
-									Command="{Binding SelGenderCateCommand}"
-									CommandParameter="MLK"
+									Foreground="{StaticResource TitleLabelColor}" 
 									Content="男女区分" />
 							<TextBox Height="30" Width="200"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
-									 d:Text="男女区分：Data"
+									 d:Text="男女区分：Data" 
 									 Foreground="{StaticResource plainTextColor0}"
 									 Style="{StaticResource WinTextBox}"  
-									 TextWrapping="Wrap">
-								<TextBox.Text>
-									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="EditProduct.GenderCate" />
-										<Binding Path="EditProduct.GenderCateName" />
-									</MultiBinding>
-								</TextBox.Text>
-							</TextBox>
+									 TextWrapping="Wrap" /> 
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1759,10 +1502,8 @@
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center"
-									  ItemsSource="{Binding TaxCalcList}"
 									  DisplayMemberPath="Value"
 									  SelectedValuePath="Key"
-									  SelectedValue="{Binding EditProduct.TaxCalcMethod}"
 									  Style="{StaticResource SearchableComboBox1}"/>
 							<Label Height="30" Width="85"
 								   Margin="5,0,0,0"
@@ -1773,10 +1514,8 @@
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center" 
-									  ItemsSource="{Binding ColOutCateList}"
 									  DisplayMemberPath="Value" 
 									  SelectedValuePath="Key" 
-									  SelectedValue="{Binding EditProduct.CollabOutCate}"
 									  Style="{StaticResource SearchableComboBox1}"/>
 							<Button Height="30" Width="85"
 									Margin="5,0,0,0"
