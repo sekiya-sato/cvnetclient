@@ -31,45 +31,45 @@ namespace CvnetClient.ViewModels.Component
         /// </summary>
         public List<CsvItem> init_csv {  get; set; } = new List<CsvItem>(); 
     }
-    
+
     /// <summary>
     /// DataGrid Item Class
     /// </summary>
     public class ListFlexItem : INotifyPropertyChanged
     {
         private int _no;
-        private string _selectedItem = "";
-        private string _fromValue = "";
-        private string _toValue = "";
-
         public int No
         {
             get => _no;
-            set { _no = value; OnPropertyChanged(); }
+            set { if (_no != value) { _no = value; OnPropertyChanged(); } }
         }
 
+        private string _selectedItem = "";
         public string SelectedItem
         {
             get => _selectedItem;
-            set { _selectedItem = value; OnPropertyChanged(); }
+            set { if (_selectedItem != value) { _selectedItem = value; OnPropertyChanged(); } }
         }
 
+        private string _fromValue = "";
         public string FromValue
         {
             get => _fromValue;
-            set { _fromValue = value; OnPropertyChanged(); }
+            set { if (_fromValue != value) { _fromValue = value; OnPropertyChanged(); } }
         }
 
+        private string _toValue = "";
         public string ToValue
         {
             get => _toValue;
-            set { _toValue = value; OnPropertyChanged(); }
+            set { if (_toValue != value) { _toValue = value; OnPropertyChanged(); } }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string name = null) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        protected void OnPropertyChanged(string propertyName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
 
     /// <summary>
     /// ListFlexView Type_Def Item

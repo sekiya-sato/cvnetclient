@@ -1,6 +1,7 @@
 ﻿using CvnetClient.Models;
 using CvnetClient.ViewModels.Component;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,16 +27,7 @@ namespace CvnetClient.Views.Component
         public ObservableCollection<ListFlexItem> Rows
         {
             get => (ObservableCollection<ListFlexItem>)GetValue(RowsProperty);
-            set
-            {
-                SetValue(RowsProperty, value);
-                if (value != null)
-                {
-                    foreach (var r in value)
-                        r.PropertyChanged += (s, e) => UpdateQuery();
-                }
-                UpdateQuery();
-            }
+            set => SetValue(RowsProperty, value);
         }
 
         public static readonly DependencyProperty RowsProperty =
@@ -43,7 +35,7 @@ namespace CvnetClient.Views.Component
                 nameof(Rows),
                 typeof(ObservableCollection<ListFlexItem>),
                 typeof(ListFlexView),
-                new PropertyMetadata(new ObservableCollection<ListFlexItem>())
+                new PropertyMetadata(null,OnRowsChanged)
         ); 
 
         // DataGrid size
@@ -114,10 +106,59 @@ namespace CvnetClient.Views.Component
         {
             get => (string)GetValue(QueryStringProperty);
             set => SetValue(QueryStringProperty, value);
-        } 
+        }
         #endregion
 
-        #region Event List 
+        #region Event List  
+        private static void OnRowsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ListFlexView control)
+            {
+                if (e.OldValue is ObservableCollection<ListFlexItem> oldRows)
+                {
+                    oldRows.CollectionChanged -= control.Rows_CollectionChanged;
+                    foreach (var r in oldRows)
+                        r.PropertyChanged -= control.Row_PropertyChanged;
+                }
+
+                if (e.NewValue is ObservableCollection<ListFlexItem> newRows)
+                {
+                    newRows.CollectionChanged += control.Rows_CollectionChanged;
+                    foreach (var r in newRows)
+                        r.PropertyChanged += control.Row_PropertyChanged;
+                }
+
+                control.UpdateQuery();
+            }
+        }
+
+        /// <summary>
+        /// Trigger when delete a row / add a new row in the DataGrid
+        /// </summary>
+        private void Rows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (ListFlexItem item in e.NewItems)
+                    item.PropertyChanged += Row_PropertyChanged;
+            }
+            if (e.OldItems != null)
+            {
+                foreach (ListFlexItem item in e.OldItems)
+                    item.PropertyChanged -= Row_PropertyChanged;
+            }
+
+            UpdateQuery(); // refresh when rows added/removed
+        }
+
+        /// <summary>
+        /// Trigger when edit a value in an existing row
+        /// </summary>
+        private void Row_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateQuery();
+        }
+
         private static void OnConfigChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ListFlexView view && e.NewValue is ListFlexConfig config)
@@ -175,7 +216,7 @@ namespace CvnetClient.Views.Component
             {
                 string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
                 string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                SearchItems.Add(key, string.Format("{0} {1}", key, value));
+                SearchItems.Add(key, value);
             }
 
             if (config.flag == 1)
