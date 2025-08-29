@@ -157,13 +157,12 @@
 				<Label
 					Grid.Row="0"
 					Grid.Column="0"
-					Padding="4,2"
-					Background="#CFFFCF"
+					Padding="4,2"					
 					Content="名称区分" />
 				<TextBox
 					Grid.Row="0"
 					Grid.Column="1"
-					Background="#F7FFDF"
+					Style="{DynamicResource ReadOnlyTextBox}"
 					Text="{Binding EditMeisho.Kubun}" />
 				<Button
 					Grid.Row="0"
@@ -176,8 +175,7 @@
 				<Label
 					Grid.Row="1"
 					Grid.Column="0"
-					Padding="4,2"
-					Background="#CFFFCF"
+					Padding="4,2"					
 					Content="名称CD" />
 				<TextBox
 					Grid.Row="1"
@@ -186,42 +184,36 @@
 				<Label
 					Grid.Row="2"
 					Grid.Column="0"
-					Padding="4,2"
-					Background="#CFFFCF"
+					Padding="4,2"					
 					Content="名称" />
-				<TextBox
+                <TextBox
 					Grid.Row="2"
 					Grid.Column="1"
 					Text="{Binding EditMeisho.Meisho}" />
-
-				<Label
+                <Label
 					Grid.Row="3"
 					Grid.Column="0"
 					Padding="4,2"
-					Background="#CFFFCF"
+					
 					Content="{Binding LabelRyakusho}" />
-				<TextBox
+                <TextBox
 					Grid.Row="3"
 					Grid.Column="1"
 					Text="{Binding EditMeisho.RyakuShou}" />
-
-				<Label
+                <Label
 					Grid.Row="4"
 					Grid.Column="0"
-					Padding="4,2"
-					Background="#CFFFCF"
+					Padding="4,2"					
 					Content="{Binding LabelDispFlg}" />
-				<TextBox
+                <TextBox
 					Grid.Row="4"
 					Grid.Column="1"
 					Text="{Binding EditMeisho.Rank}" />
-
-
-				<Label
+                <Label
 					Grid.Row="5"
 					Grid.Column="0"
 					Padding="4,2"
-					Background="#CFFFCF"
+					
 					Content="{Binding LabelRenban}" />
 				<TextBox
 					Grid.Row="5"
@@ -231,16 +223,14 @@
 				<Label
 					Grid.Row="6"
 					Grid.Column="0"
-					Padding="4,2"
-					Background="#CFFFCF"
+					Padding="4,2"					
 					Content="{Binding LabelKana}" />
-				<TextBox Grid.Row="6" Grid.Column="1" />
-
-				<Label
+                <TextBox Grid.Row="6" Grid.Column="1" />
+                <Label
 					Grid.Row="7"
 					Grid.Column="0"
 					Padding="4,2"
-					Background="#CFFFCF"
+					
 					Content="POS区分" />
 				<TextBox
 					Grid.Row="7"
@@ -258,30 +248,30 @@
 					Grid.Row="8"
 					Grid.Column="0"
 					Padding="4,2"
-					Background="#CFFFCF"
+					
 					Content="登録日時" />
 				<TextBox
 					Grid.Row="8"
 					Grid.Column="1"
-					Background="#FFF7DF"
+					
 					Text="{Binding EditMeisho.VdateCreate, Converter={StaticResource VdateConverter}}" />
 				<Label
 					Grid.Row="9"
 					Grid.Column="0"
 					Padding="4,2"
-					Background="#CFFFCF"
+					
 					Content="更新日時" />
 				<TextBox
 					Grid.Row="9"
 					Grid.Column="1"
-					Background="#FFF7DF"
+					
 					Text="{Binding EditMeisho.VdateUpdate, Converter={StaticResource VdateConverter}}" />
 
 				<Label
 					Grid.Row="10"
 					Grid.Column="0"
 					Padding="4,2"
-					Background="#CFFFCF"
+					
 					Content="最終修正者" />
 				<TextBox
 					Grid.Row="10"
@@ -320,7 +310,7 @@
 		</StackPanel>
 
 		<!--  戻るボタン  -->
-		<Button
+		<Button Style="{DynamicResource }"
 			Grid.Row="2"
 			Grid.Column="2"
 			Width="120"
@@ -329,7 +319,7 @@
 			HorizontalAlignment="Right"
 			VerticalAlignment="Bottom"
 			Command="{Binding ExitCommand}"
-			Content="戻る(ESC)"
+			
 			IsCancel="True" />
 
 		<!--  下部バー  -->

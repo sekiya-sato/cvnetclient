@@ -22,5 +22,16 @@ namespace CvnetClient.Service
 
             return vm;
         }
+
+        public SelShoViewModel GetSelSho()
+        { 
+            var view = new SelShoView();
+            var vm = view.DataContext as SelShoViewModel;
+            if (view == null || vm == null) return null;
+
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null; 
+            return vm; 
+        }
     }
 }

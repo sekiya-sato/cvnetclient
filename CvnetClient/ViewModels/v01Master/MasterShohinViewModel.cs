@@ -92,15 +92,14 @@ namespace CvnetClient.ViewModels
                 {  1, "1 商品外" }
             };
             EditProduct.ProdCateFLG = ProdCateFlgList.FirstOrDefault().Key;
-            // Set 消費税計算方法 ComboList
-            TaxCalcList = new Dictionary<int, string>
+            // Set 消費税CD (軽減税率) ComboList
+            TaxCDList = new Dictionary<int, string>
             {
                 {  1, "1 通常税率" },
                 {  2, "2 軽減税率" }
             };
-            EditProduct.TaxCalcMethod = TaxCalcList.FirstOrDefault().Key;
-            // Set 商品サイズ区分 ComboList 
-            
+            EditProduct.TaxCD = TaxCDList.FirstOrDefault().Key;
+            // Set 商品サイズ区分 ComboList  
             var prod_list = new Dictionary<string, string>();
             string sql_query = "select 名称CD, 名称 from hc$master_meisho where 名称区分='IDX' and (名称CD like 'US%' or 名称CD='SIZ' ) order by 名称CD";
             var get_prodSiz = AppData.Http?.AspxSqlQuery(sql_query, null);
@@ -112,6 +111,25 @@ namespace CvnetClient.ViewModels
             }
             ProdSizCateList = prod_list;
             EditProduct.ProdSizeCate = ProdSizCateList.FirstOrDefault().Key;
+            // Set ゼロ単価区分 ComboList
+            ZeroPriCateList = new Dictionary<int, string>
+            {
+                {  0, "0 禁止" },
+                {  1, "1 許可" },
+                {  2, "2 必須入力" }
+            };
+            EditProduct.ZeroPriceCate = ZeroPriCateList.FirstOrDefault().Key;
+            // Set 消費税計算方法 ComboList
+            TaxCalcList = cvnet.ComboItem_00<int>("課税区分");
+            EditProduct.TaxCalcMethod = TaxCalcList.FirstOrDefault().Key;
+            // Set コラボ出力区分 (下札サイズ) ComboList
+            ColOutCateList = new Dictionary<int, string>
+            {
+                {  0, "0 禁止" },
+                {  1, "1 許可" },
+                {  2, "2 必須入力" }
+            };
+            EditProduct.CollabOutCate = ColOutCateList.FirstOrDefault().Key;
             #endregion
         }
 
@@ -234,7 +252,7 @@ namespace CvnetClient.ViewModels
                             CareLabel = dr["洗濯表示"].ToString() ?? string.Empty,
                             ImgName = dr["絵型名"].ToString() ?? string.Empty,
                             Memo = dr["メモ"].ToString() ?? string.Empty,
-                            TaxCalcMethod = long.Parse(dr["消費税計算方法"].ToString()),
+                            TaxCalcMethod = int.Parse(dr["消費税計算方法"].ToString()),
                             InvMngmentFLG = Convert.ToInt32(dr["在庫管理FLG"]),
                             TaxCD = long.Parse(dr["消費税CD"].ToString()),
                             NameCD01 = dr["名称CD01"].ToString() ?? string.Empty,
@@ -280,7 +298,7 @@ namespace CvnetClient.ViewModels
                             ConsignPurcCate = Convert.ToInt32(dr["消化端数区分"]),
                             DgCalcCate = Convert.ToInt32(dr["消化計算区分"]),
                             ConsignPurcRate = Convert.ToInt32(dr["消化掛率"]),
-                            GenderCate = Convert.ToInt32(dr["男女区分"]),
+                            GenderCate = dr["男女区分"].ToString() ?? string.Empty,
                             CollabOutCate = Convert.ToInt32(dr["コラボ出力区分"]),
                             RepresentNoFLG = Convert.ToInt32(dr["代表品番FLG"]),
                             SalesCate = Convert.ToInt32(dr["セール区分"]),
@@ -392,15 +410,35 @@ namespace CvnetClient.ViewModels
         // 商品区分FLG
         [ObservableProperty]
         public Dictionary<int, string>? m_prodCateFlgList;
-        // 消費税計算方法
+        // 消費税CD (軽減税率)
         [ObservableProperty]
-        public Dictionary<int, string>? m_taxCalcList;
+        public Dictionary<int, string>? m_taxCDList;
         // 商品サイズ区分
         [ObservableProperty]
         public Dictionary<string, string>? m_prodSizCateList;
+        // ゼロ単価区分
+        [ObservableProperty]
+        public Dictionary<int, string>? m_zeroPriCateList;
+        // 消費税計算方法
+        [ObservableProperty]
+        public Dictionary<int, string>? m_taxCalcList;
+        // コラボ出力区分 (下札サイズ)
+        [ObservableProperty]
+        public Dictionary<int, string>? m_colOutCateList;
         #endregion
 
         #region Dialog Search
+        [RelayCommand]
+        public void SelDspUpdate()
+        {
+            //AppData.DlgService.GetSelSho();
+            var view = new SelShoView();
+            var vm = view.DataContext as SelShoViewModel;
+            if (view == null || vm == null) return;
+
+            var ret = ClientLib.ShowDialogView(view, this);
+        }
+
         [RelayCommand]
         public void SelBrand()
         {
@@ -550,6 +588,128 @@ namespace CvnetClient.ViewModels
             {
                 EditProduct.StandWareCD = get_sel00.SelectSel00?.Code;
                 EditProduct.StockName = get_sel00?.SelectSel00?.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelReserve(string parameter)
+        {
+            if (string.IsNullOrEmpty(parameter)) return;
+            var param2 = new string[1]; param2[0] = parameter;
+            var get_sel00 = AppData.DlgService.GetSel00("予備", null, param2);
+            if (get_sel00 != null && EditProduct != null)
+            {
+                if (parameter == "Y01")
+                {
+                    EditProduct.Reserve01 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName01 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y02")
+                {
+                    EditProduct.Reserve02 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName02 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y03")
+                {
+                    EditProduct.Reserve03 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName03 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y04")
+                {
+                    EditProduct.Reserve04 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName04 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y05")
+                {
+                    EditProduct.Reserve05 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName05 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y06")
+                {
+                    EditProduct.Reserve06 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName06 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y07")
+                {
+                    EditProduct.Reserve07 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName07 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y08")
+                {
+                    EditProduct.Reserve08 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName08 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y09")
+                {
+                    EditProduct.Reserve09 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName09 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y10")
+                {
+                    EditProduct.Reserve10 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName10 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y11")
+                {
+                    EditProduct.Reserve11 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName11 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y12")
+                {
+                    EditProduct.Reserve12 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName12 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y13")
+                {
+                    EditProduct.Reserve13 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName13 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y14")
+                {
+                    EditProduct.Reserve14 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName14 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y15")
+                {
+                    EditProduct.Reserve15 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName15 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y16")
+                {
+                    EditProduct.Reserve16 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName16 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y17")
+                {
+                    EditProduct.Reserve17 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName17 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y18")
+                {
+                    EditProduct.Reserve18 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName18 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y19")
+                {
+                    EditProduct.Reserve19 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName19 = get_sel00?.SelectSel00?.Name;
+                }
+                if (parameter == "Y20")
+                {
+                    EditProduct.Reserve20 = get_sel00?.SelectSel00?.Code;
+                    EditProduct.ReserveName20 = get_sel00?.SelectSel00?.Name;
+                }
+            }
+        }
+        [RelayCommand]
+        public void SelGenderCate(string parameter)
+        {
+            if (string.IsNullOrEmpty(parameter)) return;
+            var param2 = new string[1]; param2[0] = parameter;
+            var get_sel00 = AppData.DlgService.GetSel00("名称", null, param2);
+            if (get_sel00 != null && EditProduct != null)
+            { 
+                EditProduct.GenderCate = get_sel00?.SelectSel00?.Code;
+                EditProduct.GenderCateName = get_sel00?.SelectSel00?.Name;
             }
         }
         #endregion

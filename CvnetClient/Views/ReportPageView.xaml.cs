@@ -16,23 +16,13 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for HomePage.xaml
+    /// Interaction logic for ReportPageView.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class ReportPageView : Page
     {
-        public HomePage()
+        public ReportPageView()
         {
             InitializeComponent();
-        }
-
-        private void MainMenuButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn)
-            {
-                string title = btn.Content.ToString();
-                string pageId = btn.Tag?.ToString();
-                this.NavigationService?.Navigate(new DynamicPageView(title, pageId));
-            }
         }
     }
 }
