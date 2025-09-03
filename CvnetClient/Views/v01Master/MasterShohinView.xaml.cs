@@ -22,6 +22,11 @@ namespace CvnetClient.Views
         public MasterShohinView()
         {
             InitializeComponent();
-        } 
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

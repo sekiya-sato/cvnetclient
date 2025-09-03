@@ -14,9 +14,10 @@
     <SolidColorBrush x:Key="DefaultButton1" Color="#A7D8D8"/>
     <SolidColorBrush x:Key="DefaultButton2" Color="#7FDBDA"/>
     <SolidColorBrush x:Key="DefaultButton3" Color="#B2DFDB"/>
-
+    
     <SolidColorBrush x:Key="ExecButtonColor" Color="#3498db"/>
     <SolidColorBrush x:Key="BackBtnColor" Color="#95a5a6"/>
+    <SolidColorBrush x:Key="TextBoxBorderColor" Color="#CCC"/>
 
     <sys:Double x:Key="AppFontSize">16</sys:Double>
     <sys:Double x:Key="MenuFontSize">14</sys:Double>
@@ -40,5 +41,27 @@
         <Setter Property="FontWeight" Value="{DynamicResource LabelFontWeight}"/>
         <Setter Property="FontSize" Value="{DynamicResource TextSize}"/>
         <Setter Property="FontStyle" Value="Italic"/>
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="Background" Value="#CFFFCF"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border x:Name="border" 
+							Background="{TemplateBinding Background}" 
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="3"
+							CornerRadius="5"
+                            Padding="4">
+                        <ContentPresenter 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        RecognizesAccessKey="True"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
