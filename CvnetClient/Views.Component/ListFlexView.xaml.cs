@@ -3,6 +3,7 @@ using CvnetClient.ViewModels.Component;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,11 +15,14 @@ namespace CvnetClient.Views.Component
     public partial class ListFlexView : UserControl
     {
         private ObservableCollection<TypeDefItem> Type_Def;
+        private Dictionary<string, string> unit_list2;
+        private string Line3_ListData;
 
         public ListFlexView()
         {
             InitializeComponent();
             Type_Def = new ObservableCollection<TypeDefItem>();
+            unit_list2 = new Dictionary<string, string>(); 
             Rows = new ObservableCollection<ListFlexItem>();
             Rows.CollectionChanged += (s, e) => UpdateQuery(); 
         }
@@ -69,15 +73,15 @@ namespace CvnetClient.Views.Component
             );
 
         // ComboBox Items
-        public static readonly DependencyProperty SearchItemsProperty =
-            DependencyProperty.Register(nameof(SearchItems),
+        public static readonly DependencyProperty UnitListProperty =
+            DependencyProperty.Register(nameof(unit_list),
                 typeof(Dictionary<string,string>),
                 typeof(ListFlexView),
                 new PropertyMetadata(null)); 
-        public Dictionary<string, string> SearchItems
+        public Dictionary<string, string> unit_list
         {
-            get => (Dictionary<string, string>)GetValue(SearchItemsProperty);
-            set => SetValue(SearchItemsProperty, value);
+            get => (Dictionary<string, string>)GetValue(UnitListProperty);
+            set => SetValue(UnitListProperty, value);
         }
 
         public static readonly DependencyProperty ConfigProperty =
@@ -168,8 +172,8 @@ namespace CvnetClient.Views.Component
         }
         private void OnInit(ListFlexConfig config)
         { 
-            Rows.Clear(); 
-            SearchItems = new Dictionary<string, string>();
+            Rows.Clear();
+            unit_list = new Dictionary<string, string>();
 
             List<string> v_col = new List<string>();
             string tb_name = "";
@@ -211,21 +215,21 @@ namespace CvnetClient.Views.Component
                 tb_name = "hc$master_shain";
             }
             qs += " and ランク > '0' order by 名称CD";
-            var unit_list = AppData.Http?.AspxSqlQuery(qs);
-            foreach (DataRow row in unit_list.Rows)
+            var ret_csv = AppData.Http?.AspxSqlQuery(qs);
+            foreach (DataRow row in ret_csv.Rows)
             {
                 string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
                 string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                SearchItems.Add(key, value);
+                unit_list.Add(key, value);
             }
 
             if (config.flag == 1)
             {
-                SearchItems.Add("", "営業担当CD");
-                SearchItems.Add("", "請求先CD");
+                unit_list.Add("", "営業担当CD");
+                unit_list.Add("", "請求先CD");
             }
             else if (config.flag == 2) 
-                SearchItems.Add("", "支払先CD"); 
+                unit_list.Add("", "支払先CD"); 
 
             string sql = "select column_name, lower(data_type) as data_type from all_tab_columns where lower(table_name) = '" + tb_name + "'"
                        + " group by column_name,data_type order by max(column_id)";
@@ -240,6 +244,130 @@ namespace CvnetClient.Views.Component
                             }).OrderBy(c => c.column_name).ToList();
                 Type_Def = new ObservableCollection<TypeDefItem>(list);
             }
+
+            Line3_ListData = "";
+            foreach (DataRow row in ret_csv.Rows)
+            {
+                if (!(ClassSatoo.LoginKubun == 1 && row[1].ToString() == "仕入先"))
+                {
+                    if (AppData.DefConfig.g_name.ContainsKey(row[1].ToString()))
+                        Line3_ListData += ((Line3_ListData == "") ? "" : ",") + AppData.DefConfig.g_name[row[1].ToString()];
+                }
+            }
+
+            if (v_col.Count > 0)
+            {
+                for (int i = 0; i < v_col.Count; i++)
+                {
+                    if (!(!AppData.DefConfig.g_name.ContainsKey(v_col[i]) || AppData.DefConfig.g_name[v_col[i]] == ""))
+                    {
+                        unit_list2.Add(AppData.DefConfig.g_name[v_col[i]], v_col[i]);
+                        Line3_ListData += "," + AppData.DefConfig.g_name[v_col[i]];
+                    }
+                    else unit_list2.Add(v_col[i], v_col[i]); 
+                }
+            }
+
+            List<CsvItem> init_para = new List<CsvItem>();
+            if (config.init_csv == null || config.init_csv?.Count == 0)
+            {
+                init_para = AppData.ClassEtc.ListFlexPara ?? new List<CsvItem>();
+                switch (config.flag)
+                {
+                    case 0:
+                        init_para = AppData.ClassEtc.Bunrui_List0 ?? new List<CsvItem>();
+                        break;
+                    case 1:
+                        init_para = AppData.ClassEtc.Bunrui_List1 ?? new List<CsvItem>();
+                        break;
+                    case 2:
+                        init_para = AppData.ClassEtc.Bunrui_List2 ?? new List<CsvItem>();
+                        break;
+                    case 3:
+                        init_para = AppData.ClassEtc.Bunrui_List3 ?? new List<CsvItem>();
+                        break;
+                }
+            }
+            else init_para = config.init_csv;
+
+            for (int i = 0; i < init_para.Count; i++)
+            {
+                string find_row = (unit_list2.ContainsValue(init_para[i].col01)) ? init_para[i].col01 : string.Empty;
+                var col = "";
+                if (string.IsNullOrEmpty(find_row))
+                {
+                    col = init_para[i].col01;
+                    string find_row2 = (unit_list.ContainsValue(init_para[i].col01)) ? init_para[i].col01 : string.Empty;
+                    if (string.IsNullOrEmpty(find_row2)) continue;
+                }
+                else {
+                    col = unit_list2[find_row];
+                }
+
+                Rows.Add(new ListFlexItem
+                {
+                    No = Rows.Count + 1,
+                    SelectedItem = col 
+                });
+            }
+        }
+
+        private string GetConvKubun(string kubun)
+        { 
+            string cd_name = string.Empty;
+            if (kubun == "ITM") cd_name = "アイテムCD";
+            else if (kubun == "BRD") cd_name = "ブランドCD";
+            else if (kubun == "DZN") cd_name = "デザイナーCD";
+            else if (kubun == "SZN") cd_name = "シーズンCD";
+            else if (kubun == "TNJ") cd_name = "展示会CD";
+            else if (kubun == "SZI") cd_name = "素材CD";
+            else if (kubun == "MKR") cd_name = "メーカーCD";
+            else if (kubun == "GEN") cd_name = "原産国CD";
+            else if (kubun == "BN0") cd_name = "大分類CD";
+            else if (kubun == "BN1") cd_name = "中分類CD";
+            else if (kubun == "BN2") cd_name = "小分類CD";
+            else 
+            {
+                if (Regex.IsMatch(kubun, @"^B[0-9]{2}$")) {
+                    cd_name = "名称CD" + kubun.Substring(1, 2);
+                }
+                else if (Regex.IsMatch(kubun, @"^C[0-9]{2}$")) {
+                    cd_name = "名称CD" + kubun.Substring(1, 2);
+                }
+                else if (Regex.IsMatch(kubun, @"^D[0-9]{2}$")) {
+                    cd_name = "名称CD" + kubun.Substring(1, 2);
+                }
+                else if (Regex.IsMatch(kubun, @"^E[0-9]{2}$")) {
+                    cd_name = "名称CD" + kubun.Substring(1, 2);
+                }
+            }
+            return cd_name;
+        }
+
+        private string[] Search_Data(string mst_name)
+        {
+            string[] v_ar = new string[3];
+            var find_row = unit_list.FirstOrDefault(x => x.Value == mst_name).Key;
+            var find_row2 = unit_list2.FirstOrDefault(x => x.Value == mst_name).Key;
+
+            if (string.IsNullOrEmpty(find_row))
+            { 
+                v_ar[1] = mst_name;
+                if (string.IsNullOrEmpty(find_row2))
+                    v_ar = null;
+                else
+                    v_ar[1] = mst_name;
+                return v_ar;
+            }
+            v_ar[1] = unit_list[find_row].Trim();
+            v_ar[0] = "HC$MASTER_MEISHO";
+
+            return v_ar;
+        }
+
+        private void GetMaxStr(string col)
+        { 
+            
         }
 
         private void AddRow_Click(object sender, RoutedEventArgs e)
