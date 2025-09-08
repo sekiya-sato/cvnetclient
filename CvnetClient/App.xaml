@@ -11,15 +11,15 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<!--  ResourceDictionary Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" /  -->
-				<ResourceDictionary Source="/Resources/UIButton.xaml"/>
-				<ResourceDictionary Source="/Resources/UIColors.xaml"/>
-				<ResourceDictionary Source="/Resources/UICombobox.xaml"/>
-				<ResourceDictionary Source="/Resources/UICommon.xaml"/>
-				<ResourceDictionary Source="/Resources/UIGridData.xaml"/>
-				<ResourceDictionary Source="/Resources/UITextBox.xaml"/>
+                <ResourceDictionary Source="/Resources/UIButton.xaml"/>
+                <ResourceDictionary Source="/Resources/UIColors.xaml"/>
+                <ResourceDictionary Source="/Resources/UICombobox.xaml"/>
+                <ResourceDictionary Source="/Resources/UICommon.xaml"/>
+                <ResourceDictionary Source="/Resources/UIGridData.xaml"/>
+                <ResourceDictionary Source="/Resources/UITextBox.xaml"/>
+                <ResourceDictionary Source="/Resources/UIWindows.xaml"/>
 
-				
-				<!--<materialDesign:BundledTheme BaseTheme="Light"
+                <!--<materialDesign:BundledTheme BaseTheme="Light"
 											 PrimaryColor="Blue"
 
 											 SecondaryColor="Lime"/>

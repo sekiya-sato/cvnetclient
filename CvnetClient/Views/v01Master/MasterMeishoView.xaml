@@ -11,91 +11,90 @@
 	Title="名称マスタ"
 	Width="980"
 	Height="570"
-	Background="#D6D6FF"
-	FontFamily="Meiryo UI"
+	
 	mc:Ignorable="d">
-	<Window.Resources>
-		<utils:VdateConverter x:Key="VdateConverter" />
-	</Window.Resources>
-	<Window.DataContext>
-		<vm:MasterMeishoViewModel />
-	</Window.DataContext>
-	<behaviors:Interaction.Triggers>
-		<behaviors:EventTrigger EventName="ContentRendered">
-			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-		</behaviors:EventTrigger>
-	</behaviors:Interaction.Triggers>
-	<Window.InputBindings>
-		<KeyBinding Key="F5" Command="{Binding DoListCommand}" />
-		<KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
-		<KeyBinding Key="F7" Command="{Binding DoDeleteCommand}" />
-		<KeyBinding Key="F8" Command="{Binding DoInsertCommand}" />
-		<KeyBinding Key="F9" Command="{Binding DoPrintCommand}" />
-	</Window.InputBindings>
-	<Grid Margin="4">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="380" />
-			<ColumnDefinition Width="16" />
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="40" />
-			<RowDefinition Height="20" />
-		</Grid.RowDefinitions>
+    <Window.Resources>
+        <utils:VdateConverter x:Key="VdateConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MasterMeishoViewModel />
+    </Window.DataContext>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="ContentRendered">
+            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding DoListCommand}" />
+        <KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
+        <KeyBinding Key="F7" Command="{Binding DoDeleteCommand}" />
+        <KeyBinding Key="F8" Command="{Binding DoInsertCommand}" />
+        <KeyBinding Key="F9" Command="{Binding DoPrintCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="380" />
+            <ColumnDefinition Width="16" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
 
-		<!--  左上 検索  -->
-		<StackPanel
+        <!--  左上 検索  -->
+        <StackPanel
 			Grid.Row="0"
 			Grid.Column="0"
 			Grid.ColumnSpan="3"
 			Margin="0,0,0,4"
 			Orientation="Horizontal">
-			<Label
+            <Label
 				Padding="4,2"
 				Background="#CFFFCF"
 				Content="名称区分" />
-			<ComboBox
+            <ComboBox
 				Width="160"
 				Margin="2,0"
 				ItemsSource="{Binding ListKubun}"
 				SelectedItem="{Binding SelectKubun}">
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding}" />
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
-			<Label
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Label
 				Margin="8,0,0,0"
 				Padding="4,2"
 				Background="#CFFFCF"
 				Content="名称CD" />
-			<TextBox
+            <TextBox
 				Width="80"
 				Margin="2,0"
 				Text="{Binding StartCode}" />
-			<Button
+            <Button
 				Grid.ColumnSpan="2"
 				Width="32"
 				Margin="2,0"
 				Command="{Binding BackListCommand}"
 				Content="&lt;&lt;" />
-			<Button
+            <Button
 				Width="32"
 				Margin="2,0"
 				Command="{Binding NextListCommand}"
 				Content="&gt;&gt;" />
-			<Button
+            <Button
 				Width="100"
 				Margin="8,0,0,0"
 				Command="{Binding DoListCommand}"
 				Content="表示更新(F5)" />
-		</StackPanel>
+        </StackPanel>
 
-		<!--  左下 リスト  -->
-		<DataGrid
+        <!--  左下 リスト  -->
+        <DataGrid
 			Grid.Row="1"
 			Grid.Column="0"
 			Margin="0,0,0,0"
@@ -108,24 +107,24 @@
 			ItemsSource="{Binding ListMeisho}"
 			SelectedItem="{Binding SelectedMeisho}"
 			SelectionMode="Single">
-			<DataGrid.Columns>
-				<DataGridTextColumn
+            <DataGrid.Columns>
+                <DataGridTextColumn
 					Width="80"
 					Binding="{Binding MeishoCd}"
 					Header="名称CD" />
-				<DataGridTextColumn
+                <DataGridTextColumn
 					Width="*"
 					Binding="{Binding Meisho}"
 					Header="名称" />
-				<DataGridTextColumn
+                <DataGridTextColumn
 					Width="100"
 					Binding="{Binding RyakuShou}"
 					Header="略称" />
-			</DataGrid.Columns>
-		</DataGrid>
+            </DataGrid.Columns>
+        </DataGrid>
 
-		<!--  右 詳細  -->
-		<Border
+        <!--  右 詳細  -->
+        <Border
 			Grid.Row="1"
 			Grid.Column="2"
 			Margin="0,10,0,0"
@@ -133,38 +132,38 @@
 			BorderBrush="#B0B0B0"
 			BorderThickness="2"
 			CornerRadius="8">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="100" />
-					<ColumnDefinition Width="180" />
-					<ColumnDefinition Width="100" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="28" />
-					<RowDefinition Height="40" />
-				</Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="180" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="28" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
 
-				<Label
+                <Label
 					Grid.Row="0"
 					Grid.Column="0"
 					Padding="4,2"					
 					Content="名称区分" />
-				<TextBox
+                <TextBox
 					Grid.Row="0"
 					Grid.Column="1"
 					Style="{DynamicResource ReadOnlyTextBox}"
 					Text="{Binding EditMeisho.Kubun}" />
-				<Button
+                <Button
 					Grid.Row="0"
 					Grid.Column="3"
 					Width="100"
@@ -172,16 +171,16 @@
 					Command="{Binding DoPrintAllCommand}"
 					Content="区分一括印刷" />
 
-				<Label
+                <Label
 					Grid.Row="1"
 					Grid.Column="0"
 					Padding="4,2"					
 					Content="名称CD" />
-				<TextBox
+                <TextBox
 					Grid.Row="1"
 					Grid.Column="1"
 					Text="{Binding EditMeisho.MeishoCd}" />
-				<Label
+                <Label
 					Grid.Row="2"
 					Grid.Column="0"
 					Padding="4,2"					
@@ -215,12 +214,12 @@
 					Padding="4,2"
 					
 					Content="{Binding LabelRenban}" />
-				<TextBox
+                <TextBox
 					Grid.Row="5"
 					Grid.Column="1"
 					Text="{Binding EditMeisho.Renban}" />
 
-				<Label
+                <Label
 					Grid.Row="6"
 					Grid.Column="0"
 					Padding="4,2"					
@@ -232,11 +231,11 @@
 					Padding="4,2"
 					
 					Content="POS区分" />
-				<TextBox
+                <TextBox
 					Grid.Row="7"
 					Grid.Column="1"
 					Text="{Binding EditMeisho.PosKubun}" />
-				<TextBlock
+                <TextBlock
 					Grid.Row="7"
 					Grid.Column="2"
 					Grid.ColumnSpan="2"
@@ -244,86 +243,86 @@
 					Foreground="Gray"
 					Text="0 出力する, 9 削除指示, 10 出力しない" />
 
-				<Label
+                <Label
 					Grid.Row="8"
 					Grid.Column="0"
 					Padding="4,2"
 					
 					Content="登録日時" />
-				<TextBox
+                <TextBox
 					Grid.Row="8"
 					Grid.Column="1"
 					
 					Text="{Binding EditMeisho.VdateCreate, Converter={StaticResource VdateConverter}}" />
-				<Label
+                <Label
 					Grid.Row="9"
 					Grid.Column="0"
 					Padding="4,2"
 					
 					Content="更新日時" />
-				<TextBox
+                <TextBox
 					Grid.Row="9"
 					Grid.Column="1"
 					
 					Text="{Binding EditMeisho.VdateUpdate, Converter={StaticResource VdateConverter}}" />
 
-				<Label
+                <Label
 					Grid.Row="10"
 					Grid.Column="0"
 					Padding="4,2"
 					
 					Content="最終修正者" />
-				<TextBox
+                <TextBox
 					Grid.Row="10"
 					Grid.Column="1"
 					Text="{Binding EditMeisho.SaishuuShuuseiSha}" />
-			</Grid>
-		</Border>
+            </Grid>
+        </Border>
 
-		<!--  右下 ボタン  -->
-		<StackPanel
+        <!--  右下 ボタン  -->
+        <StackPanel
 			Grid.Row="2"
 			Grid.Column="2"
 			Margin="0,8,0,0"
 			HorizontalAlignment="Left"
 			Orientation="Horizontal">
-			<Button
+            <Button
 				Width="90"
 				Margin="4"
 				Command="{Binding DoUpdateCommand}"
 				Content="修正(F6)" />
-			<Button
+            <Button
 				Width="90"
 				Margin="4"
 				Command="{Binding DoDeleteCommand}"
 				Content="削除(F7)" />
-			<Button
+            <Button
 				Width="90"
 				Margin="4"
 				Command="{Binding DoInsertCommand}"
 				Content="追加(F8)" />
-			<Button
+            <Button
 				Width="90"
 				Margin="4"
 				Command="{Binding DoPrintCommand}"
 				Content="印刷(F9)" />
-		</StackPanel>
+        </StackPanel>
 
-		<!--  戻るボタン  -->
-		<Button Style="{DynamicResource }"
+        <!--  戻るボタン  -->
+        <Button Style="{DynamicResource BackBtn}"
 			Grid.Row="2"
 			Grid.Column="2"
 			Width="120"
-			Height="28"
-			Margin="0,0,8,8"
-			HorizontalAlignment="Right"
-			VerticalAlignment="Bottom"
+			Height="32"
+			Margin="448,0,0,0"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Center"
 			Command="{Binding ExitCommand}"
 			
 			IsCancel="True" />
 
-		<!--  下部バー  -->
-		<Border
+        <!--  下部バー  -->
+        <Border
 			Grid.Row="3"
 			Grid.Column="0"
 			Grid.ColumnSpan="3"
@@ -331,13 +330,13 @@
 			Margin="0,8,0,0"
 			VerticalAlignment="Bottom"
 			Background="#E0E0FF">
-			<TextBlock
+            <TextBlock
 				Margin="8,0,0,0"
 				HorizontalAlignment="Left"
 				VerticalAlignment="Center"
 				FontSize="12"
 				Foreground="#666"
 				Text="リスト選択行データ取得" />
-		</Border>
-	</Grid>
+        </Border>
+    </Grid>
 </Window>
