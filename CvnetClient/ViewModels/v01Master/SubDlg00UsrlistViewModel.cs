@@ -10,7 +10,7 @@ using System.Windows.Controls;
 namespace CvnetClient.ViewModels
 {
     public enum BarcodeType { CODE39, NW7 }
-    public partial class UsrlistViewModel : BaseViewModel
+    public partial class SubDlg00UsrlistViewModel : BaseViewModel
     {
         [ObservableProperty] MasterWorker? workerFrom = new();
         [ObservableProperty] MasterWorker? workerTo = new();

@@ -13,7 +13,7 @@ namespace CvnetClient.Views.Component
     /// Interaction logic for ListFlexView.xaml
     /// </summary>
     public partial class ListFlexView : UserControl
-    {
+    { 
         private ObservableCollection<TypeDefItem> Type_Def;
         private Dictionary<string, string> unit_list2;
         private string Line3_ListData;
@@ -21,10 +21,16 @@ namespace CvnetClient.Views.Component
         public ListFlexView()
         {
             InitializeComponent();
+            this.Loaded += ListFlexView_Loaded;
             Type_Def = new ObservableCollection<TypeDefItem>();
             unit_list2 = new Dictionary<string, string>(); 
-            Rows = new ObservableCollection<ListFlexItem>();
-            Rows.CollectionChanged += (s, e) => UpdateQuery(); 
+            //Rows = new ObservableCollection<ListFlexItem>();
+            //Rows.CollectionChanged += (s, e) => UpdateQuery(); 
+        }
+
+        private void ListFlexView_Loaded(object sender, RoutedEventArgs e)
+        {
+            OnInit();
         }
 
         #region Dependency Property
@@ -89,7 +95,8 @@ namespace CvnetClient.Views.Component
                 nameof(Config),
                 typeof(ListFlexConfig),
                 typeof(ListFlexView),
-                new PropertyMetadata(null, OnConfigChanged));
+                new PropertyMetadata(null));
+        //new PropertyMetadata(null, OnConfigChanged));
         public ListFlexConfig Config
         { 
             get => (ListFlexConfig)GetValue(ConfigProperty);
@@ -163,22 +170,57 @@ namespace CvnetClient.Views.Component
             UpdateQuery();
         }
 
-        private static void OnConfigChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //private static void OnConfigChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is ListFlexView view && e.NewValue is ListFlexConfig config)
+        //    { 
+        //        view.OnInit(config);
+        //    }
+        //} 
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (d is ListFlexView view && e.NewValue is ListFlexConfig config)
+            if (sender is ComboBox combo && combo.DataContext is ListFlexItem row)
             {
-                view.OnInit(config);
+                var selected = combo.SelectedValue as string;
+                string[] rtn = GetMaxStr(selected);
+                var find_row = unit_list.FirstOrDefault(x => x.Value == selected).Key;
+                if (string.IsNullOrEmpty(find_row))
+                {
+                    row.IsListFromEnabled = false;
+                    row.IsListToEnabled = false;
+                }
+                else 
+                {
+                    row.IsListFromEnabled = true;
+                    row.IsListToEnabled = true;
+                }
+                row.FromValue = rtn[0];
+                row.ToValue = rtn[1];
             }
         }
-        private void OnInit(ListFlexConfig config)
-        { 
-            Rows.Clear();
-            unit_list = new Dictionary<string, string>();
+        #endregion
 
+        #region Functions
+        private void OnInit()
+        {
+            if (Config == null) return;
+
+            if (Rows == null)
+                Rows = new ObservableCollection<ListFlexItem>();
+
+            //if (Rows == null)
+            //    SetValue(RowsProperty, new ObservableCollection<ListFlexItem>());
+
+            Rows.Clear(); // safe: clears the existing collection
+
+            unit_list = new Dictionary<string, string>();
+            unit_list2 = new Dictionary<string, string>();
+              
             List<string> v_col = new List<string>();
             string tb_name = "";
             string qs = "select 名称CD, 名称 from hc$master_meisho where 名称区分 = 'IDX' ";
-            if (config.flag == 0)
+            if (Config.flag == 0)
             {
                 if (AppData.cvnet.config.oroshi != 0)
                     qs += " and (名称CD between 'B01' and 'B18') ";
@@ -190,7 +232,7 @@ namespace CvnetClient.Views.Component
                 }
                 tb_name = "hc$master_shohin";
             }
-            else if (config.flag == 1)
+            else if (Config.flag == 1)
             {
                 qs += " and (名称CD between 'C01' and 'C10')";
                 for (var i = 0; i < AppData.ClassEtc.SearchTokuiCols.Length; i++) {
@@ -198,7 +240,7 @@ namespace CvnetClient.Views.Component
                 }
                 tb_name = "hc$master_tokui";
             }
-            else if (config.flag == 2)
+            else if (Config.flag == 2)
             {
                 qs += " and (名称CD between 'D01' and 'D10')";
                 for (var i = 0; i < AppData.ClassEtc.SearchSiireCols.Length; i++) {
@@ -206,7 +248,7 @@ namespace CvnetClient.Views.Component
                 }
                 tb_name = "hc$master_siire";
             }
-            else if (config.flag == 3)
+            else if (Config.flag == 3)
             {
                 qs += " and (名称CD between 'E01' and 'E05')";
                 for (var i = 0; i < AppData.ClassEtc.SearchShainCols.Length; i++) {
@@ -223,12 +265,12 @@ namespace CvnetClient.Views.Component
                 unit_list.Add(key, value);
             }
 
-            if (config.flag == 1)
+            if (Config.flag == 1)
             {
                 unit_list.Add("", "営業担当CD");
                 unit_list.Add("", "請求先CD");
             }
-            else if (config.flag == 2) 
+            else if (Config.flag == 2) 
                 unit_list.Add("", "支払先CD"); 
 
             string sql = "select column_name, lower(data_type) as data_type from all_tab_columns where lower(table_name) = '" + tb_name + "'"
@@ -269,10 +311,10 @@ namespace CvnetClient.Views.Component
             }
 
             List<CsvItem> init_para = new List<CsvItem>();
-            if (config.init_csv == null || config.init_csv?.Count == 0)
+            if (Config.init_csv == null || Config.init_csv?.Count == 0)
             {
                 init_para = AppData.ClassEtc.ListFlexPara ?? new List<CsvItem>();
-                switch (config.flag)
+                switch (Config.flag)
                 {
                     case 0:
                         init_para = AppData.ClassEtc.Bunrui_List0 ?? new List<CsvItem>();
@@ -288,7 +330,7 @@ namespace CvnetClient.Views.Component
                         break;
                 }
             }
-            else init_para = config.init_csv;
+            else init_para = Config.init_csv;
 
             for (int i = 0; i < init_para.Count; i++)
             {
@@ -303,12 +345,45 @@ namespace CvnetClient.Views.Component
                 else {
                     col = unit_list2[find_row];
                 }
-
-                Rows.Add(new ListFlexItem
+                 
+                var row = new ListFlexItem
                 {
                     No = Rows.Count + 1,
-                    SelectedItem = col 
-                });
+                    SelectedItem = col
+                };
+                string[] rtn = GetMaxStr(col);
+                if (init_para[i].col02 == string.Empty)
+                    row.FromValue = rtn[0];
+                else
+                    row.FromValue = init_para[i].col02;
+                if (init_para[i].col03 == string.Empty)
+                    row.ToValue = rtn[1];
+                else
+                    row.ToValue = init_para[i].col03;
+                /* unit_listに無い場合、ボタンを使用不可にする */
+                find_row = unit_list.FirstOrDefault(x => x.Value == col).Key;
+                if (string.IsNullOrEmpty(find_row))
+                {
+                    row.IsListFromEnabled = false;
+                    row.IsListToEnabled = false; 
+                    //Add to unit_list 
+                    unit_list.Add(col, col);
+                }
+                else
+                {
+                    row.IsListFromEnabled = true;
+                    row.IsListToEnabled = true; 
+                }
+
+                /* 仕入先ログイン時の縛り処理 */
+                if (ClassSatoo.LoginKubun == 1 && col == "仕入先")
+                { 
+                    row.FromValue = ClassSatoo.SHAIN_CD + " " + ClassSatoo.SHAIN_Name;
+                    row.ToValue = ClassSatoo.SHAIN_CD + " " + ClassSatoo.SHAIN_Name;
+                    row.IsListFromEnabled = false;
+                    row.IsListToEnabled = false;
+                } 
+                Rows.Add(row);
             }
         }
 
@@ -343,7 +418,13 @@ namespace CvnetClient.Views.Component
             }
             return cd_name;
         }
-
+        private string GetConvColName(string col_name)
+        {
+            var find_row = unit_list2.FirstOrDefault(x => x.Value == col_name).Key;
+            if (string.IsNullOrEmpty(find_row))
+                return string.Empty;
+            return unit_list2[find_row];
+        }
         private string[] Search_Data(string mst_name)
         {
             string[] v_ar = new string[3];
@@ -361,15 +442,70 @@ namespace CvnetClient.Views.Component
             }
             v_ar[1] = unit_list[find_row].Trim();
             v_ar[0] = "HC$MASTER_MEISHO";
+            if (mst_name == "商品CD") {
+                v_ar[1] = unit_list[find_row].Trim();
+                v_ar[0] = "HC$MASTER_SHOHIN";
+            }
+            if (mst_name == "得意先CD")
+            {
+                v_ar[1] = unit_list[find_row].Trim();
+                v_ar[0] = "HC$MASTER_TOKUI";
+            }
 
+            /* 2011.03.04 追加 */
+            if (mst_name == "営業担当CD")
+            {
+                v_ar[1] = unit_list[find_row].Trim();
+                v_ar[0] = "HC$MASTER_SHAIN";
+            }
+            if (mst_name == "請求先CD")
+            {
+                v_ar[1] = unit_list[find_row].Trim();
+                v_ar[0] = "HC$MASTER_TOKUI";
+                v_ar[3] = " AND 得意先CD=請求先CD OR 請求先CD='.' ";
+            }
+            if (mst_name == "支払先CD")
+            {
+                v_ar[1] = unit_list[find_row].Trim();
+                v_ar[0] = "HC$MASTER_SIIRE";
+                v_ar[3] = " AND 仕入先CD=支払先CD or 支払先CD='.' ";
+            } 
             return v_ar;
         }
 
-        private void GetMaxStr(string col)
+        private string[] GetMaxStr(string col)
         { 
-            
-        }
+            string[] rt_ar = new string[2];
+            string[] ar = Search_Data(col);
+            string cd_name = GetConvKubun(ar[1]);
+            if (cd_name == "")
+                cd_name =  GetConvColName(col);
+            var find_row = Type_Def.Where(x => x.column_name == cd_name).FirstOrDefault();
+            if (find_row != null)
+            {
+                rt_ar[0] = "";
+                rt_ar[1] = "zzzzzzzzzzzzzzzzzzzz";
+                return rt_ar;
+            }
+            else 
+            {
+                if (find_row?.data_type.ToLower() == "number")
+                {
+                    rt_ar[0] = "0";
+                    rt_ar[1] = "9999999999";
+                    return rt_ar;
+                }
+                else 
+                {
+                    rt_ar[0] = "";
+                    rt_ar[1] = "zzzzzzzzzzzzzzzzzzzz";
+                    return rt_ar;
+                }
+            }
+        } 
+        #endregion
 
+        #region Button Event
         private void AddRow_Click(object sender, RoutedEventArgs e)
         {
             int nextNo = Rows.Count + 1; 
@@ -378,16 +514,22 @@ namespace CvnetClient.Views.Component
                 No = nextNo,
                 SelectedItem = "Item1", // default selection
                 FromValue = string.Empty,
-                ToValue = string.Empty
+                ToValue = string.Empty,
+                IsListFromEnabled = true,
+                IsListToEnabled = true,
             });
         }
 
         private void ListFrom_Click(object sender, RoutedEventArgs e)
-        {
-            // Example: get the current row from DataContext
+        { 
             if (sender is Button btn && btn.DataContext is ListFlexItem row)
             {
                 //MessageBox.Show($"List From clicked for row {row.No}");
+                if (string.IsNullOrEmpty(row.SelectedItem)) return;
+                string[] wrk_para = Search_Data(row.SelectedItem);
+                if (wrk_para == null) return;
+                wrk_para[2] = ClassSatoo.GetStringFirst(row.FromValue);
+                var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para);
             }
         }
 
@@ -427,7 +569,7 @@ namespace CvnetClient.Views.Component
                 .Select(r =>
                     $"AND {Config.col_alias}{r.SelectedItem} BETWEEN \"{r.FromValue}\" AND \"{r.ToValue}\"");
 
-            QueryString = string.Join(" \n", parts);
+            QueryString = string.Join(" ", parts);
         }
     }
 }

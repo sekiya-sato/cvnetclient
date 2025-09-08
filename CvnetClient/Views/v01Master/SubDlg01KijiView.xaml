@@ -8,12 +8,13 @@
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
         mc:Ignorable="d"
-        Title="SubDlg01Kiji" Height="600" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="生地付属マスタ" Style="{StaticResource MasterWindowStyle}">
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <vm:MasterMeishoViewModel />
+        <vm:SubDlg01KijiViewModel />
     </Window.DataContext>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
