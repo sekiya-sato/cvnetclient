@@ -34,6 +34,14 @@ public class ClassSatoo
     public static Color FgColor = Color.DarkGray;
     public static int RetXml = 0; /* aspxからの戻りをXML形式にする */
     public static string BgSvg = "";
+
+    public static string GetStringFirst(string v_string)
+    {
+        if (string.IsNullOrEmpty(v_string)) return "";
+
+        var parts = v_string.Split(' ');
+        return parts.Length > 0 ? parts[0] : "";
+    }
 }
 public class LoginHeader
 { 

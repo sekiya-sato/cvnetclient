@@ -32,7 +32,8 @@
 							<ComboBox ItemsSource="{Binding unit_list, RelativeSource={RelativeSource AncestorType=UserControl}}"
 									  DisplayMemberPath="Value"
 									  SelectedValuePath="Value"
-								      SelectedValue="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"> 
+								      SelectedValue="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+									  SelectionChanged="ComboBox_SelectionChanged"> 
 							</ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
@@ -45,7 +46,7 @@
 				<DataGridTemplateColumn Header="一覧" Width="0.5*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Content="一覧" Click="ListFrom_Click"/>
+							<Button Content="一覧" IsEnabled="{Binding IsListFromEnabled}"  Click="ListFrom_Click"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
@@ -57,7 +58,7 @@
 				<DataGridTemplateColumn Header="一覧" Width="0.5*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Content="一覧" Click="ListTo_Click"/>
+							<Button Content="一覧" IsEnabled="{Binding IsListToEnabled}" Click="ListTo_Click"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
