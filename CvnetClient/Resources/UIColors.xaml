@@ -12,12 +12,17 @@
     <SolidColorBrush x:Key="FormMenuBg" Color="#EEEEEE"/>
     <SolidColorBrush x:Key="MainMenuBg" Color="#EEEEEE"/>
     <SolidColorBrush x:Key="DefaultButton1" Color="#A7D8D8"/>
-    <SolidColorBrush x:Key="DefaultButton2" Color="#7FDBDA"/>
+    <SolidColorBrush x:Key="DefaultButton2" Color="#34495E"/>
     <SolidColorBrush x:Key="DefaultButton3" Color="#B2DFDB"/>
-    
-    <SolidColorBrush x:Key="ExecButtonColor" Color="#3498db"/>
-    <SolidColorBrush x:Key="BackBtnColor" Color="#95a5a6"/>
+
+    <SolidColorBrush x:Key="ExecButtonColor" Color="#7FA0B3"/>
+    <SolidColorBrush x:Key="BackBtnColor" Color="#D0D3D4"/>
     <SolidColorBrush x:Key="TextBoxBorderColor" Color="#CCC"/>
+    <SolidColorBrush x:Key="AddBtnColor" Color="#365C38"/>
+    <SolidColorBrush x:Key="EditBtnColor" Color="#34495E"/>
+    <SolidColorBrush x:Key="DeleteBtnColor" Color="#701010"/>
+    <SolidColorBrush x:Key="PrintBtnColor" Color="#6B6B6B"/>
+    
 
     <sys:Double x:Key="AppFontSize">16</sys:Double>
     <sys:Double x:Key="MenuFontSize">14</sys:Double>
@@ -28,40 +33,6 @@
     <FontWeight x:Key="LabelFontWeight">Regular</FontWeight>
     <FontWeight x:Key="ButtonFontWeight">Regular</FontWeight>
 
-    <Style TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
-        <Setter Property="FontSize" Value="{DynamicResource TextSize}"/>
-        <Setter Property="FontWeight" Value="{DynamicResource LabelFontWeight}"/>
-        
-    </Style>
+    <SolidColorBrush x:Key="AppWindowBackground" Color="#f5f5f5"/>
 
-    <Style TargetType="RadioButton">
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
-        <Setter Property="FontWeight" Value="{DynamicResource LabelFontWeight}"/>
-        <Setter Property="FontSize" Value="{DynamicResource TextSize}"/>
-        <Setter Property="FontStyle" Value="Italic"/>
-    </Style>
-
-    <Style TargetType="Label">
-        <Setter Property="Background" Value="#CFFFCF"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Label">
-                    <Border x:Name="border" 
-							Background="{TemplateBinding Background}" 
-							BorderBrush="{TemplateBinding BorderBrush}"
-							BorderThickness="3"
-							CornerRadius="5"
-                            Padding="4">
-                        <ContentPresenter 
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        RecognizesAccessKey="True"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

@@ -11,15 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace CvnetClient.Views.v01Master
+namespace CvnetClient.Views
 {
     /// <summary>
     /// Interaction logic for SubDlg01Kiji.xaml
     /// </summary>
-    public partial class SubDlg01Kiji : Window
+    public partial class SubDlg01KijiView : Window
     {
 
-        public SubDlg01Kiji()
+        public SubDlg01KijiView()
         {
             InitializeComponent();
         }

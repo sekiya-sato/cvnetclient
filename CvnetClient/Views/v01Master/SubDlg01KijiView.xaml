@@ -1,0 +1,304 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg01KijiView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        mc:Ignorable="d"
+        Title="SubDlg01Kiji" Height="600" Width="800">
+    <Window.Resources>
+        <utils:VdateConverter x:Key="VdateConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MasterMeishoViewModel />
+    </Window.DataContext>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="ContentRendered">
+            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding DoListCommand}" />
+        <KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
+        <KeyBinding Key="F7" Command="{Binding DoDeleteCommand}" />
+        <KeyBinding Key="F8" Command="{Binding DoInsertCommand}" />
+        <KeyBinding Key="F9" Command="{Binding DoPrintCommand}" />
+    </Window.InputBindings>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" CornerRadius="10" BorderThickness="1"   Padding="3" Background="White" Margin="3">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+
+                    <Grid Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="生地付属CD" Width="80" VerticalAlignment="Center"/>
+                        <TextBox x:Name="fabricInclCd" Grid.Column="1" Width="240" />
+                    </Grid>
+
+
+                    <Grid Grid.Row="1" Margin="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="仕入先CD"
+VerticalAlignment="Center"/>
+                        <TextBox x:Name="supplierCDSearch" Grid.Column="1" Width="240"/>
+                    </Grid>
+                    <!--<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
+                        <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
+HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                        <Button Margin="0,6"  Style="{DynamicResource ExecButton1}"
+HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                        <Button Margin="1,1,6,1"  Style="{DynamicResource NextPageBtn}"
+HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                    </StackPanel>-->
+                    <Button Grid.Row="2" Margin="13,6"  Style="{DynamicResource ExecButton}"
+HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                </Grid>
+
+
+            </Border>
+
+
+            <DataGrid Grid.Row="1" Margin="8" Height="360" d:ItemsSource="{d:SampleData ItemCount=5}"
+                      AutoGenerateColumns="False"
+Background="#FFFFFF"
+HeadersVisibility="Column"
+IsReadOnly="True"
+IsSynchronizedWithCurrentItem="True"
+ItemsSource="{Binding ListMeisho}"
+SelectedItem="{Binding SelectedMeisho}"
+SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+		Width="80"
+		Binding="{Binding MeishoCd}"
+		Header="商品CD" />
+                    <DataGridTextColumn
+		Width="*"
+		Binding="{Binding Meisho}"
+		Header="商品名" />
+                    <DataGridTextColumn
+		Width="100"
+		Binding="{Binding RyakuShou}"
+		Header="仕入先CD" />
+                </DataGrid.Columns>
+                
+            </DataGrid>
+            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
+                <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
+HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <!--<Button Margin="0,6"  Style="{DynamicResource ExecButton1}"
+HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" Click="Button_Click"/>-->
+                <Button Margin="1,1,6,1"  Style="{DynamicResource NextPageBtn}"
+HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <GroupBox
+Background="White"
+BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
+                <GroupBox.Header>
+                    <Label FlowDirection="RightToLeft">
+                        詳細
+                    </Label>
+                </GroupBox.Header>
+                <StackPanel>
+
+                    <Grid Margin="0,8,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="商品CD"
+                   VerticalAlignment="Center"/>
+                        <TextBox x:Name="productCD" Grid.Column="1" Width="252" />
+
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="商品名"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="productName" Grid.Column="1" Width="252"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="略称"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="abbraviation" Grid.Column="1" Width="252"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="旧コード"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="oldCode" Grid.Column="1" Width="252"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="区分CD"
+   VerticalAlignment="Center"/>
+                        <!--<TextBox x:Name="category" Grid.Column="1" Width="260"/>-->
+                        <ComboBox Grid.Column="1"
+	                    Width="252"
+	                    Margin="2,0"
+	                    ItemsSource="{Binding ListKubun}"
+	                    SelectedItem="{Binding SelectKubun}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="仕入先CD"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="supplierCD" Grid.Column="1" Width="252"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="95.5"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="仕入先商品CD"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="productCDSupplier" Grid.Column="1" Margin="1,0,20,0" Width="250"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="単価"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="unitCost" Grid.Column="1" Width="252"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="メモ"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="Memo" Grid.Column="1" Width="252"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="修正日"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="dateEdit" Grid.Column="1" Width="252" IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="最終修正日"
+   VerticalAlignment="Center"/>
+                        <TextBox x:Name="latsDateEdit" Grid.Column="1" Width="252" IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
+                    </Grid>
+
+                    <Grid Margin="8,8,15,8">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="追加" Background="{DynamicResource AddBtnColor}"/>
+
+                        <Button Content="修正" Background="{DynamicResource EditBtnColor}" Padding="0,3"  Grid.Column="2"/>
+                        <Button Content="削除" Background="{DynamicResource DeleteBtnColor}" Grid.Column="4"/>
+                        <Button Content="印刷" Background="{DynamicResource PrintBtnColor}" Grid.Column="6"/>
+
+                    </Grid>
+
+                </StackPanel>
+
+            </GroupBox>
+
+            <Button Content="戻る" Grid.Row="1" Margin="8" Style="{DynamicResource BackBtn}"
+         HorizontalAlignment="Right"/>
+        </Grid>
+
+
+    </Grid>
+</Window>
