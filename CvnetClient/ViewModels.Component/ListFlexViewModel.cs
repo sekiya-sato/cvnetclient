@@ -1,11 +1,5 @@
 ﻿using CvnetClient.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CvnetClient.ViewModels.Component
 {
@@ -58,11 +52,25 @@ namespace CvnetClient.ViewModels.Component
             set { if (_fromValue != value) { _fromValue = value; OnPropertyChanged(); } }
         }
 
+        private bool _isListFromEnabled = true;
+        public bool IsListFromEnabled
+        {
+            get => _isListFromEnabled;
+            set { if (_isListFromEnabled != value) { _isListFromEnabled = value; OnPropertyChanged(); } }
+        }
+
         private string _toValue = "";
         public string ToValue
         {
             get => _toValue;
             set { if (_toValue != value) { _toValue = value; OnPropertyChanged(); } }
+        }
+
+        private bool _isListToEnabled = true;
+        public bool IsListToEnabled
+        {
+            get => _isListToEnabled;
+            set { if (_isListToEnabled != value) { _isListToEnabled = value; OnPropertyChanged(); } }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
