@@ -9,7 +9,7 @@
 	
 	<!--Default Button Style-->
 	<Style TargetType="Button">
-		<Setter Property="Background" Value="{DynamicResource DefaultButton2}"/>
+		<Setter Property="Background" Value="{DynamicResource DefaultButton3}"/>
         <Setter Property="Foreground" Value="{DynamicResource TextBtnColor1}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
         <Setter Property="FontWeight" Value="{DynamicResource ButtonFontWeight}"/>
