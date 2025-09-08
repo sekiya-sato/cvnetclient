@@ -29,7 +29,7 @@
 				<DataGridTemplateColumn Header="検索項目" Width="3*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<ComboBox ItemsSource="{Binding SearchItems, RelativeSource={RelativeSource AncestorType=UserControl}}"
+							<ComboBox ItemsSource="{Binding unit_list, RelativeSource={RelativeSource AncestorType=UserControl}}"
 									  DisplayMemberPath="Value"
 									  SelectedValuePath="Value"
 								      SelectedValue="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"> 

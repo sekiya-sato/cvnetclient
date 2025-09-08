@@ -9,15 +9,15 @@ namespace CvnetClient.Models
     public static class PageConfig
     {
         private static Dictionary<string, PageData> pages = new()
-    {
+    { 
         { "マスタ", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "名称マスタ", WindowId="CvnetClient.Views.MasterMeishoView" },
+                new ButtonConfig { Text = "名称マスタ", WindowId= typeof(Views.MasterMeishoView).FullName },
                 new ButtonConfig { Text = "得意先マスタ", WindowId="" },
                 new ButtonConfig { Text = "仕入マスタ", WindowId="" },
-                new ButtonConfig { Text = "商品マスタ(新規登録)", WindowId="CvnetClient.Views.MasterShohinView" },
-                new ButtonConfig { Text = "商品マスタ(修正)", WindowId="CvnetClient.Views.MasterShohinView" },
-                new ButtonConfig { Text = "商品マスタ(照会)", WindowId="CvnetClient.Views.MasterShohinView" },
+                new ButtonConfig { Text = "商品マスタ(新規登録)", WindowId= typeof(Views.MasterShohinView).FullName },
+                new ButtonConfig { Text = "商品マスタ(修正)", WindowId= typeof(Views.MasterShohinView).FullName },
+                new ButtonConfig { Text = "商品マスタ(照会)", WindowId=typeof(Views.MasterShohinView).FullName },
                 new ButtonConfig { Text = "商品マスタ絵型更新", WindowId="" },
                 new ButtonConfig { Text = "社員マスタ", WindowId="" },
                 new ButtonConfig { Text = "上代一括変更", WindowId="" },
@@ -26,7 +26,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "原価変更登録", WindowId="" },
                 new ButtonConfig { Text = "生地付属マスタ", WindowId="CvnetClient.Views.SubDlg01KijiView" },
                 new ButtonConfig { Text = "コンバートマスタ", WindowId="" },
-                new ButtonConfig { Text = "社員証印刷", WindowId="CvnetClient.Views.ShainShoInsatuView" },
+                new ButtonConfig { Text = "社員証印刷", WindowId= typeof(Views.ShainShoInsatuView).FullName },
             }
         }},
         { "マスタ補助", new PageData {
@@ -50,7 +50,7 @@ namespace CvnetClient.Models
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "社員LOGINマスタ一覧", WindowId="" },
-                new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId="CvnetClient.Views.MasterSystemKanriView" },
+                new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId= typeof(Views.MasterSystemKanriView).FullName },
                 new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "LOGIN履歴情報(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "処理履歴情報(管理者用)", WindowId="" },

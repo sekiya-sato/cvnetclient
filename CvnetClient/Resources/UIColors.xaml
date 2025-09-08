@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib" >
-	<!--Font Colors-->
-	<SolidColorBrush x:Key="TitleColor" Color="AntiqueWhite"/>
-	<SolidColorBrush x:Key="SubTitleColor" Color="FloralWhite"/>
+    <!--Font Colors-->
+    <SolidColorBrush x:Key="TitleColor" Color="FloralWhite"/>
+    <SolidColorBrush x:Key="SubTitleColor" Color="AntiqueWhite"/>
 	<SolidColorBrush x:Key="TitleLabelColor" Color="GhostWhite" />
 	<SolidColorBrush x:Key="plainTextColor0" Color="White" />
 
@@ -12,8 +12,8 @@
     <SolidColorBrush x:Key="FormMenuBg" Color="#EEEEEE"/>
     <SolidColorBrush x:Key="MainMenuBg" Color="#EEEEEE"/>
     <SolidColorBrush x:Key="DefaultButton1" Color="#A7D8D8"/>
-    <SolidColorBrush x:Key="DefaultButton2" Color="#34495E"/>
-    <SolidColorBrush x:Key="DefaultButton3" Color="#B2DFDB"/>
+    <SolidColorBrush x:Key="DefaultButton2" Color="#34495E"/> 
+    <SolidColorBrush x:Key="DefaultButton3" Color="#D0D3D4"/>
 
     <SolidColorBrush x:Key="ExecButtonColor" Color="#7FA0B3"/>
     <SolidColorBrush x:Key="BackBtnColor" Color="#D0D3D4"/>
@@ -21,8 +21,9 @@
     <SolidColorBrush x:Key="AddBtnColor" Color="#365C38"/>
     <SolidColorBrush x:Key="EditBtnColor" Color="#34495E"/>
     <SolidColorBrush x:Key="DeleteBtnColor" Color="#701010"/>
-    <SolidColorBrush x:Key="PrintBtnColor" Color="#6B6B6B"/>
-    
+    <SolidColorBrush x:Key="PrintBtnColor" Color="#6B6B6B"/>   
+    <SolidColorBrush x:Key="ComboBtnColor" Color="#95a5a6"/>
+
 
     <sys:Double x:Key="AppFontSize">16</sys:Double>
     <sys:Double x:Key="MenuFontSize">14</sys:Double>
