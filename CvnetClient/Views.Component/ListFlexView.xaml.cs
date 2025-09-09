@@ -1,4 +1,5 @@
-﻿using CvnetClient.Models;
+﻿using CvnetClient.Class;
+using CvnetClient.Models;
 using CvnetClient.ViewModels.Component;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -192,10 +193,10 @@ namespace CvnetClient.Views.Component
             string qs = "select 名称CD, 名称 from hc$master_meisho where 名称区分 = 'IDX' ";
             if (Config.flag == 0)
             {
-                if (AppData.cvnet.config.oroshi != 0)
+                if (AppData.ClassCvnet.config.oroshi != 0)
                     qs += " and (名称CD between 'B01' and 'B18') ";
                 else
-                    qs += " and (名称CD between 'B01' and 'B10' or 名称CD between 'Y01' and 'Y20' or 名称CD in ('BRD','ITM','DZN','SZN','MKR','TNJ','SZI','GEN'" + ((AppData.cvnet.config.smtflg == 1) ? " ,'BN0','BN1','BN2'" : "") + "))";
+                    qs += " and (名称CD between 'B01' and 'B10' or 名称CD between 'Y01' and 'Y20' or 名称CD in ('BRD','ITM','DZN','SZN','MKR','TNJ','SZI','GEN'" + ((AppData.ClassCvnet.config.smtflg == 1) ? " ,'BN0','BN1','BN2'" : "") + "))";
 
                 for (var i = 0; i < AppData.ClassEtc.SearchShohinCols.Length; i++) {
                     v_col.Add(AppData.ClassEtc.SearchShohinCols[i]);
@@ -260,7 +261,7 @@ namespace CvnetClient.Views.Component
             Line3_ListData = "";
             foreach (DataRow row in ret_csv.Rows)
             {
-                if (!(ClassSatoo.LoginKubun == 1 && row[1].ToString() == "仕入先"))
+                if (!(AppData.ClassSatoo.LoginKubun == 1 && row[1].ToString() == "仕入先"))
                 {
                     if (AppData.DefConfig.g_name.ContainsKey(row[1].ToString()))
                         Line3_ListData += ((Line3_ListData == "") ? "" : ",") + AppData.DefConfig.g_name[row[1].ToString()];
@@ -346,10 +347,10 @@ namespace CvnetClient.Views.Component
                 }
 
                 /* 仕入先ログイン時の縛り処理 */
-                if (ClassSatoo.LoginKubun == 1 && col == "仕入先")
+                if (AppData.ClassSatoo.LoginKubun == 1 && col == "仕入先")
                 { 
-                    row.FromValue = ClassSatoo.SHAIN_CD + " " + ClassSatoo.SHAIN_Name;
-                    row.ToValue = ClassSatoo.SHAIN_CD + " " + ClassSatoo.SHAIN_Name;
+                    row.FromValue = AppData.ClassSatoo.SHAIN_CD + " " + AppData.ClassSatoo.SHAIN_Name;
+                    row.ToValue = AppData.ClassSatoo.SHAIN_CD + " " + AppData.ClassSatoo.SHAIN_Name;
                     row.IsListFromEnabled = false;
                     row.IsListToEnabled = false;
                 } 
@@ -498,7 +499,7 @@ namespace CvnetClient.Views.Component
                 if (string.IsNullOrEmpty(row.SelectedItem)) return;
                 string[] wrk_para = Search_Data(row.SelectedItem);
                 if (wrk_para == null) return;
-                wrk_para[2] = ClassSatoo.GetStringFirst(row.FromValue);
+                wrk_para[2] = AppData.ClassSatoo.GetStringFirst(row.FromValue);
                 var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para);
             }
         }

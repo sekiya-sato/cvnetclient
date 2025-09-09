@@ -17,7 +17,7 @@ namespace CvnetClient.ViewModels
 
             #region Set ComboList
             // Set 在庫管理 ComboList
-            InvMngmentList = cvnet.ComboItem_00<int>("する");
+            InvMngmentList = AppData.ClassCvnet.ComboItem_00<int>("する");
             EditProduct.InvMngmentFLG = InvMngmentList.FirstOrDefault().Key;
             // Set セール区分 ComboList
             SalesCateList = new Dictionary<int, string>
@@ -55,7 +55,7 @@ namespace CvnetClient.ViewModels
             };
             EditProduct.EcReserve = EcReserveList.FirstOrDefault().Key;
             // Set 仕入区分 ComboList
-            PurchCateList = cvnet.ComboItem_00<int>("仕入区分");
+            PurchCateList = AppData.ClassCvnet.ComboItem_00<int>("仕入区分");
             EditProduct.PurchaseCate = PurchCateList.FirstOrDefault().Key;
             // Set 消化計算 ComboList
             DgCalcList = new Dictionary<int, string>
@@ -65,10 +65,10 @@ namespace CvnetClient.ViewModels
             };
             EditProduct.DgCalcCate = DgCalcList.FirstOrDefault().Key;
             // Set 消化桁切 ComboList
-            DgCutOffList = cvnet.ComboItem_00<int>("桁切");
+            DgCutOffList = AppData.ClassCvnet.ComboItem_00<int>("桁切");
             EditProduct.DgCutOffSpec = DgCutOffList.FirstOrDefault().Key;
             // Set 消化端数 ComboList
-            ConPurcCateList = cvnet.ComboItem_00<int>("端数");
+            ConPurcCateList = AppData.ClassCvnet.ComboItem_00<int>("端数");
             EditProduct.ConsignPurcCate = ConPurcCateList.FirstOrDefault().Key;
             // Set POS区分 ComboList
             PosCateList = new Dictionary<int, string>
@@ -120,7 +120,7 @@ namespace CvnetClient.ViewModels
             };
             EditProduct.ZeroPriceCate = ZeroPriCateList.FirstOrDefault().Key;
             // Set 消費税計算方法 ComboList
-            TaxCalcList = cvnet.ComboItem_00<int>("課税区分");
+            TaxCalcList = AppData.ClassCvnet.ComboItem_00<int>("課税区分");
             EditProduct.TaxCalcMethod = TaxCalcList.FirstOrDefault().Key;
             // Set コラボ出力区分 (下札サイズ) ComboList
             ColOutCateList = new Dictionary<int, string>

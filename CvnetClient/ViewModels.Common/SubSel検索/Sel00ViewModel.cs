@@ -32,7 +32,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void Init()
         {
-            DataTable ret_csv = cvnet.AspxSqlQueryMst(mstname, Param, Param2, 1);
+            DataTable ret_csv = AppData.ClassCvnet.AspxSqlQueryMst(mstname, Param, Param2, 1);
             ListSel00 = new List<Sel00Model>();
             foreach (DataRow row in ret_csv.Rows)
             {

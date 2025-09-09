@@ -77,7 +77,7 @@ namespace CvnetClient.ViewModels
                     sql_query += " where 顧客CD" + v_hugo + ":1 order by 顧客CD " + v_sort;
                     v_para[0] = init_para[2];
                 }
-                sql_query = cvnet.GetSqlDisp(sql_query);
+                sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
                 AppData.Http?.AspxSqlQuery(sql_query, v_para);
             }
         }

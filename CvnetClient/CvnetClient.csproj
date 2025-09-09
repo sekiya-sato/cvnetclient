@@ -85,10 +85,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassSatoo\ClassSatoo.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="CvnetBaseCore">
       <HintPath>..\CvnetBaseCore\bin\Debug\net9.0\CvnetBaseCore.dll</HintPath>
     </Reference>

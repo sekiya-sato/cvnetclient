@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CvnetClient.Models
+namespace CvnetClient.Class
 {
     // Class to represent ClassSasaki
     public class ClassEtc
