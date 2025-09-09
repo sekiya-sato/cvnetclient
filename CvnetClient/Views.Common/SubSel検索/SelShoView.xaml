@@ -61,14 +61,13 @@
         </materialDesign:Card>
 
         <!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="1"
+		<uc:ListFlexView Grid.Row="1" 
 						 Config="{Binding ListConfig}"
 						 Rows="{Binding ListFlex}" 
-						 QueryString="{Binding WhereClaus, Mode=TwoWay}"
-						 GridHeight="240" />
+						 QueryString="{Binding WhereClaus, Mode=TwoWay}" />
 
 		<!-- Action Buttons -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 16 0 0">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 0">
             <Button Content="🔍 検索" Style="{DynamicResource MaterialDesignContainedButton}" Margin="4"/>
             <Button Content="♻ リセット" Style="{DynamicResource MaterialDesignOutlinedButton}" Margin="4"/>
             <Button Content="❌ 閉じる" Style="{DynamicResource MaterialDesignOutlinedButton}" Margin="4"/>
