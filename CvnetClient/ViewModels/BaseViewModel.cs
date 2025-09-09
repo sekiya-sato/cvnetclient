@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CvnetClient.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,18 @@ namespace CvnetClient.ViewModels {
 			//
 			ClientLib.Exit(this);
 		}
-	}
+        [RelayCommand]
+        public void Minimize() => ClientLib.Minimize(this);
+
+        [RelayCommand]
+        public void Maximize() => ClientLib.Maximize(this);
+
+        // Command to close the window
+        [RelayCommand]
+        public void Close() => ClientLib.Exit(this);
+
+        // Command to DragMove the window
+        [RelayCommand]
+        public void DragMove() => ClientLib.DragMove(this);
+    }
 }
