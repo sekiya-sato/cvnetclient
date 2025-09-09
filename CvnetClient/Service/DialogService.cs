@@ -40,7 +40,7 @@ namespace CvnetClient.Service
             if (view == null || vm == null) return null;
 
             //Set parameters
-            if (wrk_para != null) vm.Wrk_para = wrk_para;
+            if (wrk_para != null) vm.Wrk_para = wrk_para; 
 
             var ret = ClientLib.ShowDialogView(view, null);
             if (ret != true) return null; 

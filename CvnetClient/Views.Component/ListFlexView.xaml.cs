@@ -46,37 +46,7 @@ namespace CvnetClient.Views.Component
                 typeof(ObservableCollection<ListFlexItem>),
                 typeof(ListFlexView),
                 new PropertyMetadata(null,OnRowsChanged)
-        ); 
-
-        // DataGrid size
-        public double GridWidth
-        {
-            get => (double)GetValue(GridWidthProperty);
-            set => SetValue(GridWidthProperty, value);
-        }
-
-        public static readonly DependencyProperty GridWidthProperty =
-            DependencyProperty.Register(
-                nameof(GridWidth),
-                typeof(double),
-                typeof(ListFlexView),
-                new PropertyMetadata(double.NaN) // default: Auto
-            );
-
-        // DataGrid size
-        public double GridHeight
-        {
-            get => (double)GetValue(GridHeightProperty);
-            set => SetValue(GridHeightProperty, value);
-        }
-
-        public static readonly DependencyProperty GridHeightProperty =
-            DependencyProperty.Register(
-                nameof(GridHeight),
-                typeof(double),
-                typeof(ListFlexView),
-                new PropertyMetadata(double.NaN) // default: Auto
-            );
+        );  
 
         // ComboBox Items
         public static readonly DependencyProperty UnitListProperty =
