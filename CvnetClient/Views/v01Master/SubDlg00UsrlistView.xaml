@@ -1,4 +1,4 @@
-﻿<Window x:Class="CvnetClient.Views.ShainShoInsatuView"
+﻿<Window x:Class="CvnetClient.Views.SubDlg00UsrlistView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -14,7 +14,7 @@
         <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
     </Window.Resources>
     <Window.DataContext>
-        <vm:UsrlistViewModel />
+        <vm:SubDlg00UsrlistViewModel />
     </Window.DataContext>
     <Window.InputBindings>
         <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />

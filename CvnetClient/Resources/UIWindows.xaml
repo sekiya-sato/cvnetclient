@@ -18,10 +18,8 @@
                     SnapsToDevicePixels="True">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="36"/>
-                                <!-- Title bar -->
+                                <RowDefinition Height="25"/>
                                 <RowDefinition Height="*"/>
-                                <!-- Content -->
                             </Grid.RowDefinitions>
 
                             <!-- Title bar with rounded top corners -->
@@ -29,23 +27,16 @@
                             Background="Black"
                             CornerRadius="5,5,0,0"
                             Padding="6,0,6,0">
-                                <!-- Use a grid so we can center the title while keeping buttons at right -->
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
-                                        <!-- optional left area -->
                                         <ColumnDefinition Width="*"/>
-                                        <!-- center area for title -->
                                         <ColumnDefinition Width="Auto"/>
-                                        <!-- buttons area -->
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- (Optional) Left content / icon placeholder -->
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0" Margin="6,0,0,0">
-                                        <!-- place icon here if needed -->
                                     </StackPanel>
 
-                                    <!-- Centered title (spans middle column) -->
                                     <TextBlock Text="{TemplateBinding Title}"
                                        Grid.Column="1"
                                        HorizontalAlignment="Center"
@@ -56,7 +47,6 @@
                                        Foreground="{StaticResource TitleColor}"
                                        TextTrimming="CharacterEllipsis"/>
 
-                                    <!-- Buttons kanan -->
                                     <StackPanel Orientation="Horizontal"
                                         Grid.Column="2"
                                         VerticalAlignment="Center"
@@ -72,7 +62,6 @@
                                 </Grid>
                             </Border>
 
-                            <!-- Window content -->
                             <ContentPresenter Grid.Row="1"
                                       Content="{TemplateBinding Content}"
                                       Margin="12"
@@ -92,8 +81,8 @@
 
 
     <Style x:Key="MasterWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
-        <Setter Property="Height" Value="570"/>
-        <Setter Property="Width" Value="980"/>
+        <Setter Property="Height" Value="650"/>
+        <Setter Property="Width" Value="1000"/>
 
     </Style>
 

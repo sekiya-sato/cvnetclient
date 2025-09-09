@@ -17,9 +17,9 @@ namespace CvnetClient.Views
     /// <summary>
     /// Interaction logic for ShainShoInsatuView.xaml
     /// </summary>
-    public partial class ShainShoInsatuView : Window
+    public partial class SubDlg00UsrlistView : Window
     {
-        public ShainShoInsatuView()
+        public SubDlg00UsrlistView()
         {
             InitializeComponent();
         }

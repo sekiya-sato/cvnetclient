@@ -13,14 +13,14 @@ using System.Collections.ObjectModel;
 
 namespace CvnetClient.ViewModels
 {
-    public partial class MasterKijiFuzokuViewModel : BaseViewModel
+    public partial class SubDlg01KijiViewModel : BaseViewModel
     {
 
         [RelayCommand]
 
         void Init(){
 
-         }
+        }
     }
 }
 

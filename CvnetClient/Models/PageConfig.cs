@@ -26,7 +26,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "原価変更登録", WindowId="" },
                 new ButtonConfig { Text = "生地付属マスタ", WindowId="CvnetClient.Views.SubDlg01KijiView" },
                 new ButtonConfig { Text = "コンバートマスタ", WindowId="" },
-                new ButtonConfig { Text = "社員証印刷", WindowId= typeof(Views.ShainShoInsatuView).FullName },
+                new ButtonConfig { Text = "社員証印刷", WindowId= typeof(Views.SubDlg00UsrlistView).FullName },
             }
         }},
         { "マスタ補助", new PageData {
