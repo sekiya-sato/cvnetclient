@@ -4,11 +4,11 @@ using System.Windows;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for Sel00View.xaml
+    /// Interaction logic for SubDlgSel00View.xaml
     /// </summary>
-    public partial class Sel00View : Window
+    public partial class SubDlgSel00View : Window
     {
-        public Sel00View()
+        public SubDlgSel00View()
         {
             InitializeComponent();
         } 

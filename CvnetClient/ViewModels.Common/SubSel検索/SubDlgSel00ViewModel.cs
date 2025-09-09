@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
+using CommunityToolkit.Mvvm.Input; 
 using CvnetClient.Models; 
 using System.Data; 
 
 namespace CvnetClient.ViewModels
 {
-    public partial class Sel00ViewModel : BaseViewModel
+    public partial class SubDlgSel00ViewModel : BaseViewModel
     {
         [ObservableProperty]
         string[] param = null;

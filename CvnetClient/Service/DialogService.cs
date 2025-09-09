@@ -6,10 +6,10 @@ namespace CvnetClient.Service
 {
     public class DialogService : IDialogService
     {
-        public Sel00ViewModel GetSel00(string mstname, string[] v_para = null, string[] v_para2 = null)
+        public SubDlgSel00ViewModel GetSel00(string mstname, string[] v_para = null, string[] v_para2 = null)
         {
-            var view = new Sel00View();
-            var vm = view.DataContext as Sel00ViewModel;
+            var view = new SubDlgSel00View();
+            var vm = view.DataContext as SubDlgSel00ViewModel;
             if (view == null || vm == null) return null;
 
             // Set parameters
@@ -22,10 +22,10 @@ namespace CvnetClient.Service
             return vm;
         }
 
-        public SelShoViewModel GetSelSho()
+        public SubDlgSelShoViewModel GetSelSho()
         {
-            var view = new SelShoView();
-            var vm = view.DataContext as SelShoViewModel;
+            var view = new SubDlgSelShoView();
+            var vm = view.DataContext as SubDlgSelShoViewModel;
             if (view == null || vm == null) return null;
 
             var ret = ClientLib.ShowDialogView(view, null);

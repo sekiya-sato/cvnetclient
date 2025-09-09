@@ -15,18 +15,13 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for MasterShohinView.xaml
+    /// Interaction logic for SubDlg01Sho2View.xaml
     /// </summary>
-    public partial class MasterShohinView : Window
+    public partial class SubDlg01Sho2View : Window
     {
-        public MasterShohinView()
+        public SubDlg01Sho2View()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        } 
     }
 }

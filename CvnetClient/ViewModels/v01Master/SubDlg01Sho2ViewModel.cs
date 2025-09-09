@@ -8,7 +8,7 @@ using System.Data;
 
 namespace CvnetClient.ViewModels
 {
-    public partial class MasterShohinViewModel : BaseViewModel
+    public partial class SubDlg01Sho2ViewModel : BaseViewModel
     {
         [RelayCommand]
         void Init()
@@ -432,8 +432,8 @@ namespace CvnetClient.ViewModels
         public void SelDspUpdate()
         {
             //AppData.DlgService.GetSelSho();
-            var view = new SelShoView();
-            var vm = view.DataContext as SelShoViewModel;
+            var view = new SubDlgSelShoView();
+            var vm = view.DataContext as SubDlgSelShoViewModel;
             if (view == null || vm == null) return;
 
             var ret = ClientLib.ShowDialogView(view, this);

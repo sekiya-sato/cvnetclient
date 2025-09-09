@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CvnetClient.Models
 {
     /// <summary>
-    /// View Class - Sel00View
+    /// View Class - SubDlgSelShoView
     /// </summary>
     public partial class Sel00Model : ObservableObject
     {

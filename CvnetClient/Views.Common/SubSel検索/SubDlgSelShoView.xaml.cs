@@ -13,9 +13,9 @@ namespace CvnetClient.Views
     /// <summary>
     /// Interaction logic for SearchConditionModel.xaml
     /// </summary>
-    public partial class SelShoView : Window
+    public partial class SubDlgSelShoView : Window
     {
-        public SelShoView()
+        public SubDlgSelShoView()
         {
             InitializeComponent();
         }
