@@ -38,9 +38,25 @@ namespace CvnetClient.ViewModels
                     return;
                 }
 
-                var window = (Window)Activator.CreateInstance(type)!;
-                window.Title = cfg.Text;
-                window.ShowDialog();
+                var existing = Application.Current.Windows
+            .OfType<Window>()
+            .FirstOrDefault(w => w.GetType() == type);
+
+                if (existing != null)
+                {
+                    // fokuskan window tu
+                    if (existing.WindowState == WindowState.Minimized)
+                        existing.WindowState = WindowState.Normal;
+
+                    existing.Activate();
+                    return;
+                }
+                else
+                {
+                    var window = (Window)Activator.CreateInstance(type)!;
+                    window.Title = cfg.Text;
+                    window.Show();
+                }                
             }
             catch (Exception ex)
             {

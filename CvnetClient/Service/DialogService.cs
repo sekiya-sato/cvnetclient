@@ -1,4 +1,5 @@
 ﻿using CvnetClient.Interface;
+using CvnetClient.Models;
 using CvnetClient.ViewModels;
 using CvnetClient.Views;
 
@@ -18,8 +19,33 @@ namespace CvnetClient.Service
             if (v_para2 != null) vm.Param2 = v_para2;
 
             var ret = ClientLib.ShowDialogView(view, null);
-            if (ret != true) return null; 
+            if (ret != true) return null;
+
             return vm;
+        }
+
+        public void ShowSel00(string mstname, Action<Sel00Model> onSelected, string[] v_para = null, string[] v_para2 = null)
+        {
+            var view = new SubDlgSel00View();
+            var vm = view.DataContext as SubDlgSel00ViewModel;
+            if (view == null || vm == null) return;
+
+            // Set parameters
+            vm.Mstname = mstname;
+            if (v_para != null) vm.Param = v_para;
+            if (v_para2 != null) vm.Param2 = v_para2;
+
+            // Subscribe callback
+            void handler(Sel00Model model)
+            {
+                onSelected?.Invoke(model);
+                vm.SelectedItemConfirmed -= handler; // <-- unsubscribe lepas guna
+                view.Close(); // kalau nak auto-close lepas pilih
+            }
+
+            vm.SelectedItemConfirmed += handler;
+
+            ClientLib.ShowWindowView(view, null); // non-modal
         }
 
         public SubDlgSelShoViewModel GetSelSho()
