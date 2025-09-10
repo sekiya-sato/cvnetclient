@@ -337,7 +337,7 @@
 		<Setter Property="Tag" Value="/Images/button_icon/clear_button.png" />
 	</Style>
 
-	<Style x:Key="PrintIconBtn" TargetType="Button" BasedOn="{StaticResource IconButton}">
+	<Style x:Key="PrintIconBtn1" TargetType="Button" BasedOn="{StaticResource IconButton}">
 		<Setter Property="Background" Value="#abb2b9" />
 		<Setter Property="Content" Value="印刷" />
 		<Setter Property="Tag" Value="/Images/button_icon/printer_icon.png" />
