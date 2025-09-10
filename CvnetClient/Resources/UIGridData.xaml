@@ -15,51 +15,69 @@
 		<Setter Property="BorderThickness" Value="1"></Setter> 
 		<Setter Property="HeadersVisibility" Value="Column"></Setter>
 		<Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"></Setter>
+        <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="#DDDDDD"/>
 
+        
+        
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
 
-		<Setter Property="RowStyle">
-			<Setter.Value>
-				<Style TargetType="DataGridRow">
-					<Style.Triggers>
-						<!-- Highlight a grid row as the mouse passes over -->
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Background" Value="#0077B6" />
-							<Setter Property="Foreground" Value="White"></Setter>
-						</Trigger>
-						<Trigger Property="IsSelected" Value="True">
-							<Setter Property="Background" Value="#023E8A"></Setter>
-							<Setter Property="Foreground" Value="Black"/>
-						</Trigger>
-					</Style.Triggers>
-					<Style.Resources>
-						<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="CadetBlue"/>
-						<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
-						<SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Transparent" />
-						<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Transparent" />
-					</Style.Resources>
-				</Style>
-			</Setter.Value>
-		</Setter>
-	</Style>
+        <Setter Property="RowStyle">
+            
+            <Setter.Value>
+                
+                <Style TargetType="DataGridRow">
+                <Setter Property="FontSize" Value="14"/>    
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#0077B6" />
+                            <Setter Property="Foreground" Value="Black"></Setter>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#023E8A"></Setter>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="CadetBlue"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Transparent" />
+                    </Style.Resources>
+                </Style>
+            </Setter.Value>
+        </Setter>
 
-	<Style TargetType="{x:Type DataGridCell}">
+        
+        
+    </Style>
+
+	<!--<Style TargetType="{x:Type DataGridCell}">
 		<Style.Triggers>
 			<Trigger Property="IsSelected" Value="True">
-				<Setter Property="Background" Value="Transparent"/>
+				<Setter Property="Background" Value="GreenYellow"/>
 				<Setter Property="Foreground" Value="Black"/>
 				<Setter Property="BorderBrush" Value="Transparent"></Setter>
 			</Trigger>
 		</Style.Triggers>
-	</Style>
+	</Style>-->
 
-	<Style TargetType="{x:Type DataGridColumnHeader}"> 
+	<!--<Style TargetType="{x:Type DataGridColumnHeader}"> 
 		<Setter Property="BorderBrush" Value="Transparent" />
-		<Setter Property="BorderThickness" Value="0" />
-		<Setter Property="Foreground" Value="Black" />
-		<Setter Property="FontWeight" Value="Bold"></Setter>
-		<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-		<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-		<Setter Property="FontSize" Value="18"></Setter>
-		<Setter Property="MinHeight" Value="20"></Setter>
-	</Style>
+        <Setter Property="Background" Value="{DynamicResource DefaultButton3}"/>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+        <Setter Property="MinHeight" Value="20"></Setter>
+	</Style>-->
 </ResourceDictionary>

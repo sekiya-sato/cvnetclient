@@ -90,36 +90,34 @@
 				Command="{Binding DoListCommand}"
 				Content="表示更新(F5)" />
         </StackPanel>
-
         <!--  左下 リスト  -->
-        <DataGrid
-			Grid.Row="1"
-			Grid.Column="0"
-			Margin="0,0,0,0"
-			d:ItemsSource="{d:SampleData ItemCount=5}"
-			AutoGenerateColumns="False"
-			Background="#FFFFFF"
-			HeadersVisibility="Column"
-			IsReadOnly="True"
-			IsSynchronizedWithCurrentItem="True"
-			ItemsSource="{Binding ListMeisho}"
-			SelectedItem="{Binding SelectedMeisho}"
-			SelectionMode="Single">
+        <DataGrid	
+	Margin="0,0,0,0"
+	d:ItemsSource="{d:SampleData ItemCount=5}"
+	AutoGenerateColumns="False"
+	HeadersVisibility="Column"
+	IsReadOnly="True"
+    Style="{DynamicResource WinGridData}"
+	IsSynchronizedWithCurrentItem="True"
+	ItemsSource="{Binding ListMeisho}"
+	SelectedItem="{Binding SelectedMeisho}"
+	SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn
-					Width="80"
-					Binding="{Binding MeishoCd}"
-					Header="名称CD" />
+			Width="80"
+			Binding="{Binding MeishoCd}"
+			Header="名称CD" />
                 <DataGridTextColumn
-					Width="*"
-					Binding="{Binding Meisho}"
-					Header="名称" />
+			Width="*"
+			Binding="{Binding Meisho}"
+			Header="名称" />
                 <DataGridTextColumn
-					Width="100"
-					Binding="{Binding RyakuShou}"
-					Header="略称" />
+			Width="100"
+			Binding="{Binding RyakuShou}"
+			Header="略称" />
             </DataGrid.Columns>
         </DataGrid>
+
 
         <!--  右 詳細  -->
         <Border

@@ -288,7 +288,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Button Style="{DynamicResource UpdateIconBtn}" Padding="0,3"  Grid.Column="2"/>
                         <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4"/>
-                        <Button Style="{DynamicResource PrintIconBtn1}" Grid.Column="6"/>
+                        <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6"/>
 
                     </Grid>
 
