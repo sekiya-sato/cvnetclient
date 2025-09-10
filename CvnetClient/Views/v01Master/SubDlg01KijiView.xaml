@@ -284,10 +284,12 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Content="追加" Background="{DynamicResource AddBtnColor}"/>
-                        <Button Content="修正" Background="{DynamicResource EditBtnColor}" Padding="0,3"  Grid.Column="2"/>
-                        <Button Content="削除" Background="{DynamicResource DeleteBtnColor}" Grid.Column="4"/>
-                        <Button Content="印刷" Background="{DynamicResource PrintBtnColor}" Grid.Column="6"/>
+
+                        <Button Style="{DynamicResource AddIconBtn}"/>
+
+                        <Button Style="{DynamicResource UpdateIconBtn}" Padding="0,3"  Grid.Column="2"/>
+                        <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4"/>
+                        <Button Style="{DynamicResource PrintIconBtn1}" Grid.Column="6"/>
 
                     </Grid>
 

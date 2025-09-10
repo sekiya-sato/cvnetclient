@@ -1,13 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
+using CommunityToolkit.Mvvm.Input; 
 using CvnetClient.Models; 
 using System.Data; 
 
 namespace CvnetClient.ViewModels
 {
-    public partial class Sel00ViewModel : BaseViewModel
+    public partial class SubDlgSel00ViewModel : BaseViewModel
     {
+
+        public event Action<Sel00Model>? SelectedItemConfirmed;
+
         [ObservableProperty]
         string[] param = null;
 
@@ -32,7 +34,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void Init()
         {
-            DataTable ret_csv = cvnet.AspxSqlQueryMst(mstname, Param, Param2, 1);
+            DataTable ret_csv = AppData.ClassCvnet.AspxSqlQueryMst(mstname, Param, Param2, 1);
             ListSel00 = new List<Sel00Model>();
             foreach (DataRow row in ret_csv.Rows)
             {
@@ -75,6 +77,7 @@ namespace CvnetClient.ViewModels
         {
             if(SelectSel00 == null) return;
             //confirm and close window
+            SelectedItemConfirmed?.Invoke(SelectSel00);
             ClientLib.ExitDialogResult(this, true);
         }
 

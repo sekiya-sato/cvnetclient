@@ -8,18 +8,23 @@
              d:DesignHeight="450" d:DesignWidth="800"
 			 Height="Auto" Width="Auto"
 			 Name="listflexview">
-	<StackPanel>
-		<Button Content="+行追加" Click="AddRow_Click" 
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/> 
+			<RowDefinition Height="*"/> 
+		</Grid.RowDefinitions>
+
+		<Button Grid.Row="0" 
+				Content="+行追加" Click="AddRow_Click" 
 				Width="80" 
 				Margin="5"
 				HorizontalAlignment="Left"/>
-		<DataGrid ItemsSource="{Binding Rows, RelativeSource={RelativeSource AncestorType=UserControl}}"
+		<DataGrid Grid.Row="1"
+				  ItemsSource="{Binding Rows, RelativeSource={RelativeSource AncestorType=UserControl}}"
 				  AutoGenerateColumns="False" 
 				  CanUserAddRows="False" 
 				  HeadersVisibility="Column"
-				  Margin="5"
-				  Width="{Binding GridWidth, RelativeSource={RelativeSource AncestorType=UserControl}}"
-				  Height="{Binding GridHeight, RelativeSource={RelativeSource AncestorType=UserControl}}"
+				  Margin="5" 
 				  ColumnWidth="*">
 			<DataGrid.Columns>
 				<!--行-->
@@ -76,5 +81,5 @@
 
 			</DataGrid.Columns>
 		</DataGrid> 
-	</StackPanel>
+	</Grid>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using CvnetClient.Models;
+﻿using CvnetClient.Class;
+using CvnetClient.Models;
 using System.Data; 
 
 namespace CvnetBaseCore
@@ -152,13 +153,13 @@ namespace CvnetBaseCore
         /// <param name="p_querystr">引数1:I	String = 元のSQL文</param>
         /// <param name="p_line">引数2:I	Number = 最大行</param>
         /// <returns>戻値 String = 件数制限されたSQL文</returns>
-        public static string GetSqlDisp(string p_querystr, int p_line = 0)
+        public string GetSqlDisp(string p_querystr, int p_line = 0)
         {
-            string ret_sqlstrwrk = "select * from (" + p_querystr + ") where rownum<=" + ((p_line == 0) ? AppData.cvnet.MaxCntDisp : p_line);
+            string ret_sqlstrwrk = "select * from (" + p_querystr + ") where rownum<=" + ((p_line == 0) ? AppData.ClassCvnet.MaxCntDisp : p_line);
             return ret_sqlstrwrk;
         }
 
-        public static Dictionary<TKey, string> ComboItem_00<TKey>(string _name)
+        public Dictionary<TKey, string> ComboItem_00<TKey>(string _name)
         {
             var _list = new Dictionary<TKey, string>();
 
@@ -868,7 +869,7 @@ namespace CvnetBaseCore
         /// <param name="v_para">引数2:I Array = ﾊﾟﾗﾒｰﾀ配列 (開始CDなど)</param>
         /// <param name="v_para2">引数4:I Number = ダイアログ表示用</param>
         /// <param name="v_flg">戻値 CSVデータ(タイトル名設定済)</param>
-        public static DataTable AspxSqlQueryMst(string p_kubun, string[] v_para = null, string[] v_para2 = null, int v_flg = 0)
+        public DataTable AspxSqlQueryMst(string p_kubun, string[] v_para = null, string[] v_para2 = null, int v_flg = 0)
         {
             string sql_query = string.Empty;
             DataTable ret_csv = new DataTable();
@@ -876,7 +877,7 @@ namespace CvnetBaseCore
             /* 協和バッグ */
             int v_next = 0;
 
-            if (AppData.cvnet.UserFlg == 56)
+            if (AppData.ClassCvnet.UserFlg == 56)
             {
                 if (p_kubun == "ブランド")
                 {
@@ -1655,12 +1656,12 @@ namespace CvnetBaseCore
                 sql_query = "select " + v_retu + " from HC$Master_SHOHIN ";
                 sql_query += " where 商品CD>=:1";
                 /* if (v_para2!=null){ */
-                if (ClassSatoo.LoginKubun == 1)
+                if (AppData.ClassSatoo.LoginKubun == 1)
                 {
-                    sql_query += " and メーカーCD='" + ClassSatoo.SHAIN_CD + "'";
+                    sql_query += " and メーカーCD='" + AppData.ClassSatoo.SHAIN_CD + "'";
                 }
                 /* ｴｽﾗｸﾞｼﾞｭｰﾙのみ */
-                if (AppData.cvnet.UserFlg == 56) sql_query += " and 承認FLG=1";
+                if (AppData.ClassCvnet.UserFlg == 56) sql_query += " and 承認FLG=1";
 
                 sql_query += " order by 商品CD";
                 sql_query = GetSqlDisp(sql_query);
@@ -1678,9 +1679,9 @@ namespace CvnetBaseCore
                 }
                 sql_query = "select " + v_retu + " from HC$Master_SHOHIN ";
                 sql_query += " where 商品CD>=:1";
-                if (ClassSatoo.LoginKubun == 1)
+                if (AppData.ClassSatoo.LoginKubun == 1)
                 {
-                    sql_query += " and メーカーCD='" + ClassSatoo.SHAIN_CD + "'";
+                    sql_query += " and メーカーCD='" + AppData.ClassSatoo.SHAIN_CD + "'";
                 }
                 sql_query += " and 名称CD10='1' ";
 
@@ -2713,14 +2714,14 @@ namespace CvnetBaseCore
         /// </summary>
         /// <param name="arias">引数 接続文字列</param>
         /// <returns>戻値 検索用SQL文字列</returns>
-        public static string GetQueryStrHoujin(string arias = "")
+        public string GetQueryStrHoujin(string arias = "")
         {
             string col_str = string.Empty;
-            if (AppData.cvnet.config.MultiCoop != null && AppData.cvnet.config.MultiCoop >= 0)
+            if (AppData.ClassCvnet.config.MultiCoop != null && AppData.ClassCvnet.config.MultiCoop >= 0)
             {
                 col_str += " and ( ";
                 if (arias != "" || arias != null) col_str += arias + ".";
-                col_str += "法人CD='" + AppData.cvnet.config.MultiCoop + "' ";
+                col_str += "法人CD='" + AppData.ClassCvnet.config.MultiCoop + "' ";
                 col_str += " or ";
                 if (arias != "" || arias != null) col_str += arias + ".";
                 col_str += "法人CD='.') ";

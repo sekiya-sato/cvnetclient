@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib" >
 
     <Style x:Key="GlobalWindowStyle" TargetType="Window">
@@ -14,15 +15,20 @@
                 <ControlTemplate TargetType="Window">
                     <Border CornerRadius="5"
                     Background="{TemplateBinding Background}"
-                    BorderThickness="0"
+                    BorderThickness="0.5"
+                    BorderBrush="Black"
                     SnapsToDevicePixels="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding DragMoveCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <!-- Title bar with rounded top corners -->
                             <Border Grid.Row="0"
                             Background="Black"
                             CornerRadius="5,5,0,0"
@@ -52,20 +58,17 @@
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right"
                                         Margin="0,0,4,0">
-                                        <Button Command="{Binding MinimizeCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        <Button Command="{Binding MinimizeCommand}"
                                         Style="{StaticResource MinimizeWinBtn}" Margin="0,0,6,0"/>
-                                        <Button Command="{Binding MaximizeCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        <Button Command="{Binding MaximizeCommand}"
                                         Style="{StaticResource MaximizeWinBtn}" Margin="0,0,6,0"/>
-                                        <Button Command="{Binding CloseCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        <Button Command="{Binding CloseCommand}"
                                         Style="{StaticResource CloseWinBtn}"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
 
-                            <ContentPresenter Grid.Row="1"
-                                      Content="{TemplateBinding Content}"
-                                      Margin="12"
-                                      SnapsToDevicePixels="True"/>
+                            <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" Margin="12" SnapsToDevicePixels="True"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -76,25 +79,21 @@
     <Style x:Key="PrintWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Height" Value="450"/>
         <Setter Property="Width" Value="800"/>
-
     </Style>
 
 
     <Style x:Key="MasterWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Height" Value="650"/>
         <Setter Property="Width" Value="1000"/>
-
     </Style>
 
     <Style x:Key="ExtraMasterWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Height" Value="1000"/>
         <Setter Property="Width" Value="1440"/>
-
     </Style>
 
     <Style x:Key="InputWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Height" Value="450"/>
         <Setter Property="Width" Value="800"/>
-
     </Style>
 </ResourceDictionary>

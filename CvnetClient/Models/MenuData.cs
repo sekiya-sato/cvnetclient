@@ -58,7 +58,7 @@ namespace CvnetClient.Models {
 						},
 						new MenuData{
 							Header="商品マスタ(新規登録) / (照会・修正）",
-							ViewType = typeof(Views.MasterShohinView),
+							ViewType = typeof(Views.SubDlg01Sho2View),
 							IsDialog = false,
 						},
 							new MenuData{

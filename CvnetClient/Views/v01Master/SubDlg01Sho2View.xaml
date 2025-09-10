@@ -1,4 +1,4 @@
-﻿<Window x:Class="CvnetClient.Views.MasterShohinView"
+﻿<Window x:Class="CvnetClient.Views.SubDlg01Sho2View"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
@@ -18,7 +18,7 @@
 		<utils:VdateConverter x:Key="VdateConverter" />
 	</Window.Resources>
 	<Window.DataContext>
-		<vm:MasterShohinViewModel />
+		<vm:SubDlg01Sho2ViewModel />
 	</Window.DataContext>
 	<behaviors:Interaction.Triggers>
 		<behaviors:EventTrigger EventName="ContentRendered">

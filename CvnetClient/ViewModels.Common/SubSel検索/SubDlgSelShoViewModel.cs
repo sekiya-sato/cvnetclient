@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace CvnetClient.ViewModels
 {
-    public partial class SelShoViewModel : BaseViewModel
+    public partial class SubDlgSelShoViewModel : BaseViewModel
     {
         [ObservableProperty]
         ObservableCollection<ListFlexItem>? listFlex = new ObservableCollection<ListFlexItem>();

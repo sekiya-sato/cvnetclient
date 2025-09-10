@@ -16,12 +16,44 @@ namespace CvnetClient {
 	/// </summary>
 	public class ClientLib
     {
-		/// <summary>
-		/// 自分のViewを閉じる
-		/// [Close the active Window]
-		/// </summary>
-		/// <param name="vm">ViewModelインスタンス</param>
-		public static void Exit(object vm)
+
+        public static void Minimize(object vm)
+        {
+            var win = GetActiveView(vm);
+            if (win != null)
+            {
+                win.WindowState = WindowState.Minimized;
+            }
+        }
+
+        public static void Maximize(object vm)
+        {
+            var win = GetActiveView(vm);
+            if (win != null)
+            {
+                if (win.WindowState == WindowState.Normal)
+                    win.WindowState = WindowState.Maximized;
+                else
+                    win.WindowState = WindowState.Normal;
+            }
+        }
+
+        public static void DragMove(object vm)
+        {
+            var win = GetActiveView(vm);
+            if (win != null)
+            {
+                try { win.DragMove(); } catch { }
+            }
+        }
+
+
+        /// <summary>
+        /// 自分のViewを閉じる
+        /// [Close the active Window]
+        /// </summary>
+        /// <param name="vm">ViewModelインスタンス</param>
+        public static void Exit(object vm)
         {
 			var win = GetActiveView(vm);
 			if (win != null) {
@@ -206,6 +238,19 @@ namespace CvnetClient {
 				return null;
 			}
 		}
+
+        public static void ShowWindowView(Window childWin, object? myVm,
+    WindowStartupLocation loc = WindowStartupLocation.CenterOwner,
+    bool isShowTaskbar = false)
+        {
+            if (myVm != null)
+                childWin.Owner = GetActiveView(myVm);
+
+            childWin.WindowStartupLocation = loc;
+            childWin.ShowInTaskbar = isShowTaskbar;
+            childWin.Show(); // non-modal
+        }
+
         /// <summary>
         /// DataGridに対しDictionary型を参照して列を作成する
         /// [Create columns in a DataGrid by referring to a Dictionary type]

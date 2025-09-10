@@ -1,4 +1,4 @@
-﻿using CvnetClient.Models;
+﻿using CvnetClient.Class;
 using System.ComponentModel;
 
 namespace CvnetClient.ViewModels.Component
