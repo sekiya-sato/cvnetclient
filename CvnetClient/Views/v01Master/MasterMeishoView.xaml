@@ -9,9 +9,7 @@
 	xmlns:utils="clr-namespace:CvnetClient.Utils"
 	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 	Title="名称マスタ"
-	Width="980"
-	Height="570"
-	
+	Style="{StaticResource MasterWindowStyle}"	
 	mc:Ignorable="d">
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />

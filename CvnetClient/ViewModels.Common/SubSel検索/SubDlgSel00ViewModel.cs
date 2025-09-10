@@ -7,6 +7,9 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlgSel00ViewModel : BaseViewModel
     {
+
+        public event Action<Sel00Model>? SelectedItemConfirmed;
+
         [ObservableProperty]
         string[] param = null;
 
@@ -74,6 +77,7 @@ namespace CvnetClient.ViewModels
         {
             if(SelectSel00 == null) return;
             //confirm and close window
+            SelectedItemConfirmed?.Invoke(SelectSel00);
             ClientLib.ExitDialogResult(this, true);
         }
 

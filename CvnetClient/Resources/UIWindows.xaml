@@ -15,7 +15,8 @@
                 <ControlTemplate TargetType="Window">
                     <Border CornerRadius="5"
                     Background="{TemplateBinding Background}"
-                    BorderThickness="0"
+                    BorderThickness="0.5"
+                    BorderBrush="Black"
                     SnapsToDevicePixels="True">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -28,7 +29,6 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <!-- Title bar with rounded top corners -->
                             <Border Grid.Row="0"
                             Background="Black"
                             CornerRadius="5,5,0,0"

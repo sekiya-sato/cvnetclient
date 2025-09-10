@@ -26,65 +26,77 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         private void SelWorker(string? target)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("担当");
-            if (get_sel00 == null) return;
+            //var get_sel00 = AppData.DlgService.GetSel00("担当");
+            //if (get_sel00 == null) return;
 
-            var cd = get_sel00.SelectSel00?.Code;
-            var name = get_sel00.SelectSel00?.Name;
-
-            switch (target)
+            //var cd = get_sel00.SelectSel00?.Code;
+            //var name = get_sel00.SelectSel00?.Name;
+            AppData.DlgService.ShowSel00("担当", selected =>
             {
-                case "From":
-                    if (WorkerFrom != null)
-                    {
-                        WorkerFrom.WorkerCD = cd;
-                        WorkerFrom.Name = name;
-                    }
-                    break;
+                var cd = selected.Code;
+                var name = selected.Name;
 
-                case "To":
-                    if (WorkerTo != null)
-                    {
-                        WorkerTo.WorkerCD = cd;
-                        WorkerTo.Name = name;
-                    }
-                    break;
-            }
+                switch (target)
+                {
+                    case "From":
+                        if (WorkerFrom != null)
+                        {
+                            WorkerFrom.WorkerCD = cd;
+                            WorkerFrom.Name = name;
+                        }
+                        break;
 
-            OnPropertyChanged(nameof(WorkerFrom));
-            OnPropertyChanged(nameof(WorkerTo));
+                    case "To":
+                        if (WorkerTo != null)
+                        {
+                            WorkerTo.WorkerCD = cd;
+                            WorkerTo.Name = name;
+                        }
+                        break;
+                }
+
+                OnPropertyChanged(nameof(WorkerFrom));
+                OnPropertyChanged(nameof(WorkerTo));
+            });
         }
 
         [RelayCommand]
         private void SelShop(string? target)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("店舗出荷倉庫");
-            if (get_sel00 == null) return;
+            //var get_sel00 = AppData.DlgService.GetSel00("店舗出荷倉庫");
+            //if (get_sel00 == null) return;
 
-            var cd = get_sel00.SelectSel00?.Code;
-            var name = get_sel00.SelectSel00?.Name;
+            //var cd = get_sel00.SelectSel00?.Code;
+            //var name = get_sel00.SelectSel00?.Name;
 
-            switch (target)
-            {
-                case "From":
-                    if (ShopFrom != null)
-                    {
-                        ShopFrom.TradingCD = cd;
-                        ShopFrom.TradingName = name;
-                    }
-                    break;
+            AppData.DlgService.ShowSel00("店舗出荷倉庫",selected => { 
+                
+                var cd = selected.Code;
+                var name = selected.Name;
 
-                case "To":
-                    if (ShopTo != null)
-                    {
-                        ShopTo.TradingCD = cd;
-                        ShopTo.TradingName = name;
-                    }
-                    break;
-            }
+                switch (target)
+                {
+                    case "From":
+                        if (ShopFrom != null)
+                        {
+                            ShopFrom.TradingCD = cd;
+                            ShopFrom.TradingName = name;
+                        }
+                        break;
 
-            OnPropertyChanged(nameof(ShopFrom));
-            OnPropertyChanged(nameof(ShopTo));
+                    case "To":
+                        if (ShopTo != null)
+                        {
+                            ShopTo.TradingCD = cd;
+                            ShopTo.TradingName = name;
+                        }
+                        break;
+                }
+
+                OnPropertyChanged(nameof(ShopFrom));
+                OnPropertyChanged(nameof(ShopTo));
+
+            });            
         }
 
         [RelayCommand]

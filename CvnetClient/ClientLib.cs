@@ -238,6 +238,19 @@ namespace CvnetClient {
 				return null;
 			}
 		}
+
+        public static void ShowWindowView(Window childWin, object? myVm,
+    WindowStartupLocation loc = WindowStartupLocation.CenterOwner,
+    bool isShowTaskbar = false)
+        {
+            if (myVm != null)
+                childWin.Owner = GetActiveView(myVm);
+
+            childWin.WindowStartupLocation = loc;
+            childWin.ShowInTaskbar = isShowTaskbar;
+            childWin.Show(); // non-modal
+        }
+
         /// <summary>
         /// DataGridに対しDictionary型を参照して列を作成する
         /// [Create columns in a DataGrid by referring to a Dictionary type]

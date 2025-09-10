@@ -10,7 +10,7 @@
 	<!--Default Button Style-->
 	<Style TargetType="Button">
 		<Setter Property="Background" Value="{DynamicResource DefaultButton3}"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextBtnColor1}"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
         <Setter Property="FontWeight" Value="{DynamicResource ButtonFontWeight}"/>
         <Setter Property="FontSize" Value="{DynamicResource ButtonSize}"/>
@@ -301,29 +301,29 @@
 		<Setter Property="Tag" Value="/Images/button_icon/search_icon.png" />
 	</Style>
 
-	<Style x:Key="AddIconBtn" TargetType="Button" BasedOn="{StaticResource IconButton}">
-		<Setter Property="Background" Value="#28a745" />
-		<Setter Property="Content" Value="追加 F4" />
-		<Setter Property="Tag" Value="/Images/button_icon/add_icon.png" />
-	</Style>
+    <Style x:Key="AddIconBtn" TargetType="Button" >
+        <Setter Property="Background" Value="{DynamicResource AddBtnColor}" />
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Content" Value="追加 F4" />
+    </Style>
 
-	<Style x:Key="UpdateIconBtn" TargetType="Button" BasedOn="{StaticResource IconButton}">
-		<Setter Property="Background" Value="#fd7e14" />
-		<Setter Property="Content" Value="修正 F2" />
-		<Setter Property="Tag" Value="/Images/button_icon/update_icon.png" />
-	</Style>
+	<Style x:Key="UpdateIconBtn" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource EditBtnColor}" />
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Content" Value="修正 F2" />
+    </Style>
 
-	<Style x:Key="DeleteIconBtn" TargetType="Button" BasedOn="{StaticResource IconButton}">
-		<Setter Property="Background" Value="#FFEB3B" />
-		<Setter Property="Content" Value="削除 F3" />
-		<Setter Property="Tag" Value="/Images/button_icon/delete_icon.png" />
-	</Style>
+	<Style x:Key="DeleteIconBtn" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource DeleteBtnColor}" />
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Content" Value="削除 F3" />
+    </Style>
 
-	<Style x:Key="JsonIconBtn" TargetType="Button" BasedOn="{StaticResource IconButton}">
-		<Setter Property="Background" Value="#CF9FFF" />
-		<Setter Property="Content" Value="JSON出力" />
-		<Setter Property="Tag" Value="/Images/button_icon/json_icon.png" />
-	</Style>
+	<Style x:Key="PrintIconBtn" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource PrintBtnColor}" />
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Content" Value="印刷" />
+    </Style>
 
 	<Style x:Key="EnterIconBtn" TargetType="Button" BasedOn="{StaticResource IconButton}">
 		<Setter Property="Background" Value="#0056b3"/>
@@ -349,7 +349,7 @@
 		<Setter Property="Content" Value="検索" />
 		<Setter Property="Tag" Value="/Images/button_icon/search_icon.png" />
 	</Style>
-
+    
 	<Style x:Key="AddIconBtn2" TargetType="Button" BasedOn="{StaticResource IconButton2}">
 		<Setter Property="Background" Value="#28a745" />
 		<Setter Property="Content" Value="追加 F4" />
