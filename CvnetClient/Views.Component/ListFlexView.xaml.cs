@@ -1,5 +1,6 @@
 ﻿using CvnetClient.Class;
 using CvnetClient.Models;
+using CvnetClient.Utils;
 using CvnetClient.ViewModels.Component;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -156,13 +157,13 @@ namespace CvnetClient.Views.Component
                 var selected = combo.SelectedValue as string;
                 string[] rtn = GetMaxStr(selected);
                 var find_row = unit_list.FirstOrDefault(x => x.Value == selected).Key;
-                if (string.IsNullOrEmpty(find_row))
+                if (string.IsNullOrEmpty(find_row) || (find_row == selected))
                 {
                     row.IsListFromEnabled = false;
                     row.IsListToEnabled = false;
                 }
                 else 
-                {
+                {  
                     row.IsListFromEnabled = true;
                     row.IsListToEnabled = true;
                 }
@@ -237,12 +238,12 @@ namespace CvnetClient.Views.Component
             }
 
             if (Config.flag == 1)
-            {
-                unit_list.Add("", "営業担当CD");
-                unit_list.Add("", "請求先CD");
+            { 
+                unit_list.Add("営業担当CD", "営業担当CD"); //unit_list.Add("", "営業担当CD");
+                unit_list.Add("請求先CD", "請求先CD"); //unit_list.Add("", "請求先CD");
             }
             else if (Config.flag == 2) 
-                unit_list.Add("", "支払先CD"); 
+                unit_list.Add("支払先CD", "支払先CD"); //unit_list.Add("", "支払先CD");
 
             string sql = "select column_name, lower(data_type) as data_type from all_tab_columns where lower(table_name) = '" + tb_name + "'"
                        + " group by column_name,data_type order by max(column_id)";
@@ -396,81 +397,81 @@ namespace CvnetClient.Views.Component
                 return string.Empty;
             return unit_list2[find_row];
         }
-        private string[] Search_Data(string mst_name)
+        private BizArray Search_Data(string mst_name)
         {
-            string[] v_ar = new string[3];
+            var v_ar = new BizArray();
             var find_row = unit_list.FirstOrDefault(x => x.Value == mst_name).Key;
             var find_row2 = unit_list2.FirstOrDefault(x => x.Value == mst_name).Key;
 
             if (string.IsNullOrEmpty(find_row))
-            { 
-                v_ar[1] = mst_name;
+            {  
+                v_ar.Set(1, mst_name);
                 if (string.IsNullOrEmpty(find_row2))
                     v_ar = null;
                 else
-                    v_ar[1] = mst_name;
+                    v_ar.Set(1, mst_name);
                 return v_ar;
-            }
-            v_ar[1] = unit_list[find_row].Trim();
-            v_ar[0] = "HC$MASTER_MEISHO";
-            if (mst_name == "商品CD") {
-                v_ar[1] = unit_list[find_row].Trim();
-                v_ar[0] = "HC$MASTER_SHOHIN";
+            } 
+            v_ar.Set(0, "HC$MASTER_MEISHO");
+            v_ar.Set(1, find_row); 
+            if (mst_name == "商品CD") {  
+                v_ar.Set(0, "HC$MASTER_SHOHIN");
+                v_ar.Set(1, find_row);
             }
             if (mst_name == "得意先CD")
             {
-                v_ar[1] = unit_list[find_row].Trim();
-                v_ar[0] = "HC$MASTER_TOKUI";
+                v_ar.Set(0, "HC$MASTER_TOKUI");
+                v_ar.Set(1, find_row);
             }
 
             /* 2011.03.04 追加 */
             if (mst_name == "営業担当CD")
-            {
-                v_ar[1] = unit_list[find_row].Trim();
-                v_ar[0] = "HC$MASTER_SHAIN";
+            { 
+                v_ar.Set(0, "HC$MASTER_SHAIN");
+                v_ar.Set(1, find_row);
             }
             if (mst_name == "請求先CD")
             {
-                v_ar[1] = unit_list[find_row].Trim();
-                v_ar[0] = "HC$MASTER_TOKUI";
-                v_ar[3] = " AND 得意先CD=請求先CD OR 請求先CD='.' ";
+                v_ar.Set(0, "HC$MASTER_TOKUI");
+                v_ar.Set(1, find_row);
+                v_ar.Set(3, " AND 得意先CD=請求先CD OR 請求先CD='.' ");
             }
             if (mst_name == "支払先CD")
             {
-                v_ar[1] = unit_list[find_row].Trim();
-                v_ar[0] = "HC$MASTER_SIIRE";
-                v_ar[3] = " AND 仕入先CD=支払先CD or 支払先CD='.' ";
+                v_ar.Set(0, "HC$MASTER_SIIRE");
+                v_ar.Set(1, find_row);
+                v_ar.Set(3, " AND 仕入先CD=支払先CD or 支払先CD='.' ");
             } 
             return v_ar;
         }
 
         private string[] GetMaxStr(string col)
         { 
-            string[] rt_ar = new string[2];
-            string[] ar = Search_Data(col);
+            var rt_ar = new BizArray();
+            var ar = Search_Data(col);
             string cd_name = GetConvKubun(ar[1]);
             if (cd_name == "")
                 cd_name =  GetConvColName(col);
             var find_row = Type_Def.Where(x => x.column_name == cd_name).FirstOrDefault();
             if (find_row != null)
-            {
-                rt_ar[0] = "";
-                rt_ar[1] = "zzzzzzzzzzzzzzzzzzzz";
-                return rt_ar;
+            { 
+                rt_ar.Set(0, "");
+                rt_ar.Set(1, "zzzzzzzzzzzzzzzzzzzz"); 
+                return rt_ar.ToArray();
             }
             else 
             {
                 if (find_row?.data_type.ToLower() == "number")
                 {
-                    rt_ar[0] = "0";
-                    rt_ar[1] = "9999999999";
-                    return rt_ar;
+                    rt_ar.Set(0, "0");
+                    rt_ar.Set(1, "9999999999");
+                    return rt_ar.ToArray();
                 }
                 else 
-                {
-                    rt_ar[0] = "";
-                    rt_ar[1] = "zzzzzzzzzzzzzzzzzzzz";
-                    return rt_ar;
+                { 
+                    rt_ar.Set(0, "");
+                    rt_ar.Set(1, "zzzzzzzzzzzzzzzzzzzz");
+                    return rt_ar.ToArray();
                 }
             }
         } 
@@ -483,12 +484,12 @@ namespace CvnetClient.Views.Component
             Rows.Add(new ListFlexItem
             {
                 No = nextNo,
-                SelectedItem = "Item1", // default selection
+                SelectedItem = string.Empty, // default selection
                 FromValue = string.Empty,
                 ToValue = string.Empty,
                 IsListFromEnabled = true,
                 IsListToEnabled = true,
-            });
+            }); 
         }
 
         private void ListFrom_Click(object sender, RoutedEventArgs e)
@@ -497,16 +498,32 @@ namespace CvnetClient.Views.Component
             {
                 //MessageBox.Show($"List From clicked for row {row.No}");
                 if (string.IsNullOrEmpty(row.SelectedItem)) return;
-                string[] wrk_para = Search_Data(row.SelectedItem);
+                var wrk_para = Search_Data(row.SelectedItem);
                 if (wrk_para == null) return;
-                wrk_para[2] = AppData.ClassSatoo.GetStringFirst(row.FromValue);
-                var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para);
+                wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.FromValue)); 
+                var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
+                if (get_sel00 != null)
+                {
+                    row.FromValue = get_sel00.Select80gphItem.Code;
+                    row.ToValue = get_sel00.Select80gphItem.Code;
+                } 
             }
         }
 
         private void ListTo_Click(object sender, RoutedEventArgs e)
         {
-
+            if (sender is Button btn && btn.DataContext is ListFlexItem row)
+            {
+                if (string.IsNullOrEmpty(row.SelectedItem)) return;
+                var wrk_para = Search_Data(row.SelectedItem);
+                if (wrk_para == null) return;
+                wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.ToValue));
+                var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
+                if (get_sel00 != null)
+                { 
+                    row.ToValue = get_sel00.Select80gphItem.Code;
+                }
+            }
         }
 
         private void DeleteRow_Click(object sender, RoutedEventArgs e)
@@ -536,7 +553,7 @@ namespace CvnetClient.Views.Component
             }
 
             var parts = Rows
-                .Where(r => !string.IsNullOrWhiteSpace(r.FromValue) || !string.IsNullOrWhiteSpace(r.ToValue))
+                .Where(r => !string.IsNullOrWhiteSpace(r.SelectedItem) || !string.IsNullOrWhiteSpace(r.FromValue) || !string.IsNullOrWhiteSpace(r.ToValue))
                 .Select(r =>
                     $"AND {Config.col_alias}{r.SelectedItem} BETWEEN \"{r.FromValue}\" AND \"{r.ToValue}\"");
 

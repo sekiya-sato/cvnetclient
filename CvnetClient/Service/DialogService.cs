@@ -65,8 +65,9 @@ namespace CvnetClient.Service
             var vm = view.DataContext as SubDlg80gphSelViewModel;
             if (view == null || vm == null) return null;
 
-            //Set parameters
-            if (wrk_para != null) vm.Wrk_para = wrk_para; 
+            // Set parameters
+            if (wrk_para != null) 
+                vm.Wrk_para = new Utils.BizArray(wrk_para); 
 
             var ret = ClientLib.ShowDialogView(view, null);
             if (ret != true) return null; 
