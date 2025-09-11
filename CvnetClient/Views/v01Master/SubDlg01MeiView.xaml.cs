@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views.v01Master
+namespace CvnetClient.Views
 {
     /// <summary>
     /// Interaction logic for SubDlg01MeiView.xaml

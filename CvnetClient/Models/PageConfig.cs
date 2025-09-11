@@ -12,7 +12,7 @@ namespace CvnetClient.Models
     { 
         { "マスタ", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "名称マスタ", WindowId= typeof(Views.MasterMeishoView).FullName },
+                new ButtonConfig { Text = "名称マスタ", WindowId= typeof(Views.SubDlg01MeiView).FullName },
                 new ButtonConfig { Text = "得意先マスタ", WindowId="" },
                 new ButtonConfig { Text = "仕入マスタ", WindowId="" },
                 new ButtonConfig { Text = "商品マスタ(新規登録)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },

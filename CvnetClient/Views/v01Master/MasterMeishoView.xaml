@@ -91,7 +91,8 @@
 				Content="表示更新(F5)" />
         </StackPanel>
         <!--  左下 リスト  -->
-        <DataGrid	
+        <DataGrid
+            Grid.Row="1"
 	Margin="0,0,0,0"
 	d:ItemsSource="{d:SampleData ItemCount=5}"
 	AutoGenerateColumns="False"
