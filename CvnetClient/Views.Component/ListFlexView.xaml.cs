@@ -19,6 +19,7 @@ namespace CvnetClient.Views.Component
         private ObservableCollection<TypeDefItem> Type_Def;
         private Dictionary<string, string> unit_list2;
         private string Line3_ListData;
+        private bool _isInitialized;
 
         public ListFlexView()
         {
@@ -31,8 +32,12 @@ namespace CvnetClient.Views.Component
         }
 
         private void ListFlexView_Loaded(object sender, RoutedEventArgs e)
-        {
-            OnInit();
+        { 
+            if (!_isInitialized)
+            {
+                OnInit();
+                _isInitialized = true;
+            }
         }
 
         #region Dependency Property
@@ -67,8 +72,9 @@ namespace CvnetClient.Views.Component
                 nameof(Config),
                 typeof(ListFlexConfig),
                 typeof(ListFlexView),
-                new PropertyMetadata(null));
-        //new PropertyMetadata(null, OnConfigChanged));
+                //new PropertyMetadata(null));
+                new PropertyMetadata(null, OnConfigChanged));
+
         public ListFlexConfig Config
         { 
             get => (ListFlexConfig)GetValue(ConfigProperty);
@@ -142,13 +148,17 @@ namespace CvnetClient.Views.Component
             UpdateQuery();
         }
 
-        //private static void OnConfigChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is ListFlexView view && e.NewValue is ListFlexConfig config)
-        //    { 
-        //        view.OnInit(config);
-        //    }
-        //} 
+        private static void OnConfigChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ListFlexView view && e.NewValue is ListFlexConfig config)
+            {
+                // If control already initialized, refresh immediately
+                if (view._isInitialized)
+                {
+                    view.OnInit();
+                }
+            }
+        }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -178,17 +188,27 @@ namespace CvnetClient.Views.Component
         {
             if (Config == null) return;
 
+            // Ensure Rows exists
             if (Rows == null)
+            {
                 Rows = new ObservableCollection<ListFlexItem>();
+            }
+            else if (!_isInitialized)
+            {
+                // Only clear rows during FIRST init
+                Rows.Clear();
+            }
 
             //if (Rows == null)
             //    SetValue(RowsProperty, new ObservableCollection<ListFlexItem>());
 
-            Rows.Clear(); // safe: clears the existing collection
+            //Rows.Clear(); // safe: clears the existing collection
 
             unit_list = new Dictionary<string, string>();
             unit_list2 = new Dictionary<string, string>();
-              
+            Type_Def = new ObservableCollection<TypeDefItem>();
+            Line3_ListData = "";
+
             List<string> v_col = new List<string>();
             string tb_name = "";
             string qs = "select 名称CD, 名称 from hc$master_meisho where 名称区分 = 'IDX' ";
