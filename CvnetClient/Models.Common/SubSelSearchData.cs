@@ -27,5 +27,7 @@ namespace CvnetClient.Models
         string? code;
         [ObservableProperty]
         string? name;
+        [ObservableProperty]
+        string? abbreaviate;
     }
 }

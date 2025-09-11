@@ -19,11 +19,34 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button"> 
                     <Border Background="{TemplateBinding Background}"
+                            x:Name="border"
                     CornerRadius="8"
                     Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Hover -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#E0E0E0"/>
+                        </Trigger>
+
+                        <!-- Pressed -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#BDBDBD"/>
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                            <Setter Property="Foreground" Value="#888888"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -40,10 +63,33 @@
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
                             CornerRadius="8"
+                            x:Name="border"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Hover -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#E0E0E0"/>
+                        </Trigger>
+
+                        <!-- Pressed -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#BDBDBD"/>
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                            <Setter Property="Foreground" Value="#888888"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -60,10 +106,33 @@
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
                     CornerRadius="0"
+                            x:Name="border"
                     Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center"
                                   VerticalAlignment="Center"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Hover -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#E0E0E0"/>
+                        </Trigger>
+
+                        <!-- Pressed -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#BDBDBD"/>
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                            <Setter Property="Foreground" Value="#888888"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

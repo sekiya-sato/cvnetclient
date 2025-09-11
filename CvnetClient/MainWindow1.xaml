@@ -105,7 +105,8 @@
                             <Button.ContextMenu>
                                 <ContextMenu Placement="Right" PlacementTarget="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}">
                                     <MenuItem Header="プロファイル" Command="{Binding ShowProfileCommand}"/>
-                                    <MenuItem Header="ログアウト" Command="{Binding LogoutCommand}"/>
+                                    <MenuItem Header="設定" Command="{Binding DoSettingCommand}"/>
+                                    <MenuItem Header="ログアウト" Command="{Binding DoLoginCommand}"/>
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>
