@@ -14,7 +14,7 @@
         <utils:VdateConverter x:Key="VdateConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <vm:SubDlg01KijiViewModel />
+        <vm:SubDlg01KijiViewModel/>
     </Window.DataContext>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
@@ -92,17 +92,17 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
             <DataGrid Grid.Row="1" Margin="8" Height="360" d:ItemsSource="{d:SampleData ItemCount=5}"
                       AutoGenerateColumns="False"
 Background="#FFFFFF"
-HeadersVisibility="Column"
 IsReadOnly="True"
 IsSynchronizedWithCurrentItem="True"
 ItemsSource="{Binding ListMeisho}"
 SelectedItem="{Binding SelectedMeisho}"
-SelectionMode="Single">
+SelectionMode="Single" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFB9B9B9" FontSize="14" SelectedIndex="4">
                 <DataGrid.Columns>
                     <DataGridTextColumn
 		Width="80"
 		Binding="{Binding MeishoCd}"
-		Header="商品CD" />
+		Header="商品CD"
+        />
                     <DataGridTextColumn
 		Width="*"
 		Binding="{Binding Meisho}"
@@ -121,6 +121,11 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" Click="Button_Click"/>-->
                 <Button Margin="1,1,6,1"  Style="{DynamicResource NextPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button Content="test" Width="90" IsEnabled="False" >
+                    <Button.Background>
+                        <SolidColorBrush Color="#FFD0D3D4" Opacity="0.5"/>
+                    </Button.Background>
+                </Button>
             </StackPanel>
         </Grid>
 
@@ -131,7 +136,7 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
             </Grid.RowDefinitions>
             <GroupBox
 Background="White"
-BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
+BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10">
                 <GroupBox.Header>
                     <Label FlowDirection="RightToLeft">
                         詳細
@@ -158,8 +163,8 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                         </Grid.ColumnDefinitions>
 
                         <Label Content="商品名"
-   VerticalAlignment="Center"/>
-                        <TextBox x:Name="productName" Grid.Column="1" Width="252"/>
+   VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <TextBox x:Name="productName" Grid.Column="1" Width="252" HorizontalAlignment="Right"/>
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -284,9 +289,9 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Style="{DynamicResource AddIconBtn}"/>
 
-                        <Button Style="{DynamicResource UpdateIconBtn}" Padding="0,3"  Grid.Column="2"/>
+                        <Button Style="{DynamicResource AddIconBtn}" BorderThickness="10"/>
+                        <Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" "/>
                         <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4"/>
                         <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6"/>
 
