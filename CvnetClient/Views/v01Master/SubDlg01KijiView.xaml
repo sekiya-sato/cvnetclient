@@ -12,6 +12,9 @@
         Title="生地付属マスタ" Style="{StaticResource MasterWindowStyle}">
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
+        <Style TargetType="TextBox" x:Key="detailTextBox">
+            <Setter Property="Margin" Value="8,0"/>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <vm:SubDlg01KijiViewModel />
@@ -21,13 +24,6 @@
             <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
-    <Window.InputBindings>
-        <KeyBinding Key="F5" Command="{Binding DoListCommand}" />
-        <KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
-        <KeyBinding Key="F7" Command="{Binding DoDeleteCommand}" />
-        <KeyBinding Key="F8" Command="{Binding DoInsertCommand}" />
-        <KeyBinding Key="F9" Command="{Binding DoPrintCommand}" />
-    </Window.InputBindings>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -121,6 +117,11 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" Click="Button_Click"/>-->
                 <Button Margin="1,1,6,1"  Style="{DynamicResource NextPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button Content="test" Width="90" IsEnabled="False" BorderBrush="Black" BorderThickness="10">
+                    <Button.Background>
+                        <SolidColorBrush Color="#FFD0D3D4" Opacity="0.5"/>
+                    </Button.Background>
+                </Button>
             </StackPanel>
         </Grid>
 
@@ -131,14 +132,13 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
             </Grid.RowDefinitions>
             <GroupBox
 Background="White"
-BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
+BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16,0">
                 <GroupBox.Header>
                     <Label FlowDirection="RightToLeft">
                         詳細
                     </Label>
                 </GroupBox.Header>
-                <StackPanel>
-
+                <StackPanel >
                     <Grid Margin="0,8,0,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
@@ -147,7 +147,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="商品CD"
                    VerticalAlignment="Center"/>
-                        <TextBox x:Name="productCD" Grid.Column="1" Width="252" />
+                        <TextBox x:Name="productCD" Grid.Column="1" />
 
                     </Grid>
 
@@ -158,8 +158,9 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                         </Grid.ColumnDefinitions>
 
                         <Label Content="商品名"
-   VerticalAlignment="Center"/>
+                        VerticalAlignment="Center"/>
                         <TextBox x:Name="productName" Grid.Column="1" Width="252"/>
+
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -170,7 +171,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="略称"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="abbraviation" Grid.Column="1" Width="252"/>
+                        <TextBox x:Name="abbraviation" Grid.Column="1" />
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -181,7 +182,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="旧コード"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="oldCode" Grid.Column="1" Width="252"/>
+                        <TextBox x:Name="oldCode" Grid.Column="1" />
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -193,7 +194,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                         <Label Content="区分CD"
    VerticalAlignment="Center"/>
                         <!--<TextBox x:Name="category" Grid.Column="1" Width="260"/>-->
-                        <ComboBox Grid.Column="1"
+                        <!--<ComboBox Grid.Column="1"
 	                    Width="252"
 	                    Margin="2,0"
 	                    ItemsSource="{Binding ListKubun}"
@@ -203,6 +204,18 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                                     <TextBlock Text="{Binding}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
+                        </ComboBox>-->
+                        <ComboBox 
+                            Grid.Column="1"
+                            Margin="2,0"
+                            VerticalAlignment="Top"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding selectKubun}"
+                            SelectedValue="{Binding KijiMaster.CateCd}"
+						    DisplayMemberPath="Value" 
+						    SelectedValuePath="Key"
+                            Style="{DynamicResource SearchableComboBox1}">
+                            
                         </ComboBox>
                     </Grid>
 
@@ -214,18 +227,18 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="仕入先CD"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="supplierCD" Grid.Column="1" Width="252"/>
+                        <TextBox x:Name="supplierCD" Grid.Column="1" />
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="95.5"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Content="仕入先商品CD"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="productCDSupplier" Grid.Column="1" Margin="1,0,20,0" Width="250"/>
+                        <TextBox x:Name="productCDSupplier" Grid.Column="1"  />
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -236,7 +249,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="単価"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="unitCost" Grid.Column="1" Width="252"/>
+                        <TextBox x:Name="unitCost" Grid.Column="1" />
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -247,7 +260,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="メモ"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="Memo" Grid.Column="1" Width="252"/>
+                        <TextBox x:Name="Memo" Grid.Column="1" />
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -258,7 +271,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="修正日"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="dateEdit" Grid.Column="1" Width="252" IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
+                        <TextBox x:Name="dateEdit" Grid.Column="1"  IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -269,10 +282,10 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
 
                         <Label Content="最終修正日"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="latsDateEdit" Grid.Column="1" Width="252" IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
+                        <TextBox x:Name="latsDateEdit" Grid.Column="1"  IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
                     </Grid>
 
-                    <Grid Margin="8,8,15,8">
+                    <Grid Margin="8,8,15,8" >
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -284,14 +297,18 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Style="{DynamicResource AddIconBtn}"/>
-
-                        <Button Style="{DynamicResource UpdateIconBtn}" Padding="0,3"  Grid.Column="2"/>
+                        <Button Style="{DynamicResource AddIconBtn}" BorderThickness="10"/>
+                        <Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" />
                         <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4"/>
                         <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6"/>
-
+                        
                     </Grid>
 
+                    <Button Grid.Column="8" Content="test" Width="90" IsEnabled="False" BorderBrush="Black" BorderThickness="10">
+                        <Button.Background>
+                            <SolidColorBrush Color="#FFD0D3D4" Opacity="0.5"/>
+                        </Button.Background>
+                    </Button>
                 </StackPanel>
 
             </GroupBox>

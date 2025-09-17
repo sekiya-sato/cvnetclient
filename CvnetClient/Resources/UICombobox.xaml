@@ -7,12 +7,12 @@
 	<!--Searchable Combobox Template 1-->
 	<!-- Toggle Button for ComboBox -->
 	<ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
-		<Border Background="Black"
-            BorderBrush="Black"
-            BorderThickness="0,0,1,0" Padding="2">
+		<Border Background="Transparent"
+            BorderBrush="Transparent"
+            BorderThickness="0" Padding="2">
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 				<!-- Content Presenter (for text) -->
@@ -28,9 +28,9 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
 					<Path Data="M 0 0 L 4 4 L 8 0 Z"
-                Fill="White"
+                Fill="Black"
                 Width="8"
-                Height="6"
+                Height="10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
 				</Border>
@@ -55,18 +55,24 @@
 		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
 		<Setter Property="IsEditable" Value="True" />
 		<Setter Property="MinHeight" Value="25" />
-		<Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="BorderBrush" Value="#CCC" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ComboBox}">
-					<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border x:Name="Root" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="3" 
+                            Padding="4,2" 
+                            SnapsToDevicePixels="True">
 						<Grid>
 							<!-- Define 2 Columns: One for TextBox and one for the Arrow -->
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />
 								<!-- TextBox Area -->
-								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="20" />
 								<!-- Arrow Area -->
 							</Grid.ColumnDefinitions>
 
@@ -78,13 +84,12 @@
                        VerticalAlignment="Center"
 					   VerticalContentAlignment="Center"
 					   HorizontalContentAlignment="Left"
-                       Margin="1" 
+                       Margin="0" 
                        Focusable="True"
                        IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
                        Text="{TemplateBinding Text}"
                        Grid.Column="0"
-                       Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Converter={StaticResource SubtractConverter}, ConverterParameter=20}"
-					   Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}">
+                       Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}">
 								<!-- TextBox Width Adjustment -->
 							</TextBox>
 
@@ -100,17 +105,21 @@
 
 							<!-- Drop-down Popup -->
 							<Popup x:Name="Popup"
+                                   PlacementTarget="{Binding ElementName=Root}"
                      Placement="Bottom"
+                                   HorizontalOffset="-1" 
+                                   VerticalOffset="-1"
                      IsOpen="{TemplateBinding IsDropDownOpen}"
                      AllowsTransparency="True"
                      Focusable="False"
-                     PopupAnimation="Slide"
-                     Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}">
-								<Grid MaxHeight="200" Width="{TemplateBinding ActualWidth}">
+                     PopupAnimation="Slide">
+                                
+                                <Grid MaxHeight="200" Width="{TemplateBinding ActualWidth}">
 									<Border x:Name="DropDownBorder"
                           BorderThickness="1"
                           BorderBrush="Gray"
-                          Background="White">
+                          Background="White"
+                                            SnapsToDevicePixels="True">
 										<ScrollViewer Margin="4" SnapsToDevicePixels="True">
 											<ItemsPresenter />
 										</ScrollViewer>

@@ -53,6 +53,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? saishuuShuuseiSha;
 	}
+	
 	public partial class MasterShohin : ObservableObject
 	{
 		[ObservableProperty]
@@ -603,4 +604,36 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? otherExpenses02;
     }
+
+    public partial class MasterSHKiji : ObservableObject
+    {
+        [ObservableProperty]
+        long seqNo;
+        [ObservableProperty]
+        decimal vdateCreate;
+        [ObservableProperty]
+        decimal vdateUpdate;
+        [ObservableProperty]
+        string? product; //商品CD
+        [ObservableProperty]
+        string? oldCD; //旧コード
+		[ObservableProperty]
+		string? abbreviation; //略称
+        [ObservableProperty]
+        string? productName; //商品名
+        [ObservableProperty]
+        string? cateCd; //区分CD
+        [ObservableProperty]
+        string? supplierCd; //仕入先CD
+        [ObservableProperty]
+        string? supplierProdCd; //仕入先商品CD
+        [ObservableProperty]
+        decimal unitPrice; //単価
+        [ObservableProperty]
+        string? memo; //メモ
+        [ObservableProperty]
+        string? inpStaffCD; //入力社員CD
+
+    }
+
 }
