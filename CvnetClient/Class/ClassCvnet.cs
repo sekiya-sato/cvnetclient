@@ -44,6 +44,8 @@ namespace CvnetBaseCore
         /* CRSを起動する場合には必ずこのエントリに登録し、かつユーザ毎の起動設定をしなければならない */
         public OrgMenuDef orgMenuDef = new OrgMenuDef();
 
+        public ComboItem00 comboItem00 = new ComboItem00();
+
         /// <summary>
         /// Represent Biz menu_next inital setup
         /// </summary>
@@ -157,710 +159,7 @@ namespace CvnetBaseCore
         {
             string ret_sqlstrwrk = "select * from (" + p_querystr + ") where rownum<=" + ((p_line == 0) ? AppData.ClassCvnet.MaxCntDisp : p_line);
             return ret_sqlstrwrk;
-        }
-
-        public Dictionary<TKey, string> ComboItem_00<TKey>(string _name)
-        {
-            var _list = new Dictionary<TKey, string>();
-
-            if (_name == "締日")
-            {
-                for (int i = 1; i < 29; i++)
-                    _list.Add((TKey)(object) i, i.ToString("00"));
-                _list.Add((TKey)(object) 99, "99");
-            }
-            if (_name == "週区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 月-日" },
-                     { (TKey)(object) 1, "1 日-土" }
-                };
-            }
-            if (_name == "端数")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 四捨五入" },
-                     { (TKey)(object) 1, "1 切り上げ" },
-                     { (TKey)(object) 2, "2 切り捨て" }
-                };
-            }
-            if (_name == "店種")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 1, "1 卸先" },
-                     { (TKey)(object) 3, "3 売仕店" },
-                     { (TKey)(object) 6, "6 直営店" }
-                };
-            }
-            if (_name == "店種2")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 倉庫" },
-                     { (TKey)(object) 1, "1 卸先" },
-                     { (TKey)(object) 3, "3 売仕店" },
-                     { (TKey)(object) 6, "6 直営店" }
-                };
-            }
-            if (_name == "予定月")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 当月" },
-                     { (TKey)(object) 1, "1 翌月" },
-                     { (TKey)(object) 2, "2 翌々月" },
-                     { (TKey)(object) 3, "3 翌々々月" },
-                     { (TKey)(object) 4, "4 4ヶ月後" },
-                     { (TKey)(object) 5, "5 5ヶ月後" },
-                     { (TKey)(object) 6, "6 6ヶ月後" }
-                };
-            }
-            if (_name == "する")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 しない" }, 
-                     { (TKey)(object) 1, "1 する" }
-                };
-            }
-            if (_name == "有")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 無" },
-                     { (TKey)(object) 1, "1 有" }
-                };
-            }
-            if (_name == "入金区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 80, "80 現金" },
-                     { (TKey)(object) 81, "81 小切手" },
-                     { (TKey)(object) 82, "82 振込" },
-                     { (TKey)(object) 83, "83 振込手数料" },
-                     { (TKey)(object) 85, "85 手形" },
-                     { (TKey)(object) 88, "88 相殺" },
-                     { (TKey)(object) 89, "89 その他" },
-                     { (TKey)(object) 99, "99 関連伝票" }
-                };
-            }
-            if (_name == "入金区分2")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 80, "80 現金" },
-                     { (TKey)(object) 81, "81 小切手" },
-                     { (TKey)(object) 82, "82 振込" }, 
-                     { (TKey)(object) 85, "85 手形" }
-                };
-            }
-            if (_name == "商品仕入区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 仕入" },
-                     { (TKey)(object) 15, "15 消化仕入" },
-                     { (TKey)(object) 20, "20 仕入返品" },
-                     { (TKey)(object) 25, "25 消化仕入返品" },
-                     { (TKey)(object) 30, "30 値引" }
-                };
-            }
-            if (_name == "生地仕入区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 仕入" }, 
-                     { (TKey)(object) 20, "20 仕入返品" }, 
-                     { (TKey)(object) 30, "30 値引" },
-                     { (TKey)(object) 99, "99 消費税" }
-                };
-            }
-            if (_name == "共通仕入区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 仕入" },
-                     { (TKey)(object) 15, "15 消化仕入" },
-                     { (TKey)(object) 20, "20 仕入返品" },
-                     { (TKey)(object) 25, "25 消化仕入返品" },
-                     { (TKey)(object) 30, "30 値引" },
-                     { (TKey)(object) 99, "99 消費税" }
-                };
-            }
-            if (_name == "本部売上区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 売上" },
-                     { (TKey)(object) 11, "11 ｾｰﾙ売上" },
-                     { (TKey)(object) 20, "20 売上返品" },
-                     { (TKey)(object) 21, "21 ｾｰﾙ売上返品" },
-                     { (TKey)(object) 30, "30 合計値引" },
-                     { (TKey)(object) 31, "31 単品値引" },
-                     { (TKey)(object) 99, "99 消費税" }
-                };
-            }
-            if (_name == "店舗売上区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 売上" },
-                     { (TKey)(object) 11, "11 ｾｰﾙ売上" },
-                     { (TKey)(object) 14, "14 社販売上" },
-                     { (TKey)(object) 20, "20 売上返品" },
-                     { (TKey)(object) 21, "21 ｾｰﾙ売上返品" },
-                     { (TKey)(object) 24, "24 社販売上返品" },
-                     { (TKey)(object) 30, "30 合計値引" },
-                     { (TKey)(object) 31, "31 単品値引" },
-                     { (TKey)(object) 99, "99 消費税" }
-                };
-            }
-            if (_name == "共通売上区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 売上" },
-                     { (TKey)(object) 11, "11 ｾｰﾙ売上" },
-                     { (TKey)(object) 14, "14 社販売上" },
-                     { (TKey)(object) 20, "20 売上返品" },
-                     { (TKey)(object) 21, "21 ｾｰﾙ売上返品" },
-                     { (TKey)(object) 24, "24 社販売上返品" },
-                     { (TKey)(object) 30, "30 合計値引" },
-                     { (TKey)(object) 31, "31 単品値引" },
-                     { (TKey)(object) 99, "99 消費税" }
-                };
-            }
-            if (_name == "棚卸区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 実棚" },
-                     { (TKey)(object) 11, "11 ロス" }
-                };
-            }
-            if (_name == "移動区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 移動" },
-                     { (TKey)(object) 11, "11 受注移動" }
-                };
-            }
-            if (_name == "移動受区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 移動受" }
-                };
-            }
-            if (_name == "桁切")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 一円単位" },
-                     { (TKey)(object) 1, "1 十円単位" },
-                     { (TKey)(object) 2, "2 百円単位" },
-                     { (TKey)(object) 3, "3 千円単位" },
-                     { (TKey)(object) 4, "4 万円単位" }
-                };
-            }
-            if (_name == "為替桁切")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 整数" },
-                     { (TKey)(object) 1, "1 小数点第一位" },
-                     { (TKey)(object) 2, "2 小数点第二位" }
-                };
-            }
-            if (_name == "下代計算")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 売価*掛率" },
-                     { (TKey)(object) 1, "1 上代*掛率" }
-                };
-            }
-            if (_name == "消費税計算")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 請求単位" },
-                     { (TKey)(object) 1, "1 伝票単位" }
-                };
-            }
-            if (_name == "消費税計算2")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 支払単位" },
-                     { (TKey)(object) 1, "1 伝票単位" }
-                };
-            }
-            if (_name == "伝票")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 印刷しない" },
-                     { (TKey)(object) 1, "1 自社伝票" },
-                     { (TKey)(object) 2, "2 百貨店伝票" },
-                     { (TKey)(object) 3, "3 チェーンストア統一伝票1型" },
-                     { (TKey)(object) 4, "4 チェーンストア統一伝票" },
-                     { (TKey)(object) 5, "5 特殊伝票" },
-                     { (TKey)(object) 6, "6 チェーンストア統一伝票（ターンアラウンド用2型）" },
-                     { (TKey)(object) 7, "7 チェーンストア統一伝票（ターンアラウンド用1型）" }, 
-                     { (TKey)(object) 8, "8 百貨店伝票Ⅱ型" }
-                };
-            }
-            if (_name == "課税区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 非課税" },
-                     { (TKey)(object) 1, "1 外税" },
-                     { (TKey)(object) 2, "2 内税" }
-                };
-            }
-            if (_name == "生地付属")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 製品" },
-                     { (TKey)(object) 1, "1 生地" },
-                     { (TKey)(object) 2, "2 付属品" },
-                     { (TKey)(object) 3, "3 工賃" },
-                     { (TKey)(object) 4, "4 ネーム" },
-                     { (TKey)(object) 5, "5 プレス" },
-                     { (TKey)(object) 6, "6 その他" }
-                };
-            }
-            if (_name == "自動配分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) "000", "000 なし" },
-                     { (TKey)(object) "127", "127 毎日" },
-                     { (TKey)(object) "001", "001 週1回:日" },
-                     { (TKey)(object) "009", "009 週2回:日水" },
-                     { (TKey)(object) "041", "041 週3回:日水金" },
-                     { (TKey)(object) "128", "128 一時中止" }
-                };
-            }
-            if (_name == "システム区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) "00", "00 売上" },
-                     { (TKey)(object) "01", "01 店舗売上" },
-                     { (TKey)(object) "02", "02 仕入" },
-                     { (TKey)(object) "03", "03 製品仕入" },
-                     { (TKey)(object) "04", "04 棚卸" },
-                     { (TKey)(object) "05", "05 移動" },
-                     { (TKey)(object) "06", "06 入金" },
-                     { (TKey)(object) "07", "07 支払" },
-                     { (TKey)(object) "11", "11 移動受" },
-                     { (TKey)(object) "12", "12 受注" },
-                     { (TKey)(object) "13", "13 発注" },
-                     { (TKey)(object) "14", "14 社販売上" }
-                };
-            }
-            if (_name == "商品発注区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 発注" },
-                     { (TKey)(object) 11, "11 追加発注" },
-                     { (TKey)(object) 15, "15 生産発注" }
-                };
-            }
-            if (_name == "商品発注区分53")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 直営" },
-                     { (TKey)(object) 11, "11 Web" },
-                     { (TKey)(object) 15, "12 卸" }
-                };
-            }
-            if (_name == "商品受注区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 受注" },
-                     { (TKey)(object) 11, "11 追加1" },
-                     { (TKey)(object) 12, "12 追加2" },
-                     { (TKey)(object) 13, "13 追加3" },
-                     { (TKey)(object) 14, "14 追加4" },
-                     { (TKey)(object) 15, "15 追加5" },
-                     { (TKey)(object) 16, "16 追加6" },
-                     { (TKey)(object) 17, "17 追加7" },
-                     { (TKey)(object) 18, "18 追加8" }, 
-                     { (TKey)(object) 19, "19 追加9" }
-                };
-            }
-            if (_name == "倉庫区分02")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 自社倉庫" },
-                     { (TKey)(object) 1, "1 委託倉庫01" },
-                     { (TKey)(object) 2, "2 委託倉庫02" },
-                     { (TKey)(object) 3, "3 委託倉庫03" },
-                     { (TKey)(object) 4, "4 委託倉庫04" },
-                     { (TKey)(object) 5, "5 委託倉庫05" },
-                     { (TKey)(object) 6, "6 委託倉庫06" },
-                     { (TKey)(object) 7, "7 委託倉庫07" },
-                     { (TKey)(object) 8, "8 委託倉庫08" },
-                     { (TKey)(object) 9, "9 委託倉庫09" }
-                };
-            }
-            if (_name == "休暇")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 通常" },
-                     { (TKey)(object) 1, "1 通常休暇" },
-                     { (TKey)(object) 2, "2 有給休暇" },
-                     { (TKey)(object) 3, "3 特別休暇" }
-                };
-            }
-            if (_name == "来勘")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 当月勘定" },
-                     { (TKey)(object) 1, "1 来月勘定" }
-                };
-            }
-            if (_name == "HHT08")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) "03", "03 仕入" },
-                     { (TKey)(object) "04", "04 仕入返品" },
-                     { (TKey)(object) "05", "05 移動" },
-                     { (TKey)(object) "08", "08 発注" },
-                     { (TKey)(object) "21", "21 売上" },
-                     { (TKey)(object) "22", "22 売上返品" },
-                     { (TKey)(object) "60", "60 棚卸" },
-                     { (TKey)(object) "61", "61 棚卸売消" }
-                };
-            }
-            if (_name == "棚卸区分08")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 実棚" },
-                     { (TKey)(object) 61, "61 売消" }
-                };
-            }
-            if (_name == "仕入区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 1, "1 買取" },
-                     { (TKey)(object) 2, "2 委託" },
-                     { (TKey)(object) 3, "3 消化" }
-                };
-            }
-            if (_name == "セール区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 プロパー" }, 
-                     { (TKey)(object) 1, "1 セール" }
-                };
-            }
-            if (_name == "価格区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) "MAC", "MAC 月次平均原価" },
-                     { (TKey)(object) "DAC", "DAC 日次平均原価" }
-                };
-            }
-            if (_name == "配分出荷区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 出荷" },
-                     { (TKey)(object) 11, "11 追加出荷" }
-                };
-            }
-            if (_name == "配分出荷区分2")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 在庫配分（自）" },
-                     { (TKey)(object) 11, "11 在庫配分（手）" },
-                     { (TKey)(object) 15, "15 在庫配分（倉）" },
-                     { (TKey)(object) 18, "18 受注配分" },
-                     { (TKey)(object) 20, "20 卸出荷" },
-                     { (TKey)(object) 40, "40 EC出荷" },
-                     { (TKey)(object) 60, "60 客注取置" },
-                     { (TKey)(object) 70, "70 移動指示" },
-                     { (TKey)(object) 80, "80 店舗出荷依頼" },
-                     { (TKey)(object) 90, "90 初回配分（店）" },
-                     { (TKey)(object) 95, "95 初回配分（倉）" }, 
-                     { (TKey)(object) 98, "98 受注配分" }
-                };
-            }
-            if (_name == "顧客区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 通常会員" },
-                     { (TKey)(object) 1, "1 ｺﾞｰﾙﾄﾞ会員" },
-                     { (TKey)(object) 9, "9 退会済み" }
-                };
-            }
-            if (_name == "仕入先仕入区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 無" },
-                     { (TKey)(object) 1, "1 買取" },
-                     { (TKey)(object) 2, "2 委託" },
-                     { (TKey)(object) 3, "3 消化" }
-                };
-            }
-            if (_name == "POS区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object)  0, "0 通常" },
-                     { (TKey)(object)  9, "9 POSﾏｽﾀ削除指示" },
-                     { (TKey)(object) 10, "10 出力しない" }
-                };
-            }
-            if (_name == "調整移動区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 上代調整" },
-                     { (TKey)(object) 11, "11 原価調整" },
-                     { (TKey)(object) 19, "19 その他調整" }
-                };
-            }
-            if (_name == "調整区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 入庫" },
-                     { (TKey)(object) 20, "20 出庫" }
-                };
-            }
-            if (_name == "性別")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) ".", "." },
-                     { (TKey)(object) "0", "0 女性" },
-                     { (TKey)(object) "1", "1 男性" }
-                };
-            }
-            if (_name == "セール展開")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 1, "1 商品" },
-                     { (TKey)(object) 2, "2 商品色" },
-                     { (TKey)(object) 3, "3 商品ｻｲｽ" },
-                     { (TKey)(object) 4, "4 商品色ｻｲｽﾞ" }
-                };
-            }
-            if (_name == "得意先移動区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object)  0, "0 指定無" },
-                     { (TKey)(object)  5, "5 即時" },
-                     { (TKey)(object) 10, "10 積送" }
-                };
-            }
-            if (_name == "配送区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 宅配便" },
-                     { (TKey)(object) 1, "1 ヤマト運輸" },
-                     { (TKey)(object) 2, "2 佐川急便" }
-                };
-            }
-            if (_name == "支払区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 銀行振込" },
-                     { (TKey)(object) 1, "1 クレジットカード" },
-                     { (TKey)(object) 2, "2 代金引換" }
-                };
-            }
-            if (_name == "入力区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 手入力" },
-                     { (TKey)(object) 1, "1 Yahoo" },
-                     { (TKey)(object) 2, "2 楽天" },
-                     { (TKey)(object) 9, "9 ECCUBE" }
-                };
-            }
-            if (_name == "EC商品受注区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 BtoC注文" },
-                     { (TKey)(object) 20, "20 キャンセル" }
-                };
-            }
-            if (_name == "EC店舗売上区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 15, "15 BtoC売上" },
-                     { (TKey)(object) 25, "25 BtoC返品" }
-                };
-            }
-            if (_name == "ECステータス")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) -2, "-2 売上返品" },
-                     { (TKey)(object) -1, "-1 キャンセル" },
-                     { (TKey)(object)  0, "0 処理中" },
-                     { (TKey)(object)  3, "3 出荷中" },
-                     { (TKey)(object)  9, "9 完了" }
-                };
-            }
-            if (_name == "移動送信FLG")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 未" },
-                     { (TKey)(object) 2, "2 入荷予定" },
-                     { (TKey)(object) 4, "4 出荷確定" },
-                     { (TKey)(object) 6, "6 入荷予定+出荷確定" }
-                };
-            }
-            if (_name == "発注送信FLG")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 未" },
-                     { (TKey)(object) 2, "2 入荷予定" }
-                };
-            }
-            if (_name == "発送区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 発送" },
-                     { (TKey)(object) 20, "20 発送取消" }
-                };
-            }
-            if (_name == "在庫登録区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 在庫登録" },
-                     { (TKey)(object) 20, "20 在庫登録取消" }
-                };
-            }
-            if (_name == "仕入返品指示区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 指示" }
-                };
-            }
-            if (_name == "調整区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 入庫" },
-                     { (TKey)(object) 20, "20 紛失" },
-                     { (TKey)(object) 21, "21 盗難" },
-                     { (TKey)(object) 22, "22 破損" },
-                     { (TKey)(object) 23, "23 検品ミス" },
-                     { (TKey)(object) 29, "29 その他" }
-                };
-            }
-            if (_name == "商品発注区分76")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 新規発注" },
-                     { (TKey)(object) 11, "11 追加発注" },
-                     { (TKey)(object) 12, "12 ｾｯﾄ新規発注" },
-                     { (TKey)(object) 13, "13 ｾｯﾄ追加発注" },
-                     { (TKey)(object) 14, "14 重点品番" },
-                     { (TKey)(object) 15, "15 補充発注" },
-                     { (TKey)(object) 16, "16 FC発注" }
-                };
-            }
-            if (_name == "発送区分76")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 発送" }
-                };
-            }
-            if (_name == "補充発注区分76")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 補充発注" }
-                };
-            }
-            if (_name == "FC補充発注区分76")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 11, "11 FC補充発注" }
-                };
-            }
-            if (_name == "予約発注区分76")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 10, "10 予約" }
-                };
-            }
-            if (_name == "承認区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 未" },
-                     { (TKey)(object) 1, "1 済" }
-                };
-            }
-            if (_name == "顧客区分LCV")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object) 0, "0 カード未使用" },
-                     { (TKey)(object) 1, "1 スマホ" },
-                     { (TKey)(object) 4, "4 スマホログインのみ" },
-                     { (TKey)(object) 9, "9 会員情報未登録" }
-                };
-            }
-            if (_name == "取引詳細区分")
-            {
-                _list = new Dictionary<TKey, string>
-                {
-                     { (TKey)(object)  0, "0 通常" },
-                     { (TKey)(object)  1, "1 調整" },
-                     { (TKey)(object) 22, "22 GMO返金" }
-                };
-            }
-
-            return _list;
-        }
+        }  
 
         /// <summary>
         /// ■関数 AspxSqlQueryMst = マスター関係の問い合わせを行う
@@ -2708,12 +2007,12 @@ namespace CvnetBaseCore
             }
             return ret_csv;
         }
-
+         
         /// <summary>
         /// ■関数 GetQueryStrHoujin = 法人CD検索用SQL文字列取得
         /// </summary>
         /// <param name="arias">引数 接続文字列</param>
-        /// <returns>戻値 検索用SQL文字列</returns>
+        /// <returns>検索用SQL文字列</returns>
         public string GetQueryStrHoujin(string arias = "")
         {
             string col_str = string.Empty;
@@ -2727,6 +2026,361 @@ namespace CvnetBaseCore
                 col_str += "法人CD='.') ";
             }
             return col_str;
+        }
+          
+        /// <summary>
+        /// ■関数 GetTanpin = 単品NO取得（明細チェック用）	※.堀田丸正専用
+        /// </summary>
+        /// <param name="para">商品CD,単品NO</param>
+        /// <returns>JANマスタ読込内容</returns>
+        public string[] GetTanpin(string[] para)
+        {
+            string[] ret_para = null;
+            string[] v_para = new string[2];
+            v_para[0] = para[0].ToString();
+            v_para[1] = para[1].ToString();
+
+            /* 単品NOに頭0詰めして検索する */
+            string zero_str = string.Empty;
+            for (var k = 0; k < 13 - v_para[1].Length; k++) { zero_str += "0"; }
+            v_para[1] = zero_str + v_para[1];
+
+            string sql_str = ""
+            + "SELECT "
+                + "j.色CD 単品NO,j.商品CD,j.商品名,j.相手商品NO,j.備考CD01,j.備考01,j.備考CD02,j.備考02,j.備考CD03,j.備考03,j.元上代,j.原価,j.JANコード1"
+                + ",s.商品管理FLG,j.明細仕入区分,s.単位,j.仕入価格,j.上代"
+            + " FROM "
+                + "hc$master_shohin_jan j,hc$master_shohin s"
+            + " WHERE "
+                + "s.商品CD=j.商品CD";
+
+            if (v_para[0] != "" || v_para[1] != "")
+            {
+                string hin = string.Empty;
+                string iro = string.Empty;
+                sql_str += " AND ";
+                if (v_para[0] != "") hin += "j.商品CD='" + v_para[0] + "'";
+                if (v_para[1] != "")
+                {
+                    if (hin != "") iro += " AND ";
+                    iro += "j.色CD='" + v_para[1] + "'";
+                }
+                sql_str += hin + iro;
+            }
+            sql_str += " ORDER BY j.色CD,j.商品CD,j.サイズCD";
+            sql_str = "SELECT * FROM (" + sql_str + ")";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para = new string[ret_csv.Columns.Count];
+                for (int i = 0; i < ret_csv.Columns.Count; i++)
+                {
+                    var cellValue = ret_csv.Rows[0][i];
+                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                }
+            }
+            return ret_para;
+        }
+
+        /// <summary>
+        /// ■関数 GetFukumei = 副名取得（明細チェック用）	※.堀田丸正専用
+        /// </summary>
+        /// <param name="para">副名CD</param>
+        /// <param name="flg">FLG（1：副名1（B01）、2：副名2（B02）、3：副名3（B03））</param>
+        /// <returns>名称マスタ（B01～B03）読込内容</returns>
+        public string[] GetFukumei(string[] para, int flg)
+        {
+            string[] ret_para = null;
+            string[] v_para = new string[1];
+            v_para[0] = para[0].ToString();
+            string kbn = "B0" + flg.ToString();
+            string sql_str = "select 名称CD,名称 from HC$MASTER_MEISHO  where 名称区分='" + kbn + "' AND 名称CD=:1";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para = new string[ret_csv.Columns.Count];
+                for (int i = 0; i < ret_csv.Columns.Count; i++)
+                {
+                    var cellValue = ret_csv.Rows[0][i];
+                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                }
+            }
+            return ret_para;
+        }
+
+        /// <summary>
+        /// ■関数 GetSouko = 倉庫名取得（明細チェック用）	※.堀田丸正専用
+        /// </summary>
+        /// <param name="para">引数１:I v_para = 倉庫CD</param>
+        /// <returns>得意先マスタ読込内容</returns>
+        public string[] GetSouko(string[] para)
+        {
+            string[] ret_para = null;
+            string[] v_para = new string[1];
+            v_para[0] = para[0].ToString();
+            string sql_str = "select 得意先CD,得意先名 from HC$MASTER_TOKUI where 得意先CD=:1";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para = new string[ret_csv.Columns.Count];
+                for (int i = 0; i < ret_csv.Columns.Count; i++)
+                {
+                    var cellValue = ret_csv.Rows[0][i];
+                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                }
+            }
+            return ret_para;
+        }
+
+        /// <summary>
+        /// ■関数 GetTagCode = タグコード情報取得	※.ロン都専用
+        /// </summary>
+        /// <param name="para">
+        /// 引数１:v_para = タグコード（JANコード1）
+        /// 引数２:v_para = 日付
+        /// 引数３:v_para = 店舗CD
+        /// </param>
+        /// <returns>商品色サイズ読込内容</returns>
+        public string[] GetTagCode(string[] para)
+        {
+            string[] ret_para = null;
+            string[] v_para = new string[1];
+            v_para[0] = para[0].ToString();
+            string sql_str = ""
+            + "SELECT "
+                + "A.商品CD,"
+                + "A.色CD,"
+                + "A.サイズCD,"
+                + "GET_JODAI(A.商品CD,A.色CD,A.サイズCD,'" + para[1] + "','" + para[2] + "',A.JANコード1) 上代単価,"
+                + "GET_GENKA(A.商品CD,'" + para[0] + "','" + para[1] + "') 下代単価,"
+                + "B.商品名,"
+                + "NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='COL' AND H.名称CD=A.色CD),'.') 色名,"
+                + "GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,"
+                + "B.メーカー品番,"
+                + "B.元上代,"
+                + "B.原価,"
+                + "A.仕入価格 仕入値,"
+                + "A.明細仕入区分||' '||decode(A.明細仕入区分,1,'買取',2,'委託',3,'消化','') 仕入区分"
+            + " FROM "
+                + "HC$MASTER_SHOHIN_JAN A JOIN "
+                + "HC$MASTER_SHOHIN B ON (B.商品CD=A.商品CD)"
+            + " WHERE "
+                + "A.JANコード1=:1";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para = new string[ret_csv.Columns.Count];
+                for (int i = 0; i < ret_csv.Columns.Count; i++)
+                {
+                    var cellValue = ret_csv.Rows[0][i];
+                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                }
+            }
+            return ret_para;
+        }
+
+        /// <summary>
+        /// ■関数 GetSime = 締日取得
+        /// </summary>
+        /// <param name="para1">
+        /// 引数1:I para1 = 名称CD
+        /// 引数2:I para2 = 日付(chr)
+        /// </param>
+        /// <returns>ステータス(0:正常,1:エラー)</returns>
+        public string GetSime(string para1 = null)
+        { 
+            string[] v_para = new string[1];
+            if (para1 != null) v_para[0] = para1;
+            else v_para[0] = "1";
+            string sql_str = "select nvl((select 名称 from hc$master_meisho where 名称区分='SIM' and 名称cd=:1),'19010101') 値 from dual";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                var cellValue = ret_csv.Rows[0][0];
+                return cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// ■関数 GetSime2 = 締日取得
+        /// </summary>
+        /// <param name="para">
+        /// 引数1:I para1 = 名称CD
+        /// 引数2:I para2 = 日付(chr)	
+        /// </param>
+        /// <returns>ステータス(0:正常,1:エラー)</returns>
+        public DataTable GetSime2(string[] para1 = null)
+        {
+            string sql_str = "";
+            sql_str += " select 1 順, nvl((select 名称 from hc$master_meisho where 名称区分='SIM' and 名称cd='2'),'19010101') 値 from dual";
+            sql_str += " union all";
+            sql_str += " select 2 順, nvl((select 名称 from hc$master_meisho where 名称区分='SIM' and 名称cd='3'),'19010101') 値 from dual";
+            sql_str += " union all";
+            sql_str += " select 3 順, nvl((select 名称 from hc$master_meisho where 名称区分='SIM' and 名称cd='4'),'19010101') 値 from dual";
+
+            sql_str = "select * from ( " + sql_str + " ) a order by a.順";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str);
+            return ret_csv;
+        }
+
+        /// <summary>
+        /// ■関数 GetKij = 生地付属取得（明細チェック用）
+        /// </summary>
+        /// <param name="para">引数１:I v_para = 商品CD</param>
+        /// <returns>生地付属マスタ読込内容</returns>
+        public string[] GetKij(string[] para)
+        {
+            string[] ret_para = null;
+            string[] v_para = new string[1];
+            v_para[0] = para[0].ToString();
+            string sql_str = "select A.商品CD,A.商品名,A.単価,A.仕入先商品CD";
+            sql_str += " from HC$MASTER_SHKIJI A";
+            sql_str += " where A.商品CD=:1 order by 商品CD";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para = new string[3];
+                ret_para[0] = ret_csv.Rows[0][0].ToString();
+                ret_para[1] = ret_csv.Rows[0][1].ToString();
+                ret_para[2] = ret_csv.Rows[0][2].ToString();
+            }
+            return ret_para;
+        }
+
+        /// <summary>
+        /// ■関数 GetMaker = 仕入先名取得（明細チェック用）	※.アージュ専用
+        /// </summary>
+        /// <param name="para">引数１:I v_para = 仕入先CD</param>
+        /// <returns>仕入先マスタ読込内容</returns>
+        public string[] GetMaker(string[] para)
+        {
+            string[] ret_para = null;
+            string[] v_para = new string[1];
+            v_para[0] = para[0].ToString();
+            string sql_str = "select 仕入先CD,仕入先名 from HC$MASTER_SIIRE where 仕入先CD=:1";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para = new string[ret_csv.Columns.Count];
+                for (int i = 0; i < ret_csv.Columns.Count; i++)
+                {
+                    var cellValue = ret_csv.Rows[0][i];
+                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                }
+            }
+            return ret_para;
+        }
+
+        /// <summary>
+        /// ■関数 GetBunrui = 分類取得（明細チェック用）	※.アージュ専用
+        /// </summary>
+        /// <param name="para">
+        /// 引数１:I v_para = 分類区分（名称区分）
+        /// 引数２:I v_para = 分類CD（名称CD）
+        /// </param>
+        /// <returns>名称マスタ読込内容</returns>
+        public string[] GetBunrui(string[] para)
+        { 
+            string[] ret_para = null;
+            string[] v_para = new string[2];
+            v_para[0] = para[0].ToString();
+            v_para[1] = para[1].ToString();
+            string sql_str = "select 名称CD,名称 from HC$MASTER_MEISHO  where 名称区分=:1 AND 名称CD=:2";
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para); 
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para = new string[ret_csv.Columns.Count]; 
+                for (int i = 0; i < ret_csv.Columns.Count; i++)
+                {
+                    var cellValue = ret_csv.Rows[0][i];
+                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                }
+            }
+            return ret_para;
+        }
+
+        /// <summary>
+        /// ■関数 GetStringValue = Split文字にて分けた添え字1以上のものを取得
+        /// </summary>
+        /// <param name="obj_str">str = 元String</param>
+        /// <param name="sp">sp = Split文字 nullのときは" "</param>
+        /// <returns>Split文字にて分けた添え字1以上のもの</returns>
+        public string GetStringValue(string obj_str, string sp = null)
+        {
+            if (string.IsNullOrEmpty(obj_str)) return string.Empty; 
+            string sep_str = sp ?? " ";
+            string[] sep_ar = obj_str.Split(new string[] { sep_str }, StringSplitOptions.None);
+
+            if (sep_ar.Length <= 1)
+                return string.Empty;
+
+            // join from index 1 onwards
+            return string.Join(sep_str, sep_ar.Skip(1));
+        }
+
+        /// <summary>
+        /// ■関数 GetCrs = ユーザー７６神戸ﾚｻﾞｰ用商品変換 12.0627
+        /// </summary>
+        /// <param name="para"></param>
+        /// <param name="flg"></param>
+        /// <returns></returns>
+        public string GetShohin76(string para, int? flg = 1)
+        {
+            if (string.IsNullOrEmpty(para)) return null;
+
+            // Default to 1 if null
+            int mode = flg ?? 1;
+
+            if (mode == 1)
+            {
+                // Insert hyphens
+                if (para.Length != 12) return null;
+                return $"{para.Substring(0, 3)}-{para.Substring(3, 4)}-{para.Substring(7, 4)}-{para.Substring(11, 1)}";
+            }
+            else if (mode == 2)
+            {
+                // Remove hyphens
+                if (para.Length != 15) return null;
+                return para.Substring(0, 3) + para.Substring(4, 4) + para.Substring(9, 4) + para.Substring(14, 1);
+            }
+
+            return para;
+        }
+
+
+        public string Get_KokyakuCsvQuery(string sql_str, int flg )
+        { 
+            var sql_query = ""
+            + "SELECT "
+                + "A.顧客CD,A.顧客名,A.カナ,"
+                + comboItem00.GetCaseStr("顧客区分LCV", "A.顧客区分") + " 顧客区分,A.誕生日,A.性別||' '||DECODE(A.性別, 1, '女性', 2, '男性', '未設定') 性別,"
+                + "A.ポイントランク,"
+                + "A.TEL1,A.TEL2,A.EMAIL,"
+                + "SUBSTRB(A.顧客ランク, 1, 1) 顧客ランクR,SUBSTRB(A.顧客ランク, 2, 1) 顧客ランクF,SUBSTRB(A.顧客ランク, 3, 1) 顧客ランクM,"
+                + "A.郵便番号,"
+                + "TRIM(A.住所1) 住所1,TRIM(A.住所2) 住所2,TRIM(A.住所3) 住所3,"
+                + "A.最終来店日,"
+                + "NVL((SELECT P.REALポイント FROM HC$POINT_REAL P WHERE P.顧客CD=A.顧客CD),0) ポイント,"
+                + "A.累計来店回数,A.累計購入数量,A.累計購入金額,"
+                + "A.店舗CD||' '||NVL((SELECT T.得意先名 FROM HC$MASTER_TOKUI T WHERE T.得意先CD=A.店舗CD),'') 店舗名,"
+                + "A.販売員CD||' '||NVL((SELECT E.名前 FROM HC$MASTER_SHAIN E WHERE E.社員CD=A.販売員CD),'') 販売員名,"
+                + "A.名称CD01||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K01' AND M.名称CD=A.名称CD01),'') 属性01,"
+                + "A.名称CD02||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K02' AND M.名称CD=A.名称CD02),'') 属性02,"
+                + "A.名称CD03||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K03' AND M.名称CD=A.名称CD03),'') 属性03,"
+                + "A.名称CD04||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K04' AND M.名称CD=A.名称CD04),'') 属性04,"
+                + "A.名称CD05||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K05' AND M.名称CD=A.名称CD05),'') 属性05,"
+                + "A.名称CD06||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K06' AND M.名称CD=A.名称CD06),'') 属性06,"
+                + "A.名称CD07||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K07' AND M.名称CD=A.名称CD07),'') 属性07,"
+                + "A.名称CD08||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K08' AND M.名称CD=A.名称CD08),'') 属性08,"
+                + "A.名称CD09||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K09' AND M.名称CD=A.名称CD09),'') 属性09,"
+                + "A.名称CD10||' '||NVL((SELECT M.名称 FROM HC$MASTER_MEISHO M WHERE M.名称区分='K10' AND M.名称CD=A.名称CD10),'') 属性10,"
+                + "replace(TRANSLATE (A.拡張メモ, '#' || CHR(13) || CHR(10), '#'), ',', '') 拡張メモ"
+            + " FROM (" + sql_str + ") A"
+            + " ORDER BY A.顧客CD ASC";
+
+            return sql_query;
         }
     }
 
@@ -2891,5 +2545,805 @@ namespace CvnetBaseCore
         public string CrsName { get; set; } = string.Empty;
         public string CrsPara { get; set; } = string.Empty;
         public int UserFlg { get; set; }
-    } 
+    }
+
+    public class ComboItem00 
+    {
+        public Dictionary<TKey, string> ComboItem_00<TKey>(string _name)
+        {
+            var _list = new Dictionary<TKey, string>();
+
+            if (_name == "締日")
+            {
+                for (int i = 1; i < 29; i++)
+                    _list.Add((TKey)(object)i, i.ToString("00"));
+                _list.Add((TKey)(object)99, "99");
+            }
+            if (_name == "週区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 月-日" },
+                     { (TKey)(object) 1, "1 日-土" }
+                };
+            }
+            if (_name == "端数")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 四捨五入" },
+                     { (TKey)(object) 1, "1 切り上げ" },
+                     { (TKey)(object) 2, "2 切り捨て" }
+                };
+            }
+            if (_name == "店種")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 1, "1 卸先" },
+                     { (TKey)(object) 3, "3 売仕店" },
+                     { (TKey)(object) 6, "6 直営店" }
+                };
+            }
+            if (_name == "店種2")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 倉庫" },
+                     { (TKey)(object) 1, "1 卸先" },
+                     { (TKey)(object) 3, "3 売仕店" },
+                     { (TKey)(object) 6, "6 直営店" }
+                };
+            }
+            if (_name == "予定月")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 当月" },
+                     { (TKey)(object) 1, "1 翌月" },
+                     { (TKey)(object) 2, "2 翌々月" },
+                     { (TKey)(object) 3, "3 翌々々月" },
+                     { (TKey)(object) 4, "4 4ヶ月後" },
+                     { (TKey)(object) 5, "5 5ヶ月後" },
+                     { (TKey)(object) 6, "6 6ヶ月後" }
+                };
+            }
+            if (_name == "する")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 しない" },
+                     { (TKey)(object) 1, "1 する" }
+                };
+            }
+            if (_name == "有")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 無" },
+                     { (TKey)(object) 1, "1 有" }
+                };
+            }
+            if (_name == "入金区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 80, "80 現金" },
+                     { (TKey)(object) 81, "81 小切手" },
+                     { (TKey)(object) 82, "82 振込" },
+                     { (TKey)(object) 83, "83 振込手数料" },
+                     { (TKey)(object) 85, "85 手形" },
+                     { (TKey)(object) 88, "88 相殺" },
+                     { (TKey)(object) 89, "89 その他" },
+                     { (TKey)(object) 99, "99 関連伝票" }
+                };
+            }
+            if (_name == "入金区分2")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 80, "80 現金" },
+                     { (TKey)(object) 81, "81 小切手" },
+                     { (TKey)(object) 82, "82 振込" },
+                     { (TKey)(object) 85, "85 手形" }
+                };
+            }
+            if (_name == "商品仕入区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 仕入" },
+                     { (TKey)(object) 15, "15 消化仕入" },
+                     { (TKey)(object) 20, "20 仕入返品" },
+                     { (TKey)(object) 25, "25 消化仕入返品" },
+                     { (TKey)(object) 30, "30 値引" }
+                };
+            }
+            if (_name == "生地仕入区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 仕入" },
+                     { (TKey)(object) 20, "20 仕入返品" },
+                     { (TKey)(object) 30, "30 値引" },
+                     { (TKey)(object) 99, "99 消費税" }
+                };
+            }
+            if (_name == "共通仕入区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 仕入" },
+                     { (TKey)(object) 15, "15 消化仕入" },
+                     { (TKey)(object) 20, "20 仕入返品" },
+                     { (TKey)(object) 25, "25 消化仕入返品" },
+                     { (TKey)(object) 30, "30 値引" },
+                     { (TKey)(object) 99, "99 消費税" }
+                };
+            }
+            if (_name == "本部売上区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 売上" },
+                     { (TKey)(object) 11, "11 ｾｰﾙ売上" },
+                     { (TKey)(object) 20, "20 売上返品" },
+                     { (TKey)(object) 21, "21 ｾｰﾙ売上返品" },
+                     { (TKey)(object) 30, "30 合計値引" },
+                     { (TKey)(object) 31, "31 単品値引" },
+                     { (TKey)(object) 99, "99 消費税" }
+                };
+            }
+            if (_name == "店舗売上区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 売上" },
+                     { (TKey)(object) 11, "11 ｾｰﾙ売上" },
+                     { (TKey)(object) 14, "14 社販売上" },
+                     { (TKey)(object) 20, "20 売上返品" },
+                     { (TKey)(object) 21, "21 ｾｰﾙ売上返品" },
+                     { (TKey)(object) 24, "24 社販売上返品" },
+                     { (TKey)(object) 30, "30 合計値引" },
+                     { (TKey)(object) 31, "31 単品値引" },
+                     { (TKey)(object) 99, "99 消費税" }
+                };
+            }
+            if (_name == "共通売上区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 売上" },
+                     { (TKey)(object) 11, "11 ｾｰﾙ売上" },
+                     { (TKey)(object) 14, "14 社販売上" },
+                     { (TKey)(object) 20, "20 売上返品" },
+                     { (TKey)(object) 21, "21 ｾｰﾙ売上返品" },
+                     { (TKey)(object) 24, "24 社販売上返品" },
+                     { (TKey)(object) 30, "30 合計値引" },
+                     { (TKey)(object) 31, "31 単品値引" },
+                     { (TKey)(object) 99, "99 消費税" }
+                };
+            }
+            if (_name == "棚卸区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 実棚" },
+                     { (TKey)(object) 11, "11 ロス" }
+                };
+            }
+            if (_name == "移動区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 移動" },
+                     { (TKey)(object) 11, "11 受注移動" }
+                };
+            }
+            if (_name == "移動受区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 移動受" }
+                };
+            }
+            if (_name == "桁切")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 一円単位" },
+                     { (TKey)(object) 1, "1 十円単位" },
+                     { (TKey)(object) 2, "2 百円単位" },
+                     { (TKey)(object) 3, "3 千円単位" },
+                     { (TKey)(object) 4, "4 万円単位" }
+                };
+            }
+            if (_name == "為替桁切")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 整数" },
+                     { (TKey)(object) 1, "1 小数点第一位" },
+                     { (TKey)(object) 2, "2 小数点第二位" }
+                };
+            }
+            if (_name == "下代計算")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 売価*掛率" },
+                     { (TKey)(object) 1, "1 上代*掛率" }
+                };
+            }
+            if (_name == "消費税計算")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 請求単位" },
+                     { (TKey)(object) 1, "1 伝票単位" }
+                };
+            }
+            if (_name == "消費税計算2")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 支払単位" },
+                     { (TKey)(object) 1, "1 伝票単位" }
+                };
+            }
+            if (_name == "伝票")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 印刷しない" },
+                     { (TKey)(object) 1, "1 自社伝票" },
+                     { (TKey)(object) 2, "2 百貨店伝票" },
+                     { (TKey)(object) 3, "3 チェーンストア統一伝票1型" },
+                     { (TKey)(object) 4, "4 チェーンストア統一伝票" },
+                     { (TKey)(object) 5, "5 特殊伝票" },
+                     { (TKey)(object) 6, "6 チェーンストア統一伝票（ターンアラウンド用2型）" },
+                     { (TKey)(object) 7, "7 チェーンストア統一伝票（ターンアラウンド用1型）" },
+                     { (TKey)(object) 8, "8 百貨店伝票Ⅱ型" }
+                };
+            }
+            if (_name == "課税区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 非課税" },
+                     { (TKey)(object) 1, "1 外税" },
+                     { (TKey)(object) 2, "2 内税" }
+                };
+            }
+            if (_name == "生地付属")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 製品" },
+                     { (TKey)(object) 1, "1 生地" },
+                     { (TKey)(object) 2, "2 付属品" },
+                     { (TKey)(object) 3, "3 工賃" },
+                     { (TKey)(object) 4, "4 ネーム" },
+                     { (TKey)(object) 5, "5 プレス" },
+                     { (TKey)(object) 6, "6 その他" }
+                };
+            }
+            if (_name == "自動配分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) "000", "000 なし" },
+                     { (TKey)(object) "127", "127 毎日" },
+                     { (TKey)(object) "001", "001 週1回:日" },
+                     { (TKey)(object) "009", "009 週2回:日水" },
+                     { (TKey)(object) "041", "041 週3回:日水金" },
+                     { (TKey)(object) "128", "128 一時中止" }
+                };
+            }
+            if (_name == "システム区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) "00", "00 売上" },
+                     { (TKey)(object) "01", "01 店舗売上" },
+                     { (TKey)(object) "02", "02 仕入" },
+                     { (TKey)(object) "03", "03 製品仕入" },
+                     { (TKey)(object) "04", "04 棚卸" },
+                     { (TKey)(object) "05", "05 移動" },
+                     { (TKey)(object) "06", "06 入金" },
+                     { (TKey)(object) "07", "07 支払" },
+                     { (TKey)(object) "11", "11 移動受" },
+                     { (TKey)(object) "12", "12 受注" },
+                     { (TKey)(object) "13", "13 発注" },
+                     { (TKey)(object) "14", "14 社販売上" }
+                };
+            }
+            if (_name == "商品発注区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 発注" },
+                     { (TKey)(object) 11, "11 追加発注" },
+                     { (TKey)(object) 15, "15 生産発注" }
+                };
+            }
+            if (_name == "商品発注区分53")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 直営" },
+                     { (TKey)(object) 11, "11 Web" },
+                     { (TKey)(object) 15, "12 卸" }
+                };
+            }
+            if (_name == "商品受注区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 受注" },
+                     { (TKey)(object) 11, "11 追加1" },
+                     { (TKey)(object) 12, "12 追加2" },
+                     { (TKey)(object) 13, "13 追加3" },
+                     { (TKey)(object) 14, "14 追加4" },
+                     { (TKey)(object) 15, "15 追加5" },
+                     { (TKey)(object) 16, "16 追加6" },
+                     { (TKey)(object) 17, "17 追加7" },
+                     { (TKey)(object) 18, "18 追加8" },
+                     { (TKey)(object) 19, "19 追加9" }
+                };
+            }
+            if (_name == "倉庫区分02")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 自社倉庫" },
+                     { (TKey)(object) 1, "1 委託倉庫01" },
+                     { (TKey)(object) 2, "2 委託倉庫02" },
+                     { (TKey)(object) 3, "3 委託倉庫03" },
+                     { (TKey)(object) 4, "4 委託倉庫04" },
+                     { (TKey)(object) 5, "5 委託倉庫05" },
+                     { (TKey)(object) 6, "6 委託倉庫06" },
+                     { (TKey)(object) 7, "7 委託倉庫07" },
+                     { (TKey)(object) 8, "8 委託倉庫08" },
+                     { (TKey)(object) 9, "9 委託倉庫09" }
+                };
+            }
+            if (_name == "休暇")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 通常" },
+                     { (TKey)(object) 1, "1 通常休暇" },
+                     { (TKey)(object) 2, "2 有給休暇" },
+                     { (TKey)(object) 3, "3 特別休暇" }
+                };
+            }
+            if (_name == "来勘")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 当月勘定" },
+                     { (TKey)(object) 1, "1 来月勘定" }
+                };
+            }
+            if (_name == "HHT08")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) "03", "03 仕入" },
+                     { (TKey)(object) "04", "04 仕入返品" },
+                     { (TKey)(object) "05", "05 移動" },
+                     { (TKey)(object) "08", "08 発注" },
+                     { (TKey)(object) "21", "21 売上" },
+                     { (TKey)(object) "22", "22 売上返品" },
+                     { (TKey)(object) "60", "60 棚卸" },
+                     { (TKey)(object) "61", "61 棚卸売消" }
+                };
+            }
+            if (_name == "棚卸区分08")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 実棚" },
+                     { (TKey)(object) 61, "61 売消" }
+                };
+            }
+            if (_name == "仕入区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 1, "1 買取" },
+                     { (TKey)(object) 2, "2 委託" },
+                     { (TKey)(object) 3, "3 消化" }
+                };
+            }
+            if (_name == "セール区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 プロパー" },
+                     { (TKey)(object) 1, "1 セール" }
+                };
+            }
+            if (_name == "価格区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) "MAC", "MAC 月次平均原価" },
+                     { (TKey)(object) "DAC", "DAC 日次平均原価" }
+                };
+            }
+            if (_name == "配分出荷区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 出荷" },
+                     { (TKey)(object) 11, "11 追加出荷" }
+                };
+            }
+            if (_name == "配分出荷区分2")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 在庫配分（自）" },
+                     { (TKey)(object) 11, "11 在庫配分（手）" },
+                     { (TKey)(object) 15, "15 在庫配分（倉）" },
+                     { (TKey)(object) 18, "18 受注配分" },
+                     { (TKey)(object) 20, "20 卸出荷" },
+                     { (TKey)(object) 40, "40 EC出荷" },
+                     { (TKey)(object) 60, "60 客注取置" },
+                     { (TKey)(object) 70, "70 移動指示" },
+                     { (TKey)(object) 80, "80 店舗出荷依頼" },
+                     { (TKey)(object) 90, "90 初回配分（店）" },
+                     { (TKey)(object) 95, "95 初回配分（倉）" },
+                     { (TKey)(object) 98, "98 受注配分" }
+                };
+            }
+            if (_name == "顧客区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 通常会員" },
+                     { (TKey)(object) 1, "1 ｺﾞｰﾙﾄﾞ会員" },
+                     { (TKey)(object) 9, "9 退会済み" }
+                };
+            }
+            if (_name == "仕入先仕入区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 無" },
+                     { (TKey)(object) 1, "1 買取" },
+                     { (TKey)(object) 2, "2 委託" },
+                     { (TKey)(object) 3, "3 消化" }
+                };
+            }
+            if (_name == "POS区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object)  0, "0 通常" },
+                     { (TKey)(object)  9, "9 POSﾏｽﾀ削除指示" },
+                     { (TKey)(object) 10, "10 出力しない" }
+                };
+            }
+            if (_name == "調整移動区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 上代調整" },
+                     { (TKey)(object) 11, "11 原価調整" },
+                     { (TKey)(object) 19, "19 その他調整" }
+                };
+            }
+            if (_name == "調整区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 入庫" },
+                     { (TKey)(object) 20, "20 出庫" }
+                };
+            }
+            if (_name == "性別")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) ".", "." },
+                     { (TKey)(object) "0", "0 女性" },
+                     { (TKey)(object) "1", "1 男性" }
+                };
+            }
+            if (_name == "セール展開")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 1, "1 商品" },
+                     { (TKey)(object) 2, "2 商品色" },
+                     { (TKey)(object) 3, "3 商品ｻｲｽ" },
+                     { (TKey)(object) 4, "4 商品色ｻｲｽﾞ" }
+                };
+            }
+            if (_name == "得意先移動区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object)  0, "0 指定無" },
+                     { (TKey)(object)  5, "5 即時" },
+                     { (TKey)(object) 10, "10 積送" }
+                };
+            }
+            if (_name == "配送区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 宅配便" },
+                     { (TKey)(object) 1, "1 ヤマト運輸" },
+                     { (TKey)(object) 2, "2 佐川急便" }
+                };
+            }
+            if (_name == "支払区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 銀行振込" },
+                     { (TKey)(object) 1, "1 クレジットカード" },
+                     { (TKey)(object) 2, "2 代金引換" }
+                };
+            }
+            if (_name == "入力区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 手入力" },
+                     { (TKey)(object) 1, "1 Yahoo" },
+                     { (TKey)(object) 2, "2 楽天" },
+                     { (TKey)(object) 9, "9 ECCUBE" }
+                };
+            }
+            if (_name == "EC商品受注区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 BtoC注文" },
+                     { (TKey)(object) 20, "20 キャンセル" }
+                };
+            }
+            if (_name == "EC店舗売上区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 15, "15 BtoC売上" },
+                     { (TKey)(object) 25, "25 BtoC返品" }
+                };
+            }
+            if (_name == "ECステータス")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) -2, "-2 売上返品" },
+                     { (TKey)(object) -1, "-1 キャンセル" },
+                     { (TKey)(object)  0, "0 処理中" },
+                     { (TKey)(object)  3, "3 出荷中" },
+                     { (TKey)(object)  9, "9 完了" }
+                };
+            }
+            if (_name == "移動送信FLG")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 未" },
+                     { (TKey)(object) 2, "2 入荷予定" },
+                     { (TKey)(object) 4, "4 出荷確定" },
+                     { (TKey)(object) 6, "6 入荷予定+出荷確定" }
+                };
+            }
+            if (_name == "発注送信FLG")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 未" },
+                     { (TKey)(object) 2, "2 入荷予定" }
+                };
+            }
+            if (_name == "発送区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 発送" },
+                     { (TKey)(object) 20, "20 発送取消" }
+                };
+            }
+            if (_name == "在庫登録区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 在庫登録" },
+                     { (TKey)(object) 20, "20 在庫登録取消" }
+                };
+            }
+            if (_name == "仕入返品指示区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 指示" }
+                };
+            }
+            if (_name == "調整区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 入庫" },
+                     { (TKey)(object) 20, "20 紛失" },
+                     { (TKey)(object) 21, "21 盗難" },
+                     { (TKey)(object) 22, "22 破損" },
+                     { (TKey)(object) 23, "23 検品ミス" },
+                     { (TKey)(object) 29, "29 その他" }
+                };
+            }
+            if (_name == "商品発注区分76")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 新規発注" },
+                     { (TKey)(object) 11, "11 追加発注" },
+                     { (TKey)(object) 12, "12 ｾｯﾄ新規発注" },
+                     { (TKey)(object) 13, "13 ｾｯﾄ追加発注" },
+                     { (TKey)(object) 14, "14 重点品番" },
+                     { (TKey)(object) 15, "15 補充発注" },
+                     { (TKey)(object) 16, "16 FC発注" }
+                };
+            }
+            if (_name == "発送区分76")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 発送" }
+                };
+            }
+            if (_name == "補充発注区分76")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 補充発注" }
+                };
+            }
+            if (_name == "FC補充発注区分76")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 11, "11 FC補充発注" }
+                };
+            }
+            if (_name == "予約発注区分76")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 10, "10 予約" }
+                };
+            }
+            if (_name == "承認区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 未" },
+                     { (TKey)(object) 1, "1 済" }
+                };
+            }
+            if (_name == "顧客区分LCV")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object) 0, "0 カード未使用" },
+                     { (TKey)(object) 1, "1 スマホ" },
+                     { (TKey)(object) 4, "4 スマホログインのみ" },
+                     { (TKey)(object) 9, "9 会員情報未登録" }
+                };
+            }
+            if (_name == "取引詳細区分")
+            {
+                _list = new Dictionary<TKey, string>
+                {
+                     { (TKey)(object)  0, "0 通常" },
+                     { (TKey)(object)  1, "1 調整" },
+                     { (TKey)(object) 22, "22 GMO返金" }
+                };
+            }
+
+            return _list;
+        }
+
+        public string GetStr(string p_str)
+        {
+            var wrkitem = ComboItem_00<object>(p_str);
+            if (wrkitem == null || wrkitem.Count == 0) return null;
+
+            // Join all values (like Biz Designer V did with array entries)
+            return string.Join(",", wrkitem.Values);
+        }
+
+        public string FindStr(string p_str, string p_code)
+        {
+            /* 該当するｺｰﾄﾞをもつ名称付き文字列を返す .*/
+            var wrkitem = ComboItem_00<object>(p_str);
+            if (wrkitem.Count == 0) return null;
+            foreach (var item in wrkitem)
+            {
+                if (item.Key.ToString() == p_code)
+                {
+                    return item.Value; // e.g. "001 週1回:日"
+                }
+            }
+            return null;
+        }
+
+        public string GetDecodeStr(string p_str, string p_codename)
+        {
+            /* 該当するComboBoxのDECODE文を求める(名称のみ) .*/
+            var wrkitem = ComboItem_00<object>(p_str);
+            if (wrkitem.Count == 0) return (new string(""));
+            var ret_str = "DECODE(" + p_codename;
+            foreach (var item in wrkitem)
+            {
+                ret_str += "," + item.Key.ToString() + ",'" + item.Value + "'";
+            }
+            if (p_str.Contains("区分"))
+            {
+                ret_str += ",99,'消費税'";
+            }
+            ret_str += ",'.')";
+            return ret_str;
+        }
+
+        public string GetDecodeStr2(string p_str, string p_codename)
+        {
+            /* 該当するComboBoxのDECODE文を求める(名称のみ) .*/
+            var wrkitem = ComboItem_00<object>(p_str);
+            if (wrkitem.Count == 0) return (new string(""));
+            var ret_str = "DECODE(" + p_codename;
+            foreach (var item in wrkitem)
+            {
+                ret_str += "," + item.Key.ToString() + ",'" + item.Value.Split(" ")[1] + "'";
+            }
+            if (p_str.Contains("区分"))
+            {
+                ret_str += ",99,'消費税'";
+            }
+            ret_str += ",'.')";
+            return ret_str;
+        }
+
+        public string GetCaseStr(string p_str, string p_codename)
+        {
+            var wrkitem = ComboItem_00<object>(p_str);
+            if (wrkitem.Count == 0) return string.Empty;
+            string ret_str = "CASE";
+            foreach (var item in wrkitem)
+            {
+                ret_str += $" WHEN ({p_codename}='{item.Key.ToString()}') THEN '{item.Value}'";
+            }
+            if (p_str.Contains("区分"))
+            {
+                ret_str += $" WHEN ({p_codename}='99') THEN '99 消費税'";
+            }
+            ret_str += " ELSE '.' END";
+            return ret_str;
+        }
+
+        public string GetCaseStr2(string p_str, string p_codename)
+        {
+            var wrkitem = ComboItem_00<object>(p_str);
+            if (wrkitem.Count == 0) return string.Empty;
+            string ret_str = "CASE";
+            foreach (var item in wrkitem)
+            {
+                ret_str += $" WHEN ({p_codename}='{item.Key.ToString()}') THEN '{item.Value.Split(" ")[1]}'";
+            }
+            if (p_str.Contains("区分"))
+            {
+                ret_str += $" WHEN ({p_codename}='99') THEN '99 消費税'";
+            }
+            ret_str += " ELSE '.' END";
+            return ret_str;
+        }
+    }
 }

@@ -17,7 +17,7 @@
         </Style>
     </Window.Resources>
     <Window.DataContext>
-        <vm:SubDlg01KijiViewModel/>
+        <vm:SubDlg01KijiViewModel />
     </Window.DataContext>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
@@ -88,17 +88,17 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
             <DataGrid Grid.Row="1" Margin="8" Height="360" d:ItemsSource="{d:SampleData ItemCount=5}"
                       AutoGenerateColumns="False"
 Background="#FFFFFF"
+HeadersVisibility="Column"
 IsReadOnly="True"
 IsSynchronizedWithCurrentItem="True"
 ItemsSource="{Binding ListMeisho}"
 SelectedItem="{Binding SelectedMeisho}"
-SelectionMode="Single" GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="#FFB9B9B9" FontSize="14" SelectedIndex="4">
+SelectionMode="Single">
                 <DataGrid.Columns>
                     <DataGridTextColumn
 		Width="80"
 		Binding="{Binding MeishoCd}"
-		Header="商品CD"
-        />
+		Header="商品CD" />
                     <DataGridTextColumn
 		Width="*"
 		Binding="{Binding Meisho}"
@@ -158,8 +158,9 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
                         </Grid.ColumnDefinitions>
 
                         <Label Content="商品名"
-   VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <TextBox x:Name="productName" Grid.Column="1"/>
+                        VerticalAlignment="Center"/>
+                        <TextBox x:Name="productName" Grid.Column="1" Width="252"/>
+
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -295,7 +296,6 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
                             <ColumnDefinition Width="12"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-
 
                         <Button Style="{DynamicResource AddIconBtn}" BorderThickness="10"/>
                         <Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" />
