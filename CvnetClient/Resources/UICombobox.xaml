@@ -56,6 +56,7 @@
 		<Setter Property="IsEditable" Value="True" />
 		<Setter Property="MinHeight" Value="25" />
         <Setter Property="Height" Value="30"/>
+        <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="BorderBrush" Value="#CCC" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Template">

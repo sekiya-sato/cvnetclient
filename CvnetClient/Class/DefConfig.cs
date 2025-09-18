@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CvnetClient.Class
+﻿namespace CvnetClient.Class
 {
     public class DefConfig
     {
-        public Dictionary<string, string> g_name; 
-
+        public Dictionary<string, string> g_name;
+         
         public DefConfig() 
         {
             /* 共通 */
