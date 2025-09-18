@@ -9,7 +9,7 @@
         xmlns:utils="clr-namespace:CvnetClient.Utils"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="社員マスタ" Style="{StaticResource MasterWindowStyle}">
+        Title="社員マスタ" Style="{StaticResource MasterWindowStyle2}">
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
     </Window.Resources>
@@ -51,11 +51,11 @@
                 AutoGenerateColumns="False"
                 Style="{DynamicResource WinGridData}"
                 IsReadOnly="True"
-                ItemsSource="{Binding ListMeisho}"
-                SelectedItem="{Binding SelectedMeisho}"
+                ItemsSource="{Binding ListWorker}"
+                SelectedItem="{Binding SelectedWorker}"
                 SelectionMode="Single">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="80" Binding="{Binding ShainCd}" Header="社員CD" />
+                    <DataGridTextColumn Width="80" Binding="{Binding WorkerCD}" Header="社員CD" />
                     <DataGridTextColumn Width="*" Binding="{Binding Name}" Header="名前" />
                 </DataGrid.Columns>
 
@@ -75,11 +75,86 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TabControl Grid.Row="0" Background="White" BorderThickness="0">
+            <Border Grid.Row="0" Grid.RowSpan="2" Background="White" CornerRadius="6" Padding="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <!-- TabControl ambik semua ruang atas -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Button row tetap kat bawah -->
+                    </Grid.RowDefinitions>
+
+
+                    <TabControl Grid.Row="0" Grid.RowSpan="2" BorderThickness="1">
                 
 
                 <TabItem Header="基本情報(Shift+F1)">
-                    
+                    <StackPanel >
+                        <Grid Margin="0,8,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0" Content="社員CD" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="0,8" />
+
+                                    <Label Grid.Row="1" Content="名前" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1"  Margin="0,8"/>
+
+                                    <Label Grid.Row="2" Content="カナ" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0,8"/>
+
+                                    <Label Grid.Row="3" Content="部門" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,8"/>
+
+                                    <Label Grid.Row="4" Content="店舗CD" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,8"/>
+
+                                    <Label Grid.Row="5" Content="営業FLG" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,8" />
+
+                                    
+
+
+                                    <Label Grid.Row="6" Content="備考" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="6" Grid.Column="1"  Margin="0,8"/>
+
+                                    <Label Grid.Row="7" Content="出力FLG" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="7" Grid.Column="1"  Margin="0,8"/>
+
+                                    <Label Grid.Row="8" Content="POS区分" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="8" Grid.Column="1"  Margin="0,8"/>
+
+                                    <Label Grid.Row="9" Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="9" Grid.Column="1"  Margin="0,8"/>
+
+                                    <Label Grid.Row="10" Content="修正日" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="10" Grid.Column="1" Margin="0,8" />
+
+                                    <Label Grid.Row="11" Content="最終修正者" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="11" Grid.Column="1"  Margin="0,8"/>
+
+                            
+
+                        </Grid>
+                    </StackPanel>
                 </TabItem>
                 <TabItem Header="人事情報(Shift+F2)">
 
@@ -104,45 +179,42 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <Label Grid.Row="0" Content="部課" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" />
+                                    <Label Grid.Row="0" Content="部課" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="1" Content="役職" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1" />
+                                    <Label Grid.Row="1" Content="役職" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="2" Content="就業FLG" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="2" Grid.Column="1"/>
+                                    <Label Grid.Row="2" Content="就業FLG" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,8"/>
 
-                            <Label Grid.Row="3" Content="入社日" VerticalAlignment="Center"/>
-                            <DatePicker Grid.Row="3" Grid.Column="1"/>
+                                    <Label Grid.Row="3" Content="入社日" VerticalAlignment="Center" Margin="0,8"/>
+                                    <DatePicker Grid.Row="3" Grid.Column="1" Margin="0,8"/>
 
-                            <Label Grid.Row="4" Content="退職日" VerticalAlignment="Center"/>
-                            <DatePicker Grid.Row="4" Grid.Column="1"/>
+                                    <Label Grid.Row="4" Content="退職日" VerticalAlignment="Center" Margin="0,8"/>
+                                    <DatePicker Grid.Row="4" Grid.Column="1" Margin="0,8"/>
 
-                            <Label Grid.Row="5" Content="有休残" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" />
+                                    <Label Grid.Row="5" Content="有休残" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="5" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="6" Content="特休残" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" />
+                                    <Label Grid.Row="6" Content="特休残" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="7" Content="給与区分" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="7" Grid.Column="1" />
+                                    <Label Grid.Row="7" Content="給与区分" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="7" Grid.Column="1"  Margin="0,8"/>
 
 
-                            <Label Grid.Row="8" Content="給与給額" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="8" Grid.Column="1" />
+                                    <Label Grid.Row="8" Content="給与給額" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="8" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="9" Content="交通費区分" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="9" Grid.Column="1" />
+                                    <Label Grid.Row="9" Content="交通費区分" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="9" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="10" Content="交通費給額" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="10" Grid.Column="1" />
+                                    <Label Grid.Row="10" Content="交通費給額" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="10" Grid.Column="1" Margin="0,8" />
                         </Grid>
                     </StackPanel>
-                        
-
-
-                        
+                                                
                 </TabItem>
                 <TabItem Header="拡張情報(Shift+F3)">
                     <StackPanel >
@@ -158,22 +230,43 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                            <Label Grid.Row="0" Content="社員分類01" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="0" Grid.Column="1" />
+                                    <Label Grid.Row="0" Content="社員分類01" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="1" Content="社員分類02" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1" />
+                                    <Label Grid.Row="1" Content="社員分類02" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,8" />
 
-                            <Label Grid.Row="2" Content="社員分類03" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="2" Grid.Column="1"/>
+                                    <Label Grid.Row="2" Content="社員分類03" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,8"/>
 
-                            <Label Grid.Row="3" Content="社員分類04" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="3" Grid.Column="1"/>
+                                    <Label Grid.Row="3" Content="社員分類04" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,8"/>
 
-                            <Label Grid.Row="4" Content="社員分類05" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="4" Grid.Column="1"/>
+                                    <Label Grid.Row="4" Content="社員分類05" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,8"/>
+
+                                    <Label Grid.Row="5" Content="メールFLG" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,8" />
+
+                                    <Label Grid.Row="6" Content="メール" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="6" Grid.Column="1"  Margin="0,8"/>
+
+                                    <Label Grid.Row="7" Content="写真/画像" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="7" Grid.Column="1" Margin="0,8" />
+
+                                    <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,8">
+                                <Image Height="100"/>
+                                <Button Height="30"   
+								VerticalAlignment="Bottom"
+								Foreground="{StaticResource TitleLabelColor}"
+								Content="Upload..." />
+                            </StackPanel>
                         </Grid>
                     </StackPanel>
                 </TabItem>
@@ -182,22 +275,25 @@
 
             </TabControl>
 
-            <Grid Margin="8,8,15,8" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
 
-                <Button Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
-                <Button Style="{DynamicResource UpdateIconBtn}" Padding="0,3" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
-                <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
-                <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
-            </Grid>
+                <Grid  Grid.Row="1" Margin="8,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
+                    <Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
+                    <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
+                    <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
+                </Grid>
+                </Grid>
+            </Border>
 
             <Button Grid.Row="2" Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
         </Grid>
