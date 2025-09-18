@@ -3,10 +3,6 @@ using CvnetClient.Models;
 using CvnetClient.Utils;
 using System.Data;
 using System.IO;
-using System.Reflection.Metadata;
-using System.Security.RightsManagement;
-using System.Windows.Forms;
-using static System.Net.WebRequestMethods;
 
 namespace CvnetBaseCore
 {
@@ -176,37 +172,204 @@ namespace CvnetBaseCore
         }
 
         /// <summary>
-        /// ■関数 GetQueryStrHoujin = 法人CD検索用SQL文字列取得
+        /// ■関数 GetSqlList = 最大取得件数を制限したSQL文を返す(印刷用)
         /// </summary>
-        /// <param name="arias">引数 接続文字列</param>
-        /// <returns>検索用SQL文字列</returns>
-        public string GetQueryStrHoujin(string arias = "")
+        /// <param name="p_querystr">元のSQL文</param>
+        /// <returns>件数制限されたSQL文</returns>
+        public string GetSqlList(string p_querystr)
         {
-            string col_str = string.Empty;
-            if (AppData.ClassCvnet.config.MultiCoop != null && AppData.ClassCvnet.config.MultiCoop >= 0)
-            {
-                col_str += " and ( ";
-                if (arias != "" || arias != null) col_str += arias + ".";
-                col_str += "法人CD='" + AppData.ClassCvnet.config.MultiCoop + "' ";
-                col_str += " or ";
-                if (arias != "" || arias != null) col_str += arias + ".";
-                col_str += "法人CD='.') ";
-            }
-            return col_str;
+            string ret_sqlstrwrk = "select * from (" + p_querystr + ") where rownum<=" + AppData.ClassCvnet.MaxCntPrint.ToString();
+            return ret_sqlstrwrk;
         }
 
         /// <summary>
-        /// ■関数 AspxSqlQuerySysHHTMst = ハンディ用マスタの問い合わせを行う
-        /// 戻値 なし
+        /// ■関数 GetSysTax = 消費税率を求める
+        /// </summary>
+        /// <param name="v_no">消費税NO</param>
+        /// <param name="v_date">日付</param>
+        /// <returns>消費税率(%)</returns>
+        public decimal GetSysTax(int v_no, DateTime v_date)
+        {
+            var sysTax = AppData.ClassCvnet.SysTax; // DataTable (消費税マスタ)
+
+            // Invalid tax number
+            if (v_no <= 0 || v_no > sysTax.Rows.Count)
+            {
+                return 0m;
+            }
+
+            DataRow row = sysTax.Rows[v_no - 1];
+
+            // Parse effective date
+            DateTime d_start;
+            DateTime.TryParse(row[5].ToString(), out d_start);
+
+            DateTime d_first = new DateTime(1901, 1, 1);
+            DateTime d_now = v_date;
+
+            decimal ret_val;
+
+            if (d_start <= d_first || d_now < d_start)
+            {
+                // Use old tax rate (col 4)
+                decimal.TryParse(row[4].ToString(), out ret_val);
+            }
+            else
+            {
+                // Use new tax rate (col 6)
+                decimal.TryParse(row[6].ToString(), out ret_val);
+            }
+
+            return ret_val;
+        }
+
+        /// <summary>
+        /// ■関数 GetSysWeek = 指定日が含まれる週先頭日付を求める
+        /// </summary>
+        /// <param name="v_date">日付</param>
+        /// <returns>週先頭日</returns>
+        public DateTime GetSysWeek(DateTime v_date)
+        {
+            // Get week start type from SysMst (0 = Sunday start, else = Monday start)
+            string weekStartFlag = AppData.ClassCvnet.SysMst._data.Rows[0][18].ToString();
+
+            // C# DayOfWeek: Sunday=0, Monday=1, ..., Saturday=6
+            int dayOfWeek = (int)v_date.DayOfWeek;
+            int v_day;
+
+            if (weekStartFlag == "0") // Sunday start
+            {
+                v_day = dayOfWeek;
+            }
+            else // Monday start
+            {
+                v_day = (dayOfWeek == 6) ? 0 : dayOfWeek + 1;
+            }
+
+            return v_date.AddDays(-v_day);
+        }
+
+        /// <summary>
+        /// 丸め処理
+        /// </summary>
+        /// <param name="v_kingaku">対象数値</param>
+        /// <param name="v_keta">丸め桁 (-6 ～ 6)</param>
+        /// <param name="v_hasu">端数処理方式 (0=四捨五入, 1=切り上げ, 2=切り捨て)</param>
+        /// <returns>計算結果数値</returns>
+        public static decimal GetRound(decimal v_kingaku, int v_keta, int v_hasu)
+        {
+            if (v_keta < -6 || v_keta > 6) return v_kingaku;
+
+            // 10^(-keta)
+            decimal factor = (decimal)Math.Pow(10, -v_keta);
+
+            decimal result;
+            switch (v_hasu)
+            {
+                case 1: // roundup
+                    result = Math.Ceiling(v_kingaku * factor) / factor;
+                    break;
+                case 2: // rounddown
+                    result = Math.Floor(v_kingaku * factor) / factor;
+                    break;
+                default: // normal round
+                    result = Math.Round(v_kingaku, -v_keta, MidpointRounding.AwayFromZero);
+                    break;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// ■関数 CheckImpDate = 入力日が正当かチェックする(開始日、先付、修正)
+        /// </summary>
+        /// <param name="v_date">対象日付</param>
+        /// <returns>0:正常, -1:エラー</returns> 
+        public int CheckImpDate(DateTime v_date)
+        {
+            // 開始日
+            var date = AppData.ClassCvnet.SysMst._data.Rows[0][17].ToString();
+            var v_start = DateTime.Parse(date);
+            if (v_date < v_start) return -1;
+
+            // v_day = 入力日 - 今日
+            int v_day = (v_date - DateTime.Today).Days;
+
+            // 許容範囲
+            int v_pre = int.Parse(AppData.ClassCvnet.SysMst._data.Rows[0][15].ToString());  // 過去許容
+            int v_next = int.Parse(AppData.ClassCvnet.SysMst._data.Rows[0][16].ToString()); // 未来許容
+
+            if (v_day > 0) // future date
+            {
+                if (v_day > v_pre) return -1;
+            }
+            else if (v_day < 0) // past date
+            {
+                if (Math.Abs(v_day) > v_next) return -1;
+            }
+
+            // フラグ
+            int v_flg = int.Parse(AppData.ClassCvnet.SysMst._data.Rows[0][42].ToString());
+             
+            int _get_sime = 0;
+            int.TryParse(AppData.ClassCvnet.SysMst.GetSime(), out _get_sime);
+
+            string v_firstStr = AppData.ClassSatoo.GetDateVal4(DateTime.Today, _get_sime, 0);
+            DateTime v_first;
+            if (!DateTime.TryParseExact(v_firstStr, "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out v_first))
+            {
+                throw new FormatException($"Invalid date format from GetDateVal4: {v_firstStr}");
+            }
+
+            if (v_flg == 1)
+            {
+                if (v_first > v_date) return -1;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// ■関数 AspxSqlQuerySysMst = 勤怠管理マスタの問い合わせを行う
+        /// </summary>
+        public void AspxSqlQuerySysKintaiMst()
+        {
+            string sqlstr = "select * from HC$Master_KINTAI_KANRI";
+            var wrk_csv = AppData.Http?.AspxSqlQuery(sqlstr);
+            if (wrk_csv != null)
+            {
+                AppData.ClassCvnet.SysKintaiMst._data.Clear(); 
+                AppData.ClassCvnet.SysKintaiMst._data = wrk_csv; 
+            }
+        }
+
+        /// <summary>
+        /// ■関数 AspxSqlQuerySysHHTMst = ハンディ用マスタの問い合わせを行う 
         /// </summary>
         public void AspxSqlQuerySysHHTMst()
         {
             string sqlstr = "select * from HC$MASTER_HHT_KANRI";
-            AppData.ClassCvnet.SysHhtMst = AppData.Http?.AspxSqlQuery(sqlstr);
-            /* バルカン対応 */
-            if (AppData.ClassCvnet.SysHhtMst?.Rows.Count > 0)
-            { 
-                
+            var wrk_csv = AppData.Http?.AspxSqlQuery(sqlstr);
+            if (wrk_csv == null) return;
+            AppData.ClassCvnet.SysHhtMst = wrk_csv;
+            /* バルカン対応 */ 
+            if (wrk_csv?.Rows.Count > 0)
+            {
+                if (wrk_csv.Rows[0][33].ToString() == "1")
+                {
+                    var HHT_Csv = AppData.ClassCvnet.HHT_Csv;
+                    HHT_Csv._data.Clear();
+                    HHT_Csv._data = new DataTable("HHT_Csv");
+
+                    HHT_Csv._data.Columns.Add("Flag", typeof(int));
+                    HHT_Csv._data.Columns.Add("Name", typeof(string));
+                    HHT_Csv._data.Columns.Add("PathPattern", typeof(string));
+                    HHT_Csv._data.Columns.Add("Directory", typeof(string));
+                    HHT_Csv._data.Columns.Add("FileNamePattern", typeof(string));
+
+                    HHT_Csv._data.Rows.Add(0, "マスタ", "hht/hksnds1", "hht/", "hksnds1");
+                    HHT_Csv._data.Rows.Add(1, "ハンディデータ", "hht/HKALLS1", "hht/", "HKALLS1");
+                }
             }
         }
 
@@ -2057,26 +2220,12 @@ namespace CvnetBaseCore
             return ret_csv;
         }
 
-        /// <summary>
-        /// ■関数 AspxSqlQueryImp = 入力用名称マスタの一括取得
-        /// 戻値		CSVデータ(名称区分,名称CD,名称,略称)
-        /// </summary>
-        public DataTable AspxSqlQuerySysMeisho()
-        {
-            if (AppData.ClassCvnet.SysMeisho.Rows.Count > 0) 
-                return AppData.ClassCvnet.SysMeisho;
-            string sql_query = "select 名称CD||' '||名称 一覧,名称区分,名称CD,名称,略称  from HC$MASTER_MEISHO ";
-            sql_query += " where 名称区分 between 'B01' and 'B10' or 名称区分 in ('SZN','GEN') order by 名称区分,名称CD";
-            AppData.ClassCvnet.SysMeisho = AppData.Http?.AspxSqlQuery(sql_query);
-            return AppData.ClassCvnet.SysMeisho ?? new DataTable();
-        }
-
         /// <summary> 
         /// 登録された各初期フラグの呼出
         /// </summary>
         /// <returns>CSVデータ(0列目=seq, 1列目=v_cr, 3列目=v_up, 4列目=カテゴリ, 5列目=フラグ名, 6列目=値, 7列目=リストボックス使用文字列, 8列目=注釈)</returns>
         public DataTable AspxSqlQueryConfig()
-        { 
+        {
             string sql_str0 = "select * from HC$master_config order by カテゴリ,フラグ名";
             var ret_csv0 = AppData.Http?.AspxSqlQuery(sql_str0);
             if (ret_csv0?.Rows.Count > 0)
@@ -2092,22 +2241,27 @@ namespace CvnetBaseCore
                     string row5 = row[5].ToString() ?? string.Empty;
                     var conf = AppData.ClassCvnet.config.FindChild(row4);
                     if (conf != null) AppData.ClassCvnet.SetChild(row4, row5);
-                    else if (row4.Contains("janpattern", StringComparison.OrdinalIgnoreCase)) {
+                    else if (row4.Contains("janpattern", StringComparison.OrdinalIgnoreCase))
+                    {
                         if (!string.IsNullOrEmpty(row5)) jan_ar.Add(row5);
                     }
-                    else if (row4.Contains("Regaxchk", StringComparison.OrdinalIgnoreCase)) {
+                    else if (row4.Contains("Regaxchk", StringComparison.OrdinalIgnoreCase))
+                    {
                         if (!string.IsNullOrEmpty(row5)) reg_ar.Add(row5);
                     }
-                    else if (row4.Contains("barpattern", StringComparison.OrdinalIgnoreCase)) {
+                    else if (row4.Contains("barpattern", StringComparison.OrdinalIgnoreCase))
+                    {
                         if (!string.IsNullOrEmpty(row5)) bar_ar.Add(row5);
                     }
-                    else if (row4.Contains("ManageMonthly", StringComparison.OrdinalIgnoreCase)) {
+                    else if (row4.Contains("ManageMonthly", StringComparison.OrdinalIgnoreCase))
+                    {
                         if (!string.IsNullOrEmpty(row5)) mon_ar.Add(row5);
                     }
                     var cvcnf = AppData.ClassCvnet.FindChild(row4);
                     if (cvcnf != null) AppData.ClassCvnet.SetChild(row4, row5);
-                    else if (row4.Contains("HelpDef", StringComparison.OrdinalIgnoreCase)) {
-                        if (AppData.ClassCvnet.HelpDef == null) AppData.ClassCvnet.HelpDef = new Dictionary<string, string>(); 
+                    else if (row4.Contains("HelpDef", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (AppData.ClassCvnet.HelpDef == null) AppData.ClassCvnet.HelpDef = new Dictionary<string, string>();
                         string hlp = row4.Substring(row4.Length - 2);
                         AppData.ClassCvnet.HelpDef.Add(hlp, string.IsNullOrEmpty(row5) ? "" : row5);
                     }
@@ -2158,6 +2312,105 @@ namespace CvnetBaseCore
                 AppData.ClassSatoo.PrintPDFFlg = AppData.ClassCvnet.config.PrintPDFFlg;
             }
             return ret_csv0;
+        }
+
+        /// <summary>
+        /// ■関数 AspxSqlQueryImp = 入力業務前の初期値の取得
+        /// </summary>
+        /// <returns>CSVデータ(1列目=0,倉庫CD,倉庫名, 2列目=1,店舗CD,店舗名,在管FLG,店種)</returns>
+        public DataTable AspxSqlQueryImp()
+        {
+            if (AppData.ClassCvnet.SysImp.Rows.Count > 0) return AppData.ClassCvnet.SysImp;
+            string sql_str0 = "select '0' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD=:1";
+            sql_str0 += " union ";
+            sql_str0 += "select '1' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD=:2";
+            sql_str0 += " union ";
+            sql_str0 += "select '2' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD='00000001'";
+            var para0 = new BizArray();
+            para0.Set(0, AppData.ClassCvnet.SysMst._data.Rows[0][21].ToString() ?? string.Empty);
+            para0.Set(1, AppData.ClassSatoo.SHAIN_Tenpo);
+            var ret_csv0 = AppData.Http?.AspxSqlQuery(sql_str0, para0.ToArray());
+            if (ret_csv0?.Rows.Count > 0)
+            {
+                ret_csv0.Rows.Add(ret_csv0.NewRow());
+                ret_csv0.Rows.Add(ret_csv0.NewRow());
+                ret_csv0.Rows.Add(ret_csv0.NewRow());
+            }
+            else if (ret_csv0?.Rows.Count == 1)
+            {
+                if (ret_csv0.Rows[0][0].ToString() == "0")
+                {
+                    ret_csv0.Rows.Add(ret_csv0.NewRow());
+                    ret_csv0.Rows.Add(ret_csv0.NewRow());
+                }
+                else if (ret_csv0.Rows[0][0].ToString() == "1")
+                {
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                    ret_csv0.Rows.Add(ret_csv0.NewRow());
+                }
+                else
+                {
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                }
+            }
+            else if (ret_csv0?.Rows.Count == 2)
+            {
+                string kubun0 = ret_csv0.Rows[0][0].ToString() ?? string.Empty;
+                if (kubun0 == "0")
+                {
+                    string kubun1 = ret_csv0.Rows[1][0].ToString() ?? string.Empty;
+                    if (kubun1 == "1")
+                    {
+                        ret_csv0.Rows.Add(ret_csv0.NewRow()); 
+                    }
+                    else
+                    {
+                        ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 1); 
+                    }
+                }
+                else
+                {
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                }
+            }
+            AppData.ClassCvnet.SysImp = ret_csv0;
+            return AppData.ClassCvnet.SysImp;
+        }
+
+        /// <summary>
+        /// ■関数 AspxSqlQueryImp = 入力用名称マスタの一括取得
+        /// 戻値		CSVデータ(名称区分,名称CD,名称,略称)
+        /// </summary>
+        public DataTable AspxSqlQuerySysMeisho()
+        {
+            if (AppData.ClassCvnet.SysMeisho.Rows.Count > 0) 
+                return AppData.ClassCvnet.SysMeisho;
+            string sql_query = "select 名称CD||' '||名称 一覧,名称区分,名称CD,名称,略称  from HC$MASTER_MEISHO ";
+            sql_query += " where 名称区分 between 'B01' and 'B10' or 名称区分 in ('SZN','GEN') order by 名称区分,名称CD";
+            AppData.ClassCvnet.SysMeisho = AppData.Http?.AspxSqlQuery(sql_query);
+            return AppData.ClassCvnet.SysMeisho ?? new DataTable();
+        }
+
+        /// <summary>
+        /// ■関数 AspxSqlQuerySysMst = システム管理マスタ、消費税マスタの問い合わせを行う
+        /// 戻値		なし
+        /// </summary>
+        public void AspxSqlQuerySysMst()
+        {
+            string sqlstr = "select * from HC$Master_SYSKANRI";
+            SysMst = new SysMstTb();
+            SysMst._data = AppData.Http?.AspxSqlQuery(sqlstr);
+            sqlstr = "select * from HC$Master_SYSTAX";
+            SysTax = AppData.Http?.AspxSqlQuery(sqlstr);
+            if (SysMst._data?.Rows.Count > 0 && SysMst._data?.Columns.Count > 15)
+            {
+                int _impDateDiff = 0;
+                int.TryParse(SysMst._data.Rows[0][15].ToString(), out _impDateDiff);
+                AppData.ClassCvnet.ImpDateDiff = _impDateDiff;
+            }
+            /* 初期値はDefDateとする */
+            AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
         }
 
         /// <summary> 
@@ -2220,28 +2473,7 @@ namespace CvnetBaseCore
             }
             AppData.ClassCvnet.SysImp = ret_csv0;
             return AppData.ClassCvnet.SysImp;
-        }
-
-        /// <summary>
-        /// ■関数 AspxSqlQuerySysMst = システム管理マスタ、消費税マスタの問い合わせを行う
-        /// 戻値		なし
-        /// </summary>
-        public void AspxSqlQuerySysMst() 
-        { 
-            string sqlstr = "select * from HC$Master_SYSKANRI";
-            SysMst = new SysMstTb();
-            SysMst._data = AppData.Http?.AspxSqlQuery(sqlstr);
-            sqlstr = "select * from HC$Master_SYSTAX"; 
-            SysTax = AppData.Http?.AspxSqlQuery(sqlstr);
-            if (SysMst._data?.Rows.Count > 0 && SysMst._data?.Columns.Count > 15)
-            {
-                int _impDateDiff = 0;
-                int.TryParse(SysMst._data.Rows[0][15].ToString(), out _impDateDiff);
-                AppData.ClassCvnet.ImpDateDiff = _impDateDiff;
-            }
-            /* 初期値はDefDateとする */
-            AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
-        }
+        } 
 
         /// <summary>
         /// ■関数 timeconv = 時刻文字列変換
@@ -3005,6 +3237,633 @@ namespace CvnetBaseCore
             }
 
             return para;
+        }
+
+        /// <summary>
+        /// ■関数 GetMeiList_Shohin = 集計項目（括り）のリスト取得
+        /// </summary>
+        /// <returns>CSVリスト(商品マスタ名称リスト)</returns>
+        public DataTable GetMeiList_Shohin()
+        {
+            var joken = " M.名称CD BETWEEN 'B01' AND 'B10'";
+
+            /* ユーザー対応 11.12.09 */
+            if (AppData.ClassCvnet.config.UserFlg == 84)
+            {
+                joken += " OR M.名称CD IN ('BRD','ITM','MKR','TNJ','SZI','SZN','GEN','DZN','SIK')";
+            }
+            else
+            {
+                joken += " OR M.名称CD IN ('BRD','ITM','MKR','TNJ','SZI','SZN','GEN','DZN','BN0','BN1','BN2','SIK')";
+            }
+            /* 20100726 卸対応 */
+            if (AppData.ClassCvnet.config.oroshi >= 1) joken = " M.名称CD BETWEEN 'B01' AND 'B18'";
+             
+            string sql_str = "SELECT M.名称CD||' '||M.名称 名称";
+            sql_str += " FROM HC$MASTER_MEISHO M";
+            sql_str += " WHERE M.名称区分='IDX'";
+            sql_str += " AND (";
+
+            sql_str += joken;
+            sql_str += " )";
+            sql_str += " ORDER BY M.名称CD";
+
+            return AppData.Http?.AspxSqlQuery(sql_str);
+        }
+
+        /// <summary>
+        /// ■関数 GetMeiList_Tokui = 集計項目（括り）のリスト取得
+        /// </summary>
+        /// <returns>CSVリスト(得意先マスタ名称リスト)</returns>
+        public DataTable GetMeiList_Tokui()
+        { 
+            string sql_str = "SELECT M.名称CD||' '||M.名称 名称";
+            sql_str += " FROM HC$MASTER_MEISHO M";
+            sql_str += " WHERE M.名称区分='IDX'";
+            sql_str += " AND M.名称CD BETWEEN 'C01' AND 'C10'";
+            sql_str += " ORDER BY M.名称CD";
+
+            return AppData.Http?.AspxSqlQuery(sql_str);
+        }
+
+        /// <summary>
+        /// ■関数 GetMeiList_Shiire = 集計項目（括り）のリスト取得
+        /// </summary>
+        /// <returns>CSVリスト(仕入先マスタ名称リスト)</returns>
+        public DataTable GetMeiList_Shiire() 
+        {
+            string sql_str = "SELECT M.名称CD||' '||M.名称 名称";
+            sql_str += " FROM HC$MASTER_MEISHO M";
+            sql_str += " WHERE M.名称区分='IDX'";
+            sql_str += " AND M.名称CD BETWEEN 'D01' AND 'D10'";
+            sql_str += " ORDER BY M.名称CD";
+
+            return AppData.Http?.AspxSqlQuery(sql_str);
+        }
+
+        /// <summary>
+        /// ■関数 GetMeiList_Kokyaku = 集計項目（括り）のリスト取得
+        /// </summary>
+        /// <returns>CSVリスト(顧客マスタ名称リスト)</returns>
+        public DataTable GetMeiList_Kokyaku()
+        { 
+            string sql_str = "SELECT M.名称CD||' '||M.名称 名称";
+            sql_str += " FROM HC$MASTER_MEISHO M";
+            sql_str += " WHERE M.名称区分='IDX'";
+            sql_str += " AND M.名称CD BETWEEN 'K01' AND 'K10'";
+            sql_str += " ORDER BY M.名称CD";
+
+            return AppData.Http?.AspxSqlQuery(sql_str);
+        }
+
+        /// <summary>
+        /// ■関数 GetQueryStrHoujin = 法人CD検索用SQL文字列取得
+        /// </summary>
+        /// <param name="arias">引数 接続文字列</param>
+        /// <returns>検索用SQL文字列</returns>
+        public string GetQueryStrHoujin(string arias = "")
+        {
+            string col_str = string.Empty;
+            if (AppData.ClassCvnet.config.MultiCoop != null && AppData.ClassCvnet.config.MultiCoop >= 0)
+            {
+                col_str += " and ( ";
+                if (arias != "" || arias != null) col_str += arias + ".";
+                col_str += "法人CD='" + AppData.ClassCvnet.config.MultiCoop + "' ";
+                col_str += " or ";
+                if (arias != "" || arias != null) col_str += arias + ".";
+                col_str += "法人CD='.') ";
+            }
+            return col_str;
+        }
+
+        /// <summary>
+        /// 商品マスタ印刷処理 2009.12.09 共通化
+        /// </summary>
+        /// <param name="wrk_para">印刷条件</param>
+        /// <param name="flg">（呼び元判別FLG） 0=商品マスタ、1=各種マスタ印刷、2=各伝票入力画面</param> 
+        public DataTable OnQueryPrintShohin(string[] wrk_para, int flg)
+        {
+            var cvnet_config = AppData.ClassCvnet.config;
+            /* JAN先頭桁取得処理 */
+            int janlength3 = 0;
+            if (cvnet_config.janlength1 - cvnet_config.janlength2 > 0)
+            {
+                janlength3 = cvnet_config.janlength2;
+            }
+            else if (cvnet_config.janlength1 - cvnet_config.janlength2 == 0)
+            {
+                janlength3 = cvnet_config.janlength1;
+            }
+
+            int max_col = 87; /* 2010.12.16 外貨単価対応 86->87 */
+            /* 絵型画像格納先のPATHを取得 */
+            var wrk_para2 = new BizArray();
+            wrk_para2.Set(0, "Data/img");
+            var ret_csv = AppData.Http?.AspxSqlQuery2("get_img_path", wrk_para2.ToArray(), "", -1);
+            string image_path = string.Empty;
+            if (string.IsNullOrEmpty(ret_csv)) {
+                image_path = ret_csv?.Split('\n')[0] + "\\";
+            }
+
+            string joken_sql1 = "a.商品CD in (" + wrk_para[0] + ")";
+            string joken_sql2 = "z.商品CD in (" + wrk_para[0] + ")";
+            string sort = " order by A.商品CD,B.色CD,B.サイズCD";
+            if (cvnet_config.oroshi >= 1) sort = " order by A.商品CD";	/* 卸対応 */
+            if (flg == 1)
+            {
+                joken_sql1 = wrk_para[0];
+                joken_sql2 = wrk_para[0];
+                sort = wrk_para[1];
+            }
+            else if (flg == 2)
+            {
+                joken_sql1 = "a.商品CD='" + wrk_para[0] + "' ";
+                joken_sql2 = "z.商品CD='" + wrk_para[0] + "' ";
+            }
+
+            string sql_query = "select A.SEQ_NO";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_CREATE),10,6) 作成日時";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時";
+
+            sql_query += ",A.商品CD,A.商品名,A.略称,A.旧コード";
+
+            /* 卸対応 */
+            if (cvnet_config.oroshi >= 1) {
+                sql_query += ",A.名称CD11,A.名称CD12,A.名称CD13,A.名称CD14,A.名称CD15,A.名称CD16,A.名称CD17,A.名称CD18";
+            }
+            else {
+                sql_query += ",A.展示会CD,A.ブランドCD,A.アイテムCD,A.シーズンCD,A.素材CD,A.デザイナーCD,A.メーカーCD,A.原産国CD";
+            }
+
+            sql_query += ",A.元上代,A.上代,A.売変日,A.原価,A.営業原価,A.加工工賃,A.デリバリー日,A.納品日,A.店頭投入日";
+            sql_query += ",A.JANコード1 年度,A.JANコード2 製品番号,A.JANコード3 商品CD連番,A.洗濯表示,A.絵型名,A.メモ,A.消費税計算方法,A.在庫管理FLG,A.消費税CD";
+            sql_query += ",A.名称CD01,A.名称CD02,A.名称CD03,A.名称CD04,A.名称CD05,A.名称CD06,A.名称CD07,A.名称CD08,A.名称CD09,A.名称CD10";
+            sql_query += ",A.自動配分FLG,A.販売期限,A.商品区分FLG,A.商品サイズ区分,A.基準倉庫CD,A.ゼロ単価区分,A.JAN先頭桁,A.POS区分";
+            sql_query += ",A.予備01,A.予備02,A.予備03,A.予備04,A.予備05,A.予備06,A.予備07,A.予備08,A.予備09,A.予備10";
+            sql_query += ",A.予備11,A.予備12,A.予備13,A.予備14,A.予備15,A.予備16,A.予備17,A.予備18,A.予備19,A.予備20";
+            sql_query += ",A.仕入区分,A.消化桁切指定,A.消化端数区分,A.消化計算区分,A.消化掛率,A.男女区分,A.コラボ出力区分";
+            sql_query += ",A.代表品番FLG";
+            sql_query += ",A.セール区分,A.リピート日,A.メーカー品番";
+            sql_query += ",A.仕入価格,A.納品区分";
+            sql_query += ",A.絵型名2,A.販売開始日";
+            /* 2010.12.16 外貨単価対応 S */
+            sql_query += ((cvnet_config.dispGaitan >= 1) ? ",A.外貨単価" : ",'-999999999' 外貨単価");
+
+            /* コードの空き確保処理 */
+            for (var i = max_col; i < 150; i++)
+            {
+                sql_query += " ,'' DummyCD" + i.ToString("000");
+            }
+
+            /* 卸対応 */
+            if (cvnet_config.oroshi >= 1)
+            {
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B11' and H.名称CD=A.名称CD11),'.') 補足11名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B12' and H.名称CD=A.名称CD12),'.') 補足12名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B13' and H.名称CD=A.名称CD13),'.') 補足13名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B14' and H.名称CD=A.名称CD14),'.') 補足14名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B15' and H.名称CD=A.名称CD15),'.') 補足15名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B16' and H.名称CD=A.名称CD16),'.') 補足16名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B17' and H.名称CD=A.名称CD17),'.') 補足17名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B18' and H.名称CD=A.名称CD18),'.') 補足18名";
+            }
+            else
+            {
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='TNJ' and H.名称CD=A.展示会CD),'.') 展示会名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='BRD' and H.名称CD=A.ブランドCD),'.') ブランド名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='ITM' and H.名称CD=A.アイテムCD),'.') アイテム名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='SZN' and H.名称CD=A.シーズンCD),'.') シーズン名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='SZI' and H.名称CD=A.素材CD),'.') 素材名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='DZN' and H.名称CD=A.デザイナーCD),'.') デザイナー名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='MKR' and H.名称CD=A.メーカーCD),'.') メーカー名";
+                sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='GEN' and H.名称CD=A.原産国CD),'.') 原産国名";
+            }
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B01' and H.名称CD=A.名称CD01),'.') 補足01名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B02' and H.名称CD=A.名称CD02),'.') 補足02名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B03' and H.名称CD=A.名称CD03),'.') 補足03名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B04' and H.名称CD=A.名称CD04),'.') 補足04名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B05' and H.名称CD=A.名称CD05),'.') 補足05名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B06' and H.名称CD=A.名称CD06),'.') 補足06名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B07' and H.名称CD=A.名称CD07),'.') 補足07名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B08' and H.名称CD=A.名称CD08),'.') 補足08名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B09' and H.名称CD=A.名称CD09),'.') 補足09名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='B10' and H.名称CD=A.名称CD10),'.') 補足10名";
+            sql_query += ",NVL((select H.得意先名 from HC$MASTER_TOKUI H where H.得意先CD=A.基準倉庫CD),'.') 倉庫名";
+            sql_query += ",A.入力社員CD ||' '||(select S.名前 from HC$MASTER_SHAIN S where S.社員CD=A.入力社員CD) 最終修正者";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='MLK' and H.名称CD=A.男女区分),'.') 男女区分名";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B01'),'.') title1";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B02'),'.') title2";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B03'),'.') title3";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B04'),'.') title4";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B05'),'.') title5";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B06'),'.') title6";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B07'),'.') title7";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B08'),'.') title8";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B09'),'.') title9";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B10'),'.') title10";
+            sql_query += ",substr(A.JAN先頭桁,0," + janlength3 + ") 加工JAN先頭桁";            /* JANコード桁数の表示桁数を設定 */
+            sql_query += ((cvnet_config.oroshi >= 1) ? ",'' 色" : ",NVL(B.色CD ||' '|| (select H.名称 from HC$MASTER_MEISHO H where H.名称区分='COL' and H.名称CD=B.色CD),'.') 色");
+            sql_query += ((cvnet_config.oroshi >= 1) ? ",'' サイズ" : ",NVL(B.サイズCD ||' '||get_sizename(A.商品CD,B.サイズCD),'.') サイズ");
+            sql_query += ",NVL((select H.名称 from hc$master_meisho H where H.名称区分='IDX' and H.名称CD=A.商品サイズ区分),'.') サイズ区分";
+
+            /* 画面上ComboBoxの文字列取得 */
+            sql_query += "," + comboItem00.GetCaseStr("する", "a.在庫管理FLG") + " 在庫管理名";
+            sql_query += "," + comboItem00.GetCaseStr("仕入区分", "a.仕入区分") + " 仕入区分名";
+            sql_query += "," + comboItem00.GetCaseStr("桁切", "a.消化桁切指定") + " 消化桁切名";
+            sql_query += "," + comboItem00.GetCaseStr("端数", "a.消化端数区分") + " 消化端数名";
+            sql_query += ",CASE WHEN (A.POS区分='0') THEN '0 通常' WHEN (A.POS区分='1') THEN '9 POSﾏｽﾀ削除指示' WHEN (A.POS区分='2') THEN '10 出力しない' ELSE '.' END  POS区分名";
+            sql_query += ",CASE WHEN (A.消化計算区分='0') THEN '0 原価代入' WHEN (A.消化計算区分='1') THEN '1 掛率計算' ELSE '.' END  消化計算名";
+            sql_query += ",CASE WHEN (A.自動配分FLG='0') THEN '0 自動補充発注しない' WHEN (A.自動配分FLG='1') THEN '1 自動補充売上基準' ELSE '.' END  自動配分FLG名";
+            sql_query += ",CASE WHEN (A.商品区分FLG='0') THEN '0 通常' WHEN (A.商品区分FLG='1') THEN '1 商品外' ELSE '.' END  商品区分FLG名";
+            sql_query += ",CASE WHEN (A.ゼロ単価区分='0') THEN '0 禁止' WHEN (A.ゼロ単価区分='1') THEN '1 許可' WHEN (A.ゼロ単価区分='2') THEN '2 必須入力' ELSE '.' END  ゼロ単価区分名";
+            sql_query += ",'' 予備02名";
+            sql_query += ",'' 予備03名";
+            sql_query += ",'" + image_path + "'||nvl(A.絵型名,'.') 絵型PATH";
+            sql_query += ",CASE WHEN (A.代表品番FLG='0') THEN '0 通常商品' WHEN (A.代表品番FLG='1') THEN '1 代表品番商品' ELSE '.' END  代表品番FLG名";
+            /* sql_query +=",'" + image_path + "'||nvl(A.洗濯表示,'.') 洗濯表示PATH"; */
+            sql_query += ",'" + image_path + "'||nvl(A.絵型名2,'.') 絵型2PATH";
+            sql_query += ",CASE WHEN (A.セール区分='0') THEN '0 プロパー商品' WHEN (A.セール区分='1') THEN '1 セール商品' ELSE '.' END セール区分名";
+            sql_query += ",CASE WHEN (A.納品区分='0') THEN '0 倉庫入庫' WHEN (A.納品区分='1') THEN '1 店舗入庫' ELSE '.' END 納品区分名";
+            sql_query += ((cvnet_config.tanpin == 1) ? ",CASE WHEN (A.商品管理FLG='0') THEN '0 通常' WHEN (A.商品管理FLG='1') THEN '1 ロット' WHEN (A.商品管理FLG='2') THEN '2 単品' ELSE '.' END 商品管理FLG名" : ",'' 商品管理FLG名");
+            sql_query += "," + comboItem00.GetCaseStr("課税区分", "a.消費税計算方法") + " 消費税計算方法名";
+
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B11'),'.') title11";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B12'),'.') title12";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B13'),'.') title13";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B14'),'.') title14";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B15'),'.') title15";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B16'),'.') title16";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B17'),'.') title17";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='B18'),'.') title18";
+
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y01'),'予備01') titleY01";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y02'),'予備02') titleY02";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y03'),'予備03') titleY03";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y04'),'予備04') titleY04";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y05'),'予備05') titleY05";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y06'),'予備06') titleY06";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y07'),'予備07') titleY07";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y08'),'予備08') titleY08";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y09'),'予備09') titleY09";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y10'),'予備10') titleY10";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y11'),'予備11') titleY11";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y12'),'予備12') titleY12";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y13'),'予備13') titleY13";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y14'),'予備14') titleY14";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y15'),'予備15') titleY15";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y16'),'予備16') titleY16";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y17'),'予備17') titleY17";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y18'),'予備18') titleY18";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y19'),'予備19') titleY19";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='Y20'),'予備20') titleY20";
+
+            /* 2015.04.01 #19666対応（予備項目の名称を追加）/////////////////////////////////////////////////////////////////////////////////////// START */
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y01' and H.名称CD=A.予備01),'.') nameY01";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y02' and H.名称CD=A.予備02),'.') nameY02";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y03' and H.名称CD=A.予備03),'.') nameY03";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y04' and H.名称CD=A.予備04),'.') nameY04";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y05' and H.名称CD=A.予備05),'.') nameY05";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y06' and H.名称CD=A.予備06),'.') nameY06";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y07' and H.名称CD=A.予備07),'.') nameY07";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y08' and H.名称CD=A.予備08),'.') nameY08";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y09' and H.名称CD=A.予備09),'.') nameY09";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y10' and H.名称CD=A.予備10),'.') nameY10";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y11' and H.名称CD=A.予備11),'.') nameY11";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y12' and H.名称CD=A.予備12),'.') nameY12";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y13' and H.名称CD=A.予備13),'.') nameY13";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y14' and H.名称CD=A.予備14),'.') nameY14";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y15' and H.名称CD=A.予備15),'.') nameY15";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y16' and H.名称CD=A.予備16),'.') nameY16";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y17' and H.名称CD=A.予備17),'.') nameY17";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y18' and H.名称CD=A.予備18),'.') nameY18";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y19' and H.名称CD=A.予備19),'.') nameY19";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='Y20' and H.名称CD=A.予備20),'.') nameY20";
+            /* 2015.04.01 #19666対応（予備項目の名称を追加）/////////////////////////////////////////////////////////////////////////////////////// END */
+            sql_query += " ,CASE WHEN (A.消費税CD = '1') THEN '1 通常税率' WHEN (A.消費税CD = '2') THEN '2 軽減税率' ELSE TO_CHAR(A.消費税CD) END 税区分";/*#52188 軽減税率対応*/
+            /* 2015.04.01 #62670対応（CVEC項目を追加）/////////////////////////////////////////////////////////////////////////////////////// START */
+            sql_query += ",CASE WHEN (A.EC連携='0') THEN '0 EC連携しない' WHEN (A.EC連携='1') THEN '1 EC連携する' ELSE '.' END EC連携名";
+            sql_query += ",CASE WHEN (A.EC取置='0') THEN '0 EC取置しない' WHEN (A.EC取置='1') THEN '1 EC取置する' ELSE '.' END EC取置名";
+            /* 2015.04.01 #62670対応（CVEC項目を追加）/////////////////////////////////////////////////////////////////////////////////////// END */
+            /* 名称を新規に追加する場合は、下の件数を増やすようにする */
+            /* これ重要 */
+            int MeiCount = 254;
+
+            /* 名称ダミー代入処理 */
+            for (var i = MeiCount; i < 300; i++)
+            {
+                sql_query += " ,'' DummyMei" + i.ToString("000");
+            }
+
+            sql_query += " from HC$Master_SHOHIN A";
+            sql_query += ((cvnet_config.oroshi >= 1) ? "" : ", HC$Master_SHOHIN_JAN B");
+            sql_query += " where ";
+            sql_query += ((cvnet_config.oroshi >= 1) ? "" : "A.商品CD= B.商品CD(+) and ");
+            sql_query += joken_sql1;
+            sql_query += sort;
+
+            sql_query = "select aa.*,h1.品質 品質1,h2.品質 品質2,h3.品質 品質3,h4.品質 品質4,h5.品質 品質5,h6.品質 品質6,h7.品質 品質7,h8.品質 品質8,h9.品質 品質9, h10.品質 品質10 from (" + sql_query + ") aa";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=1) h1";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=2) h2";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=3) h3";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=4) h4";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=5) h5";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=6) h6";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=7) h7";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=8) h8";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=9) h9";
+            sql_query += ",(SELECT a.商品CD,a.品質||' '||a.パーセント||'%'||decode(nvl(a.区分,'0'),'1',' (表)','2',' (裏)','3',' (その他)','') 品質 FROM (SELECT row_number() over (partition by z.商品CD order by z.生地付属CD,z.パーセント desc) ct,z.品質,z.商品CD,z.パーセント,z.生地付属CD 区分 FROM HC$MASTER_SHOHIN_GRADE z,HC$MASTER_SHOHIN a WHERE a.商品CD= z.商品CD(+) and " + joken_sql2 + " GROUP BY z.商品CD,z.品質,z.パーセント,z.生地付属CD) a WHERE ct=10) h10";
+            sql_query += " WHERE ";
+            sql_query += "aa.商品CD=h1.商品CD(+)";
+            sql_query += " AND aa.商品CD=h2.商品CD(+)";
+            sql_query += " AND aa.商品CD=h3.商品CD(+)";
+            sql_query += " AND aa.商品CD=h4.商品CD(+)";
+            sql_query += " AND aa.商品CD=h5.商品CD(+)";
+            sql_query += " AND aa.商品CD=h6.商品CD(+)";
+            sql_query += " AND aa.商品CD=h7.商品CD(+)";
+            sql_query += " AND aa.商品CD=h8.商品CD(+)";
+            sql_query += " AND aa.商品CD=h9.商品CD(+)";
+            sql_query += " AND aa.商品CD=h10.商品CD(+)";
+
+            var qfm_file = "cvnet_shouhin_v2.qfm";
+            if (cvnet_config.oroshi >= 1) qfm_file = "cvnet_shouhin_w.qfm"; /* 卸対応 */
+            if (cvnet_config.UserFlg == 43) qfm_file = "cvnet_shouhin_43.qfm"; 
+            return AppData.Http?.AspxSqlQuery(sql_query, wrk_para, qfm_file);
+        }
+
+        /// <summary>
+        /// 得意先マスタ印刷処理 2010.01.13 共通化
+        /// </summary>
+        /// <param name="wrk_para">印刷条件</param>
+        /// <param name="flg">（呼び元判別FLG） 0=得意先マスタ、1=各種マスタ印刷、2=各伝票入力画面</param>
+        /// <param name="wrk_para2">各種マスタ印刷専用パラメータ</param>
+        /// <returns></returns>
+        public DataTable OnQueryPrintTokui(string[] wrk_para, int flg, string[] wrk_para2 = null)
+        { 
+            int max_col = 103;
+            string joken_sql1 = " WHERE A.得意先CD in (" + wrk_para[0] + ") and A.店種区分>=0";
+            string sort = " order by A.得意先CD";
+
+            if (flg == 1)
+            {
+                joken_sql1 = " WHERE " + wrk_para[0];
+                sort = wrk_para[1];
+            }
+            else if (flg == 2)
+            {
+                joken_sql1 = " WHERE a.得意先CD='" + wrk_para[0] + "' ";
+            }
+
+            string sql_query = "select A.SEQ_NO";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_CREATE),10,6) 作成日時";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時";
+            sql_query += ",A.得意先CD,A.得意先名,A.カナ,A.旧コード,A.略称,A.郵便番号,A.住所1,A.住所2,A.住所3,A.TEL,A.FAX";
+            sql_query += ",A.宛名FLG1,A.宛名FLG2,A.宛名FLG3,A.宛名名称1,A.宛名名称2,A.営業担当CD,A.店種区分,A.坪数,A.在庫管理FLG";
+            sql_query += ",A.掛率,A.セール掛率,A.店頭セール掛率,A.請求先CD,A.請求印刷,A.締日,A.入金予定月,A.入金予定日,A.入金方法,A.下代桁切指定";
+            sql_query += ",A.下代端数区分,A.下代計算FLG,A.消費税CD,A.消費税計算方法,A.消費税端数,A.与信限度額,A.入金率,A.出荷停止FLG";
+            sql_query += ",A.伝票発行区分,A.備考,A.伝票印字1,A.伝票印字2,A.伝票印字3,A.伝票印字4";
+            sql_query += ",A.自動配分FLG,A.開始日,A.終了日,A.棚卸日,A.名称CD01,A.名称CD02,A.名称CD03,A.名称CD04,A.名称CD05,A.名称CD06";
+            sql_query += ",A.倉庫区分,A.営業時間1,A.営業時間2,A.営業時間3,A.施工業者情報,A.デベロッパ,A.開始時刻,A.終了時刻,A.端末ID,A.営業時間,A.棚卸日END";
+            sql_query += ",A.部門,A.為替区分,A.為替桁切指定,A.為替端数区分,A.名称CD07,A.名称CD08,A.名称CD09,A.名称CD10,A.配分ランク01,A.配分ランク02";
+            sql_query += ",A.基準倉庫FLG,A.基準倉庫CD,A.出荷FLG,A.POS区分,A.配分方法FLG,A.伝票印字5,A.伝票印字6,A.伝票印字7,A.伝票印字8";
+            sql_query += ",A.店舗売場コード,A.ECFLG,A.締日2,A.締日3,入金予定月2,入金予定日2,入金予定月3,入金予定日3";
+            sql_query += ",A.伝票社名,A.伝票店名";
+            sql_query += ",移動区分";
+            sql_query += ",A.振込先1,A.振込先2,A.振込先3"; /* 2011.03.10 (99,100,101) */
+            /*2021.04.3 #51847 得意先MAIL追加*/
+            sql_query += ",A.得意先MAIL";
+            sql_query += ",A.登録番号"; /* 2023.12.22 #70586対応追加 */
+
+            /* コードの空き確保処理 */
+            for (var i = max_col; i < 150; i++)
+            {
+                sql_query += " ,'' DummyCD" + i.ToString("000");
+            }
+            /* 得意先マスタの名称追加は特に意識する必要はなし、後ろに追加すれば良い */
+
+            sql_query += ",NVL((select H.名前 from HC$MASTER_SHAIN H where H.社員CD=A.営業担当CD),'.') 担当名";
+            sql_query += ",NVL((select H.得意先名 from HC$MASTER_TOKUI H where  H.得意先CD=A.請求先CD),'.') 請求名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C01' and H.名称CD=A.名称CD01),'.') 補足01名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C02' and H.名称CD=A.名称CD02),'.') 補足02名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C03' and H.名称CD=A.名称CD03),'.') 補足03名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C04' and H.名称CD=A.名称CD04),'.') 補足04名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C05' and H.名称CD=A.名称CD05),'.') 補足05名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C06' and H.名称CD=A.名称CD06),'.') 補足06名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C07' and H.名称CD=A.名称CD07),'.') 補足07名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C08' and H.名称CD=A.名称CD08),'.') 補足08名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C09' and H.名称CD=A.名称CD09),'.') 補足09名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C10' and H.名称CD=A.名称CD10),'.') 補足10名";
+            sql_query += ",(A.入力社員CD ||' '|| (select B.名前 from HC$MASTER_SHAIN B where B.社員CD=A.入力社員CD)) 最終修正者";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='BMN' and H.名称CD=A.部門),'.') 部門名";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C01'),'.') title1";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C02'),'.') title2";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C03'),'.') title3";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C04'),'.') title4";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C05'),'.') title5";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C06'),'.') title6";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C07'),'.') title7";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C08'),'.') title8";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C09'),'.') title9";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C10'),'.') title10";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='RAT' and H.名称CD=A.為替区分),'.') 為替区分名";
+            sql_query += ",NVL((select H.得意先名 from HC$MASTER_TOKUI H where H.得意先CD=A.基準倉庫CD),'.') 倉庫名";
+            sql_query += "," + comboItem00.GetCaseStr("する", "A.在庫管理FLG") + " 在庫管理名";
+            sql_query += "," + comboItem00.GetCaseStr("する", "A.請求印刷") + " 請求印刷名";
+            sql_query += "," + comboItem00.GetCaseStr("予定月", "A.入金予定月") + " 入金予定月名";
+            sql_query += "," + comboItem00.GetCaseStr("入金区分2", "A.入金方法") + " 入金方法名";
+            sql_query += "," + comboItem00.GetCaseStr("桁切", "A.下代桁切指定") + " 下代桁切名";
+            sql_query += "," + comboItem00.GetCaseStr("端数", "A.下代端数区分") + " 下代端数名";
+            sql_query += "," + comboItem00.GetCaseStr("下代計算", "A.下代計算FLG") + " 下代計算名";
+
+            /* 卸対応 10.08.31 */
+            if (AppData.ClassCvnet.config.oroshi == 0)
+            {
+                sql_query += ",CASE WHEN (A.消費税CD=0) THEN '0 非課税' WHEN (A.消費税CD=1) THEN '1 課税' ELSE '.' END  消費税CD名";
+            }
+            else
+            {
+                sql_query += ",CASE WHEN (A.消費税CD=0) THEN '0 非課税' WHEN (A.消費税CD=1) THEN '1 外税' WHEN (A.消費税CD=2) THEN '2 内税' ELSE '.' END  消費税CD名";
+            }
+
+            sql_query += "," + comboItem00.GetCaseStr("端数", "A.消費税端数") + " 消費税端数名";
+            sql_query += "," + comboItem00.GetCaseStr("消費税計算", "A.消費税計算方法") + " 消費税計算名";
+            sql_query += "," + comboItem00.GetCaseStr("する", "A.出荷停止FLG") + " 出荷停止名";
+            sql_query += "," + comboItem00.GetCaseStr("為替桁切", "A.為替桁切指定") + " 為替桁切名";
+            sql_query += "," + comboItem00.GetCaseStr("端数", "A.為替端数区分") + " 為替端数名";
+            sql_query += "," + comboItem00.GetCaseStr("倉庫区分02", "A.倉庫区分") + " 倉庫区分名";
+            /* #28853 店種区分の名前が不正 16.07.06 */
+            sql_query += ",CASE WHEN (A.店種区分='0') THEN '0 倉庫' WHEN (A.店種区分='1') THEN '1 卸先' WHEN (A.店種区分='3') THEN '3 売仕店' WHEN (A.店種区分='6') THEN '6 直営店' ELSE '.' END  店種区分名";
+            sql_query += ",CASE WHEN (A.POS区分='0') THEN '0 通常' WHEN (A.POS区分='1') THEN '9 POSﾏｽﾀ削除指示' WHEN (A.POS区分='2') THEN '10 出力しない' ELSE '.' END  POS区分名";
+            sql_query += ",CASE WHEN (A.ECFLG='0') THEN '0 通常店舗' WHEN (A.ECFLG='1') THEN '1 EC店舗' ELSE '.' END  ECFLG名";
+            /*2021.04.23 #51847 自動補充FLG変更*/
+            /* sql_query += ",CASE WHEN (A.自動配分FLG='0') THEN '000 自動補充しない' WHEN (A.自動配分FLG='1') THEN '127 補充（毎日）' ELSE '.' END  自動配分名"; */
+            sql_query += ",CASE WHEN (A.自動配分FLG='0') THEN '0 自動補充しない' WHEN (A.自動配分FLG='1') THEN '1 補充（毎日）' ELSE '.' END  自動配分名";
+            sql_query += ",CASE WHEN (A.基準倉庫FLG='0') THEN '0 商品マスタの基準倉庫' WHEN (A.基準倉庫FLG='1') THEN '1 得意先マスタの基準倉庫' ELSE '.' END  基準倉庫名";
+            sql_query += ",CASE WHEN (A.出荷FLG='0') THEN '0 出荷予定' WHEN (A.出荷FLG=1) THEN '1 出荷確定' ELSE '.' END  出荷FLG名";
+            sql_query += ",CASE WHEN (A.配分方法FLG='0') THEN '0 売上順' WHEN (A.配分方法FLG='1') THEN '1 ランク順' WHEN (A.配分方法FLG='2') THEN '2 均等配分' ELSE '.' END  配分方法名";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=5 OR A.伝票発行区分=8) THEN '店別' WHEN (A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '社･店コード' ELSE '.' END  伝票印字ラベル1";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=5 OR A.伝票発行区分=8) THEN '品別番号' WHEN (A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '分類コード' ELSE '.' END  伝票印字ラベル2";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7 OR A.伝票発行区分=8) THEN '取引先コード' ELSE '.' END  伝票印字ラベル3";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=5 OR A.伝票発行区分=8) THEN '納品場所' WHEN (A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '伝票区分' ELSE '.' END  伝票印字ラベル4";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '店出場所' WHEN (A.伝票発行区分=5) THEN '売場名' ELSE '.' END  伝票印字ラベル5";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '売場名' ELSE '.' END  伝票印字ラベル6";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '内線番号' ELSE '.' END  伝票印字ラベル7";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '担当者' ELSE '.' END  伝票印字ラベル8";
+            sql_query += "," + comboItem00.GetCaseStr("伝票", "A.伝票発行区分") + " 伝票発行区分名";
+            sql_query += "," + comboItem00.GetCaseStr("予定月", "A.入金予定月2") + " 入金予定月名2";
+            sql_query += "," + comboItem00.GetCaseStr("予定月", "A.入金予定月2") + " 入金予定月名3";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7 OR A.伝票発行区分=8) THEN '伝票社名' ELSE '.' END 伝票社名ラベル";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7 OR A.伝票発行区分=8) THEN '伝票店名' ELSE '.' END 伝票店名ラベル";
+            sql_query += "," + comboItem00.GetCaseStr("得意先移動区分", "A.移動区分") + " 移動区分名";
+            sql_query += ",A.名称CD11,A.名称CD12,A.名称CD13,A.名称CD14,A.名称CD15";
+            sql_query += ",A.名称CD16,A.名称CD17,A.名称CD18,A.名称CD19,A.名称CD20";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C11'),'.') title11";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C12'),'.') title12";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C13'),'.') title13";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C14'),'.') title14";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C15'),'.') title15";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C16'),'.') title16";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C17'),'.') title17";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C18'),'.') title18";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C19'),'.') title19";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C20'),'.') title20";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C11' and H.名称CD=A.名称CD11),'.') 補足11名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C12' and H.名称CD=A.名称CD12),'.') 補足12名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C13' and H.名称CD=A.名称CD13),'.') 補足13名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C14' and H.名称CD=A.名称CD14),'.') 補足14名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C15' and H.名称CD=A.名称CD15),'.') 補足15名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C16' and H.名称CD=A.名称CD16),'.') 補足16名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C17' and H.名称CD=A.名称CD17),'.') 補足17名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C18' and H.名称CD=A.名称CD18),'.') 補足18名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C19' and H.名称CD=A.名称CD19),'.') 補足19名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C20' and H.名称CD=A.名称CD20),'.') 補足20名";
+            sql_query += " from HC$Master_TOKUI A ";
+            sql_query += joken_sql1;
+            sql_query += sort;
+
+            sql_query = "select * from (" + sql_query + ")";
+
+            var qfm_name = "cvnet_tokuisaki.qfm";
+
+            if (AppData.ClassCvnet.config.smtflg == 1) qfm_name = "cvnet_tokuisaki_r.qfm";
+
+            /* 卸対応　10.04.27 */
+            if (AppData.ClassCvnet.config.oroshi != 0) qfm_name = "cvnet_tokuisaki_w.qfm";
+             
+            return AppData.Http?.AspxSqlQuery(sql_query, wrk_para2, qfm_name);
+        }
+
+        /// <summary>
+        /// 仕入先マスタ印刷処理 2010.01.13 共通化 
+        /// </summary>
+        /// <param name="wrk_para">印刷条件</param>
+        /// <param name="flg">（呼び元判別FLG） 0=仕入先マスタ、1=各種マスタ印刷、2=各伝票入力画面</param>
+        /// <param name="wrk_para2">各種マスタ印刷専用パラメータ</param>
+        /// <returns></returns>
+        public DataTable OnQueryPrintSiire(string[] wrk_para, int flg, string[] wrk_para2 = null)
+        { 
+            int max_col = 73;
+            string joken_sql1 = " WHERE A.仕入先CD in (" + wrk_para[0] + ")";
+            string sort = " order by A.仕入先CD";
+
+            if (flg == 1)
+            {
+                joken_sql1 = " WHERE " + wrk_para[0];
+                sort = wrk_para[1];
+            }
+            else if (flg == 2)
+            {
+                joken_sql1 = " WHERE a.仕入先CD='" + wrk_para[0] + "' ";
+            }
+
+            string sql_query = "select A.SEQ_NO";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_CREATE),10,6) 作成日時";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時";
+            sql_query += ",A.仕入先CD,A.仕入先名,A.カナ,A.旧コード,A.略称,A.郵便番号,A.住所1,A.住所2,A.住所3,A.TEL,A.FAX";
+            sql_query += ",A.宛名FLG1,A.宛名FLG2,A.宛名FLG3,A.宛名名称1,A.宛名名称2";
+            sql_query += ",A.掛率,A.掛率2,A.支払先CD,A.支払印刷,A.締日,A.支払予定月,A.支払予定日,A.支払方法";
+            sql_query += ",A.消費税CD,A.消費税計算方法,A.消費税端数,A.支払率";
+            sql_query += ",A.名称CD01,A.備考,A.伝票印字1,A.伝票印字2,A.伝票印字3,A.伝票印字4,A.振込銀行,A.振込支店,A.振込種別,A.振込口座,A.備考2,A.発注FLG";
+            sql_query += ",A.伝票発行区分,A.部門,A.名称CD02,A.名称CD03,A.名称CD04,A.名称CD05,A.名称CD06,A.名称CD07,A.名称CD08,A.名称CD09,A.名称CD10";
+            sql_query += ",A.生産FLG,A.為替区分,A.為替桁切指定,A.為替端数区分,A.発注停止FLG,A.仕入区分";
+            sql_query += ",法人CD,連携先法人CD,連携CD";  /* 2010.09.21 追加 */
+            sql_query += ",期日,下限額"; /* 2012.02.20 追加 USER87対応 */
+            sql_query += ",締日2,支払予定月2,支払予定日2,締日3,支払予定月3,支払予定日3";    /* 2020.10.05 #58551対応追加 */
+            sql_query += ",仕入先MAIL";    /* #51907対応追加 */
+            sql_query += ",A.登録番号"; /* 2023.12.22 #70586対応追加 */
+
+            /* コードの空き確保処理 */
+            for (var i = max_col; i < 150; i++)
+            {
+                sql_query += " ,'' DummyCD" + i.ToString("000");
+            }
+
+            /* 可変処理対応SQL */
+            sql_query += ",NVL((select H.仕入先名 from HC$Master_SIIRE H where H.仕入先CD=A.支払先CD),'.') 支払先名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D01' and H.名称CD=A.名称CD01),'.') 分類01名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D02' and H.名称CD=A.名称CD02),'.') 分類02名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D03' and H.名称CD=A.名称CD03),'.') 分類03名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D04' and H.名称CD=A.名称CD04),'.') 分類04名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D05' and H.名称CD=A.名称CD05),'.') 分類05名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D06' and H.名称CD=A.名称CD06),'.') 分類06名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D07' and H.名称CD=A.名称CD07),'.') 分類07名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D08' and H.名称CD=A.名称CD08),'.') 分類08名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D09' and H.名称CD=A.名称CD09),'.') 分類09名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='D10' and H.名称CD=A.名称CD10),'.') 分類10名";
+            sql_query += ",(A.入力社員CD ||' '|| (select B.名前 from HC$MASTER_SHAIN B where B.社員CD=A.入力社員CD)) 最終修正者";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='BMN' and H.名称CD=A.部門),'.') 部門名";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D01'),'.') title1";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D02'),'.') title2";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D03'),'.') title3";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D04'),'.') title4";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D05'),'.') title5";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D06'),'.') title6";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D07'),'.') title7";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D08'),'.') title8";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D09'),'.') title9";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='IDX' and H.名称CD='D10'),'.') title10";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='RAT' and H.名称CD=A.為替区分),'.') 為替区分名";
+
+            /* 画面上ComboBoxの文字列取得 */
+            sql_query += "," + comboItem00.GetCaseStr("仕入先仕入区分", "A.仕入区分") + "仕入区分名";
+            sql_query += "," + comboItem00.GetCaseStr("する", "A.発注FLG") + "発注停止";
+            sql_query += "," + comboItem00.GetCaseStr("する", "A.支払印刷") + "支払印刷名";
+            sql_query += "," + comboItem00.GetCaseStr("締日", "A.締日") + "締日名";
+            sql_query += "," + comboItem00.GetCaseStr("予定月", "A.支払予定月") + "支払予定月名";
+            sql_query += "," + comboItem00.GetCaseStr("入金区分2", "A.支払方法") + "支払方法名";
+
+            /* 卸対応 10.08.31 */
+            if (AppData.ClassCvnet.config.oroshi == 0)
+            {
+                sql_query += ",CASE WHEN (A.消費税CD=0) THEN '0 非課税' WHEN (A.消費税CD=1) THEN '1 課税' ELSE '.' END  消費税CD名";
+            }
+            else
+            {
+                sql_query += ",CASE WHEN (A.消費税CD=0) THEN '0 非課税' WHEN (A.消費税CD=1) THEN '1 外税' WHEN (A.消費税CD=2) THEN '2 内税' ELSE '.' END  消費税CD名";
+            }
+
+            sql_query += "," + comboItem00.GetCaseStr("端数", "A.消費税端数") + "消費税端数名";
+            sql_query += "," + comboItem00.GetCaseStr("消費税計算2", "A.消費税計算方法") + "消費税計算名";
+            sql_query += "," + comboItem00.GetCaseStr("為替桁切", "A.為替桁切指定") + "為替桁切指定名";
+            sql_query += "," + comboItem00.GetCaseStr("端数", "A.為替端数区分") + "為替端数区分名";
+
+            /* 2020.10.05 #58851対応追加 */
+            sql_query += "," + comboItem00.GetCaseStr("締日2", "A.締日2") + "締日2名";
+            sql_query += "," + comboItem00.GetCaseStr("予定月", "A.支払予定月2") + "支払予定月2名";
+            sql_query += "," + comboItem00.GetCaseStr("締日2", "A.締日3") + "締日3名";
+            sql_query += "," + comboItem00.GetCaseStr("予定月", "A.支払予定月3") + "支払予定月3名";
+
+            sql_query += " from HC$Master_SIIRE A";
+            sql_query += joken_sql1;
+            sql_query += sort;
+
+            sql_query = "select * from (" + sql_query + ")";
+
+            var qfm_name = "cvnet_siire_v2.qfm";
+
+            /* 卸対応　10.04.27 */
+            if (AppData.ClassCvnet.config.oroshi != 0) qfm_name = "cvnet_siire_w.qfm";
+
+            return AppData.Http?.AspxSqlQuery(sql_query, wrk_para2, qfm_name);
         }
 
 
@@ -4133,6 +4992,7 @@ namespace CvnetBaseCore
             _data.Clear();
         }
     }
+
     public class SysKintaiMstTb
     {
         public DataTable _data { get; set; }
