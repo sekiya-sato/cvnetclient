@@ -44,7 +44,6 @@ namespace CvnetClient.ViewModels
 
                 if (existing != null)
                 {
-                    // fokuskan window tu
                     if (existing.WindowState == WindowState.Minimized)
                         existing.WindowState = WindowState.Normal;
 
