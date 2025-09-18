@@ -1,6 +1,12 @@
 ﻿using CvnetClient.Class;
 using CvnetClient.Models;
-using System.Data; 
+using CvnetClient.Utils;
+using System.Data;
+using System.IO;
+using System.Reflection.Metadata;
+using System.Security.RightsManagement;
+using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 
 namespace CvnetBaseCore
 {
@@ -26,13 +32,21 @@ namespace CvnetBaseCore
         public int ImpDateDiff = 7; /* 範囲指定時に補正する日付の日数 .*/
         public int LoginDialogFlag = 1;
         public int VerClear = 0; /* 起動時にキャッシュクリアしたかどうか .*/
+        public SysMstTb SysMst; /* システムﾏｽﾀDATA .*/
+        public DataTable SysTax; /* システム消費税DATA .*/
+        public DataTable SysCnt; /* システム件数DATA .*/
+        public DataTable SysImp; /* 入力用初期値データ .*/
+        public DataTable SysMeisho;	/* 名称CD用CSVデータ */
+        public DataTable SysHhtMst; /* ハンディ用CSVデータ .*/
+        public SysKintaiMstTb SysKintaiMst; /* 勤怠管理用CSVデータ .*/
+        public HHTCsvTb HHT_Csv = new HHTCsvTb(); /* ハンディ用データ .*/
 
         public int ComboListFLg = 0; /* BtListのOnTouchでの一覧表示FLG 1:ダイアログ表示 */
         public int ComboListFlg2 = 0; /* ComboKey押下時はコンボボックス内で一覧表示 */
         public int ComboListFlg3 = 0; /* 伝票内での一覧表示 */
         public string BizUrl = string.Empty;
 
-        public Array HelfDef;
+        public Dictionary<string, string> HelpDef;
         public Dictionary<string, string> MstDialog; /* マスタ取得用専用ダイアログ保存 */
         public int TanaFlg = 0; /* 棚卸の基準　0:月次、1:棚卸日指定 */
         public int PosFlg = 0; /* POSの実行　0:POS連携なし、1:TEC 、2:三谷*/
@@ -159,7 +173,42 @@ namespace CvnetBaseCore
         {
             string ret_sqlstrwrk = "select * from (" + p_querystr + ") where rownum<=" + ((p_line == 0) ? AppData.ClassCvnet.MaxCntDisp : p_line);
             return ret_sqlstrwrk;
-        }  
+        }
+
+        /// <summary>
+        /// ■関数 GetQueryStrHoujin = 法人CD検索用SQL文字列取得
+        /// </summary>
+        /// <param name="arias">引数 接続文字列</param>
+        /// <returns>検索用SQL文字列</returns>
+        public string GetQueryStrHoujin(string arias = "")
+        {
+            string col_str = string.Empty;
+            if (AppData.ClassCvnet.config.MultiCoop != null && AppData.ClassCvnet.config.MultiCoop >= 0)
+            {
+                col_str += " and ( ";
+                if (arias != "" || arias != null) col_str += arias + ".";
+                col_str += "法人CD='" + AppData.ClassCvnet.config.MultiCoop + "' ";
+                col_str += " or ";
+                if (arias != "" || arias != null) col_str += arias + ".";
+                col_str += "法人CD='.') ";
+            }
+            return col_str;
+        }
+
+        /// <summary>
+        /// ■関数 AspxSqlQuerySysHHTMst = ハンディ用マスタの問い合わせを行う
+        /// 戻値 なし
+        /// </summary>
+        public void AspxSqlQuerySysHHTMst()
+        {
+            string sqlstr = "select * from HC$MASTER_HHT_KANRI";
+            AppData.ClassCvnet.SysHhtMst = AppData.Http?.AspxSqlQuery(sqlstr);
+            /* バルカン対応 */
+            if (AppData.ClassCvnet.SysHhtMst?.Rows.Count > 0)
+            { 
+                
+            }
+        }
 
         /// <summary>
         /// ■関数 AspxSqlQueryMst = マスター関係の問い合わせを行う
@@ -397,11 +446,11 @@ namespace CvnetBaseCore
                 {
                     sql_query += " where 社員CD>=:1 and 就業FLG='0' order by 社員CD";
                 }
-                else { 
+                else {
                     sql_query += " where 就業FLG='0' order by 社員CD";
                 }
 
-                    
+
                 sql_query = GetSqlDisp(sql_query);
                 ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
             }
@@ -2007,27 +2056,636 @@ namespace CvnetBaseCore
             }
             return ret_csv;
         }
-         
+
         /// <summary>
-        /// ■関数 GetQueryStrHoujin = 法人CD検索用SQL文字列取得
+        /// ■関数 AspxSqlQueryImp = 入力用名称マスタの一括取得
+        /// 戻値		CSVデータ(名称区分,名称CD,名称,略称)
         /// </summary>
-        /// <param name="arias">引数 接続文字列</param>
-        /// <returns>検索用SQL文字列</returns>
-        public string GetQueryStrHoujin(string arias = "")
+        public DataTable AspxSqlQuerySysMeisho()
         {
-            string col_str = string.Empty;
-            if (AppData.ClassCvnet.config.MultiCoop != null && AppData.ClassCvnet.config.MultiCoop >= 0)
-            {
-                col_str += " and ( ";
-                if (arias != "" || arias != null) col_str += arias + ".";
-                col_str += "法人CD='" + AppData.ClassCvnet.config.MultiCoop + "' ";
-                col_str += " or ";
-                if (arias != "" || arias != null) col_str += arias + ".";
-                col_str += "法人CD='.') ";
-            }
-            return col_str;
+            if (AppData.ClassCvnet.SysMeisho.Rows.Count > 0) 
+                return AppData.ClassCvnet.SysMeisho;
+            string sql_query = "select 名称CD||' '||名称 一覧,名称区分,名称CD,名称,略称  from HC$MASTER_MEISHO ";
+            sql_query += " where 名称区分 between 'B01' and 'B10' or 名称区分 in ('SZN','GEN') order by 名称区分,名称CD";
+            AppData.ClassCvnet.SysMeisho = AppData.Http?.AspxSqlQuery(sql_query);
+            return AppData.ClassCvnet.SysMeisho ?? new DataTable();
         }
-          
+
+        /// <summary> 
+        /// 登録された各初期フラグの呼出
+        /// </summary>
+        /// <returns>CSVデータ(0列目=seq, 1列目=v_cr, 3列目=v_up, 4列目=カテゴリ, 5列目=フラグ名, 6列目=値, 7列目=リストボックス使用文字列, 8列目=注釈)</returns>
+        public DataTable AspxSqlQueryConfig()
+        { 
+            string sql_str0 = "select * from HC$master_config order by カテゴリ,フラグ名";
+            var ret_csv0 = AppData.Http?.AspxSqlQuery(sql_str0);
+            if (ret_csv0?.Rows.Count > 0)
+            {
+                var jan_ar = new BizArray();
+                var reg_ar = new BizArray();
+                var bar_ar = new BizArray();
+                var mon_ar = new BizArray();
+
+                foreach (DataRow row in ret_csv0.Rows)
+                {
+                    string row4 = row[4].ToString() ?? string.Empty;
+                    string row5 = row[5].ToString() ?? string.Empty;
+                    var conf = AppData.ClassCvnet.config.FindChild(row4);
+                    if (conf != null) AppData.ClassCvnet.SetChild(row4, row5);
+                    else if (row4.Contains("janpattern", StringComparison.OrdinalIgnoreCase)) {
+                        if (!string.IsNullOrEmpty(row5)) jan_ar.Add(row5);
+                    }
+                    else if (row4.Contains("Regaxchk", StringComparison.OrdinalIgnoreCase)) {
+                        if (!string.IsNullOrEmpty(row5)) reg_ar.Add(row5);
+                    }
+                    else if (row4.Contains("barpattern", StringComparison.OrdinalIgnoreCase)) {
+                        if (!string.IsNullOrEmpty(row5)) bar_ar.Add(row5);
+                    }
+                    else if (row4.Contains("ManageMonthly", StringComparison.OrdinalIgnoreCase)) {
+                        if (!string.IsNullOrEmpty(row5)) mon_ar.Add(row5);
+                    }
+                    var cvcnf = AppData.ClassCvnet.FindChild(row4);
+                    if (cvcnf != null) AppData.ClassCvnet.SetChild(row4, row5);
+                    else if (row4.Contains("HelpDef", StringComparison.OrdinalIgnoreCase)) {
+                        if (AppData.ClassCvnet.HelpDef == null) AppData.ClassCvnet.HelpDef = new Dictionary<string, string>(); 
+                        string hlp = row4.Substring(row4.Length - 2);
+                        AppData.ClassCvnet.HelpDef.Add(hlp, string.IsNullOrEmpty(row5) ? "" : row5);
+                    }
+                }
+                var conf1 = AppData.ClassCvnet.config.FindChild("janpattern");
+                if (conf1 != null)
+                {
+                    conf1 = string.Empty;
+                    for (var i = 0; i < jan_ar.Count; i++)
+                    {
+                        conf1 += ((i == 0) ? "" : "\n") + jan_ar[i];
+                    }
+                    AppData.ClassCvnet.config.SetChild("janpattern", conf1);
+                }
+                var conf2 = AppData.ClassCvnet.config.FindChild("Regaxchk");
+                if (conf2 != null)
+                {
+                    conf2 = string.Empty;
+                    for (var i = 0; i < reg_ar.Count; i++)
+                    {
+                        conf2 += ((i == 0) ? "" : "\n") + reg_ar[i];
+                    }
+                    AppData.ClassCvnet.config.SetChild("janpattern", conf2);
+                }
+                var conf3 = AppData.ClassCvnet.config.FindChild("barpattern");
+                if (conf3 != null)
+                {
+                    conf3 = string.Empty;
+                    for (var i = 0; i < bar_ar.Count; i++)
+                    {
+                        conf3 += ((i == 0) ? "" : "\n") + bar_ar[i];
+                    }
+                    AppData.ClassCvnet.config.SetChild("barpattern", conf3);
+                }
+                var conf4 = AppData.ClassCvnet.config.FindChild("ManageMonthly");
+                if (conf4 != null)
+                {
+                    conf4 = string.Empty;
+                    for (var i = 0; i < mon_ar.Count; i++)
+                    {
+                        conf4 += ((i == 0) ? "" : "\n") + mon_ar[i];
+                    }
+                    AppData.ClassCvnet.config.SetChild("ManageMonthly", conf4);
+                }
+                /* 初期値を再セットする */
+                AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
+                /* PDF出力FLGを再セットする */
+                AppData.ClassSatoo.PrintPDFFlg = AppData.ClassCvnet.config.PrintPDFFlg;
+            }
+            return ret_csv0;
+        }
+
+        /// <summary> 
+        /// </summary>
+        /// <param name="shainTenpo">入力業務前の初期値の取得</param>
+        /// <returns>CSVデータ(1列目=0,倉庫CD,倉庫名, 2列目=1,店舗CD,店舗名,在管FLG,店種)</returns>
+        public DataTable AspxSqlQueryImp(string shainTenpo)
+        { 
+            if (AppData.ClassCvnet.SysImp.Rows.Count > 0) return AppData.ClassCvnet.SysImp;
+            string sql_str0 = "select '0' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD=:1";
+            sql_str0 += " union ";
+            sql_str0 += "select '1' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD=:2";
+            sql_str0 += " union ";
+            sql_str0 += "select '2' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD='00000001'";
+            var para0 = new BizArray();
+            para0.Set(0, AppData.ClassCvnet.SysMst._data.Rows[0][21].ToString() ?? string.Empty);
+            para0.Set(1, AppData.ClassSatoo.SHAIN_Tenpo);
+            var ret_csv0 = AppData.Http?.AspxSqlQuery(sql_str0, para0.ToArray());
+            if (ret_csv0?.Rows.Count > 0)
+            {
+                ret_csv0.Rows.Add(ret_csv0.NewRow());
+                ret_csv0.Rows.Add(ret_csv0.NewRow());
+                ret_csv0.Rows.Add(ret_csv0.NewRow()); 
+            }
+            else if (ret_csv0.Rows.Count == 1)
+            {
+                string kubun = ret_csv0.Rows[0][0].ToString();
+                if (kubun == "0")
+                {
+                    ret_csv0.Rows.Add(ret_csv0.NewRow());
+                    ret_csv0.Rows.Add(ret_csv0.NewRow());
+                }
+                else if (kubun == "1")
+                {
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                    ret_csv0.Rows.Add(ret_csv0.NewRow());
+                }
+                else
+                {
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                }
+            }
+            else if (ret_csv0.Rows.Count == 2)
+            {
+                string kubun0 = ret_csv0.Rows[0][0].ToString();
+                string kubun1 = ret_csv0.Rows[1][0].ToString();
+
+                if (kubun0 == "0")
+                {
+                    if (kubun1 == "1")
+                        ret_csv0.Rows.Add(ret_csv0.NewRow());
+                    else
+                        ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 1);
+                }
+                else
+                {
+                    ret_csv0.Rows.InsertAt(ret_csv0.NewRow(), 0);
+                }
+            }
+            AppData.ClassCvnet.SysImp = ret_csv0;
+            return AppData.ClassCvnet.SysImp;
+        }
+
+        /// <summary>
+        /// ■関数 AspxSqlQuerySysMst = システム管理マスタ、消費税マスタの問い合わせを行う
+        /// 戻値		なし
+        /// </summary>
+        public void AspxSqlQuerySysMst() 
+        { 
+            string sqlstr = "select * from HC$Master_SYSKANRI";
+            SysMst = new SysMstTb();
+            SysMst._data = AppData.Http?.AspxSqlQuery(sqlstr);
+            sqlstr = "select * from HC$Master_SYSTAX"; 
+            SysTax = AppData.Http?.AspxSqlQuery(sqlstr);
+            if (SysMst._data?.Rows.Count > 0 && SysMst._data?.Columns.Count > 15)
+            {
+                int _impDateDiff = 0;
+                int.TryParse(SysMst._data.Rows[0][15].ToString(), out _impDateDiff);
+                AppData.ClassCvnet.ImpDateDiff = _impDateDiff;
+            }
+            /* 初期値はDefDateとする */
+            AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
+        }
+
+        /// <summary>
+        /// ■関数 timeconv = 時刻文字列変換
+        /// </summary>
+        /// <param name="tmp">秒で取得</param>
+        /// <returns>時刻文字列</returns>
+        public string GetTimeVal(int tmp)
+        {
+            int hr = tmp / 3600;
+            int mi = (tmp % 3600) / 60;
+            int sd = tmp % 60;
+
+            return $"{hr}:{mi:D2}:{sd:D2}";
+        }
+
+        /// <summary>
+        /// ■関数 timeconv2 = 時刻文字列変換
+        /// </summary>
+        /// <param name="tmp">時刻文字列</param>
+        /// <param name="flg">0:秒,1;分</param>
+        /// <returns>時間</returns>
+        public int GetTimeVal2(string tmp, int flg)
+        {
+            if (string.IsNullOrWhiteSpace(tmp))
+                return 0;
+
+            var parts = tmp.Split(':');
+            int se = 0;
+
+            for (int n = 0; n < parts.Length; n++)
+            {
+                if (int.TryParse(parts[n], out int val))
+                {
+                    // (2 - n) → 2 for hours, 1 for minutes, 0 for seconds
+                    int power = 2 - n;
+                    se += val * (int)Math.Pow(60, power);
+                }
+            }
+            if (flg == 1)
+            {
+                se /= 60; // convert to minutes
+            }
+            return se;
+        }
+
+        /// <summary>
+        /// ■関数 timestr = 時刻文字列変換
+        /// </summary>
+        /// <param name="tmp">時刻を:なしで入力</param>
+        /// <returns>
+        /// 時刻文字列
+        /// エラー時は"err"を返す
+        /// </returns>
+        public string GetTimeStr(string tmp)
+        {
+            if (string.IsNullOrEmpty(tmp))
+                return string.Empty;
+
+            // pad right with zeros until length is 6
+            while (tmp.Length < 6)
+            {
+                tmp += "0";
+            }
+
+            // regex for HHMMSS
+            var pattern = new System.Text.RegularExpressions.Regex(@"^([0-2][0-9])([0-5][0-9])([0-5][0-9])$");
+            var match = pattern.Match(tmp);
+
+            if (match.Success)
+            {
+                int hour = int.Parse(match.Groups[1].Value);
+                if (hour < 24)
+                {
+                    return $"{match.Groups[1].Value}:{match.Groups[2].Value}:{match.Groups[3].Value}";
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// ■関数 GetShohin = 商品取得（明細チェック用）
+        /// </summary>
+        /// <param name="para">商品CD, 在庫計上日</param>
+        /// <returns>商品マスタ読込内容</returns>
+        public string[] GetShohin(string[] para)
+        {
+            var v_para = new BizArray();
+            v_para.Set(0, para[0]);
+            string v_genka = "19010101";
+            if (para.Length > 1 && para[1] != null) v_genka = para[1];
+            /* 2019.05.17 GET_JODAIの引数用 */
+            string v_jodai = "19010101";
+            if (para[1] != null) v_jodai = new string(para[1]);
+            string sql_str = "select A.商品CD,A.商品名,GET_JODAI(A.商品CD,'.','.','" + v_jodai + "','.') 上代,A.絵型名,A.展示会CD,A.ブランドCD,A.アイテムCD,A.デリバリー日";
+            sql_str += ",B.名称 展示会名,C.名称 ブランド名,D.名称 アイテム名,GET_GENKA(A.商品CD,0,'" + v_genka + "') 原価,A.消費税計算方法,上代 マスタ上代 ";
+            sql_str += ",A.営業原価, A.店頭投入日";
+            /* 仕入値追加 2008.06.25 */
+            if (AppData.ClassCvnet.UserFlg == 23 || AppData.ClassCvnet.UserFlg == 20)
+            {
+                sql_str += ",A.原価 仕入値";
+            }
+            else if (AppData.ClassCvnet.UserFlg == 75)
+            {
+                sql_str += ",GET_GENKA(A.商品CD,0,'" + para[1] + "') 仕入値";
+            }
+            else
+            {
+                sql_str += ",A.仕入価格 仕入値";
+            }
+            /* 納品日追加 2008.09.29 */
+            sql_str += ",A.納品日";
+            sql_str += ",A.メーカー品番";
+            sql_str += ",A.仕入区分||' '||decode(A.仕入区分,1,'買取',2,'委託',3,'消化','') 仕入区分";
+            sql_str += ((AppData.ClassCvnet.config.tanpin == 1) ? ",A.商品管理FLG" : ",0 商品管理FLG");
+            sql_str += ((AppData.ClassCvnet.config.oroshi >= 1) ? ",A.単位" : ",'' 単位");
+            sql_str += ",A.商品サイズ区分";    /* サイズ区分追加 2011.05.24 */
+            sql_str += " from HC$MASTER_SHOHIN A";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='TNJ') B";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='BRD') C";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='ITM') D";
+            sql_str += " where A.商品CD=:1 and (A.展示会CD=B.名称CD(+) and A.ブランドCD=C.名称CD(+) and A.アイテムCD=D.名称CD(+) )";
+
+            /* 協和のみ */
+            if (AppData.ClassCvnet.UserFlg == 8)
+            {
+                sql_str += " and 予備01!='1' ";
+            }
+
+            if (para.Length > 1)
+            { /* FLG */
+                if (para[1] == "0")
+                { /* 仕入先限定 */
+                    v_para[1] = new string(para[2]);
+                    sql_str += " and A.メーカーCD=:2";
+                }
+            }
+
+            /* ｴｽﾗｸﾞｼﾞｭｰﾙのみ */
+            if (AppData.ClassCvnet.config.UserFlg == 56) sql_str += " and A.承認FLG=1";
+
+            sql_str += "  order by 商品CD";
+            var ret_para = new BizArray();
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para.ToArray());
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());   /* 商品CD */
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());   /* 商品名 */
+                ret_para.Set(2, ret_csv.Rows[0][2].ToString());   /* 上代 */
+                ret_para.Set(3, ret_csv.Rows[0][3].ToString());   /* 絵型 */
+                ret_para.Set(4, ret_csv.Rows[0][4].ToString());   /* 展示会CD */
+                ret_para.Set(5, ret_csv.Rows[0][5].ToString());   /* ブランドCD */
+                ret_para.Set(6, ret_csv.Rows[0][6].ToString());   /* アイテムCD */
+                ret_para.Set(7, ret_csv.Rows[0][7].ToString());   /* デリバリー日 */
+                ret_para.Set(8, ret_csv.Rows[0][11].ToString());  /* 原価 */
+                ret_para.Set(9, ret_csv.Rows[0][12].ToString());  /* 消費税計算方法 */
+                /* 項目追加 *//* 2007.10.03 営業原価・店頭投入日追加 */
+                ret_para.Set(10, ret_csv.Rows[0][5].ToString());  /* ブランドCD */
+                ret_para.Set(11, ret_csv.Rows[0][9].ToString());  /* ブランド名 */
+                ret_para.Set(12, ret_csv.Rows[0][13].ToString()); /* 元上代 */
+                ret_para.Set(13, ret_csv.Rows[0][15].ToString()); /* 店頭投入日 */
+                ret_para.Set(14, ret_csv.Rows[0][14].ToString()); /* 営業原価 */
+                /* 仕入値追加 2008.06.25 */
+                ret_para.Set(15, ret_csv.Rows[0][16].ToString()); /* 仕入値 */
+                /* 納品日追加 2008.09.29 */
+                ret_para.Set(16, ret_csv.Rows[0][17].ToString()); /* 納品日 */
+                /* さらに追加・メーカー品番 20081106 */
+                ret_para.Set(17, ret_csv.Rows[0][18].ToString());
+                /* さらに追加・仕入区分 20091006 */
+                ret_para.Set(18, ret_csv.Rows[0][19].ToString());
+                /* さらに追加・商品管理FLG 20100405 */
+                ret_para.Set(19, ret_csv.Rows[0][20].ToString());
+                /* さらに追加・単位 20100428 */
+                ret_para.Set(20, ret_csv.Rows[0][21].ToString());
+                /* さらに追加・売単価 20100706 */
+                ret_para.Set(21, string.Empty);
+                /* さらに追加 副名1・2・3 20100714 */
+                ret_para.Set(22, string.Empty);
+                ret_para.Set(23, string.Empty);
+                ret_para.Set(24, string.Empty);
+                ret_para.Set(25, string.Empty);
+                ret_para.Set(26, string.Empty);
+                ret_para.Set(27, string.Empty);
+                /* さらに追加 サイズ区分 20110524 */
+                ret_para.Set(28, ret_csv.Rows[0][22].ToString());
+            }
+            return ret_para.ToArray();
+        }
+
+        /// <summary>
+        /// EC用仮追加↓
+        /// ■関数 GetShohin_ec = EC商品取得（明細チェック用）
+        /// </summary>
+        /// <param name="para">商品CD,仕入先CD</param>
+        /// <returns>EC商品マスタ読込内容</returns>
+        public string[] GetShohin_ec(string[] para)
+        {
+            var v_para = new BizArray();
+            v_para.Set(0, para[0]);
+            string sql_str = "select A.商品CD,A.商品名,A.上代,A.絵型名,A.展示会CD,A.ブランドCD,A.アイテムCD,A.デリバリー日";
+            sql_str += ",B.名称 展示会名,C.名称 ブランド名,D.名称 アイテム名,A.原価,A.消費税計算方法,元上代 ";
+            sql_str += " from HC$MASTER_SHOHIN A";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='TNJ') B";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='BRD') C";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='ITM') D";
+            sql_str += " ,HC$MASTER_SHOHIN_EC E";
+            sql_str += " where A.商品CD=E.商品CD and A.商品CD=:1 and (A.展示会CD=B.名称CD(+) and A.ブランドCD=C.名称CD(+) and A.アイテムCD=D.名称CD(+) )";
+
+            sql_str += "  order by 商品CD";
+            var ret_para = new BizArray();
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para.ToArray());
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());   /* 商品CD */
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());   /* 商品名 */
+                ret_para.Set(2, ret_csv.Rows[0][2].ToString());   /* 上代 */
+                ret_para.Set(3, ret_csv.Rows[0][3].ToString());   /* 絵型 */
+                ret_para.Set(4, ret_csv.Rows[0][4].ToString());   /* 展示会CD */
+                ret_para.Set(5, ret_csv.Rows[0][5].ToString());   /* ブランドCD */
+                ret_para.Set(6, ret_csv.Rows[0][6].ToString());   /* アイテムCD */
+                ret_para.Set(7, ret_csv.Rows[0][7].ToString());   /* デリバリー日 */
+                ret_para.Set(8, ret_csv.Rows[0][11].ToString());  /* 原価 */
+                ret_para.Set(9, ret_csv.Rows[0][12].ToString());  /* 消費税計算方法 */
+                /* 項目追加 */
+                ret_para.Set(10, ret_csv.Rows[0][5].ToString());  /* ブランドCD */
+                ret_para.Set(11, ret_csv.Rows[0][9].ToString());  /* ブランド名 */
+                ret_para.Set(12, ret_csv.Rows[0][13].ToString()); /* 元上代 */
+            }
+            return ret_para.ToArray();
+        }
+
+        /// <summary>
+        /// ■関数 GetShohinOroshi = 商品取得（卸用）
+        /// </summary>
+        /// <param name="para">商品CD,FLG,仕入先CD,日付,得意先CD,色CD,サイズCD</param>
+        /// <returns>商品マスタ読込内容</returns>
+        public string[] GetShohinOroshi(string[] para)
+        {
+            var v_para = new BizArray();
+            v_para.Set(0, para[0]);
+
+            string sql_str = "select A.商品CD,A.商品名";
+            sql_str += ((AppData.ClassCvnet.config.oroshi == 1) ? ",get_jodai(A.商品CD,'" + para[5] + "','" + para[6] + "','" + para[3] + "','" + para[4] + "',0) 上代" : ",A.上代");
+            sql_str += ",A.絵型名,A.展示会CD,A.ブランドCD,A.アイテムCD,A.デリバリー日";
+            sql_str += ",B.名称 展示会名,C.名称 ブランド名,D.名称 アイテム名";
+            sql_str += ((AppData.ClassCvnet.config.oroshi == 2) ? ",get_genka(A.商品CD,'0','" + para[3] + "','" + para[5] + "','" + para[6] + "') 原価" : ",get_genka(A.商品CD,'0','" + para[3] + "') 原価");
+            sql_str += ",A.消費税計算方法,元上代 ";
+            sql_str += ",A.営業原価, A.店頭投入日";
+            sql_str += ",A.仕入価格 仕入値";
+            sql_str += ",A.納品日";
+            sql_str += ",A.メーカー品番";
+            sql_str += ",A.仕入区分||' '||decode(A.仕入区分,1,'買取',2,'委託',3,'消化','') 仕入区分";
+            sql_str += ((AppData.ClassCvnet.config.tanpin == 1) ? ",A.商品管理FLG" : ",0 商品管理FLG");
+            sql_str += ",A.単位";
+            sql_str += ((AppData.ClassCvnet.config.oroshi == 1) ? ",get_jodai(A.商品CD,'" + para[5] + "','" + para[6] + "','" + para[3] + "','" + para[4] + "',1) 売単価" : ",0 売単価");
+            sql_str += ",A.名称CD01 副名CD1";
+            sql_str += ",E.名称 副名1";
+            sql_str += ",A.名称CD02 副名CD2";
+            sql_str += ",F.名称 副名2";
+            sql_str += ",A.名称CD03 副名CD3";
+            sql_str += ",G.名称 副名3";
+            sql_str += " from HC$MASTER_SHOHIN A";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='TNJ') B";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='BRD') C";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='ITM') D";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='B01') E";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='B02') F";
+            sql_str += " ,(select 名称CD,名称 from HC$Master_MEISHO where 名称区分='B03') G";
+            sql_str += " where A.商品CD=:1 and (A.展示会CD=B.名称CD(+) and A.ブランドCD=C.名称CD(+) and A.アイテムCD=D.名称CD(+) and A.名称CD01=E.名称CD(+) and A.名称CD02=F.名称CD(+) and A.名称CD03=G.名称CD(+) )";
+            if (para.Length > 1)
+            { /* FLG */
+                if (para[1].ToString().Trim() == "0")
+                { /* 仕入先限定 */
+                    v_para[1] = para[2];
+                    sql_str += " and A.メーカーCD=:2";
+                }
+            }
+            sql_str += "  order by 商品CD";
+
+            var ret_para = new BizArray();
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para.ToArray());
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());   /* 商品CD */
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());   /* 商品名 */
+                ret_para.Set(2, ret_csv.Rows[0][2].ToString());   /* 上代 */
+                ret_para.Set(3, ret_csv.Rows[0][3].ToString());   /* 絵型 */
+                ret_para.Set(4, ret_csv.Rows[0][4].ToString());   /* 展示会CD */
+                ret_para.Set(5, ret_csv.Rows[0][5].ToString());   /* ブランドCD */
+                ret_para.Set(6, ret_csv.Rows[0][6].ToString());   /* アイテムCD */
+                ret_para.Set(7, ret_csv.Rows[0][7].ToString());   /* デリバリー日 */
+                ret_para.Set(8, ret_csv.Rows[0][11].ToString());  /* 原価 */
+                ret_para.Set(9, ret_csv.Rows[0][12].ToString());  /* 消費税計算方法 */
+                ret_para.Set(10, ret_csv.Rows[0][5].ToString());  /* ブランドCD */
+                ret_para.Set(11, ret_csv.Rows[0][9].ToString());  /* ブランド名 */
+                ret_para.Set(12, ret_csv.Rows[0][13].ToString()); /* 元上代 */
+                ret_para.Set(13, ret_csv.Rows[0][15].ToString()); /* 店頭投入日 */
+                ret_para.Set(14, ret_csv.Rows[0][14].ToString()); /* 営業原価 */
+                ret_para.Set(15, ret_csv.Rows[0][16].ToString()); /* 仕入値 */
+                ret_para.Set(16, ret_csv.Rows[0][17].ToString()); /* 納品日 */
+                ret_para.Set(17, ret_csv.Rows[0][18].ToString()); /* A.メーカー品番 */
+                ret_para.Set(18, ret_csv.Rows[0][19].ToString()); /* 仕入区分 */
+                ret_para.Set(19, ret_csv.Rows[0][20].ToString()); /* 商品管理FLG */
+                ret_para.Set(20, ret_csv.Rows[0][21].ToString()); /* 単位 */
+                ret_para.Set(21, ret_csv.Rows[0][22].ToString()); /* 売単価 */
+                /* さらに追加・副名1・2・3 20100714 */
+                ret_para.Set(22, ret_csv.Rows[0][23].ToString());
+                ret_para.Set(23, ret_csv.Rows[0][24].ToString());
+                ret_para.Set(24, ret_csv.Rows[0][25].ToString());
+                ret_para.Set(25, ret_csv.Rows[0][26].ToString());
+                ret_para.Set(26, ret_csv.Rows[0][27].ToString());
+                ret_para.Set(27, ret_csv.Rows[0][28].ToString());
+            }
+            return ret_para.ToArray();
+        }
+
+        /// <summary>
+        /// ■関数 GetCol = 商品色取得（明細チェック用）
+        /// </summary>
+        /// <param name="para">商品CD,色CD</param>
+        /// <returns>商品色サイズ読込内容</returns>
+        public string[] GetCol(string[] para)
+        {
+            var ret_para = new BizArray();
+            string sql_str = "Select A.色CD,'',DECODE(A.上代,0,B.上代,A.上代) 上代,B.上代 商品上代";
+            sql_str += ",A.商品CD";
+            sql_str += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='COL' and H.名称CD=A.色CD),'.') 色名";
+            sql_str += ",'' サイズ名";
+            sql_str += " From HC$MASTER_SHOHIN_JAN A";
+            sql_str += " join HC$master_SHOHIN B on (B.商品CD=A.商品CD)";
+            sql_str += " ,HC$MASTER_SHOHIN_EC E";
+            sql_str += " where A.商品CD=:1";
+            sql_str += " and A.商品CD=E.商品CD";
+            if (para.Length > 1) { sql_str += " and A.色CD=:2 and A.色CD=E.色CD"; }
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());
+                ret_para.Set(2, ret_csv.Rows[0][5].ToString());
+                ret_para.Set(3, ret_csv.Rows[0][6].ToString());
+                ret_para.Set(4, ret_csv.Rows[0][2].ToString());
+            }
+            return ret_para.ToArray();
+        }
+
+        /// <summary>
+        /// ■関数 GetCol = 商品色取得（明細チェック用）
+        /// </summary>
+        /// <param name="para">商品CD,色CD</param>
+        /// <returns>商品色サイズ読込内容</returns>
+        public string[] GetCol2(string[] para)
+        {
+            var ret_para = new BizArray();
+            string sql_sub = ",GET_COLORNAME(A.色CD) 色名";
+            if (AppData.ClassCvnet.config.ColSizMei == 1) sql_sub = ",MAX(A.色名) 色名";
+
+            string sql_str = ""
+            + "SELECT "
+                + "A.色CD" + sql_sub + ",MAX(A.商品CD)||' '||MAX(B.商品名) 商品"
+            + " FROM "
+                + "HC$MASTER_SHOHIN_JAN A,HC$master_SHOHIN B"
+            + " WHERE "
+                + "A.商品CD=B.商品CD AND A.商品CD=:1 AND A.色CD=:2"
+            + " GROUP BY "
+                + "A.色CD";
+
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());
+            }
+            return ret_para.ToArray();
+        }
+
+        /// <summary>
+        /// ■関数 GetColSiz = 商品色サイズ取得（明細チェック用）
+        /// </summary>
+        /// <param name="para">商品CD,色CD</param>
+        /// <returns>商品色サイズ読込内容</returns>
+        public string[] GetColSiz(string[] para)
+        {
+            var sql_str = "Select A.色CD,A.サイズCD,DECODE(A.上代,0,B.上代,A.上代) 上代,B.上代 商品上代";
+            sql_str += ",A.商品CD";
+            sql_str += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='COL' and H.名称CD=A.色CD),'.') 色名";
+            sql_str += ",GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名";
+            sql_str += " From HC$MASTER_SHOHIN_JAN A";
+            sql_str += " join HC$master_SHOHIN B on (B.商品CD=A.商品CD)";
+            sql_str += " where A.商品CD=:1";
+            if (para.Length > 1) { sql_str += " and A.色CD=:2"; }
+            if (para.Length > 2) { sql_str += " and A.サイズCD=:3"; }
+
+            var ret_para = new BizArray();
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());
+                ret_para.Set(2, ret_csv.Rows[0][5].ToString());
+                ret_para.Set(3, ret_csv.Rows[0][6].ToString());
+                ret_para.Set(4, ret_csv.Rows[0][2].ToString());
+                ret_para.Set(5, ret_csv.Rows[0][2].ToString());
+            }
+            return ret_para.ToArray();
+        }
+
+        /// <summary>
+        /// ■関数 GetColSiz87 = 商品色サイズ取得（明細チェック用）	※.ｲﾝｺﾝﾄﾛ専用
+        /// </summary>
+        /// <param name="para">商品CD,色CD</param>
+        /// <returns>商品色サイズ読込内容(海外名)</returns>
+        public string[] GetColSiz87(string[] para)
+        {
+            string sql_str = "Select A.色CD,A.サイズCD,DECODE(A.上代,0,B.上代,A.上代) 上代,B.上代 商品上代";
+            sql_str += ",A.商品CD";
+            sql_str += ",GET_COLORNAME2(B.展示会CD,B.予備04,A.色CD) 色名";
+            sql_str += ",GET_SIZENAME2(B.予備05,A.サイズCD) サイズ名";
+            sql_str += " From HC$MASTER_SHOHIN_JAN A";
+            sql_str += " join HC$master_SHOHIN B on (B.商品CD=A.商品CD)";
+            sql_str += " where A.商品CD=:1";
+            if (para.Length > 1) sql_str += " and A.色CD=:2";
+            if (para.Length > 2) sql_str += " and A.サイズCD=:3";
+
+            var ret_para = new BizArray();
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, para);
+            if (ret_csv?.Rows.Count > 0)
+            {
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());
+                ret_para.Set(2, ret_csv.Rows[0][5].ToString());
+                ret_para.Set(3, ret_csv.Rows[0][6].ToString());
+                ret_para.Set(4, ret_csv.Rows[0][2].ToString());
+                ret_para.Set(5, ret_csv.Rows[0][2].ToString());
+            }
+            return ret_para.ToArray();
+        }
+
         /// <summary>
         /// ■関数 GetTanpin = 単品NO取得（明細チェック用）	※.堀田丸正専用
         /// </summary>
@@ -2035,7 +2693,6 @@ namespace CvnetBaseCore
         /// <returns>JANマスタ読込内容</returns>
         public string[] GetTanpin(string[] para)
         {
-            string[] ret_para = null;
             string[] v_para = new string[2];
             v_para[0] = para[0].ToString();
             v_para[1] = para[1].ToString();
@@ -2069,17 +2726,18 @@ namespace CvnetBaseCore
             }
             sql_str += " ORDER BY j.色CD,j.商品CD,j.サイズCD";
             sql_str = "SELECT * FROM (" + sql_str + ")";
+
+            var ret_para = new BizArray();
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
             if (ret_csv?.Rows.Count > 0)
             {
-                ret_para = new string[ret_csv.Columns.Count];
                 for (int i = 0; i < ret_csv.Columns.Count; i++)
                 {
                     var cellValue = ret_csv.Rows[0][i];
-                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                    ret_para.Set(i, cellValue != DBNull.Value ? cellValue.ToString() : string.Empty);
                 }
             }
-            return ret_para;
+            return ret_para.ToArray();
         }
 
         /// <summary>
@@ -2090,22 +2748,22 @@ namespace CvnetBaseCore
         /// <returns>名称マスタ（B01～B03）読込内容</returns>
         public string[] GetFukumei(string[] para, int flg)
         {
-            string[] ret_para = null;
             string[] v_para = new string[1];
             v_para[0] = para[0].ToString();
             string kbn = "B0" + flg.ToString();
             string sql_str = "select 名称CD,名称 from HC$MASTER_MEISHO  where 名称区分='" + kbn + "' AND 名称CD=:1";
+
+            var ret_para = new BizArray();
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
             if (ret_csv?.Rows.Count > 0)
             {
-                ret_para = new string[ret_csv.Columns.Count];
                 for (int i = 0; i < ret_csv.Columns.Count; i++)
                 {
                     var cellValue = ret_csv.Rows[0][i];
-                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                    ret_para.Set(i, cellValue != DBNull.Value ? cellValue.ToString() : string.Empty);
                 }
             }
-            return ret_para;
+            return ret_para.ToArray();
         }
 
         /// <summary>
@@ -2115,21 +2773,21 @@ namespace CvnetBaseCore
         /// <returns>得意先マスタ読込内容</returns>
         public string[] GetSouko(string[] para)
         {
-            string[] ret_para = null;
             string[] v_para = new string[1];
             v_para[0] = para[0].ToString();
             string sql_str = "select 得意先CD,得意先名 from HC$MASTER_TOKUI where 得意先CD=:1";
+
+            var ret_para = new BizArray();
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
             if (ret_csv?.Rows.Count > 0)
             {
-                ret_para = new string[ret_csv.Columns.Count];
                 for (int i = 0; i < ret_csv.Columns.Count; i++)
                 {
                     var cellValue = ret_csv.Rows[0][i];
-                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                    ret_para.Set(i, cellValue != DBNull.Value ? cellValue.ToString() : string.Empty);
                 }
             }
-            return ret_para;
+            return ret_para.ToArray();
         }
 
         /// <summary>
@@ -2143,7 +2801,6 @@ namespace CvnetBaseCore
         /// <returns>商品色サイズ読込内容</returns>
         public string[] GetTagCode(string[] para)
         {
-            string[] ret_para = null;
             string[] v_para = new string[1];
             v_para[0] = para[0].ToString();
             string sql_str = ""
@@ -2166,17 +2823,18 @@ namespace CvnetBaseCore
                 + "HC$MASTER_SHOHIN B ON (B.商品CD=A.商品CD)"
             + " WHERE "
                 + "A.JANコード1=:1";
+
+            var ret_para = new BizArray();
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
             if (ret_csv?.Rows.Count > 0)
             {
-                ret_para = new string[ret_csv.Columns.Count];
                 for (int i = 0; i < ret_csv.Columns.Count; i++)
                 {
                     var cellValue = ret_csv.Rows[0][i];
-                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                    ret_para.Set(i, cellValue != DBNull.Value ? cellValue.ToString() : string.Empty);
                 }
             }
-            return ret_para;
+            return ret_para.ToArray();
         }
 
         /// <summary>
@@ -2188,7 +2846,7 @@ namespace CvnetBaseCore
         /// </param>
         /// <returns>ステータス(0:正常,1:エラー)</returns>
         public string GetSime(string para1 = null)
-        { 
+        {
             string[] v_para = new string[1];
             if (para1 != null) v_para[0] = para1;
             else v_para[0] = "1";
@@ -2232,21 +2890,21 @@ namespace CvnetBaseCore
         /// <returns>生地付属マスタ読込内容</returns>
         public string[] GetKij(string[] para)
         {
-            string[] ret_para = null;
             string[] v_para = new string[1];
             v_para[0] = para[0].ToString();
             string sql_str = "select A.商品CD,A.商品名,A.単価,A.仕入先商品CD";
             sql_str += " from HC$MASTER_SHKIJI A";
             sql_str += " where A.商品CD=:1 order by 商品CD";
+
+            var ret_para = new BizArray();
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
             if (ret_csv?.Rows.Count > 0)
             {
-                ret_para = new string[3];
-                ret_para[0] = ret_csv.Rows[0][0].ToString();
-                ret_para[1] = ret_csv.Rows[0][1].ToString();
-                ret_para[2] = ret_csv.Rows[0][2].ToString();
+                ret_para.Set(0, ret_csv.Rows[0][0].ToString());
+                ret_para.Set(1, ret_csv.Rows[0][1].ToString());
+                ret_para.Set(2, ret_csv.Rows[0][2].ToString());
             }
-            return ret_para;
+            return ret_para.ToArray();
         }
 
         /// <summary>
@@ -2256,21 +2914,21 @@ namespace CvnetBaseCore
         /// <returns>仕入先マスタ読込内容</returns>
         public string[] GetMaker(string[] para)
         {
-            string[] ret_para = null;
             string[] v_para = new string[1];
             v_para[0] = para[0].ToString();
             string sql_str = "select 仕入先CD,仕入先名 from HC$MASTER_SIIRE where 仕入先CD=:1";
+
+            var ret_para = new BizArray();
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
             if (ret_csv?.Rows.Count > 0)
             {
-                ret_para = new string[ret_csv.Columns.Count];
                 for (int i = 0; i < ret_csv.Columns.Count; i++)
                 {
                     var cellValue = ret_csv.Rows[0][i];
-                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                    ret_para.Set(i, cellValue != DBNull.Value ? cellValue.ToString() : string.Empty);
                 }
             }
-            return ret_para;
+            return ret_para.ToArray();
         }
 
         /// <summary>
@@ -2282,23 +2940,23 @@ namespace CvnetBaseCore
         /// </param>
         /// <returns>名称マスタ読込内容</returns>
         public string[] GetBunrui(string[] para)
-        { 
-            string[] ret_para = null;
+        {
             string[] v_para = new string[2];
             v_para[0] = para[0].ToString();
             v_para[1] = para[1].ToString();
             string sql_str = "select 名称CD,名称 from HC$MASTER_MEISHO  where 名称区分=:1 AND 名称CD=:2";
-            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para); 
+
+            var ret_para = new BizArray();
+            var ret_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para);
             if (ret_csv?.Rows.Count > 0)
             {
-                ret_para = new string[ret_csv.Columns.Count]; 
                 for (int i = 0; i < ret_csv.Columns.Count; i++)
                 {
                     var cellValue = ret_csv.Rows[0][i];
-                    ret_para[i] = cellValue != DBNull.Value ? cellValue.ToString() : string.Empty;
+                    ret_para.Set(i, cellValue != DBNull.Value ? cellValue.ToString() : string.Empty);
                 }
             }
-            return ret_para;
+            return ret_para.ToArray();
         }
 
         /// <summary>
@@ -2309,7 +2967,7 @@ namespace CvnetBaseCore
         /// <returns>Split文字にて分けた添え字1以上のもの</returns>
         public string GetStringValue(string obj_str, string sp = null)
         {
-            if (string.IsNullOrEmpty(obj_str)) return string.Empty; 
+            if (string.IsNullOrEmpty(obj_str)) return string.Empty;
             string sep_str = sp ?? " ";
             string[] sep_ar = obj_str.Split(new string[] { sep_str }, StringSplitOptions.None);
 
@@ -2350,8 +3008,8 @@ namespace CvnetBaseCore
         }
 
 
-        public string Get_KokyakuCsvQuery(string sql_str, int flg )
-        { 
+        public string Get_KokyakuCsvQuery(string sql_str, int flg)
+        {
             var sql_query = ""
             + "SELECT "
                 + "A.顧客CD,A.顧客名,A.カナ,"
@@ -2381,6 +3039,38 @@ namespace CvnetBaseCore
             + " ORDER BY A.顧客CD ASC";
 
             return sql_query;
+        }
+
+        public object FindChild(string propertyName)
+        {
+            var prop = this.GetType().GetProperty(propertyName,
+                System.Reflection.BindingFlags.Public |
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.IgnoreCase);
+
+            if (prop != null)
+            {
+                return prop.GetValue(this);
+            }
+            return null;
+        }
+
+        // FindChild but return strongly typed reference for update
+        public bool SetChild(string propertyName, object value)
+        {
+            var prop = this.GetType().GetProperty(propertyName,
+                System.Reflection.BindingFlags.Public |
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.IgnoreCase);
+
+            if (prop != null && prop.CanWrite)
+            {
+                // Convert value type if needed
+                var convertedValue = Convert.ChangeType(value, prop.PropertyType);
+                prop.SetValue(this, convertedValue);
+                return true;
+            }
+            return false;
         }
     }
 
@@ -2534,6 +3224,39 @@ namespace CvnetBaseCore
         public int MailSendFlg { get; set; }
         /* 2023.12.20 #71837対応追加 CPA表示件数制限 */
         public int CpaCount { get; set; }
+
+        // Generic FindChild (string property name)
+        public object FindChild(string propertyName)
+        {
+            var prop = this.GetType().GetProperty(propertyName,
+                System.Reflection.BindingFlags.Public |
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.IgnoreCase);
+
+            if (prop != null)
+            {
+                return prop.GetValue(this);
+            }
+            return null;
+        }
+
+        // FindChild but return strongly typed reference for update
+        public bool SetChild(string propertyName, object value)
+        {
+            var prop = this.GetType().GetProperty(propertyName,
+                System.Reflection.BindingFlags.Public |
+                System.Reflection.BindingFlags.Instance |
+                System.Reflection.BindingFlags.IgnoreCase);
+
+            if (prop != null && prop.CanWrite)
+            {
+                // Convert value type if needed
+                var convertedValue = Convert.ChangeType(value, prop.PropertyType);
+                prop.SetValue(this, convertedValue);
+                return true;
+            }
+            return false;
+        }
     }
 
     public class OrgMenuDef
@@ -2547,7 +3270,7 @@ namespace CvnetBaseCore
         public int UserFlg { get; set; }
     }
 
-    public class ComboItem00 
+    public class ComboItem00
     {
         public Dictionary<TKey, string> ComboItem_00<TKey>(string _name)
         {
@@ -3344,6 +4067,201 @@ namespace CvnetBaseCore
             }
             ret_str += " ELSE '.' END";
             return ret_str;
+        }
+    }
+
+    public class SysMstTb
+    {
+        public DataTable _data { get; set; }
+
+        public SysMstTb() 
+        {
+            _data = new DataTable();
+        }
+
+        public SysMstTb(DataTable _datatable)
+        {
+            _data = _datatable;
+        }
+
+        /// <summary>
+        /// SysMst:自社締日取得
+        /// </summary> 
+        public string GetSime()
+        {
+            if (_data.Rows.Count == 0 || _data.Columns.Count < 34)
+            {
+                return "99"; // no data
+            }
+            return _data.Rows[0][14].ToString();
+        }
+
+        /// <summary>
+        /// SysMst:期首年月日取得
+        /// </summary> 
+        public DateTime GetKishu()
+        {
+            if (_data.Rows.Count == 0 || _data.Columns.Count < 34)
+            {
+                return new DateTime(1901, 1, 1); // default
+            } 
+            if (DateTime.TryParse(_data.Rows[0][13]?.ToString(), out DateTime result))
+            {
+                return result;
+            }
+            return new DateTime(1901, 1, 1);
+        }
+
+        /// <summary>
+        /// SysMst:セール掛率取得0-3
+        /// </summary>
+        public int GetSaleKake(int v_no)
+        {
+            if (_data.Rows.Count == 0 || _data.Columns.Count < 34)
+            {
+                return 100;
+            }
+            if (v_no < 0 || v_no > 3)
+            {
+                return 100;
+            }
+            return Convert.ToInt32(_data.Rows[0][24 + v_no]);
+        }
+
+        public void Clear()
+        {
+            _data.Clear();
+        }
+    }
+    public class SysKintaiMstTb
+    {
+        public DataTable _data { get; set; }
+
+        public SysKintaiMstTb()
+        {
+            _data = new DataTable();
+        }
+
+        public SysKintaiMstTb(DataTable _datatable)
+        {
+            _data = _datatable;
+        }
+
+        /// <summary>
+        /// SysMst:自社締日取得
+        /// </summary> 
+        public string GetSime()
+        {
+            if (_data.Rows.Count == 0 || _data.Columns.Count < 34)
+            {
+                return "99"; // no data
+            }
+            return _data.Rows[0][12].ToString();
+        }
+    }
+
+    public class HHTCsvTb
+    {
+        private readonly string hhtPath = "/hht/";
+        public DataTable _data { get; set; }
+
+        public HHTCsvTb()
+        {
+            _data = new DataTable("HHT_Csv");
+             
+            _data.Columns.Add("Flag", typeof(int));
+            _data.Columns.Add("Name", typeof(string));
+            _data.Columns.Add("PathPattern", typeof(string));
+            _data.Columns.Add("Directory", typeof(string));
+            _data.Columns.Add("FileNamePattern", typeof(string));
+             
+            _data.Rows.Add(0, "部門マスタ", "CSV/DOWNLOAD/bumon.dat", "CSV/DOWNLOAD/", "bumon.dat");
+            _data.Rows.Add(1, "出庫実績", "CSV/Syuko/SY*.CSV", "CSV/Syuko/", "SY*.CSV");
+            _data.Rows.Add(1, "入庫実績", "CSV/Nyuko/NY*.CSV", "CSV/Nyuko/", "NY*.CSV");
+            _data.Rows.Add(1, "棚卸実績", "CSV/Tana/TA*.CSV", "CSV/Tana/", "TA*.CSV");
+            _data.Rows.Add(1, "即時移動実績", "CSV/Move/MV*.CSV", "CSV/Move/", "MV*.CSV");
+            _data.Rows.Add(1, "在庫登録実績", "CSV/Zaiko/ZA*.CSV", "CSV/Zaiko/", "ZA*.CSV");
+        }
+
+        public HHTCsvTb(DataTable _datatable)
+        {
+            _data = _datatable;
+        }
+
+        /// <summary>
+        /// Get normalized path
+        /// </summary>
+        public string GetPath(string dirStr)
+        {
+            if (string.IsNullOrEmpty(dirStr))
+                dirStr = hhtPath;
+
+            // Ensure directory exists
+            if (dirStr == hhtPath)
+            {
+                Directory.CreateDirectory(hhtPath.TrimStart('/'));
+            }
+
+            string path = Path.Combine(dirStr.Trim('/'), "wrk.txt");
+
+            // remove "wrk.txt"
+            string v_ret = path.Substring(0, path.Length - "wrk.txt".Length);
+            return v_ret;
+        }
+
+        /// <summary>
+        /// Write environment path to /hht/hht_env.txt
+        /// </summary>
+        public void SetEnv(string v_outpath)
+        {
+            if (string.IsNullOrEmpty(v_outpath))
+                return;
+
+            // Ensure ends with backslash
+            if (!v_outpath.EndsWith("\\"))
+            {
+                v_outpath += "\\";
+            }
+
+            Directory.CreateDirectory("hht");
+            string filePath = Path.Combine("hht", "hht_env.txt");
+
+            System.IO.File.WriteAllText(filePath, v_outpath);
+        }
+
+        /// <summary>
+        /// Read environment path from /hht/hht_env.txt
+        /// </summary>
+        public string GetEnv()
+        {
+            Directory.CreateDirectory("hht");
+            string filePath = Path.Combine("hht", "hht_env.txt");
+
+            try
+            {
+                if (System.IO.File.Exists(filePath))
+                {
+                    return System.IO.File.ReadAllText(filePath).Trim();
+                }
+            }
+            catch (IOException ex)
+            {
+                // mimic Biz Designer exception logic
+                throw new Exception("Failed to read hht_env.txt", ex);
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Equivalent to OnMap (initialize private root)
+        /// </summary>
+        public void OnMap()
+        {
+            // In C#, you can define a private root path
+            // Example: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            string privateRoot = Path.Combine(Environment.CurrentDirectory, "hht");
+            Directory.CreateDirectory(privateRoot);
         }
     }
 }

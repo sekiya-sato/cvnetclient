@@ -35,6 +35,11 @@ namespace CvnetClient.Utils
             }
         }
 
+        public void Add(string value)
+        {
+            list.Add(value);
+        }
+
         public void Set(int index, string value)
         {
             if (index < 0)

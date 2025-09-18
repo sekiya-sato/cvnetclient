@@ -35,6 +35,11 @@ public class ClassSatoo
     public int RetXml = 0; /* aspxからの戻りをXML形式にする */
     public string BgSvg = "";
 
+    public string DataAddPath = "/img/";   /* たとえばルートではなく "/img/"などに配置する場合 */
+    public int PrintStreamVer = 30; /* もしVer3.1-を使用する場合には31をセット */
+    public int MoreCoop = 0; /* 複数法人対応するなら1をセットする */
+    public int PrintPDFFlg = 0; /* PDFで印刷を実行する */
+
     /// <summary>
     /// ■関数 GetVdate = 仮想日付の数値から日付を求める
     /// </summary>
