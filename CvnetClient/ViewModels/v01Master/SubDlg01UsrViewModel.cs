@@ -18,15 +18,100 @@ namespace CvnetClient.ViewModels
     public partial class SubDlg01UsrViewModel : BaseViewModel
     {
         [ObservableProperty]
-        ObservableCollection<MasterWorker> listWorker;
+        ObservableCollection<MasterWorker>? listWorker;
         [ObservableProperty]
         MasterWorker? selectedWorker;
         [ObservableProperty]
         MasterWorker? editWorker;
         [ObservableProperty]
         string? startCode;
+        [ObservableProperty]
+        public Dictionary<string, string>? comboListBumon;
+        [ObservableProperty]
+        public Dictionary<string, string>? comboListShop;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListSalesFLG;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListMailFLG;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListOutPutFLG;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListPosCate;
+        [ObservableProperty]
+        public Dictionary<string, string>? comboListBuka;
+        [ObservableProperty]
+        public Dictionary<string, string>? comoListYakuShoku;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListEmplyomentFLG;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListSalaryCate;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListTransFeeCate;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListName1;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListName2;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListName3;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListName4;
+        [ObservableProperty]
+        public Dictionary<int, string>? comboListName5;
 
         string sql_list = "SELECT * FROM (SELECT * FROM HC$MASTER_SHAIN ORDER BY 社員CD {1}) WHERE ROWNUM <= {2}";
+
+        [RelayCommand]
+        void Init() {
+            SelectedWorker = new MasterWorker();
+
+            var comboList = new Dictionary<string, string>();
+            string sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='BMN' order by a.名称CD";
+            var get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
+            foreach (DataRow row in get_combolist.Rows)
+            {
+                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
+                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
+                comboList.Add(key, string.Format("{0} {1}", key, value));
+            }
+            ComboListBumon = comboList;
+            SelectedWorker.Department = ComboListBumon.FirstOrDefault().Key;
+
+            ComboListSalesFLG = new Dictionary<int, string>
+            {
+                {  0, "0 ---" },
+                {  1, "1 営業担当" }
+            };
+            SelectedWorker.SalesFlg = ComboListSalesFLG.FirstOrDefault().Key;
+
+            ComboListMailFLG = new Dictionary<int, string>
+            {
+                {  0, "0 送信しない" },
+                {  1, "1 送信する" }
+            };
+            SelectedWorker.EmailFLG = ComboListMailFLG.FirstOrDefault().Key;
+
+            ComboListOutPutFLG = new Dictionary<int, string> 
+            {
+                {  0, "0 通常" },
+                {  1, "1 出力しない" }
+            };
+            SelectedWorker.OutputFLG = ComboListOutPutFLG.FirstOrDefault().Key;
+
+            ComboListPosCate = new Dictionary<int, string> 
+            {
+                {0, "0 通常"},
+                {9, "POSマスタ削除指示" },
+                {10, "出力しない" }
+            };
+            SelectedWorker.PosCate = ComboListPosCate.FirstOrDefault().Key;
+
+            ComboListBuka = new Dictionary<string, string> 
+            {
+                {"01010101", "01010101 レディ" },
+                {"02020202", "02020202 マカロン" }
+            };
+            SelectedWorker.SectionCD = ComboListBuka.FirstOrDefault().Key;
+        }
 
         partial void OnSelectedWorkerChanged(MasterWorker? value)
         {
