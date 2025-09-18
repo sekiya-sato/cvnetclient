@@ -53,25 +53,31 @@
 
                     <Grid Margin="6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="90"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="名称区分" Width="80" VerticalAlignment="Center"/>
-                        <TextBox x:Name="fabricInclCd" Grid.Column="1" Width="240" />
+                        <Label Content="名称区分" VerticalAlignment="Center"/>
+                        <ComboBox ItemsSource="{Binding ListKubun}" SelectedItem="{Binding SelectKubun}" Grid.Column="1">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
 
 
                     <Grid Grid.Row="1" Margin="6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="90"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Content="名称CD" VerticalAlignment="Center"/>
-                        <TextBox x:Name="supplierCDSearch" Grid.Column="1" Width="240"/>
+                        <TextBox Text="{Binding StartCode}" Grid.Column="1"/>
                     </Grid>
-                    <Button Grid.Row="2" Margin="13,6"  Style="{DynamicResource ExecButton}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                    <Button Grid.Row="2" Margin="13,6" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                 </Grid>
 
 
@@ -93,8 +99,8 @@
             </DataGrid>
 
             <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
-                <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
-                <Button Margin="1,1,6,1"  Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button Margin="1,6" Command="{Binding BackListCommand}" Style="{DynamicResource PrevPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button Margin="1,1,6,1" Command="{Binding NextListCommand}" Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
             </StackPanel>
 
         </Grid>
@@ -104,7 +110,7 @@
                 <RowDefinition Height="9*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
+
             <GroupBox Background="White" BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0">
                 <GroupBox.Header>
                     <Label FlowDirection="RightToLeft">
@@ -130,98 +136,68 @@
                         <Setter Property="BorderBrush" Value="#ccc"/>
                         <Setter Property="Margin" Value="0,4,0,4"/>
                     </Style>
-                    
+
                 </GroupBox.Resources>
                 <StackPanel>
 
                     <Grid Margin="0,8,0,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="8*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <!-- 商品CD -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 商品名 -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 略称 -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 旧コード -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 区分CD -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 仕入先CD -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 仕入先商品CD -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 単価 -->
                             <RowDefinition Height="Auto"/>
-                            <!-- メモ -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 修正日 -->
                             <RowDefinition Height="Auto"/>
-                            <!-- 最終修正日 -->
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <Label Grid.Row="0" Content="名称区分" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Width="252" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditMeisho.Kubun}"/>
-                        <Button Grid.Row="0" Grid.Column="2"
-            Content="区分一括印刷"
-            Margin="8,0,0,0"
-            Width="100"
-            Command="{Binding DoPrintAllCommand}"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditMeisho.Kubun}"/>
+                        <Button Grid.Row="0" Grid.Column="2" Content="区分一括印刷" Margin="8,0,0,0" Command="{Binding DoPrintAllCommand}"/>
 
-                        <!-- 商品名 -->
                         <Label Grid.Row="1" Content="名称CD" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditMeisho.MeishoCd}" Width="252"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditMeisho.MeishoCd}" />
 
-                        <!-- 略称 -->
                         <Label Grid.Row="2" Content="名称" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding EditMeisho.Meisho}" Width="252"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding EditMeisho.Meisho}" />
 
-                        <!-- 旧コード -->
                         <Label Grid.Row="3" Content="{Binding LabelRyakusho}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding EditMeisho.RyakuShou}" Width="252"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding EditMeisho.RyakuShou}"/>
 
-                        <!-- 区分CD -->
                         <Label Grid.Row="4" Content="{Binding LabelDispFlg}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding EditMeisho.Rank}" Width="252"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding EditMeisho.Rank}"/>
 
-                        <!-- 仕入先CD -->
                         <Label Grid.Row="5" Content="{Binding LabelRenban}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding EditMeisho.Renban}" Width="252"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding EditMeisho.Renban}" />
 
-                        <!-- 仕入先商品CD -->
                         <Label Grid.Row="6" Content="{Binding LabelKana}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="6" Grid.Column="1" Width="252"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" />
 
-                        <!-- 単価 -->
                         <Label Grid.Row="7" Content="POS区分" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding EditMeisho.PosKubun}" Width="252"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding EditMeisho.PosKubun}" />
 
                         <TextBlock Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" Foreground="Gray" Text="0 出力する, 9 削除指示, 10 出力しない"/>
-                        
-                        <!-- メモ -->
+
                         <Label Grid.Row="9" Content="登録日時" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="9" Grid.Column="1" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditMeisho.VdateCreate, Converter={StaticResource VdateConverter}}" Width="252" Height="24"/>
+                        <TextBox Grid.Row="9" Grid.Column="1" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditMeisho.VdateCreate, Converter={StaticResource VdateConverter}}" IsReadOnly="True"/>
 
-                        <!-- 修正日 -->
                         <Label Grid.Row="10" Content="更新日時" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding EditMeisho.VdateUpdate, Converter={StaticResource VdateConverter}}"
-             Width="252" IsReadOnly="True"
-             Style="{DynamicResource ReadOnlyTextBox}"/>
+                        <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding EditMeisho.VdateUpdate, Converter={StaticResource VdateConverter}}" IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
 
-                        <!-- 最終修正日 -->
                         <Label Grid.Row="11" Content="最終修正者" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding EditMeisho.SaishuuShuuseiSha}"
-             Width="252" IsReadOnly="True"
-             Style="{DynamicResource ReadOnlyTextBox}"/>
+                        <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding EditMeisho.SaishuuShuuseiSha}" IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
                     </Grid>
-
 
                     <!-- Button Row -->
                     <Grid Margin="8,8,15,8">
@@ -235,18 +211,14 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Style="{DynamicResource AddIconBtn}"/>
-                        <Button Style="{DynamicResource UpdateIconBtn}" Padding="0,3" Grid.Column="2"/>
-                        <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4"/>
-                        <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6"/>
+                        <Button Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
+                        <Button Style="{DynamicResource UpdateIconBtn}" Padding="0,3" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
+                        <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
+                        <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
                     </Grid>
-
                 </StackPanel>
-
             </GroupBox>
-
-            <Button Grid.Row="1" Margin="8" Style="{DynamicResource BackBtn}"
-         HorizontalAlignment="Right"/>
+            <Button Grid.Row="1" Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
         </Grid>
         
     </Grid>
