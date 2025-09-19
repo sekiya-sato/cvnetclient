@@ -1,7 +1,7 @@
 ﻿using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using CvnetClient.ViewModels.Component;
+using CvnetClient.ViewModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CvnetClient.Views.Component
+namespace CvnetClient.Views
 {
     /// <summary>
     /// Interaction logic for ListFlexView.xaml

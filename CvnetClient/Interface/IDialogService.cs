@@ -7,9 +7,8 @@ namespace CvnetClient.Interface
     {
         SubDlgSel00ViewModel GetSel00(string mstname, string[] v_para = null, string[] v_para2 = null);
 
-        void ShowSel00(string mstname, Action<Sel00Model> onSelected, string[] v_para = null, string[] v_para2 = null);
-
-
+        void ShowSel00(string mstname, Action<SelValueModel> onSelected, string[] v_para = null, string[] v_para2 = null);
+         
         SubDlgSelShoViewModel GetSelSho();
 
         SubDlg80gphSelViewModel Get80gphSel(string[] wrk_para = null);

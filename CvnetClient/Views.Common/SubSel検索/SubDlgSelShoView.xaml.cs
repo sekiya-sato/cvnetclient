@@ -11,7 +11,7 @@ using System.Windows;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SearchConditionModel.xaml
+    /// Refer BizV form: SubDlg_Sel_sho.crs
     /// </summary>
     public partial class SubDlgSelShoView : Window
     {

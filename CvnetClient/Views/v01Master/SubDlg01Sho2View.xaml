@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
-		xmlns:utils="clr-namespace:CvnetClient.Utils"
+		xmlns:utils="clr-namespace:CvnetClient.Utils" 
+		xmlns:uc="clr-namespace:CvnetClient.Views"
 		Title="商品マスタ"
         mc:Ignorable="d"
 		Background="#D6D6FF"
@@ -250,17 +250,17 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="30" Width="85"
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelBrandCommand}"
-										Content="ブランド" />
+								<uc:CvnetBtListView Height="30" Width="85"
+													Margin="5,0,0,0"
+													Title="ブランド" 
+													MstName="ブランド"
+													SelectedValue ="{Binding EditProduct.BrandCD}"
+													Command="{Binding SelBrandCommand}" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="ブランド：Data" 
+										 d:Text="ブランド：Data"  
 										 Foreground="{StaticResource plainTextColor0}"
 										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" >
@@ -271,12 +271,12 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<Button Height="30" Width="85"
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Command="{Binding SelItemCommand}"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Content="アイテム" />
+								<uc:CvnetBtListView Height="30" Width="85"
+													Margin="5,0,0,0"
+													Title="アイテム"  
+													MstName="アイテム"
+													SelectedValue="{Binding EditProduct.ItemCD}"
+													Command="{Binding SelItemCommand}"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -295,12 +295,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="30" Width="85"
+								<uc:CvnetBtListView Height="30" Width="85"
 										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelSeasonCommand}"
-										Content="シーズン" />
+										Title="シーズン" 
+										MstName="シーズン"
+										SelectedValue="{Binding EditProduct.SeasonCD}"		
+										Command="{Binding SelSeasonCommand}" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -316,12 +316,13 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<Button Height="30" Width="85"
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"
-										Command="{Binding SelMaterialCommand}"
-										Content="素材" />
+								<uc:CvnetBtListView Height="30" Width="85"
+													Margin="5,0,0,0"
+													Title="素材" 
+													MstName="素材"
+													SelectedValue="{Binding EditProduct.MaterialCD}"
+													Command="{Binding SelMaterialCommand}"
+										  />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -340,12 +341,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="30" Width="85"
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"
-										Command="{Binding SelDesignCommand}"
-										Content="ﾃﾞｻﾞｲﾅｰ" />
+								<uc:CvnetBtListView Height="30" Width="85"
+													Margin="5,0,0,0"
+													Title="ﾃﾞｻﾞｲﾅｰ" 
+													MstName="デザイナー"
+													SelectedValue="{Binding EditProduct.DesignCD}"
+													Command="{Binding SelDesignCommand}" />
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -361,12 +362,12 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<Button Height="30" Width="85"
+								<uc:CvnetBtListView Height="30" Width="85"
 										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelMadeInCommand}"
-										Content="原産国" />
+										Title="原産国"
+										MstName="原産国"
+										SelectedValue="{Binding EditProduct.MadeInCD}"
+										Command="{Binding SelMadeInCommand}"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -385,12 +386,12 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="30" Width="85" 
+								<uc:CvnetBtListView Height="30" Width="85" 
 										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelExhibitCommand}"
-										Content="展示会" />
+										Title="展示会"
+										MstName="展示会"			
+										SelectedValue="{Binding EditProduct.ExhibitCD}"
+										Command="{Binding SelExhibitCommand}"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -406,12 +407,12 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelManufactCommand}"
-										Content="メーカー" />
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="メーカー" 
+													MstName="メーカー"
+													SelectedValue="{Binding EditProduct.ManufactCD}"
+													Command="{Binding SelManufactCommand}"/>	
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -430,13 +431,13 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B01"
-										Content="補足1" />
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足1"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD01}"
+													Command="{Binding SelNameCommand}"
+													Param2="B01"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -452,13 +453,13 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B02"
-										Content="補足2" />
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足2"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD02}"
+													Command="{Binding SelNameCommand}"
+													Param2="B02"/>	
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -476,14 +477,14 @@
 								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
-										Margin="0,5,0,0">
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B03"
-										Content="補足3" />
+										Margin="0,5,0,0"> 
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足3"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD03}"
+													Command="{Binding SelNameCommand}"
+													Param2="B03"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -498,14 +499,14 @@
 											<Binding Path="EditProduct.SubName03" />
 										</MultiBinding>
 									</TextBox.Text>
-								</TextBox>
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B04"
-										Content="補足4" />
+								</TextBox> 
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足4"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD04}"
+													Command="{Binding SelNameCommand}"
+													Param2="B04"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -523,14 +524,14 @@
 								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
-										Margin="0,5,0,0">
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B05"
-										Content="補足5" />
+										Margin="0,5,0,0"> 
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足5"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD05}"
+													Command="{Binding SelNameCommand}"
+													Param2="B05"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -545,14 +546,14 @@
 											<Binding Path="EditProduct.SubName05" />
 										</MultiBinding>
 									</TextBox.Text>
-								</TextBox>
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B06"
-										Content="補足6" />
+								</TextBox> 
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足6"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD06}"
+													Command="{Binding SelNameCommand}"
+													Param2="B06"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -570,14 +571,14 @@
 								</TextBox>
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
-										Margin="0,5,0,0">
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B07"
-										Content="補足7" />
+										Margin="0,5,0,0"> 
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足7"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD07}"
+													Command="{Binding SelNameCommand}"
+													Param2="B07"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -592,14 +593,14 @@
 											<Binding Path="EditProduct.SubName07" />
 										</MultiBinding>
 									</TextBox.Text>
-								</TextBox>
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B08"
-										Content="補足8" />
+								</TextBox> 
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足8"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD08}"
+													Command="{Binding SelNameCommand}"
+													Param2="B08"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -618,13 +619,13 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B09"
-										Content="補足9" />
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足9"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD09}"
+													Command="{Binding SelNameCommand}"
+													Param2="B09"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -639,14 +640,14 @@
 											<Binding Path="EditProduct.SubName09" />
 										</MultiBinding>
 									</TextBox.Text>
-								</TextBox>
-								<Button Height="30" Width="85" 
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
-										Command="{Binding SelNameCommand}"
-										CommandParameter="B10"
-										Content="補足10" />
+								</TextBox> 
+								<uc:CvnetBtListView Height="30" Width="85" 
+													Margin="5,0,0,0"
+													Title="補足10"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD10}"
+													Command="{Binding SelNameCommand}"
+													Param2="B10"/>
 								<TextBox Height="30" Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
@@ -814,12 +815,12 @@
 										  SelectedValuePath="Key" 
 										  SelectedValue="{Binding EditProduct.AutoDistFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Button Height="30" Width="85"  
-										Margin="5,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
-										Command="{Binding SelStandWareCommand}"
-										Content="基準倉庫CD" />
+								<uc:CvnetBtListView Height="30" Width="85"  
+													Margin="5,0,0,0"
+													Title="基準倉庫CD"
+													MstName="倉庫"
+													SelectedValue="{Binding EditProduct.StandWareCD}"
+													Command="{Binding SelStandWareCommand}"/>
 								<TextBox Height="30" Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"

@@ -1,8 +1,10 @@
 ﻿using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
+using CvnetClient.Views;
 using System.Data;
 using System.IO;
+using System.Windows.Forms;
 
 namespace CvnetBaseCore
 {
@@ -43,7 +45,7 @@ namespace CvnetBaseCore
         public string BizUrl = string.Empty;
 
         public Dictionary<string, string> HelpDef;
-        public Dictionary<string, string> MstDialog; /* マスタ取得用専用ダイアログ保存 */
+        public Dictionary<string, MstItem> MstDialog; /* マスタ取得用専用ダイアログ保存 */
         public int TanaFlg = 0; /* 棚卸の基準　0:月次、1:棚卸日指定 */
         public int PosFlg = 0; /* POSの実行　0:POS連携なし、1:TEC 、2:三谷*/
         public int YosanFlg = 0; /* 0 店別ブランド別の予算、1 日別の予算*/
@@ -64,34 +66,176 @@ namespace CvnetBaseCore
             ComboListFLg = 1;
             ComboListFlg2 = 0;
             ComboListFlg3 = 1;
-            MstDialog = new Dictionary<string, string> {
-                { "商品", "SelShoView" },
-                { "得意先", "SelTokView@店種区分 between 1 and 3" },
-                { "Ac得意先", "SelTokView@店種区分 between 1 and 3 and 出荷停止FLG=0" },
-                { "全得意先", "SelTokView@出荷停止FLG=0" },
-                { "店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8)" },
-                { "Ac店舗", "SelTokView@((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8) and 出荷停止FLG=0" },
-                { "勤怠店舗", "SelTokView@店種区分 IN (0,3,6,9)" },
-                { "倉庫", "SelTokView@(店種区分=0 OR 倉庫区分=9)" },
-                { "Ac倉庫", "SelTokView@(店種区分=0 OR 倉庫区分=9) and 出荷停止FLG=0" },
-                { "倉庫2", "SelTokView@店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)@名称CD01=:1" },
-                { "Ac倉庫2", "SelTokView@店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)@名称CD01=:1 and 出荷停止FLG=0" },
-                { "仕入先", "SelSirView" },
-                { "請求", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@出荷停止FLG=0 and ( (締日=:1 and 入金予定日!='0') or (締日2=:2 and 入金予定日2!='0') or (締日3=:3 and 入金予定日3!='0') )" },
-                { "Ac請求", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@締日=:1 and 出荷停止FLG=0" },
-                { "請求先登録", "SelTokView@(得意先CD=請求先CD or 請求先CD='.')@得意先CD=:1" },
-                { "支払", "SelTokView@(仕入先CD=支払先CD or 支払先CD='.')@締日=:1" },
-                { "支払先登録", "SelSirView@(仕入先CD=支払先CD or 支払先CD='.')@仕入先CD=:1" },
-                { "Ac移動倉庫", "SelTokView@店種区分<9  and 出荷停止FLG=0" },
-                { "移動倉庫", "SelTokView@店種区分<9" },
-                { "Ac取置倉庫", "SelTokView@在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7 and 出荷停止FLG=0" },
-                { "取置倉庫", "SelTokView@在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7" },
-                { "担当", "SelUsrView@就業FLG='0'" },
-                { "営業担当", "SelUsrView@営業FLG=1 and 就業FLG='0'" },
-                { "顧客", "SelKokyakuView" },
-                { "ポイント", "SelPointView" },
-                { "請求単位得意先", "SelTokView@店種区分 between 1 and 3 and 消費税計算方法=0" },
-                { "支払単位仕入先", "SelSirView@消費税計算方法=0" },
+            MstDialog = new Dictionary<string, MstItem> {
+                { "商品",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelShoView).FullName ?? string.Empty,
+                        v_para = null
+                    }
+                },
+                { "得意先",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "店種区分 between 1 and 3" } 
+                    }
+                },
+                { "Ac得意先", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "店種区分 between 1 and 3 and 出荷停止FLG=0" }
+                    } 
+                },
+                { "全得意先", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "出荷停止FLG=0" } 
+                    } 
+                },
+                { "店舗", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8)" } 
+                    } 
+                },
+                { "Ac店舗", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "((店種区分=1 AND 在庫管理FLG=1) OR 店種区分 between 3 and 8) and 出荷停止FLG=0" } 
+                    } 
+                },
+                { "勤怠店舗", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "店種区分 IN (0,3,6,9)" } 
+                    } 
+                },
+                { "倉庫", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "(店種区分=0 OR 倉庫区分=9)" } 
+                    } 
+                },
+                { "Ac倉庫", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "(店種区分=0 OR 倉庫区分=9) and 出荷停止FLG=0" } 
+                    } 
+                },
+                { "倉庫2", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)", 
+                                                "名称CD01=:1" } 
+                    } 
+                },
+                { "Ac倉庫2", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "店種区分=0 and 倉庫区分 in (2,3,4,6,7,8)",
+                                                "名称CD01=:1 and 出荷停止FLG=0" } 
+                    } 
+                },
+                { "仕入先", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelSirView).FullName ?? string.Empty, 
+                        v_para = null 
+                    } 
+                },
+                { "請求", 
+                    new MstItem { 
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, 
+                        v_para = new string[] { "(得意先CD=請求先CD or 請求先CD='.')",
+                                                "出荷停止FLG=0 and ( (締日=:1 and 入金予定日!='0') or (締日2=:2 and 入金予定日2!='0') or (締日3=:3 and 入金予定日3!='0') )" } 
+                    }
+                },
+                { "Ac請求",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "(得意先CD=請求先CD or 請求先CD='.')",
+                                                "締日=:1 and 出荷停止FLG=0" }
+                    }
+                },
+                { "請求先登録",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "(得意先CD=請求先CD or 請求先CD='.')",
+                                                "得意先CD=:1" }
+                    }
+                },
+                { "支払",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "(仕入先CD=支払先CD or 支払先CD='.')",
+                                                "締日=:1" }
+                    }
+                },
+                { "支払先登録",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelSirView).FullName ?? string.Empty,
+                        v_para = new string[] { "(仕入先CD=支払先CD or 支払先CD='.')",
+                                                "仕入先CD=:1" }
+                    }
+                },
+                { "Ac移動倉庫",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "店種区分<9 and 出荷停止FLG=0" }
+                    }
+                },
+                { "移動倉庫",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "店種区分<9" }
+                    }
+                },
+                { "Ac取置倉庫",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7 and 出荷停止FLG=0" }
+                    }
+                },
+                { "取置倉庫",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "在庫管理FLG=1 and 店種区分=0 and 倉庫区分=7" }
+                    }
+                },
+                { "担当",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelUsrView).FullName ?? string.Empty,
+                        v_para = new string[] { "就業FLG='0'" }
+                    }
+                },
+                { "営業担当",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelUsrView).FullName ?? string.Empty,
+                        v_para = new string[] { "営業FLG=1 and 就業FLG='0'" }
+                    }
+                },
+                { "顧客",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelKokyakuView).FullName ?? string.Empty,
+                        v_para = null
+                    }
+                },
+                { "ポイント",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelPointView).FullName ?? string.Empty,
+                        v_para = null
+                    }
+                },
+                { "請求単位得意先",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty,
+                        v_para = new string[] { "店種区分 between 1 and 3 and 消費税計算方法=0" }
+                    }
+                },
+                { "支払単位仕入先",
+                    new MstItem {
+                        v_mstname = typeof(SubDlgSelSirView).FullName ?? string.Empty,
+                        v_para = new string[] { "消費税計算方法=0" }
+                    }
+                }
             };
 
             /***** 汎用検索設定 *****/
@@ -153,10 +297,10 @@ namespace CvnetBaseCore
 
             AppData.ClassEtc.SearchShohinStr = new string[1];
             AppData.ClassEtc.SearchShohinStr[0] = "商品CD";
-
-            MstDialog.Add("siire", "SelSirView");
-            MstDialog.Add("tokui", "SelTokView");
-            MstDialog.Add("社員", "SelUsrView");
+             
+            MstDialog.Add("siire", new MstItem { v_mstname = typeof(SubDlgSelSirView).FullName ?? string.Empty, v_para = null });
+            MstDialog.Add("tokui", new MstItem { v_mstname = typeof(SubDlgSelTokView).FullName ?? string.Empty, v_para = null });
+            MstDialog.Add("社員", new MstItem { v_mstname = typeof(SubDlgSelUsrView).FullName ?? string.Empty, v_para = null });
         }
 
         /// <summary>
@@ -413,6 +557,132 @@ namespace CvnetBaseCore
                     }
                 }
                 return ret_csv;
+            }
+
+            /* 専門店  08.10.09 */
+            if (AppData.ClassCvnet.config.smtflg == 1)
+            {
+                if (p_kubun == "移動倉庫")
+                {
+                    if (v_flg == 1)
+                    {
+                        v_retu = "得意先CD,得意先名";
+                    }
+                    else
+                    {
+                        v_retu = "得意先CD||' '||得意先名 倉庫DATA";
+                    }
+                    sql_query = "select " + v_retu + " from HC$MASTER_TOKUI ";
+                    sql_query += " where 得意先CD>=:1 and 在庫管理FLG=1 and 店種区分<9 and 出荷停止FLG=0 order by 得意先CD";
+                    sql_query = GetSqlDisp(sql_query);
+                    ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
+                }
+                else if (p_kubun == "店舗")
+                {
+                    if (v_flg == 1)
+                    {
+                        v_retu = "得意先CD,得意先名";
+                    }
+                    else
+                    {
+                        v_retu = "得意先CD||' '||得意先名  一覧";
+                    }
+                    sql_query = "select " + v_retu + " from HC$MASTER_TOKUI ";
+                    sql_query += " where 得意先CD>=:1 and 店種区分 between 3 and 8 and 出荷停止FLG=0 order by 得意先CD";
+                    sql_query = GetSqlDisp(sql_query);
+                    ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
+                }
+                else if (p_kubun == "仕入先")
+                {
+                    if (v_flg == 1)
+                    {
+                        v_retu = "仕入先CD,仕入先名";
+                    }
+                    else
+                    {
+                        v_retu = "仕入先CD||' '||仕入先名  一覧";
+                    }
+                    sql_query = "select " + v_retu + " from HC$MASTER_SIIRE ";
+                    sql_query += " where 仕入先CD>=:1 and 発注停止FLG=0 order by 仕入先CD";
+                    sql_query = GetSqlDisp(sql_query);
+                    ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
+                }
+                else if (p_kubun == "大分類")
+                {
+                    if (v_flg == 1)
+                    {
+                        v_retu = "名称CD 大分類CD,名称 大分類名";
+                    }
+                    else
+                    {
+                        v_retu = "名称CD||' '||名称 一覧";
+                    }
+                    sql_query = "select " + v_retu + " from HC$MASTER_MEISHO ";
+                    sql_query += " where 名称区分='BN0'";
+                    sql_query += " order by 名称区分,名称CD";
+                    ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
+                }
+                else if (p_kubun == "中分類")
+                {
+                    var bun_csv = AppData.Http?.AspxSqlQuery("select count(*) from HC$MASTER_CONVERT where 区分='BNR'", null);
+                    if (v_flg == 1)
+                    {
+                        v_retu = "a.名称CD 中分類CD,a.名称 中分類名";
+                    }
+                    else
+                    {
+                        v_retu = "a.名称CD||' '||a.名称 一覧";
+                    }
+                    sql_query = "select " + v_retu + " from HC$MASTER_MEISHO a ";
+                    sql_query += " where a.名称区分='BN1'";
+                    int bun_count = 0;
+                    int.TryParse(bun_csv?.Rows[0][0].ToString(), out bun_count);
+                    if (v_para2 != null && bun_count != 0)
+                    {
+                        sql_query += " and exists (select b.一意CD01 from HC$MASTER_CONVERT b where b.一意CD01='" + v_para2[0] + "'";
+                        sql_query += " and a.名称cd=b.一意CD02)";
+                    }
+                    sql_query += " order by 名称区分,名称CD";
+                    ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
+                }
+                else if (p_kubun == "小分類")
+                {
+                    var bun_csv = AppData.Http?.AspxSqlQuery("select count(*) from HC$MASTER_CONVERT where 区分='BNR'", null);
+                    if (v_flg == 1)
+                    {
+                        v_retu = "a.名称CD 小分類CD,a.名称 小分類名";
+                    }
+                    else
+                    {
+                        v_retu = "a.名称CD||' '||a.名称 一覧";
+                    }
+                    sql_query = "select " + v_retu + " from HC$MASTER_MEISHO a ";
+                    sql_query += " where a.名称区分='BN2'";
+                    int bun_count = 0;
+                    int.TryParse(bun_csv?.Rows[0][0].ToString(), out bun_count);
+                    if (v_para2 != null && bun_count != 0)
+                    {
+                        sql_query += " and exists (select b.一意CD01 from HC$MASTER_CONVERT b where b.一意CD01='" + v_para2[0] + "' and b.一意CD02='" + v_para2[1] + "'";
+                        sql_query += " and a.名称cd=b.一意CD03)";
+                    }
+                    sql_query += " order by 名称区分,名称CD";
+                    ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
+                }
+                else { v_next = 1; }
+
+                if (v_next == 0)
+                {
+                    if (ret_csv?.Rows.Count > 0) {
+                        string firstCell = ret_csv.Rows[0][0]?.ToString() ?? string.Empty;
+                        if (firstCell.Contains("null", StringComparison.OrdinalIgnoreCase))
+                        {
+                            ret_csv.Rows[0].Delete();
+                            ret_csv.AcceptChanges(); 
+                        }
+
+                    }
+                    return ret_csv;
+                }
             }
 
             string houjin_str = GetQueryStrHoujin();
@@ -3931,6 +4201,12 @@ namespace CvnetBaseCore
             }
             return false;
         }
+    }
+
+    public class MstItem
+    {
+        public string v_mstname { get; set; } = string.Empty;
+        public string[] v_para { get; set; } = null;
     }
 
     public class Config
