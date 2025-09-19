@@ -370,7 +370,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
         int? salaryAmount;
         [ObservableProperty]
-        string?transExpCate;
+        string? transExpCate;
 		[ObservableProperty]
         int? transExpAmount;
         [ObservableProperty]
