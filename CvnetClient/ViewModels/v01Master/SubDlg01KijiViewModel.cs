@@ -17,6 +17,12 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         MasterSHKiji? kijiMaster;
 
+        [ObservableProperty]
+        string? findFabricCd;
+
+        [ObservableProperty]
+        string? findSupplierCd;
+
         [RelayCommand]
         void Init()
         {
@@ -24,8 +30,8 @@ namespace CvnetClient.ViewModels
 
             var kubunCdList = new Dictionary<string, string>();
             string sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='KFK' order by a.名称CD";
-            var get_prodSiz = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_prodSiz.Rows)
+            var get_kubun = AppData.Http?.AspxSqlQuery(sql_query, null);
+            foreach (DataRow row in get_kubun.Rows)
             {
                 string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
                 string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
