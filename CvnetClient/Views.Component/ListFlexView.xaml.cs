@@ -466,8 +466,16 @@ namespace CvnetClient.Views
         }
 
         private string[] GetMaxStr(string col)
-        { 
+        {
             var rt_ar = new BizArray();
+
+            if (string.IsNullOrEmpty(col))
+            {
+                rt_ar.Set(0, "");
+                rt_ar.Set(1, "zzzzzzzzzzzzzzzzzzzz");
+                return rt_ar.ToArray();
+            }
+             
             var ar = Search_Data(col);
             string cd_name = GetConvKubun(ar[1]);
             if (cd_name == "")
