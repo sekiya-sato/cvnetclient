@@ -1225,13 +1225,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y01"
-									Content="予備01" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備01"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve01}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y01" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1247,13 +1247,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y02"
-									Content="予備02" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備02"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve02}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y02" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1272,13 +1272,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y03"
-									Content="予備03" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備03"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve03}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y03" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1293,14 +1293,14 @@
 										<Binding Path="EditProduct.ReserveName03" />
 									</MultiBinding>
 								</TextBox.Text>
-							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y04"
-									Content="予備04" />
+							</TextBox> 
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備04"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve04}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y04" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1319,13 +1319,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y05"
-									Content="予備05" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備05"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve05}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y05" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1341,13 +1341,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y06"
-									Content="予備06" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備06"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve06}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y06" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1365,14 +1365,14 @@
 							</TextBox>
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
-									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y07"
-									Content="予備07" />
+									Margin="0,5,0,0"> 
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備07"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve07}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y07" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1388,13 +1388,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y08"
-									Content="予備08" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備08"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve08}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y08" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1413,13 +1413,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y09"
-									Content="予備09" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備09"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve09}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y09" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1434,14 +1434,14 @@
 										<Binding Path="EditProduct.ReserveName09" />
 									</MultiBinding>
 								</TextBox.Text>
-							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y10"
-									Content="予備10" />
+							</TextBox> 
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備10"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve10}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y10" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1460,13 +1460,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y11"
-									Content="予備11" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備11"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve11}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y11" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1482,13 +1482,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y12"
-									Content="予備12" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備12"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve12}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y12" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1507,13 +1507,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y13"
-									Content="予備13" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備13"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve13}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y13" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1529,13 +1529,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y14"
-									Content="予備14" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備14"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve14}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y14" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1553,14 +1553,14 @@
 							</TextBox>
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
-									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y15"
-									Content="予備15" />
+									Margin="0,5,0,0"> 
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備15"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve15}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y15" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1576,13 +1576,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y16"
-									Content="予備16" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備16"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve16}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y16" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1601,13 +1601,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y17"
-									Content="予備17" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備17"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve17}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y17" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1623,13 +1623,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}" 
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y18"
-									Content="予備18" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備18"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve18}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y18" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1648,13 +1648,13 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y19"
-									Content="予備19" />
+							<uc:CvnetBtListView Height="30" Width="85"
+												Margin="5,0,0,0"
+												Title="予備19"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve19}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y19" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1670,13 +1670,13 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<Button Height="30" Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"
-									Command="{Binding SelReserveCommand}"
-									CommandParameter="Y20"
-									Content="予備20" />
+							<uc:CvnetBtListView Height="30" Width="85"
+											Margin="5,0,0,0"
+											Title="予備20"
+											MstName="予備"
+											SelectedValue="{Binding EditProduct.Reserve20}"
+											Command="{Binding SelReserveCommand}"
+											Param2="Y20" />
 							<TextBox Height="30" Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
@@ -1726,13 +1726,13 @@
 									  SelectedValuePath="Key" 
 									  SelectedValue="{Binding EditProduct.ZeroPriceCate}"
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<Button Height="30" Width="85"  
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-									Foreground="{StaticResource TitleLabelColor}"  
-									Command="{Binding SelGenderCateCommand}"
-									CommandParameter="MLK"
-									Content="男女区分" />
+							<uc:CvnetBtListView Height="30" Width="85"  
+												Margin="5,0,0,0"
+												Title="男女区分"
+												MstName="名称"
+												SelectedValue="{Binding EditProduct.GenderCate}"
+												Command="{Binding SelGenderCateCommand}"
+												Param2="MLK"/> 
 							<TextBox Height="30" Width="200"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
