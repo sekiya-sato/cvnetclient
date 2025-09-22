@@ -530,11 +530,11 @@ namespace CvnetClient.Views
                 if (wrk_para == null) return;
                 wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.FromValue)); 
                 var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
-                if (get_sel00 != null)
+                if (get_sel00 != null && get_sel00.Select80gphItem != null)
                 {
                     row.FromValue = get_sel00.Select80gphItem.Code;
                     row.ToValue = get_sel00.Select80gphItem.Code;
-                } 
+                }
             }
         }
 
@@ -547,7 +547,7 @@ namespace CvnetClient.Views
                 if (wrk_para == null) return;
                 wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.ToValue));
                 var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
-                if (get_sel00 != null)
+                if (get_sel00 != null && get_sel00.Select80gphItem != null)
                 { 
                     row.ToValue = get_sel00.Select80gphItem.Code;
                 }
