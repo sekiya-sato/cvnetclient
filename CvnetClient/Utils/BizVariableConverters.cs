@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
+﻿using System.Data;
+using System.IO; 
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using static CommunityToolkit.Mvvm.ComponentModel.__Internals.__TaskExtensions.TaskAwaitableWithoutEndValidation;
 
 namespace CvnetClient.Utils
 {
@@ -67,6 +61,11 @@ namespace CvnetClient.Utils
         public string[] ToArray()
         {
             return list.ToArray();
+        }
+
+        public void Clear()
+        {
+            list.Clear();
         }
     }
 

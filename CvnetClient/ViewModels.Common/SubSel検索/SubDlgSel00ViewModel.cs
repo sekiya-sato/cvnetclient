@@ -37,6 +37,7 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         string _textmeisho = "";
 
+        /*
         [RelayCommand]
         void Init()
         {
@@ -52,7 +53,7 @@ namespace CvnetClient.ViewModels
                 ListSel00.Add(model);
             }
             if (is1stInit == true) { listSel00Ori = new List<Sel00Model>(ListSel00); is1stInit = false; }
-        }
+        }*/
 
         public void OnInit(string v_mstname, string[] init_para = null, string[] v_para2 = null)
         {

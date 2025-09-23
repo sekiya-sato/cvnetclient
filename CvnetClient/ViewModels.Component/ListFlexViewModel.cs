@@ -23,7 +23,14 @@ namespace CvnetClient.ViewModels
         /// <summary>
         /// Initial list of values for ComboBox
         /// </summary>
-        public List<CsvItem> init_csv {  get; set; } = new List<CsvItem>(); 
+        public List<CsvItem> init_csv {  get; set; } = new List<CsvItem>();
+
+        /// <summary>
+        /// GetQueryStr() Condition flag 
+        /// [Example set conn_flg = "0", then each 項目 will be like AND A.項目1 BETWEEN :1 AND 2: ]
+        /// [Example set conn_flg = "1", then each 項目 will be like OR A.項目1 BETWEEN :1 AND 2: ]
+        /// </summary>
+        public int conn_flg { get; set; } = 0;
     }
 
     /// <summary>
