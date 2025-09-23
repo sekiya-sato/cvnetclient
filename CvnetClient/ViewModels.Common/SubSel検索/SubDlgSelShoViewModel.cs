@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CvnetClient.Class;
-using CvnetClient.ViewModels.Component;
+using CvnetClient.ViewModels;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 

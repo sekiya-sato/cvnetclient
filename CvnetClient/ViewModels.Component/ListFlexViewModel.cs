@@ -1,7 +1,7 @@
 ﻿using CvnetClient.Class;
 using System.ComponentModel;
 
-namespace CvnetClient.ViewModels.Component
+namespace CvnetClient.ViewModels
 {
     /// <summary>
     /// Configuration for ListFlexView behavior

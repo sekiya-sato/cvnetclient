@@ -1,7 +1,7 @@
 ﻿using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using CvnetClient.ViewModels.Component;
+using CvnetClient.ViewModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace CvnetClient.Views.Component
+namespace CvnetClient.Views
 {
     /// <summary>
     /// Interaction logic for ListFlexView.xaml
@@ -466,8 +466,16 @@ namespace CvnetClient.Views.Component
         }
 
         private string[] GetMaxStr(string col)
-        { 
+        {
             var rt_ar = new BizArray();
+
+            if (string.IsNullOrEmpty(col))
+            {
+                rt_ar.Set(0, "");
+                rt_ar.Set(1, "zzzzzzzzzzzzzzzzzzzz");
+                return rt_ar.ToArray();
+            }
+             
             var ar = Search_Data(col);
             string cd_name = GetConvKubun(ar[1]);
             if (cd_name == "")
@@ -522,11 +530,11 @@ namespace CvnetClient.Views.Component
                 if (wrk_para == null) return;
                 wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.FromValue)); 
                 var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
-                if (get_sel00 != null)
+                if (get_sel00 != null && get_sel00.Select80gphItem != null)
                 {
                     row.FromValue = get_sel00.Select80gphItem.Code;
                     row.ToValue = get_sel00.Select80gphItem.Code;
-                } 
+                }
             }
         }
 
@@ -539,7 +547,7 @@ namespace CvnetClient.Views.Component
                 if (wrk_para == null) return;
                 wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.ToValue));
                 var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
-                if (get_sel00 != null)
+                if (get_sel00 != null && get_sel00.Select80gphItem != null)
                 { 
                     row.ToValue = get_sel00.Select80gphItem.Code;
                 }

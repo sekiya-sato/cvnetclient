@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Windows.Forms;
+using static CommunityToolkit.Mvvm.ComponentModel.__Internals.__TaskExtensions.TaskAwaitableWithoutEndValidation;
 
 namespace CvnetClient.Utils
 {
@@ -62,6 +67,73 @@ namespace CvnetClient.Utils
         public string[] ToArray()
         {
             return list.ToArray();
+        }
+    }
+
+    public class BizCsvDocument
+    {
+        DataTable csv_doc;
+
+        public BizCsvDocument() { 
+            csv_doc = new DataTable(); 
+        }
+
+        public BizCsvDocument(DataTable csv_doc) {
+            this.csv_doc = csv_doc;
+        }
+
+        public void SaveCsv(string fileName = "export")
+        {
+            if (csv_doc == null || csv_doc.Rows.Count == 0)
+            {
+                System.Windows.MessageBox.Show("No data to export!", "Warning",
+                    System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            using (var dialog = new SaveFileDialog())
+            {
+                dialog.Filter = "CSV files (*.csv)|*.csv";
+                dialog.FileName = fileName + ".csv";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        using (var writer = new StreamWriter(dialog.FileName, false, Encoding.UTF8)) {
+
+                            // Write header
+                            for (int i = 0; i < csv_doc.Columns.Count; i++)
+                            {
+                                writer.Write(csv_doc.Columns[i].ColumnName);
+                                if (i < csv_doc.Columns.Count - 1)
+                                    writer.Write(",");
+                            }
+                            writer.WriteLine();
+
+                            // Write rows
+                            foreach (DataRow row in csv_doc.Rows)
+                            {
+                                for (int i = 0; i < csv_doc.Columns.Count; i++)
+                                {
+                                    var value = row[i]?.ToString().Replace("\"", "\"\"");
+                                    writer.Write($"\"{value}\"");
+                                    if (i < csv_doc.Columns.Count - 1)
+                                        writer.Write(",");
+                                }
+                                writer.WriteLine();
+                            }
+                        }
+
+                        System.Windows.MessageBox.Show("CSV export successful!", "Success",
+                            System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                    }
+                    catch (Exception ex) {
+                        System.Windows.MessageBox.Show("Error saving file: " + ex.Message,
+                            "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                    }
+                }
+            }
         }
     }
 }

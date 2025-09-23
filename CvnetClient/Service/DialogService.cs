@@ -15,7 +15,7 @@ namespace CvnetClient.Service
 
             // Set parameters
             vm.Mstname = mstname;
-            if (v_para != null) vm.Param = v_para;
+            if (v_para != null) vm.Param1 = v_para;
             if (v_para2 != null) vm.Param2 = v_para2;
 
             var ret = ClientLib.ShowDialogView(view, null);
@@ -24,7 +24,7 @@ namespace CvnetClient.Service
             return vm;
         }
 
-        public void ShowSel00(string mstname, Action<Sel00Model> onSelected, string[] v_para = null, string[] v_para2 = null)
+        public void ShowSel00(string mstname, Action<SelValueModel> onSelected, string[] v_para = null, string[] v_para2 = null)
         {
             var view = new SubDlgSel00View();
             var vm = view.DataContext as SubDlgSel00ViewModel;
@@ -32,11 +32,11 @@ namespace CvnetClient.Service
 
             // Set parameters
             vm.Mstname = mstname;
-            if (v_para != null) vm.Param = v_para;
+            if (v_para != null) vm.Param1 = v_para;
             if (v_para2 != null) vm.Param2 = v_para2;
 
             // Subscribe callback
-            void handler(Sel00Model model)
+            void handler(SelValueModel model)
             {
                 onSelected?.Invoke(model);
                 vm.SelectedItemConfirmed -= handler; // <-- unsubscribe lepas guna

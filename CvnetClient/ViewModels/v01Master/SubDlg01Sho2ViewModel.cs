@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Views;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.ObjectModel;
 using System.Data; 
 
@@ -441,276 +443,282 @@ namespace CvnetClient.ViewModels
         }
 
         [RelayCommand]
-        public void SelBrand()
-        {
-            var get_sel00 = AppData.DlgService.GetSel00("ブランド");
+        public void SelBrand(object value)
+        { 
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.BrandCD = get_sel00.SelectSel00?.Code;
-                EditProduct.BrandName = get_sel00?.SelectSel00?.Name;
+                EditProduct.BrandCD = get_sel00.Code;
+                EditProduct.BrandName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelItem()
+        public void SelItem(object value)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("アイテム");
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.ItemCD = get_sel00.SelectSel00?.Code;
-                EditProduct.ItemName = get_sel00?.SelectSel00?.Name;
+                EditProduct.ItemCD = get_sel00.Code;
+                EditProduct.ItemName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelSeason()
+        public void SelSeason(object value)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("シーズン");
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.SeasonCD = get_sel00.SelectSel00?.Code;
-                EditProduct.SeasonName = get_sel00?.SelectSel00?.Name;
+                EditProduct.SeasonCD = get_sel00.Code;
+                EditProduct.SeasonName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelMaterial()
+        public void SelMaterial(object value)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("素材");
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.MaterialCD = get_sel00.SelectSel00?.Code;
-                EditProduct.MaterialName = get_sel00?.SelectSel00?.Name;
+                EditProduct.MaterialCD = get_sel00.Code;
+                EditProduct.MaterialName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelDesign()
+        public void SelDesign(object value)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("デザイナー");
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.DesignCD = get_sel00.SelectSel00?.Code;
-                EditProduct.DesignName = get_sel00?.SelectSel00?.Name;
+                EditProduct.DesignCD = get_sel00.Code;
+                EditProduct.DesignName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelMadeIn()
+        public void SelMadeIn(object value)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("原産国");
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.MadeInCD = get_sel00.SelectSel00?.Code;
-                EditProduct.MadeInName = get_sel00?.SelectSel00?.Name;
+                EditProduct.MadeInCD = get_sel00.Code;
+                EditProduct.MadeInName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelExhibit()
+        public void SelExhibit(object value)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("展示会");
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.ExhibitCD = get_sel00.SelectSel00?.Code;
-                EditProduct.ExhibitName = get_sel00?.SelectSel00?.Name;
+                EditProduct.ExhibitCD = get_sel00.Code;
+                EditProduct.ExhibitName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelManufact()
+        public void SelManufact(object value)
         {
-            var get_sel00 = AppData.DlgService.GetSel00("メーカー");
+            var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.ManufactCD = get_sel00.SelectSel00?.Code;
-                EditProduct.ManufactName = get_sel00?.SelectSel00?.Name;
+                EditProduct.ManufactCD = get_sel00.Code;
+                EditProduct.ManufactName = get_sel00.Name;
             }
         }
         [RelayCommand]
-        public void SelName(string parameter)
+        public void SelName((object Result1, object Result2) value)
         {
-            if (string.IsNullOrEmpty(parameter)) return;
-            var param2 = new string[1]; param2[0] = parameter;
-            var get_sel00 = AppData.DlgService.GetSel00("名称", null, param2);
+            var (result1, result2) = value;
+
+            var get_sel00 = (SelValueModel)result1;
+            string kubun = string.Empty;
+            if (result2 is string res2) kubun = res2;
+
             if (get_sel00 != null && EditProduct != null)
             {
-                if (parameter == "B01")
+                if (kubun == "B01")
                 {
-                    EditProduct.NameCD01 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName01 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD01 = get_sel00.Code;
+                    EditProduct.SubName01 = get_sel00.Name;
                 }
-                if (parameter == "B02")
+                if (kubun == "B02")
                 {
-                    EditProduct.NameCD02 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName02 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD02 = get_sel00.Code;
+                    EditProduct.SubName02 = get_sel00.Name;
                 }
-                if (parameter == "B03")
+                if (kubun == "B03")
                 {
-                    EditProduct.NameCD03 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName03 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD03 = get_sel00.Code;
+                    EditProduct.SubName03 = get_sel00.Name;
                 }
-                if (parameter == "B04")
+                if (kubun == "B04")
                 {
-                    EditProduct.NameCD04 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName04 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD04 = get_sel00.Code;
+                    EditProduct.SubName04 = get_sel00.Name;
                 }
-                if (parameter == "B05")
+                if (kubun == "B05")
                 {
-                    EditProduct.NameCD05 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName05 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD05 = get_sel00.Code;
+                    EditProduct.SubName05 = get_sel00.Name;
                 }
-                if (parameter == "B06")
+                if (kubun == "B06")
                 {
-                    EditProduct.NameCD06 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName06 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD06 = get_sel00.Code;
+                    EditProduct.SubName06 = get_sel00.Name;
                 }
-                if (parameter == "B07")
+                if (kubun == "B07")
                 {
-                    EditProduct.NameCD07 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName07 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD07 = get_sel00.Code;
+                    EditProduct.SubName07 = get_sel00.Name;
                 }
-                if (parameter == "B08")
+                if (kubun == "B08")
                 {
-                    EditProduct.NameCD08 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName08 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD08 = get_sel00.Code;
+                    EditProduct.SubName08 = get_sel00.Name;
                 }
-                if (parameter == "B09")
+                if (kubun == "B09")
                 {
-                    EditProduct.NameCD09 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName09 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD09 = get_sel00.Code;
+                    EditProduct.SubName09 = get_sel00.Name;
                 }
-                if (parameter == "B10")
+                if (kubun == "B10")
                 {
-                    EditProduct.NameCD10 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.SubName10 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.NameCD10 = get_sel00.Code;
+                    EditProduct.SubName10 = get_sel00.Name;
                 }
             } 
         }
         [RelayCommand]
-        public void SelStandWare()
+        public void SelStandWare(object value)
         {
             // Note: Require Call SelTok to get ID before Start GetSell00 
+            /*
             var get_sel00 = AppData.DlgService.GetSel00("倉庫");
             if (get_sel00 != null && EditProduct != null)
             {
-                EditProduct.StandWareCD = get_sel00.SelectSel00?.Code;
-                EditProduct.StockName = get_sel00?.SelectSel00?.Name;
+                EditProduct.StandWareCD = get_sel00.SelectedValue?.Code;
+                EditProduct.StockName = get_sel00?.SelectedValue?.Name;
             }
+            */
         }
         [RelayCommand]
-        public void SelReserve(string parameter)
+        public void SelReserve((object Result1, object Result2) value)
         {
-            if (string.IsNullOrEmpty(parameter)) return;
-            var param2 = new string[1]; param2[0] = parameter;
-            var get_sel00 = AppData.DlgService.GetSel00("予備", null, param2);
+            var (result1, result2) = value;
+            var get_sel00 = (SelValueModel)result1;
+            string kubun = string.Empty;
+            if (result2 is string res2) kubun = res2;
+
             if (get_sel00 != null && EditProduct != null)
             {
-                if (parameter == "Y01")
+                if (kubun == "Y01")
                 {
-                    EditProduct.Reserve01 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName01 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve01 = get_sel00.Code;
+                    EditProduct.ReserveName01 = get_sel00.Name;
                 }
-                if (parameter == "Y02")
+                if (kubun == "Y02")
                 {
-                    EditProduct.Reserve02 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName02 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve02 = get_sel00.Code;
+                    EditProduct.ReserveName02 = get_sel00.Name;
                 }
-                if (parameter == "Y03")
+                if (kubun == "Y03")
                 {
-                    EditProduct.Reserve03 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName03 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve03 = get_sel00.Code;
+                    EditProduct.ReserveName03 = get_sel00.Name;
                 }
-                if (parameter == "Y04")
+                if (kubun == "Y04")
                 {
-                    EditProduct.Reserve04 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName04 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve04 = get_sel00.Code;
+                    EditProduct.ReserveName04 = get_sel00.Name;
                 }
-                if (parameter == "Y05")
+                if (kubun == "Y05")
                 {
-                    EditProduct.Reserve05 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName05 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve05 = get_sel00.Code;
+                    EditProduct.ReserveName05 = get_sel00.Name;
                 }
-                if (parameter == "Y06")
+                if (kubun == "Y06")
                 {
-                    EditProduct.Reserve06 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName06 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve06 = get_sel00.Code;
+                    EditProduct.ReserveName06 = get_sel00.Name;
                 }
-                if (parameter == "Y07")
+                if (kubun == "Y07")
                 {
-                    EditProduct.Reserve07 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName07 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve07 = get_sel00.Code;
+                    EditProduct.ReserveName07 = get_sel00.Name;
                 }
-                if (parameter == "Y08")
+                if (kubun == "Y08")
                 {
-                    EditProduct.Reserve08 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName08 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve08 = get_sel00.Code;
+                    EditProduct.ReserveName08 = get_sel00.Name;
                 }
-                if (parameter == "Y09")
+                if (kubun == "Y09")
                 {
-                    EditProduct.Reserve09 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName09 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve09 = get_sel00.Code;
+                    EditProduct.ReserveName09 = get_sel00.Name;
                 }
-                if (parameter == "Y10")
+                if (kubun == "Y10")
                 {
-                    EditProduct.Reserve10 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName10 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve10 = get_sel00.Code;
+                    EditProduct.ReserveName10 = get_sel00.Name;
                 }
-                if (parameter == "Y11")
+                if (kubun == "Y11")
                 {
-                    EditProduct.Reserve11 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName11 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve11 = get_sel00.Code;
+                    EditProduct.ReserveName11 = get_sel00.Name;
                 }
-                if (parameter == "Y12")
+                if (kubun == "Y12")
                 {
-                    EditProduct.Reserve12 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName12 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve12 = get_sel00.Code;
+                    EditProduct.ReserveName12 = get_sel00.Name;
                 }
-                if (parameter == "Y13")
+                if (kubun == "Y13")
                 {
-                    EditProduct.Reserve13 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName13 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve13 = get_sel00.Code;
+                    EditProduct.ReserveName13 = get_sel00.Name;
                 }
-                if (parameter == "Y14")
+                if (kubun == "Y14")
                 {
-                    EditProduct.Reserve14 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName14 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve14 = get_sel00.Code;
+                    EditProduct.ReserveName14 = get_sel00.Name;
                 }
-                if (parameter == "Y15")
+                if (kubun == "Y15")
                 {
-                    EditProduct.Reserve15 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName15 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve15 = get_sel00.Code;
+                    EditProduct.ReserveName15 = get_sel00.Name;
                 }
-                if (parameter == "Y16")
+                if (kubun == "Y16")
                 {
-                    EditProduct.Reserve16 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName16 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve16 = get_sel00.Code;
+                    EditProduct.ReserveName16 = get_sel00.Name;
                 }
-                if (parameter == "Y17")
+                if (kubun == "Y17")
                 {
-                    EditProduct.Reserve17 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName17 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve17 = get_sel00.Code;
+                    EditProduct.ReserveName17 = get_sel00.Name;
                 }
-                if (parameter == "Y18")
+                if (kubun == "Y18")
                 {
-                    EditProduct.Reserve18 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName18 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve18 = get_sel00.Code;
+                    EditProduct.ReserveName18 = get_sel00.Name;
                 }
-                if (parameter == "Y19")
+                if (kubun == "Y19")
                 {
-                    EditProduct.Reserve19 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName19 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve19 = get_sel00.Code;
+                    EditProduct.ReserveName19 = get_sel00.Name;
                 }
-                if (parameter == "Y20")
+                if (kubun == "Y20")
                 {
-                    EditProduct.Reserve20 = get_sel00?.SelectSel00?.Code;
-                    EditProduct.ReserveName20 = get_sel00?.SelectSel00?.Name;
+                    EditProduct.Reserve20 = get_sel00.Code;
+                    EditProduct.ReserveName20 = get_sel00.Name;
                 }
             }
         }
         [RelayCommand]
-        public void SelGenderCate(string parameter)
+        public void SelGenderCate((object Result1, object Result2) value)
         {
-            if (string.IsNullOrEmpty(parameter)) return;
-            var param2 = new string[1]; param2[0] = parameter;
-            var get_sel00 = AppData.DlgService.GetSel00("名称", null, param2);
+            var (result1, result2) = value; 
+            var get_sel00 = (SelValueModel)result1; 
             if (get_sel00 != null && EditProduct != null)
             { 
-                EditProduct.GenderCate = get_sel00?.SelectSel00?.Code;
-                EditProduct.GenderCateName = get_sel00?.SelectSel00?.Name;
+                EditProduct.GenderCate = get_sel00.Code;
+                EditProduct.GenderCateName = get_sel00.Name;
             }
         }
         #endregion

@@ -37,7 +37,7 @@
 				  HeadersVisibility="Column"
 				  IsSynchronizedWithCurrentItem="True"
 				  ItemsSource="{Binding ListSel00}"
-				  SelectedItem="{Binding SelectSel00}"
+				  SelectedItem="{Binding SelectedSel00}"
 				  SelectionMode="Single">
 			<DataGrid.ColumnHeaderStyle>
 				<Style TargetType="DataGridColumnHeader">

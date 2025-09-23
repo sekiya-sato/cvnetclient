@@ -8,6 +8,17 @@ using System.Threading.Tasks;
 namespace CvnetClient.Models
 {
     /// <summary>
+    /// View Class - Global Selected Value for CvnetBtListView 
+    /// </summary>
+    public partial class SelValueModel : ObservableObject
+    {
+        [ObservableProperty]
+        string? code;
+        [ObservableProperty]
+        string? name;
+    }
+
+    /// <summary>
     /// View Class - SubDlgSelShoView
     /// </summary>
     public partial class Sel00Model : ObservableObject
