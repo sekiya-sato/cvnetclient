@@ -32,19 +32,19 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void Init()
         {
-            editKiji = new MasterSHKiji();
+            EditKiji = new MasterSHKiji();
 
             var kubunCdList = new Dictionary<string, string>();
             string sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='KFK' order by a.名称CD";
             var get_kubun = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_kubun.Rows)
+            foreach (DataRow row in get_kubun!.Rows)
             {
                 string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
                 string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                kubunCdList.Add(key, string.Format("{0} {1}", key, value));
+                kubunCdList.Add(key!, string.Format("{0} {1}", key, value));
             }
             SelectKubun = kubunCdList;
-            editKiji.CateCd = SelectKubun.FirstOrDefault().Key;
+            EditKiji.CateCd = SelectKubun.FirstOrDefault().Key;
         }
 
         //Excute Button//
@@ -61,13 +61,13 @@ namespace CvnetClient.ViewModels
             //if (string.IsNullOrEmpty(findSupplierCd)) findSupplierCd = ".";
             var conditions = new List<string>();
             var parameters = new List<object>();
-            if (!string.IsNullOrEmpty(findFabricCd)) {
+            if (!string.IsNullOrEmpty(FindFabricCd)) {
                 conditions.Add("A.商品CD{0}:1");
-                parameters.Add(findFabricCd);
+                parameters.Add(FindFabricCd);
             }
-            if (!string.IsNullOrEmpty(findSupplierCd)) {
+            if (!string.IsNullOrEmpty(FindSupplierCd)) {
                 conditions.Add("A.仕入先CD=:2");
-                parameters.Add(findSupplierCd);
+                parameters.Add(FindSupplierCd);
             }
 
             string whereClause = string.Join(" AND ", conditions);
@@ -92,13 +92,13 @@ namespace CvnetClient.ViewModels
     WHERE ROWNUM <= {AppData.maxQueryCnt}";
             
             subList(sql,">=","asc",parameters);
-            if (listKiji == null || listKiji.Count == 0)
+            if (ListKiji == null || ListKiji.Count == 0)
                 ClientLib.MessageBoxOk(this, "データがありません");
         }
         void subList(string sql_onExec, string fugo,string sort, List<object> parameters)
         {
 
-            var supplierCd = string.IsNullOrWhiteSpace(findSupplierCd)? ".": findSupplierCd.Split(' ')[0];
+            var supplierCd = string.IsNullOrWhiteSpace(FindSupplierCd)? ".": FindSupplierCd.Split(' ')[0];
             var sql = string.Format(sql_onExec, fugo, sort);
             var retData = AppData.Http?.AspxSqlQuery(sql, parameters.Select(p => p.ToString()).ToArray());
             if (retData == null || retData.Rows.Count == 0) return;
@@ -120,11 +120,19 @@ namespace CvnetClient.ViewModels
                             InpStaffCD = dr["最終修正者"].ToString() ?? string.Empty
                         }).OrderBy(c => c.Product).ThenBy(c => c.SupplierCd).ToList();
             Common.ConvertDotStringDel(list);
-            listKiji = new ObservableCollection<MasterSHKiji>(list);
-            if (listKiji.Count > 0)
+            ListKiji = new ObservableCollection<MasterSHKiji>(list);
+            if (ListKiji.Count > 0)
             {
-                selectedKiji = listKiji[0];
+                SelectedKiji = ListKiji[0];
             }
+        }
+
+        partial void OnSelectedKijiChanged(MasterSHKiji? value)
+        {
+            if (value != null)
+                EditKiji = Common.CloneObject(value);
+            else
+                EditKiji = null;
         }
 
 

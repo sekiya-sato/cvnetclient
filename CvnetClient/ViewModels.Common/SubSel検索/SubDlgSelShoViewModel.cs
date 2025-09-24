@@ -310,14 +310,14 @@ namespace CvnetClient.ViewModels
             }
             if (para[0] == "1")
             {
-                //return result back to 
-                 
+                //return result and exit from current form
+                SelShoResult = ret;
+                ClientLib.ExitDialogResult(this, true);
             }
             else if (para[0] == "0")
             { 
                 
             }
-            ClientLib.ExitDialogResult(this, true);
         }
         [RelayCommand]
         void DoExit()

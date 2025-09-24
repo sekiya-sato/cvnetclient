@@ -8,7 +8,7 @@
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels" 
 		Title="選択画面"
 		Height="450" 
-		Width="500"
+		Width="510"
 		FontFamily="Meiryo UI"
 		mc:Ignorable="d" >
 	<Window.DataContext>
@@ -33,15 +33,16 @@
 				  IsSynchronizedWithCurrentItem="True"
 				  ItemsSource="{Binding ListSel00}"
 				  SelectedItem="{Binding SelectedSel00}"
+                  Style="{StaticResource WinGridData}"
 				  SelectionMode="Single">
-			<DataGrid.ColumnHeaderStyle>
+			<!--<DataGrid.ColumnHeaderStyle>
 				<Style TargetType="DataGridColumnHeader">
 					<Setter Property="Background" Value="Black" />
 					<Setter Property="BorderBrush" Value="White" />
 					<Setter Property="BorderThickness" Value="1" />
 					<Setter Property="Foreground" Value="white" />
 				</Style>
-			</DataGrid.ColumnHeaderStyle>
+			</DataGrid.ColumnHeaderStyle>-->
 		</DataGrid>
 
 		<StackPanel Grid.Row="1" Grid.Column="1" 
@@ -54,19 +55,19 @@
 			<Button Width="40" 
 					Command="{Binding TopListCommand}"
 					Content="Top"
-					Margin="0,0,5,0"/>
+					Margin="0,0,15,0"/>
 			<TextBox Width="100"
-					 Text="{Binding Textmeisho}"
-				     Background="#F7FFDF" 
+					 Text="{Binding Textmeisho}" 
 					 Margin="0,0,5,0"/>
-			<Button Width="80" 
+            <Button Width="80" 
 					Command="{Binding NameSearchCommand}"
 					Content="名称検索" 
-					Margin="0,0,5,0"/>
-			<Button Width="100" 
+					Margin="0,0,15,0"/>
+            <Button Width="100" 
 					Command="{Binding DoSearchCommand}"
 					Content="選択実行 (Enter)" 
-					Margin="0,0,5,0"/>
+					Margin="0,0,5,0"
+                    Style="{StaticResource ExecButton}"/>
 			<Button Width="80" 
 					Command="{Binding DoExitCommand}"
 					Content="戻る (ESC)" />

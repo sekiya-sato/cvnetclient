@@ -10,8 +10,7 @@
 	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 	Title="ログイン画面"
 	Width="420"
-	Height="300"
-	Background="#D6D6FF"
+	Height="330"
 	FocusManager.FocusedElement="{Binding ElementName=LoginIdTextBox}"
 	FontFamily="Meiryo UI"
 	ResizeMode="NoResize"
@@ -47,7 +46,6 @@
 			Grid.Column="1"
 			Padding="4,0"
 			VerticalAlignment="Center"
-			Background="#CCFFCC"
 			Content="LOGIN ID" />
 		<TextBox
 			x:Name="LoginIdTextBox"
@@ -65,7 +63,6 @@
 			Grid.Column="1"
 			Padding="4,0"
 			VerticalAlignment="Center"
-			Background="#CCFFCC"
 			Content="パスワード" />
         
 		<PasswordBox
