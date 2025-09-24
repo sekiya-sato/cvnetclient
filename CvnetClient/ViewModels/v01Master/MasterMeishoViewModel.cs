@@ -322,7 +322,7 @@ namespace CvnetClient.ViewModels {
 			ClientLib.CursorToWait();
 			if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
 			var cdlist = string.Join(",", ListMeisho.Select(c => $"'{c.MeishoCd}'"));
-			var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(printsql+ " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] {SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
+			var ret = AppData.Http!.AspxSqlQueryCsv(string.Format (printsql+ " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] {SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
 			if(ret.Split('\n').Length < 2) {
 				ClientLib.MessageBoxError(this, "PDFデータがありません");
 				return;

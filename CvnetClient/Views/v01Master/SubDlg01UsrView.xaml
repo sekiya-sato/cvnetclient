@@ -253,7 +253,7 @@
                                     <TextBox Grid.Row="6" Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.Mail}"/>
 
                                     <Label Grid.Row="7" Content="写真/画像" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="7" Grid.Column="1" Margin="0,8" />
+                                    <TextBox Grid.Row="7" Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.TelNo}" />
 
                                     <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,8">
                                 <Image Height="100"/>

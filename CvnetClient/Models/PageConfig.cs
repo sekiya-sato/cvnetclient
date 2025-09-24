@@ -102,7 +102,7 @@ namespace CvnetClient.Models
         }},
         { "発注", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "発注入力", WindowId="" },
+                new ButtonConfig { Text = "発注入力", WindowId=typeof(Views.SubDlg13HbnhtykNewView).FullName },
                 new ButtonConfig { Text = "発注配分入力", WindowId="" },
                 new ButtonConfig { Text = "発注実績表", WindowId="" },
                 new ButtonConfig { Text = "発注残完了設定", WindowId="" },
@@ -117,7 +117,7 @@ namespace CvnetClient.Models
         }},
         { "仕入", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "商品仕入入力", WindowId="" },
+                new ButtonConfig { Text = "商品仕入入力", WindowId=typeof(Views.ShiireInputView).FullName },
                 new ButtonConfig { Text = "生地付属仕入入力", WindowId="" },
                 new ButtonConfig { Text = "仕入実績表", WindowId="" },
                 new ButtonConfig { Text = "ブランド別仕入金額表", WindowId="" },
