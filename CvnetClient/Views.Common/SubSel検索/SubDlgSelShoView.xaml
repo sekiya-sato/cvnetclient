@@ -167,7 +167,7 @@
 		<uc:ListFlexView Grid.Row="2" 
 						 Config="{Binding ListConfig}"
 						 Rows="{Binding ListFlex}" 
-						 QueryString="{Binding WhereClaus, Mode=TwoWay}" />
+						 QueryString="{Binding WhereClaus, Mode=TwoWay}" Loaded="ListFlexView_Loaded" />
 
 		<!-- Action Buttons -->
 		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" > 

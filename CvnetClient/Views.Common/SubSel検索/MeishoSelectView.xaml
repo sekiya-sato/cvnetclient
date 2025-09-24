@@ -44,10 +44,10 @@
 			Margin="0,0,0,0"
 			HorizontalAlignment="Left"
 			VerticalAlignment="Center"
-			Orientation="Horizontal">
+			Orientation="Horizontal" Grid.RowSpan="2">
 			<Button
 				Width="50"
-				Margin="2"
+				Margin="0,2,15,2"
 				Command="{Binding NextCommand}"
 				Content="&gt;&gt;" />
 			<TextBox
@@ -55,8 +55,8 @@
 				Margin="2"
 				Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
 			<Button
-				Width="100"
-				Margin="2"
+				Width="80"
+				Margin="0,2,15,2"
 				Command="{Binding SearchCommand}"
 				Content="名称検索" />
 			<Button
@@ -64,6 +64,7 @@
 				Margin="2"
 				Command="{Binding SelectCommand}"
 				Content="選択実行(Enter)"
+                Style="{StaticResource ExecButton}"
 				IsDefault="True" />
 			<Button
 				Width="79"

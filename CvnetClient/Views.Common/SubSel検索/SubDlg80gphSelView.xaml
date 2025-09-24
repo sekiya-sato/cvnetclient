@@ -9,7 +9,7 @@
         mc:Ignorable="d" 
 		Title="選択画面"
 		Height="450" 
-        Width="500">
+        Width="520">
 	<Window.DataContext>
 		<vm:SubDlg80gphSelViewModel />
 	</Window.DataContext>
@@ -37,15 +37,16 @@
 				  IsSynchronizedWithCurrentItem="True"
 				  ItemsSource="{Binding List80gph}"
 				  SelectedItem="{Binding Select80gphItem}"
+                  Style="{StaticResource WinGridData}"
 				  SelectionMode="Single">
-			<DataGrid.ColumnHeaderStyle>
+			<!--<DataGrid.ColumnHeaderStyle>
 				<Style TargetType="DataGridColumnHeader">
 					<Setter Property="Background" Value="Black" />
 					<Setter Property="BorderBrush" Value="White" />
 					<Setter Property="BorderThickness" Value="1" />
 					<Setter Property="Foreground" Value="white" />
 				</Style>
-			</DataGrid.ColumnHeaderStyle>
+			</DataGrid.ColumnHeaderStyle>-->
 		</DataGrid>
 
 		<StackPanel Grid.Row="1" Grid.Column="1" 
@@ -62,17 +63,17 @@
 			<Button Width="35" 
 					Command="{Binding TopListCommand}"
 					Content="Top"
-					Margin="0,0,5,0"/>
+					Margin="0,0,15,0"/>
 			<TextBox Width="100"
 					 Text="{Binding Text80gphSel}"
-				     Background="#F7FFDF" 
 					 Margin="0,0,5,0"/>
 			<Button Width="70" 
 					Command="{Binding NameSearchCommand}"
 					Content="名称検索" 
-					Margin="0,0,5,0"/>
+					Margin="0,0,15,0"/>
 			<Button Width="100" 
 					Command="{Binding DoSearchCommand}"
+                    Style="{StaticResource ExecButton}"
 					Content="選択実行 (Enter)" 
 					Margin="0,0,5,0"/>
 			<Button Width="70" 

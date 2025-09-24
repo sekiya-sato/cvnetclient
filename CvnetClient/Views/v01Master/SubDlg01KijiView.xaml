@@ -125,6 +125,8 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                         <SolidColorBrush Color="#FFD0D3D4" Opacity="0.5"/>
                     </Button.Background>
                 </Button>
+
+                <Button Width="28" Height="28" Style="{StaticResource ComboButton}"/>
             </StackPanel>
         </Grid>
 
@@ -312,6 +314,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
                             <SolidColorBrush Color="#FFD0D3D4" Opacity="0.5"/>
                         </Button.Background>
                     </Button>
+
                 </StackPanel>
 
             </GroupBox>

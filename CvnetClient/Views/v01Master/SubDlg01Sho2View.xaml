@@ -9,7 +9,6 @@
 		xmlns:uc="clr-namespace:CvnetClient.Views"
 		Title="商品マスタ"
         mc:Ignorable="d"
-		Background="#D6D6FF"
 		FontFamily="Meiryo UI"
 		Width="1440"
 		Height="1000"
@@ -43,27 +42,21 @@
 			</Grid.RowDefinitions>
 
 			<Button Grid.Row="0" Grid.Column="0" 
-					Height="30" Width="120"
-					Margin="5"
+					Margin="10,10,10,0"
 					VerticalAlignment="Top"
-					HorizontalAlignment="Left"
-					Foreground="{StaticResource TitleLabelColor}"  
+					HorizontalAlignment="Right"
+                    Style="{StaticResource ExecButton}"
 					Command="{Binding SelDspUpdateCommand}"
 					Content="表示更新(F5)" />
 
 			<DataGrid Grid.Row="1" Grid.Column="0"
+                      Margin="10"
 					  d:ItemsSource="{d:SampleData ItemCount=5}"
 					  FrozenColumnCount="1"
 					  IsReadOnly="True"
-					  IsSynchronizedWithCurrentItem="True">
-				<DataGrid.ColumnHeaderStyle>
-					<Style TargetType="DataGridColumnHeader">
-						<Setter Property="Background" Value="Black" />
-						<Setter Property="BorderBrush" Value="White" />
-						<Setter Property="BorderThickness" Value="1" />
-						<Setter Property="Foreground" Value="white" />
-					</Style>
-				</DataGrid.ColumnHeaderStyle>
+					  IsSynchronizedWithCurrentItem="True"
+                      Style="{StaticResource WinGridData}">
+
 			</DataGrid>
 		</Grid>
 
@@ -71,198 +64,165 @@
 			  Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}" 
 			  Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="9.5*" />
-				<RowDefinition Height="0.5*" />
+				<RowDefinition Height="auto" />
+				<RowDefinition Height="auto" />
 			</Grid.RowDefinitions>
 
-			<TabControl Grid.Row="0" Grid.Column="0">
+			<TabControl Grid.Row="0" Grid.Column="0" Margin="10">
 				<TabItem Header="基本情報 (Shift+F1)">
 					<Grid>
-						<StackPanel Orientation="Vertical"
-									Background="#7E82FC">
+						<StackPanel Orientation="Vertical">
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="商品CD" />
-								<TextBox Height="30" Width="200"
+								<TextBox  Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="商品CD：Data"    
 										 Text="{Binding EditProduct.ProductCD}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
+										   
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0" 
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="ﾒｰｶｰ品番" />
-								<TextBox Height="30" Width="200"
+								<TextBox  Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="ﾒｰｶｰ品番：Data"   
-										 Text="{Binding EditProduct.MakerNo}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
+										 Text="{Binding EditProduct.MakerNo}" 
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 											Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label  Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="商品名" />
-								<TextBox Height="30" Width="495"
+								<TextBox Width="495"
 											 Margin="5,0,0,0" 
 											 HorizontalAlignment="Left"
 											 VerticalAlignment="Top"
 											 d:Text="商品名：Data"   
-											 Text="{Binding EditProduct.ProductName}"
-											 Foreground="{StaticResource plainTextColor0}"
-											 Style="{StaticResource WinTextBox}"   
+											 Text="{Binding EditProduct.ProductName}" 
 											 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="略称" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="略称：Data"   
 										 Text="{Binding EditProduct.Abbreviation}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap" />
-								<Button Height="30" Width="85"
+								<Button Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
 										Content="絵型名1" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="絵型名1：Data"   
-										 Text="{Binding EditProduct.ImgName}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
+										 Text="{Binding EditProduct.ImgName}"   
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="旧コード" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="旧コード：Data"
 										 Text="{Binding EditProduct.OldCode}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" />
-								<Button Height="30" Width="85"
+								<Button  Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}" 
 										Content="絵型名2" />
-								<TextBox Height="30" Width="200"
+								<TextBox  Width="200"
 										 Margin="5,0,0,0" 
 										 IsEnabled="False"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="絵型名2：Data"   
 										 Text="{Binding EditProduct.ImgName2}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"  
+										 Style="{StaticResource ReadOnlyTextBox}"  
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label  Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="JAN連番" />
-								<TextBox Height="30" Width="150"
+								<TextBox Width="150"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="JAN連番：Data"   
-										 Text="{Binding EditProduct.Jan1stdigit}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
+										 Text="{Binding EditProduct.Jan1stdigit}" 
 										 TextWrapping="Wrap" />
-								<TextBox Height="30" Width="150"
+								<TextBox Width="150"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="JAN連番：Data"
 										 Text="{Binding EditProduct.JanCode2}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="年度" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="年度：Data"    
-										 Text="{Binding EditProduct.JanCode1}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
+										 Text="{Binding EditProduct.JanCode1}" 
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="製品番号" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0" 
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="製品番号：Data"   
 										 Text=""
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<uc:CvnetBtListView Height="30" Width="85"
+								<uc:CvnetBtListView Width="85"
 													Margin="5,0,0,0"
 													Title="ブランド" 
 													MstName="ブランド"
 													SelectedValue ="{Binding EditProduct.BrandCD}"
 													Command="{Binding SelBrandCommand}" />
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="ブランド：Data"  
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap" >
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -271,19 +231,17 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<uc:CvnetBtListView Height="30" Width="85"
+								<uc:CvnetBtListView Width="85"
 													Margin="5,0,0,0"
 													Title="アイテム"  
 													MstName="アイテム"
 													SelectedValue="{Binding EditProduct.ItemCD}"
 													Command="{Binding SelItemCommand}"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="アイテム：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -295,19 +253,17 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<uc:CvnetBtListView Height="30" Width="85"
+								<uc:CvnetBtListView Width="85"
 										Margin="5,0,0,0"
 										Title="シーズン" 
 										MstName="シーズン"
 										SelectedValue="{Binding EditProduct.SeasonCD}"		
 										Command="{Binding SelSeasonCommand}" />
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="シーズン：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -316,20 +272,18 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<uc:CvnetBtListView Height="30" Width="85"
+								<uc:CvnetBtListView Width="85"
 													Margin="5,0,0,0"
 													Title="素材" 
 													MstName="素材"
 													SelectedValue="{Binding EditProduct.MaterialCD}"
 													Command="{Binding SelMaterialCommand}"
 										  />
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="素材：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"  
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -341,19 +295,17 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<uc:CvnetBtListView Height="30" Width="85"
+								<uc:CvnetBtListView Width="85"
 													Margin="5,0,0,0"
 													Title="ﾃﾞｻﾞｲﾅｰ" 
 													MstName="デザイナー"
 													SelectedValue="{Binding EditProduct.DesignCD}"
 													Command="{Binding SelDesignCommand}" />
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="ﾃﾞｻﾞｲﾅｰ：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -362,19 +314,17 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<uc:CvnetBtListView Height="30" Width="85"
+								<uc:CvnetBtListView Width="85"
 										Margin="5,0,0,0"
 										Title="原産国"
 										MstName="原産国"
 										SelectedValue="{Binding EditProduct.MadeInCD}"
 										Command="{Binding SelMadeInCommand}"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="原産国：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"  
+										 d:Text="原産国：Data"  
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -386,19 +336,17 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 										Margin="5,0,0,0"
 										Title="展示会"
 										MstName="展示会"			
 										SelectedValue="{Binding EditProduct.ExhibitCD}"
 										Command="{Binding SelExhibitCommand}"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="展示会：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -407,19 +355,17 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="メーカー" 
 													MstName="メーカー"
 													SelectedValue="{Binding EditProduct.ManufactCD}"
 													Command="{Binding SelManufactCommand}"/>	
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="メーカー：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
+										 d:Text="メーカー：Data"
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -431,20 +377,18 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足1"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD01}"
 													Command="{Binding SelNameCommand}"
 													Param2="B01"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足1：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -453,20 +397,18 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足2"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD02}"
 													Command="{Binding SelNameCommand}"
 													Param2="B02"/>	
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足2：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -478,20 +420,18 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0"> 
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足3"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD03}"
 													Command="{Binding SelNameCommand}"
 													Param2="B03"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足3：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -500,20 +440,18 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox> 
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足4"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD04}"
 													Command="{Binding SelNameCommand}"
 													Param2="B04"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足4：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -525,20 +463,18 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0"> 
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足5"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD05}"
 													Command="{Binding SelNameCommand}"
 													Param2="B05"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足5：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -547,20 +483,18 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox> 
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足6"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD06}"
 													Command="{Binding SelNameCommand}"
 													Param2="B06"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足6：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -572,20 +506,18 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0"> 
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足7"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD07}"
 													Command="{Binding SelNameCommand}"
 													Param2="B07"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足7：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -594,20 +526,18 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox> 
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足8"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD08}"
 													Command="{Binding SelNameCommand}"
 													Param2="B08"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足8：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -619,20 +549,18 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足9"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD09}"
 													Command="{Binding SelNameCommand}"
 													Param2="B09"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足9：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -641,20 +569,18 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox> 
-								<uc:CvnetBtListView Height="30" Width="85" 
+								<uc:CvnetBtListView Width="85" 
 													Margin="5,0,0,0"
 													Title="補足10"
 													MstName="名称"
 													SelectedValue="{Binding EditProduct.NameCD10}"
 													Command="{Binding SelNameCommand}"
 													Param2="B10"/>
-								<TextBox Height="30" Width="300"
+								<TextBox Width="300"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="補足10：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -666,116 +592,94 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="元上代" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="元上代：Data" 
 										 Text="{Binding EditProduct.OriPrice}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="上代" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="上代：Data" 
 										 Text="{Binding EditProduct.Price}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="加工工賃" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="加工工賃：Data" 
 										 Text="{Binding EditProduct.ManufactFee}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="仕入価格" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="仕入価格：Data" 
 										 Text="{Binding EditProduct.PurchasePrice}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="原価" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="原価：Data" 
 										 Text="{Binding EditProduct.Cost}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="営業原価" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="営業原価：Data" 
 										 Text="{Binding EditProduct.OpCostPrice}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="外貨仕入価格" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="外貨仕入価格：Data" 
-										 Text="{Binding EditProduct.ForeignCurPrice}"
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
+										 Text="{Binding EditProduct.ForeignCurPrice}"  
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="在庫管理" />
-								<ComboBox Width="200" Height="30"
+								<ComboBox Width="200"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -784,12 +688,11 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.InvMngmentFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label  Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="セール区分" />
-								<ComboBox Width="200" Height="30"
+								<ComboBox Width="200"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center" 
@@ -801,12 +704,11 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label  Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}" 
 									   Content="売上基準自動補充" />
-								<ComboBox Width="200" Height="30"
+								<ComboBox Width="200" 
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
@@ -815,19 +717,17 @@
 										  SelectedValuePath="Key" 
 										  SelectedValue="{Binding EditProduct.AutoDistFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<uc:CvnetBtListView Height="30" Width="85"  
+								<uc:CvnetBtListView Width="85"  
 													Margin="5,0,0,0"
 													Title="基準倉庫CD"
 													MstName="倉庫"
 													SelectedValue="{Binding EditProduct.StandWareCD}"
 													Command="{Binding SelStandWareCommand}"/>
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="基準倉庫CD：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}" 
 										 TextWrapping="Wrap">
 									<TextBox.Text>
 										<MultiBinding StringFormat='{}{0} {1}'>
@@ -836,12 +736,11 @@
 										</MultiBinding>
 									</TextBox.Text>
 								</TextBox>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="納品区分" />
-								<ComboBox Width="200" Height="30"
+								<ComboBox Width="200" 
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -853,12 +752,11 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="EC連携" />
-								<ComboBox Width="200" Height="30"
+								<ComboBox Width="200" 
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
@@ -867,12 +765,11 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.EcConnect}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="EC取置" />
-								<ComboBox Width="200" Height="30"
+								<ComboBox Width="200" 
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
@@ -881,12 +778,11 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.EcReserve}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="仕入区分" />
-								<ComboBox Width="200" Height="30"
+								<ComboBox Width="200" 
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"  
@@ -898,12 +794,11 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化計算" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -912,25 +807,21 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.DgCalcCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化掛率" />
-								<TextBox Height="30" Width="150"
+								<TextBox Width="150"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="消化掛率：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化桁切" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150" 
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -939,12 +830,11 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.DgCutOffSpec}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="消化端数" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -956,12 +846,11 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="POS送信区分" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -970,12 +859,11 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.PosCate}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="代表品番FLG" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"  
 										  VerticalContentAlignment="Center"
@@ -984,12 +872,11 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.RepresentNoFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="商品区分FLG" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
@@ -998,12 +885,11 @@
 										  SelectedValuePath="Key"
 										  SelectedValue="{Binding EditProduct.ProdCateFLG}"
 										  Style="{StaticResource SearchableComboBox1}"/>
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="軽減税率" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
@@ -1015,32 +901,29 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="販売開始日" />
 								<DatePicker Width="150"
 											Margin="5,0,0,0"
 											Style="{StaticResource DatePickerStyle}"
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center" />
-								<Label Height="30" Width="85" 
+								<Label Width="85" 
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="販売終了日" />
 								<DatePicker Width="150" 
 											Margin="5,0,0,0"
 											Style="{StaticResource DatePickerStyle}"
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="ｻｲｽﾞ表示" />
-								<ComboBox Width="150" Height="30"
+								<ComboBox Width="150"
 										  Margin="5,0,0,0"
 										  VerticalAlignment="Top"
 										  VerticalContentAlignment="Center"
@@ -1052,83 +935,68 @@
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="作成日" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="作成日：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="修正日" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="修正日：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
-								<Label Height="30" Width="85"
+								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Foreground="{StaticResource TitleLabelColor}"
 									   Content="最終修正者" />
-								<TextBox Height="30" Width="200"
+								<TextBox Width="200"
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="最終修正者：Data" 
-										 Foreground="{StaticResource plainTextColor0}"
-										 Style="{StaticResource WinTextBox}"   
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-								<Button Height="30" Width="120"
+								<Button Width="120"
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
 										Content="品質表示(S+F10)" />
-								<Button Height="30" Width="120"
+								<Button Width="120"
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
 										Content="原価枝番(S+F11)" />
-								<Button Height="30" Width="120" 
+								<Button Width="120" 
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
 										Content="色サイズ展開(S+F12)" />
-								<Button Height="30" Width="120" 
+								<Button Width="120" 
 										Margin="10,0,0,0"
-										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
+										VerticalAlignment="Top" 
 										Content="発注入力" />
-								<Button Height="30" Width="120"
+								<Button Width="120"
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
 										Content="仕入入力" />
-								<Button Height="30" Width="120"  
+								<Button Width="120"  
 										Margin="10,0,0,0"
 										VerticalAlignment="Top"
-										Foreground="{StaticResource TitleLabelColor}"  
 										Content="発注配分入力" />
 							</StackPanel>
 						</StackPanel>
 
 						<StackPanel Orientation="Horizontal"
-									HorizontalAlignment="Right">
+									HorizontalAlignment="Left" Margin="662,0,0,0">
 							<Border BorderBrush="Black"
 									CornerRadius="2"
 									VerticalAlignment="Top"
@@ -1138,9 +1006,9 @@
 									BorderThickness="1">
 								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
-									<Button Height="30"   
+									<Button    
 											VerticalAlignment="Bottom"
-											Foreground="{StaticResource TitleLabelColor}"
+											
 											Content="Upload..." />
 								</StackPanel>
 							</Border>
@@ -1153,9 +1021,9 @@
 									BorderThickness="1">
 								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
-									<Button Height="30"   
+									<Button    
 											VerticalAlignment="Bottom"
-											Foreground="{StaticResource TitleLabelColor}"
+											
 											Content="Upload..." />
 								</StackPanel>
 							</Border>
@@ -1165,34 +1033,33 @@
 				</TabItem>
 
 				<TabItem Header="拡張情報 (Shift+F2)">
-					<StackPanel Orientation="Vertical"
-								Background="#7E82FC">
+					<StackPanel Orientation="Vertical">
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="30" Width="85"
+							<Label Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="納品日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
 										Style="{StaticResource DatePickerStyle}"
 										HorizontalAlignment="Center" 
 										VerticalAlignment="Center" />
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="店頭投入日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
 										Style="{StaticResource DatePickerStyle}"
 										HorizontalAlignment="Center" 
 										VerticalAlignment="Center" />
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="売変日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
@@ -1202,20 +1069,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="デリバリー日" />
 							<DatePicker Width="150"
 									Margin="5,0,0,0"
 									Style="{StaticResource DatePickerStyle}"
 									HorizontalAlignment="Center" 
 									VerticalAlignment="Center" />
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="リピート日" />
 							<DatePicker Width="150"
 									Margin="5,0,0,0"
@@ -1225,20 +1092,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備01"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve01}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y01" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備01：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1247,20 +1114,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備02"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve02}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y02" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備02：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1272,20 +1139,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備03"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve03}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y03" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備03：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1294,20 +1161,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox> 
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備04"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve04}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y04" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備04：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1319,20 +1186,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備05"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve05}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y05" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備05：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1341,20 +1208,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備06"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve06}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y06" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備06：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1366,20 +1233,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0"> 
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備07"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve07}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y07" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備07：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1388,20 +1255,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備08"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve08}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y08" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備08：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1413,20 +1280,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備09"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve09}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y09" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備09：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1435,20 +1302,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox> 
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備10"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve10}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y10" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備10：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1460,20 +1327,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備11"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve11}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y11" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備11：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1482,20 +1349,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備12"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve12}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y12" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備12：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1507,20 +1374,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備13"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve13}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y13" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備13：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1529,20 +1396,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備14"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve14}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y14" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備14：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1554,20 +1421,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0"> 
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備15"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve15}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y15" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備15：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1576,20 +1443,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備16"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve16}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y16" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備16：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1601,20 +1468,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備17"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve17}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y17" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備17：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1623,20 +1490,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備18"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve18}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y18" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備18：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1648,20 +1515,20 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 												Margin="5,0,0,0"
 												Title="予備19"
 												MstName="予備"
 												SelectedValue="{Binding EditProduct.Reserve19}"
 												Command="{Binding SelReserveCommand}"
 												Param2="Y19" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備19：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1670,20 +1537,20 @@
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
-							<uc:CvnetBtListView Height="30" Width="85"
+							<uc:CvnetBtListView  Width="85"
 											Margin="5,0,0,0"
 											Title="予備20"
 											MstName="予備"
 											SelectedValue="{Binding EditProduct.Reserve20}"
 											Command="{Binding SelReserveCommand}"
 											Param2="Y20" />
-							<TextBox Height="30" Width="300"
+							<TextBox  Width="300"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="予備20：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1695,29 +1562,29 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="メモ" />
-							<TextBox Height="30" Width="700"
+							<TextBox  Width="700"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="メモ：Data" 
 									 Text="{Binding EditProduct.Memo}"
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"
+									 
+									 
 									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="ゼロ単価区分" />
-							<ComboBox Width="200" Height="30"
+							<ComboBox Width="200" 
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center" 
@@ -1726,20 +1593,20 @@
 									  SelectedValuePath="Key" 
 									  SelectedValue="{Binding EditProduct.ZeroPriceCate}"
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<uc:CvnetBtListView Height="30" Width="85"  
+							<uc:CvnetBtListView  Width="85"  
 												Margin="5,0,0,0"
 												Title="男女区分"
 												MstName="名称"
 												SelectedValue="{Binding EditProduct.GenderCate}"
 												Command="{Binding SelGenderCateCommand}"
 												Param2="MLK"/> 
-							<TextBox Height="30" Width="200"
+							<TextBox  Width="200"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="男女区分：Data"
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"  
+									 
+									   
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1751,12 +1618,12 @@
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="消費税計算方法" />
-							<ComboBox Width="200" Height="30"
+							<ComboBox Width="200" 
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center"
@@ -1765,12 +1632,12 @@
 									  SelectedValuePath="Key"
 									  SelectedValue="{Binding EditProduct.TaxCalcMethod}"
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<Label Height="30" Width="85"
+							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   Foreground="{StaticResource TitleLabelColor}"
+								   
 								   Content="下札サイズ" />
-							<ComboBox Width="200" Height="30"
+							<ComboBox Width="200" 
 									  Margin="5,0,0,0"
 									  VerticalAlignment="Top"
 									  VerticalContentAlignment="Center" 
@@ -1779,26 +1646,25 @@
 									  SelectedValuePath="Key" 
 									  SelectedValue="{Binding EditProduct.CollabOutCate}"
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<Button Height="30" Width="85"
+							<Button  Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
-									Foreground="{StaticResource TitleLabelColor}" 
+									 
 									Content="洗濯表示" />
-							<TextBox Height="30" Width="200"
+							<TextBox  Width="200"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="洗濯表示：Data" 
-									 Foreground="{StaticResource plainTextColor0}"
-									 Style="{StaticResource WinTextBox}"  
+									 
+									   
 									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
-							<Button Height="30" Width="85"
+							<Button  Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
-									Foreground="{StaticResource TitleLabelColor}" 
 									Content="品質表示" />
 						</StackPanel>
 					</StackPanel>
@@ -1807,31 +1673,31 @@
 
 			<StackPanel Grid.Row="1" Grid.Column="0"  
 						Orientation="Horizontal" 
-						VerticalAlignment="Center">
-				<Button Height="50" Width="80" 
+						VerticalAlignment="Center" HorizontalAlignment="Center">
+				<Button 
 						Margin="10,0,50,0"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Top" 
-						Style="{StaticResource UpdateIconBtn2}"/>
+						Style="{StaticResource UpdateIconBtn}"/>
 
-				<Button Height="50" Width="80" 
+				<Button 
 						Margin="0,0,50,0"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Top"
-						Style="{StaticResource DeleteIconBtn2}"/>
+						Style="{StaticResource DeleteIconBtn}"/>
 
-				<Button Height="50" Width="80" 
+				<Button 
 						Margin="0,0,50,0"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Top"
-						Style="{StaticResource AddIconBtn2}"/>
+						Style="{StaticResource AddIconBtn}"/>
 
-				<Button Width="80" Height="50" 
+				<Button 
 						Margin="0,0,50,0"
 						HorizontalAlignment="Left"
 						VerticalAlignment="Top"
-						Style="{StaticResource JsonIconBtn2}"
-						Content="JSON出力" />
+						Style="{StaticResource PrintIconBtn}"
+						Content="印刷" />
 			</StackPanel>
 		</Grid>
 
