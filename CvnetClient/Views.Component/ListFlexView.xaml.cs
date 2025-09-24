@@ -466,8 +466,16 @@ namespace CvnetClient.Views
         }
 
         private string[] GetMaxStr(string col)
-        { 
+        {
             var rt_ar = new BizArray();
+
+            if (string.IsNullOrEmpty(col))
+            {
+                rt_ar.Set(0, "");
+                rt_ar.Set(1, "zzzzzzzzzzzzzzzzzzzz");
+                return rt_ar.ToArray();
+            }
+             
             var ar = Search_Data(col);
             string cd_name = GetConvKubun(ar[1]);
             if (cd_name == "")
@@ -522,11 +530,11 @@ namespace CvnetClient.Views
                 if (wrk_para == null) return;
                 wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.FromValue)); 
                 var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
-                if (get_sel00 != null)
+                if (get_sel00 != null && get_sel00.Select80gphItem != null)
                 {
                     row.FromValue = get_sel00.Select80gphItem.Code;
                     row.ToValue = get_sel00.Select80gphItem.Code;
-                } 
+                }
             }
         }
 
@@ -539,7 +547,7 @@ namespace CvnetClient.Views
                 if (wrk_para == null) return;
                 wrk_para.Set(2, AppData.ClassSatoo.GetStringFirst(row.ToValue));
                 var get_sel00 = AppData.DlgService.Get80gphSel(wrk_para.ToArray());
-                if (get_sel00 != null)
+                if (get_sel00 != null && get_sel00.Select80gphItem != null)
                 { 
                     row.ToValue = get_sel00.Select80gphItem.Code;
                 }
@@ -572,10 +580,11 @@ namespace CvnetClient.Views
                 return;
             }
 
+            string conn_str = (Config.conn_flg == 0) ? "AND" : "OR"; 
             var parts = Rows
                 .Where(r => !string.IsNullOrWhiteSpace(r.SelectedItem) || !string.IsNullOrWhiteSpace(r.FromValue) || !string.IsNullOrWhiteSpace(r.ToValue))
                 .Select(r =>
-                    $"AND {Config.col_alias}{r.SelectedItem} BETWEEN \"{r.FromValue}\" AND \"{r.ToValue}\"");
+                    $"{conn_str} {Config.col_alias}{r.SelectedItem} BETWEEN \"{r.FromValue}\" AND \"{r.ToValue}\"");
 
             QueryString = string.Join(" ", parts);
         }

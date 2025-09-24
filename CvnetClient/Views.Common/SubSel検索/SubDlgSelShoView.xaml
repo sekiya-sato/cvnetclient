@@ -4,78 +4,255 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 		xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
 		xmlns:uc="clr-namespace:CvnetClient.Views"
-		xmlns:vm="clr-namespace:CvnetClient.ViewModels" 
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+		xmlns:util="clr-namespace:CvnetClient.Utils"
         Title="検索条件" Height="600" Width="900" 
-        Background="White">
+        Style="{StaticResource MasterWindowStyle}">
 	<Window.DataContext>
 		<vm:SubDlgSelShoViewModel />
 	</Window.DataContext>
-	<behaviors:Interaction.Triggers>
-		<behaviors:EventTrigger EventName="ContentRendered">
-			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-		</behaviors:EventTrigger>
-	</behaviors:Interaction.Triggers>
+	<Window.Resources>
+		<util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
+	</Window.Resources>
 	<Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="6*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
 
-        <!-- 検索条件 Card -->
-        <materialDesign:Card Padding="16" Margin="0 0 0 16" Grid.Row="0">
-            <StackPanel>
-                <TextBlock Text="検索条件" 
-                           Margin="0 0 0 12"/>
+		<TextBlock Grid.Row="0" 
+				   Text="検索条件"  
+				   VerticalAlignment="Center"
+                   Margin="0 0 0 5"/>
 
-                <!-- 商品CD & 商品名 -->
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+		<!-- 検索条件 -->
+		<Border Grid.Row="1" 
+				CornerRadius="10" BorderThickness="1" 
+				Padding="3" Margin="3"
+				Background="White">
 
-                    <Button Content=" 商品CD " VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="1" Margin="8"/>
-					<TextBlock Grid.Column="2" Text="～" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="3" Margin="8"/>
+			<StackPanel>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="9*" />
+					</Grid.ColumnDefinitions>
 
-                    <TextBlock Text="商品名" Grid.Row="1" VerticalAlignment="Center"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="8"/>
-                </Grid>
+					<!-- 商品CD & 商品名 -->
+					<Button Grid.Row="0" Grid.Column="0"
+							Margin="5" 
+							VerticalAlignment="Center"
+							Command="{Binding DoShohinModeCommand}">
+						<Button.Style>
+							<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+								<Setter Property="Content" Value="商品CD" />
+								<Style.Triggers>
+									<MultiDataTrigger>
+										<MultiDataTrigger.Conditions>
+											<Condition Binding="{Binding SearchOpt.ModeProdCD}" Value="1" />
+											<Condition Binding="{Binding SearchOpt.Smtflg}" Value="1" />
+										</MultiDataTrigger.Conditions>
+										<Setter Property="Content" Value="メーカー品番" />
+									</MultiDataTrigger>
+									<MultiDataTrigger>
+										<MultiDataTrigger.Conditions>
+											<Condition Binding="{Binding SearchOpt.ModeProdCD}" Value="1" />
+											<Condition Binding="{Binding SearchOpt.Smtflg}" Value="0" />
+										</MultiDataTrigger.Conditions>
+										<Setter Property="Content" Value="旧コード" />
+									</MultiDataTrigger>
+									<DataTrigger Binding="{Binding SearchOpt.ModeProdCD}" Value="0">
+										<Setter Property="Content" Value="商品CD" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</Button.Style>
+					</Button>
+					<Grid Grid.Row="0" Grid.Column="1"
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<TextBox Grid.Column="0" 
+								 Text="{Binding SearchOpt.StartProdCD}"/>
+						<TextBlock Grid.Column="1" 
+								   Text="～" 
+								   VerticalAlignment="Center"
+								   Margin="5, 0, 5, 0"/>
+						<TextBox Grid.Column="2" 
+								 Text="{Binding SearchOpt.EndProdCD}"/>
+					</Grid>
 
-                <!-- 日付 + CheckBox -->
-                <StackPanel Orientation="Horizontal" Margin="0 8">
-                    <TextBlock Text="店頭投入日" VerticalAlignment="Center" Margin="0 0 8 0"/>
-                    <DatePicker Width="160" />
-                    <CheckBox Content="在庫" VerticalAlignment="Center" Margin="0 0"/>
-                </StackPanel>
+					<TextBlock Grid.Row="1" Grid.Column="0"
+							   Margin="5"
+							   Text="商品名" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="1" Grid.Column="1" 
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="5*" />
+						</Grid.ColumnDefinitions>
 
-                <!-- 条件結合 -->
-                <StackPanel Orientation="Horizontal" Margin="0 8">
-                    <TextBlock Text="条件結合" VerticalAlignment="Center" Margin="0 0 8 0"/>
-                    <RadioButton Content="AND" IsChecked="True" Margin="0 0 16 0"/>
-                    <RadioButton Content="OR"/>
-                </StackPanel>
-            </StackPanel>
-        </materialDesign:Card>
+						<CheckBox Grid.Column="0" 
+								  Content="B/S" 
+								  Margin="0, 0, 10, 0"
+								  IsChecked="{Binding SearchOpt.SelBSChk}"
+								  VerticalAlignment="Center"/>
 
-        <!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="1" 
+						<ComboBox Grid.Column="1"  
+								  Margin="0, 0, 5, 0" 
+								  VerticalContentAlignment="Center" 
+								  ItemsSource="{Binding Cond01List}"
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond01}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+
+						<ComboBox Grid.Column="2"  
+								  Margin="0, 0, 5, 0" 
+								  VerticalContentAlignment="Center" 
+								  ItemsSource="{Binding Cond02List}"
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond02}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+
+						<TextBox Grid.Column="3"
+								 Text="{Binding SearchOpt.SelProductName}"
+								 VerticalAlignment="Center"/>
+					</Grid>
+
+					<!-- 日付 + CheckBox -->
+					<TextBlock Grid.Row="2" Grid.Column="0" 
+							   Margin="5"
+							   Text="店頭投入日"  
+							   VerticalAlignment="Center">
+						<TextBlock.Style>
+							<Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+								<Setter Property="Visibility" Value="Visible"/>
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding SearchOpt.LaunchDateIsVisible}" Value="1">
+										<Setter Property="Visibility" Value="Collapsed"/>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+					<Grid Grid.Row="2" Grid.Column="1"
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="1.5*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="3*" />
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="3*" /> 
+						</Grid.ColumnDefinitions>
+
+						<DatePicker Grid.Column="0" 
+									Margin="0,0,10,0"
+									SelectedDate="{Binding SearchOpt.SelInitLaunchDate}"
+									VerticalContentAlignment="Center">
+							<DatePicker.Style>
+								<Style TargetType="DatePicker" BasedOn="{StaticResource {x:Type DatePicker}}">
+									<Setter Property="Visibility" Value="Visible"/>
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding SearchOpt.LaunchDateIsVisible}" Value="1">
+											<Setter Property="Visibility" Value="Collapsed"/>
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</DatePicker.Style>
+						</DatePicker>
+
+						<TextBlock Grid.Column="1"
+								   Text="在庫"
+								   Margin="0,0,5,0"
+								   VerticalAlignment="Center" />
+
+						<CheckBox Grid.Column="2" 
+								  Content="使用" 
+								  Margin="0,0,5,0"
+								  IsChecked="{Binding SearchOpt.SelInvChk}"
+								  VerticalAlignment="Center"/>
+
+						<TextBox Grid.Column="3" 
+								 Text="{Binding SearchOpt.StartInvNum}"
+								 TextAlignment="Right"
+								 Margin="0,0,5,0" />
+
+						<TextBlock Grid.Column="4" 
+								   Text="～"  
+								   VerticalAlignment="Center"
+								   Margin="0,0,5,0"/>
+
+						<TextBox Grid.Column="5" 
+								 Text="{Binding SearchOpt.EndInvNum}"
+								 TextAlignment="Right"
+								 Margin="0,0,0,0"  />
+
+					</Grid>
+
+					<!-- 条件結合 -->
+					<TextBlock Grid.Row="3" Grid.Column="0"
+							   Margin="5"
+							   Text="条件結合" 
+							   VerticalAlignment="Center"/>
+					<StackPanel Grid.Row="3" Grid.Column="1" 
+								Orientation="Horizontal"
+								Margin="5">
+						<RadioButton Content="AND"
+									 GroupName="JoinOptions"
+									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"
+									 Margin="0,0,10,0"/>
+						<RadioButton Content="OR"
+									 GroupName="JoinOptions"
+									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=2}"/>
+					</StackPanel>
+				</Grid>
+			</StackPanel>
+		</Border>
+
+		<!-- 条件リスト DataGrid -->
+		<uc:ListFlexView Grid.Row="2" 
 						 Config="{Binding ListConfig}"
-						 Rows="{Binding ListFlex}" 
-						 QueryString="{Binding WhereClaus, Mode=TwoWay}" />
+						 Rows="{Binding ListFlex}"
+						 QueryString="{Binding WhereClaus, Mode=TwoWay}">
+			<uc:ListFlexView.Style>
+				<Style TargetType="uc:ListFlexView">
+					<Setter Property="Visibility" Value="Visible" />
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding SearchOpt.FlexIsVisible}" Value="1">
+							<Setter Property="Visibility" Value="Collapsed" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</uc:ListFlexView.Style>
+		</uc:ListFlexView>
 
 		<!-- Action Buttons -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 0">
-            <Button Content="🔍 検索" Style="{DynamicResource MaterialDesignContainedButton}" Margin="4"/> 
-            <Button Content="❌ 閉じる" Style="{DynamicResource MaterialDesignOutlinedButton}" Margin="4"/>
-        </StackPanel>
-    </Grid>
+		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >
+			<Button Command="{Binding DoExecuteCommand}"
+					Style="{DynamicResource ExecButton}" 
+					Margin="0, 0, 5, 0" />
+			<Button Command="{Binding DoExitCommand}"
+					Style="{DynamicResource BackBtn}" 
+					Margin="0, 0, 5, 0" />
+		</StackPanel>
+	</Grid>
 </Window>
