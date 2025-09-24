@@ -580,10 +580,11 @@ namespace CvnetClient.Views
                 return;
             }
 
+            string conn_str = (Config.conn_flg == 0) ? "AND" : "OR"; 
             var parts = Rows
                 .Where(r => !string.IsNullOrWhiteSpace(r.SelectedItem) || !string.IsNullOrWhiteSpace(r.FromValue) || !string.IsNullOrWhiteSpace(r.ToValue))
                 .Select(r =>
-                    $"AND {Config.col_alias}{r.SelectedItem} BETWEEN \"{r.FromValue}\" AND \"{r.ToValue}\"");
+                    $"{conn_str} {Config.col_alias}{r.SelectedItem} BETWEEN \"{r.FromValue}\" AND \"{r.ToValue}\"");
 
             QueryString = string.Join(" ", parts);
         }

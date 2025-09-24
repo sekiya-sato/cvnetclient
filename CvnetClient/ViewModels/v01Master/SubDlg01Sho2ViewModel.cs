@@ -434,12 +434,15 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void SelDspUpdate()
         {
-            //AppData.DlgService.GetSelSho();
-            var view = new SubDlgSelShoView();
-            var vm = view.DataContext as SubDlgSelShoViewModel;
-            if (view == null || vm == null) return;
-
-            var ret = ClientLib.ShowDialogView(view, this);
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品"))
+            {
+                var view = new SubDlgSelShoView();
+                var vm = view.DataContext as SubDlgSelShoViewModel;
+                if (view == null || vm == null) return;
+                var ar = new string[] { "1" };
+                vm.OnInit(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
+                var ret = ClientLib.ShowDialogView(view, this);
+            } 
         }
 
         [RelayCommand]
