@@ -24,6 +24,11 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         SubDlgSel2Model? selectedSel2;
 
+        /// <summary>
+        /// Current Dialog return value
+        /// </summary>
+        public BizArray ret_para;
+
         #region Functions
         public void OnInit(string[] init_para = null, string[] init_para2 = null, string qs = "", string[] init_para3 = null)
         {
@@ -238,6 +243,16 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Events
+        partial void OnSelectedSel2Changed(SubDlgSel2Model value)
+        {
+            if (value == null || DspItem == null) return;
+            DspItem.SelShohinCD = value.ProductCD;
+            DspItem.DspExhibit = string.Format("{0} {1}", value.ExhibitCD, value.ExhibitName);
+            DspItem.DspBrand = string.Format("{0} {1}", value.BrandCD, value.BrandName);
+            DspItem.DspItem = string.Format("{0} {1}", value.ItemCD, value.ItemName);
+            DspItem.DspCustDeliDate = value.CustDeliDate;
+        }
+
         [RelayCommand]
         void PrevList()
         { 
@@ -281,7 +296,8 @@ namespace CvnetClient.ViewModels
 
         [RelayCommand]
         void DoExecute()
-        { 
+        {
+            if (SelectedSel2 == null) return;
 
         }
 
