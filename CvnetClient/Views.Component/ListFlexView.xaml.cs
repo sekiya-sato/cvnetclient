@@ -605,8 +605,8 @@ namespace CvnetClient.Views
             string conn_str = (Config.conn_flg == 0) ? " AND " : " OR ";
 
             int cnt = Config.cnt_start; 
-            QueryString = string.Empty;
-            QueryString2 = string.Empty;
+            QueryString = string.Empty; QueryString2 = string.Empty; 
+            QueryStrPara.Clear();
 
             foreach (var row in Rows)
             {

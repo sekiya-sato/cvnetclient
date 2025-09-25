@@ -22,6 +22,9 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         string? whereClaus;
 
+        [ObservableProperty]
+        BizArray? listFlexPara;
+
         private BizArray para;
         private BizArray sv_cat;
         private BizArray wrk_jodai; /* セールマスタ参照配列 */
@@ -33,6 +36,7 @@ namespace CvnetClient.ViewModels
 
         public void OnInit(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0)
         {
+            listFlexPara = new BizArray();
             ListConfig = new ListFlexConfig()
             {
                 init_csv = def ?? new List<CsvItem>(),
@@ -135,6 +139,14 @@ namespace CvnetClient.ViewModels
             v_para[0] = SearchOpt.StartProdCD;
             v_para[1] = SearchOpt.EndProdCD;
             v_para[2] = SearchOpt.SelInitLaunchDate.ToString("yyyyMMdd");
+
+            if (ListFlexPara != null) {
+                for (int i = 0; i < ListFlexPara.Count; i++)
+                {
+                    v_para[v_para.Count] = ListFlexPara[i]; 
+                }
+            }
+             
 
             int cnt = 4;
             var pre_csv = new BizCsvDocument();

@@ -232,7 +232,8 @@
 		<uc:ListFlexView Grid.Row="2" 
 						 Config="{Binding ListConfig}"
 						 Rows="{Binding ListFlex}"
-						 QueryString="{Binding WhereClaus, Mode=TwoWay}">
+						 QueryString="{Binding WhereClaus, Mode=TwoWay}"
+						 QueryStrPara="{Binding ListFlexPara, Mode=TwoWay}">
 			<uc:ListFlexView.Style>
 				<Style TargetType="uc:ListFlexView">
 					<Setter Property="Visibility" Value="Visible" />
