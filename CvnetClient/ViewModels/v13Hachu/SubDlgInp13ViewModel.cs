@@ -21,9 +21,11 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public Dictionary<string, string>? comboListToriHikiTo;
         [ObservableProperty]
+        public Dictionary<string, string>? comboListToriHiki;
+        [ObservableProperty]
         ObservableCollection<OrderList>? listOrder;
         [ObservableProperty]
-        OrderHaeder? selectedOrderHeader;
+        OrderHeader? selectedOrderHeader;
         [ObservableProperty]
         ObservableCollection<OrderDetail>? selectedOrderDetail;
 
@@ -52,7 +54,6 @@ namespace CvnetClient.ViewModels
                 UserTo = "99999999"
             };
 
-
             ComboListToriHikiFrom = new Dictionary<string, string>
             {
                 {  "00", "00" },
@@ -68,7 +69,7 @@ namespace CvnetClient.ViewModels
                 {  "11", "11 追加発注" },
                 {  "15", "15 自動発注" }
             };
-
+           
             var rand = new Random();
             ListOrder = new ObservableCollection<OrderList>();
 
@@ -93,6 +94,48 @@ namespace CvnetClient.ViewModels
                     WeightSum = $"{rand.Next(10, 200)} kg",
                     PriceSum = $"{rand.Next(1000, 50000):N0} 円",
                     Kanren = $"K{rand.Next(1, 9999):0000}"
+                });
+            }
+
+            SelectedOrderHeader = new OrderHeader();
+
+            ComboListToriHiki = new Dictionary<string, string>
+            {
+                {  "10", "10 発注" },
+                {  "11", "11 追加発注" },
+                {  "15", "15 自動発注" }
+            };
+            SelectedOrderHeader.ToriKubun = ComboListToriHiki.FirstOrDefault().Key;
+            SelectedOrderHeader.Ware = "00099 DTP倉庫";
+            SelectedOrderHeader.Kanren1 = "0";
+            SelectedOrderHeader.Kanren2 = "0";
+            SelectedOrderHeader.Hachubi = "2025/09/25";
+            SelectedOrderHeader.Nohinbi = "2025/09/25";
+            SelectedOrderHeader.CreateDate = "41827.10028962";
+            SelectedOrderHeader.UpdateDate = "41827.10028962";
+
+            var rnd = new Random();
+            SelectedOrderDetail = new ObservableCollection<OrderDetail>();
+
+            for (int i = 1; i <= 5; i++)
+            {
+                SelectedOrderDetail.Add(new OrderDetail
+                {
+                    ProductCD = $"P{i:D3}",
+                    ProductName = $"Product {i}",
+                    Color = $"{rnd.Next(1, 10):D2}",
+                    ColorName = $"Color {rnd.Next(1, 5)}",
+                    Size = rnd.Next(35, 45).ToString(),
+                    SizeName = $"Size {rnd.Next(1, 5)}",
+                    Weight = rnd.Next(100, 2000).ToString(),
+                    JodaiTanka = rnd.Next(1000, 9000).ToString(),
+                    JodaiKingaku = rnd.Next(2000, 18000).ToString(),
+                    GedaiTanka = rnd.Next(900, 8500).ToString(),
+                    GedaiKingaku = rnd.Next(1800, 17000).ToString(),
+                    Abstract = "Dummy item",
+                    Kanryo = (i % 2 == 0) ? "済" : "未",
+                    Maker = $"Maker {rnd.Next(1, 5)}",
+                    Kubun = $"{(char)('A' + i - 1)}"
                 });
             }
         }
@@ -139,7 +182,7 @@ namespace CvnetClient.ViewModels
             public string? Kanren { get; set; }
         }
 
-        public class OrderHaeder
+        public class OrderHeader
         {
             public string? DenpyoNo { get; set; }
             public string? Hachubi { get; set; }
@@ -152,11 +195,27 @@ namespace CvnetClient.ViewModels
             public string? Ware { get; set; }
             public string? User { get; set; }
             public string? Biko { get; set; }
+            public string? CreateDate { get; set; }
+            public string? UpdateDate { get; set; }
         }
 
         public class OrderDetail 
-        { 
-        
+        {
+            public string? ProductCD { get; set; }
+            public string? ProductName { get; set; }
+            public string? Color { get; set; }
+            public string? ColorName { get; set; }
+            public string? Size { get; set; }
+            public string? SizeName { get; set; }
+            public string? Weight { get; set; }
+            public string? JodaiTanka { get; set; }
+            public string? JodaiKingaku { get; set; }
+            public string? GedaiTanka { get; set; }
+            public string? GedaiKingaku { get; set; }
+            public string? Abstract { get; set; }
+            public string? Kanryo { get; set; }
+            public string? Maker { get; set; }
+            public string? Kubun { get; set; }
         }
     }
 }
