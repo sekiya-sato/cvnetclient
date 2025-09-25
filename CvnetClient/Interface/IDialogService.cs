@@ -13,6 +13,7 @@ namespace CvnetClient.Interface
 
         SubDlg80gphSelViewModel Get80gphSel(string[] wrk_para = null);
 
+        SubDlgSel2ViewModel GetSel2(string[] init_para = null, string[] init_para2 = null, string qs = "", string[] init_para3 = null);
     }
 
 }

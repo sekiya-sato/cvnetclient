@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
+using CommunityToolkit.Mvvm.Input; 
 using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -30,7 +28,8 @@ namespace CvnetClient.ViewModels
         private BizArray sv_init_para; /* init_para退避配列 */
 
         public SelValueModel? selectedValue; /* Return value for CvnetBtListView */
-        public object? SelShoResult; /* Default return result method, datatype depends on DoExecute() */
+        public BizArray SelShoResult0;
+        public Tuple<string, BizArray> SelShoResult1; /* Default return result method, datatype depends on DoExecute() */
 
         public void OnInit(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0)
         {
@@ -66,8 +65,10 @@ namespace CvnetClient.ViewModels
                 SearchOpt.SelInvChk = true;
 
             if (wrk_para2 != null) wrk_jodai = new BizArray(wrk_para2);
+            else wrk_jodai = new BizArray();
 
             if (init_para != null) sv_init_para = new BizArray(init_para);
+            else sv_init_para = new BizArray();
 
             if (AppData.ClassCvnet.config.oroshi != 0)
             {
@@ -86,8 +87,12 @@ namespace CvnetClient.ViewModels
         {
             if (e.PropertyName == nameof(SelShoSearchOpt.SelJoinCond))
             {
-                if(ListConfig != null)
-                   ListConfig.conn_flg = SearchOpt?.SelJoinCond ?? 0;
+                if (ListConfig != null)
+                {
+                    ListConfig.conn_flg = SearchOpt?.SelJoinCond ?? 0; 
+                    ListConfig = new ListFlexConfig(ListConfig);
+                    OnPropertyChanged(nameof(ListConfig)); 
+                }
             }
         }
 
@@ -106,6 +111,10 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Functions
+        /// <summary>
+        /// Generate query from current form
+        /// </summary>
+        /// <returns>Item 1: Query, Item 2: Parameters </returns>
         Tuple<string, BizArray> OnQueryString()
         {
             if (SearchOpt  == null) return Tuple.Create<string, BizArray>("", null);
@@ -311,12 +320,23 @@ namespace CvnetClient.ViewModels
             if (para[0] == "1")
             {
                 //return result and exit from current form
-                SelShoResult = ret;
+                SelShoResult1 = ret;
                 ClientLib.ExitDialogResult(this, true);
             }
             else if (para[0] == "0")
-            { 
-                
+            {
+                /* 在庫問い合わせ等 */
+                if (wrk_jodai.Count > 0)
+                {
+                    var vm = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1, wrk_jodai.ToArray());
+                    SelShoResult0 = vm.ret_para;
+                }
+                else
+                {
+                    var vm = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1);
+                    SelShoResult0 = vm.ret_para;
+                } 
+                ClientLib.ExitDialogResult(this, true);
             }
         }
         [RelayCommand]

@@ -439,7 +439,7 @@ namespace CvnetClient.ViewModels
                 var view = new SubDlgSelShoView();
                 var vm = view.DataContext as SubDlgSelShoViewModel;
                 if (view == null || vm == null) return;
-                var ar = new string[] { "1" };
+                var ar = new string[] { "0" };
                 vm.OnInit(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
                 var ret = ClientLib.ShowDialogView(view, this);
             } 

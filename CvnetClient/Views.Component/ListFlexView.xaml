@@ -25,6 +25,7 @@
 				  CanUserAddRows="False" 
 				  HeadersVisibility="Column"
 				  Margin="5" 
+				  Style="{DynamicResource WinGridData}"
 				  ColumnWidth="*">
 			<DataGrid.Columns>
 				<!--行-->

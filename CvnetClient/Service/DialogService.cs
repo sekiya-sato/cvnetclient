@@ -1,4 +1,5 @@
-﻿using CvnetClient.Interface;
+﻿using CvnetClient.Class;
+using CvnetClient.Interface;
 using CvnetClient.Models;
 using CvnetClient.ViewModels;
 using CvnetClient.Views;
@@ -71,6 +72,21 @@ namespace CvnetClient.Service
 
             var ret = ClientLib.ShowDialogView(view, null);
             if (ret != true) return null; 
+            return vm;
+        }
+
+        public SubDlgSel2ViewModel GetSel2(string[] init_para = null, string[] init_para2 = null, string qs = "", string[] init_para3 = null)
+        { 
+            var view = new SubDlgSel2View();
+            var vm = view.DataContext as SubDlgSel2ViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(init_para, init_para2, qs, init_para3);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
             return vm;
         }
     }

@@ -11,7 +11,7 @@ namespace CvnetClient.Utils
     public class BizArray
     { 
         List<string> list;
-        public int Count => list.Count;
+        public int Count => (list != null) ? list.Count : 0;
 
         // 🔹 Indexer for array-like access
         public string this[int index]
@@ -54,7 +54,7 @@ namespace CvnetClient.Utils
         public string? Get(int index)
         {
             if (index < 0 || index >= list.Count)
-                throw new IndexOutOfRangeException($"Index {index} is out of range. Current size: {list.Count}");
+                return null; //throw new IndexOutOfRangeException($"Index {index} is out of range. Current size: {list.Count}");
             return (index < list.Count) ? list[index] : null;
         }
 
