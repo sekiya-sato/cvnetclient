@@ -31,6 +31,17 @@ namespace CvnetClient.ViewModels
         /// [Example set conn_flg = "1", then each 項目 will be like OR A.項目1 BETWEEN :1 AND 2: ]
         /// </summary>
         public int conn_flg { get; set; } = 0;
+
+        public ListFlexConfig() { }
+
+        public ListFlexConfig(ListFlexConfig config)
+        {
+            this.flag = config.flag;
+            this.cnt_start = config.cnt_start;
+            this.col_alias = config.col_alias;
+            this.init_csv = config.init_csv;
+            this.conn_flg = config.conn_flg;
+        }
     }
 
     /// <summary>

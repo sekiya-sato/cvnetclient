@@ -28,7 +28,7 @@ namespace CvnetClient.Views
             Type_Def = new ObservableCollection<TypeDefItem>();
             unit_list2 = new Dictionary<string, string>(); 
             //Rows = new ObservableCollection<ListFlexItem>();
-            //Rows.CollectionChanged += (s, e) => UpdateQuery(); 
+            //Rows.CollectionChanged += (s, e) => GetQueryStr(); 
         }
 
         private void ListFlexView_Loaded(object sender, RoutedEventArgs e)
@@ -81,7 +81,7 @@ namespace CvnetClient.Views
             set => SetValue(ConfigProperty, value);
         }
 
-        // Generated SQL-like WHERE string
+        // Generated SQL-like WHERE string (For example: item1 between :1 and :2)
         public static readonly DependencyProperty QueryStringProperty =
             DependencyProperty.Register(
                 nameof(QueryString),
@@ -96,6 +96,35 @@ namespace CvnetClient.Views
             get => (string)GetValue(QueryStringProperty);
             set => SetValue(QueryStringProperty, value);
         }
+
+        // Query String parameter 
+        public static readonly DependencyProperty QueryStrParaProperty =
+            DependencyProperty.Register(
+                nameof(QueryStrPara),
+                typeof(BizArray),
+                typeof(ListFlexView),
+                new PropertyMetadata(new BizArray()));
+
+        public BizArray QueryStrPara
+        {
+            get => (BizArray)GetValue(QueryStrParaProperty);
+            set => SetValue(QueryStrParaProperty, value);
+        }
+
+        // Generate SQL-like WHERE string format2 (For example: item1 between '' and 'zzzzzz')
+        public static readonly DependencyProperty QueryString2Property =
+            DependencyProperty.Register(
+                nameof(QueryString2),
+                typeof(string),
+                typeof(ListFlexView),
+                new FrameworkPropertyMetadata(
+                    string.Empty,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+        public string QueryString2
+        {
+            get => (string)GetValue(QueryString2Property);
+            set => SetValue(QueryString2Property, value);
+        } 
         #endregion
 
         #region Event List  
@@ -117,7 +146,7 @@ namespace CvnetClient.Views
                         r.PropertyChanged += control.Row_PropertyChanged;
                 }
 
-                control.UpdateQuery();
+                control.GetQueryStr();
             }
         }
 
@@ -137,7 +166,7 @@ namespace CvnetClient.Views
                     item.PropertyChanged -= Row_PropertyChanged;
             }
 
-            UpdateQuery(); // refresh when rows added/removed
+            GetQueryStr(); // refresh when rows added/removed
         }
 
         /// <summary>
@@ -145,17 +174,17 @@ namespace CvnetClient.Views
         /// </summary>
         private void Row_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdateQuery();
+            GetQueryStr();
         }
 
         private static void OnConfigChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ListFlexView view && e.NewValue is ListFlexConfig config)
-            {
+            { 
                 // If control already initialized, refresh immediately
                 if (view._isInitialized)
-                {
-                    view.OnInit();
+                { 
+                    view.OnInit(); 
                 }
             }
         }
@@ -189,26 +218,24 @@ namespace CvnetClient.Views
             if (Config == null) return;
 
             // Ensure Rows exists
-            if (Rows == null)
-            {
-                Rows = new ObservableCollection<ListFlexItem>();
-            }
-            else if (!_isInitialized)
-            {
-                // Only clear rows during FIRST init
-                Rows.Clear();
-            }
+            if (Rows == null) 
+                Rows = new ObservableCollection<ListFlexItem>(); 
+            else Rows.Clear(); 
+              
+            if (unit_list == null || unit_list.Count == 0)
+                unit_list = new Dictionary<string, string>();
+            else unit_list.Clear();
+            if (unit_list2 == null || unit_list2.Count == 0)
+                unit_list2 = new Dictionary<string, string>();
+            else unit_list2.Clear();
+            if (Type_Def == null || Type_Def.Count == 0)
+                Type_Def = new ObservableCollection<TypeDefItem>();
+            else Type_Def.Clear(); 
+            if (QueryStrPara == null || QueryStrPara.Count == 0)
+                QueryStrPara = new BizArray();
+            else QueryStrPara.Clear();
 
-            //if (Rows == null)
-            //    SetValue(RowsProperty, new ObservableCollection<ListFlexItem>());
-
-            //Rows.Clear(); // safe: clears the existing collection
-
-            unit_list = new Dictionary<string, string>();
-            unit_list2 = new Dictionary<string, string>();
-            Type_Def = new ObservableCollection<TypeDefItem>();
-            Line3_ListData = "";
-
+            Line3_ListData = ""; 
             List<string> v_col = new List<string>();
             string tb_name = "";
             string qs = "select 名称CD, 名称 from hc$master_meisho where 名称区分 = 'IDX' ";
@@ -571,22 +598,46 @@ namespace CvnetClient.Views
 
         // ---------------------------
         // Generate SQL-like WHERE string
-        // ---------------------------
-        private void UpdateQuery()
+        // --------------------------- 
+        private void GetQueryStr()
         {
-            if (Rows == null || Rows.Count == 0)
+            if (Rows == null || Rows.Count == 0) return; 
+            string conn_str = (Config.conn_flg == 0) ? " AND " : " OR ";
+
+            int cnt = Config.cnt_start; 
+            QueryString = string.Empty; QueryString2 = string.Empty; 
+            QueryStrPara.Clear();
+
+            foreach (var row in Rows)
             {
-                QueryString = string.Empty;
-                return;
+                if(string.IsNullOrEmpty(row.SelectedItem)) continue; 
+                var ar = Search_Data(row.SelectedItem).ToArray();
+                if (!string.IsNullOrEmpty(ar[1]))
+                {
+                    var cd_name = GetConvKubun(ar[1]);
+                    if (string.IsNullOrEmpty(cd_name))
+                        cd_name =  GetConvColName(row.SelectedItem);
+                    if (!string.IsNullOrEmpty(cd_name))
+                    {
+                        if (Config.cnt_start < cnt)
+                        {
+                            QueryString += conn_str;
+                            QueryString2 += conn_str;
+                        }
+
+                        string CD01 = (string.IsNullOrEmpty(row.FromValue.Trim())) ? "." : row.FromValue.Trim();
+                        string CD02 = (string.IsNullOrEmpty(row.ToValue.Trim())) ? "." : row.ToValue.Trim();
+                        QueryString2 += Config.col_alias + cd_name + " between '" + CD01 + "' and '" + CD02 + "'";
+
+                        QueryString += Config.col_alias + cd_name + " between :" + cnt + " and :" + (cnt + 1);
+                        cnt = cnt + 2;
+                        QueryStrPara[QueryStrPara.Count] = row.FromValue;
+                        QueryStrPara[QueryStrPara.Count] = row.ToValue;
+                    }
+                }
             }
-
-            string conn_str = (Config.conn_flg == 0) ? "AND" : "OR"; 
-            var parts = Rows
-                .Where(r => !string.IsNullOrWhiteSpace(r.SelectedItem) || !string.IsNullOrWhiteSpace(r.FromValue) || !string.IsNullOrWhiteSpace(r.ToValue))
-                .Select(r =>
-                    $"{conn_str} {Config.col_alias}{r.SelectedItem} BETWEEN \"{r.FromValue}\" AND \"{r.ToValue}\"");
-
-            QueryString = string.Join(" ", parts);
+            if (QueryString != "") { QueryString = " and (" + QueryString + ")"; }
+            if (QueryString2 != "") { QueryString2 = " and (" + QueryString2 + ")"; }
         }
     }
 }

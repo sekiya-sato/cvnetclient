@@ -4,6 +4,7 @@ using CvnetClient.Models;
 using CvnetClient.Utils;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 
 namespace CvnetClient.ViewModels
 {
@@ -23,7 +24,7 @@ namespace CvnetClient.ViewModels
 
         [ObservableProperty]
         SubDlgSel2Model? selectedSel2;
-
+         
         /// <summary>
         /// Current Dialog return value
         /// </summary>
@@ -36,10 +37,13 @@ namespace CvnetClient.ViewModels
             ListSel2 = new ObservableCollection<SubDlgSel2Model>();
 
             if (init_para != null) para = new BizArray(init_para);
+            else para = new BizArray();
             if (init_para2.Length > 0) Imp99 = init_para2[0]; 
-            if (init_para2.Length > 0) para2 = new BizArray(init_para2); 
+            if (init_para2.Length > 0) para2 = new BizArray(init_para2);
+            else para2 = new BizArray();
             if (!string.IsNullOrEmpty(qs)) sv_sql = qs;
             if (init_para3 != null) wrk_jodai = new BizArray(init_para3);
+            else wrk_jodai = new BizArray();
 
             OnInit2();
         }
@@ -251,6 +255,7 @@ namespace CvnetClient.ViewModels
             DspItem.DspBrand = string.Format("{0} {1}", value.BrandCD, value.BrandName);
             DspItem.DspItem = string.Format("{0} {1}", value.ItemCD, value.ItemName);
             DspItem.DspCustDeliDate = value.CustDeliDate;
+            DspItem.DspImage = string.Format("{0}{1}{2}{3}",AppData.AspxPath, "Data/", AppData.DataAddPath, value.ImgName);
         }
 
         [RelayCommand]
@@ -298,14 +303,64 @@ namespace CvnetClient.ViewModels
         void DoExecute()
         {
             if (SelectedSel2 == null) return;
+            ret_para = new BizArray();
 
+            /* 2007.10.11 メーカー品番を追加したので、調整 */ 
+            ret_para[0] = SelectedSel2.ProductCD;
+            ret_para[1] = SelectedSel2.ProductName;
+            ret_para[2] = SelectedSel2.Price.ToString();
+            ret_para[3] = SelectedSel2.ImgName;
+            ret_para[4] = dspItem.DspExhibit;
+            ret_para[5] = dspItem.DspBrand;
+            ret_para[6] = dspItem.DspItem;
+            ret_para[7] = dspItem.DspCustDeliDate;
+            ret_para[8] = SelectedSel2.Cost.ToString();
+            ret_para[9] = SelectedSel2.TaxCalcMethod.ToString();
+
+            /* 項目追加 */
+            ret_para[10] = SelectedSel2.BrandCD;
+            ret_para[11] = SelectedSel2.BrandName;
+            ret_para[12] = SelectedSel2.MasterPrice.ToString();
+
+            /* さらに追加・店頭投入日 20060816 */
+            ret_para[13] = SelectedSel2.InitLaunchDate; // return format is yyyy/MM/dd
+            ret_para[14] = SelectedSel2.OpCostPrice.ToString(); /* 営業原価追加 2007.10.03 */
+            ret_para[15] = SelectedSel2.PurchasePrice.ToString();  /* 仕入値追加 2008.06.16 */
+            bool isDate = DateTime.TryParseExact(selectedSel2.DeliveryDate, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dt16);
+            ret_para[16] = (isDate) ? dt16.ToString("yyyyMMdd") : "19010101"; /* 納品日追加 2008.09.26 */
+
+            /* さらに追加・メーカー品番 20081106 */
+            ret_para[17] = SelectedSel2.MakerNo;
+            /* さらに追加・仕入区分 20091006 */
+            ret_para[18] = SelectedSel2.PurchaseCate.ToString();
+            /* さらに追加・商品管理FLG 20100405 */
+            ret_para[19] = SelectedSel2.PrdMngmentFLG.ToString();
+            /* さらに追加・単位 20100428 */
+            ret_para[20] = SelectedSel2.Unit.ToString();
+            /* さらに追加・売単価 20100706 */
+            ret_para[21] = SelectedSel2.SalesUnitPrice.ToString();
+            /* さらに追加 副名1・2・3 20100714 */
+            ret_para[22] = SelectedSel2.SubnameCD1;
+            ret_para[23] = SelectedSel2.Subname1;
+            ret_para[24] = SelectedSel2.SubnameCD2;
+            ret_para[25] = SelectedSel2.Subname2;
+            ret_para[26] = SelectedSel2.SubnameCD3;
+            ret_para[27] = SelectedSel2.Subname3;
+            /* さらに追加 サイズ区分 20110524 */
+            ret_para[28] = SelectedSel2.ProdSizeCate;
+            /* さらに追加 在庫管理フラグ */
+            ret_para[29] = SelectedSel2.InvMngmentFLG.ToString();
+
+            //confirm and close window
+            ClientLib.ExitDialogResult(this, true); 
         }
 
         [RelayCommand]
         void DoExit()
         {
             //confirm and close window
-            ClientLib.ExitDialogResult(this, true);
+            //ClientLib.ExitDialogResult(this, true);
+            this.Close();
         }
         #endregion
     }

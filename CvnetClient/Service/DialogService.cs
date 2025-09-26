@@ -1,4 +1,5 @@
-﻿using CvnetClient.Interface;
+﻿using CvnetClient.Class;
+using CvnetClient.Interface;
 using CvnetClient.Models;
 using CvnetClient.ViewModels;
 using CvnetClient.Views;
@@ -48,17 +49,6 @@ namespace CvnetClient.Service
             ClientLib.ShowWindowView(view, null); // non-modal
         }
 
-        public SubDlgSelShoViewModel GetSelSho()
-        {
-            var view = new SubDlgSelShoView();
-            var vm = view.DataContext as SubDlgSelShoViewModel;
-            if (view == null || vm == null) return null;
-
-            var ret = ClientLib.ShowDialogView(view, null);
-            if (ret != true) return null;
-            return vm;
-        }
-
         public SubDlg80gphSelViewModel Get80gphSel(string[] wrk_para = null)
         { 
             var view = new SubDlg80gphSelView();
@@ -71,6 +61,35 @@ namespace CvnetClient.Service
 
             var ret = ClientLib.ShowDialogView(view, null);
             if (ret != true) return null; 
+            return vm;
+        }
+
+        public SubDlgSelShoViewModel GetSelSho(string v_mst = "", string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0)
+        {
+            var view = new SubDlgSelShoView();
+            var vm = view.DataContext as SubDlgSelShoViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(v_mst, init_para, wrk_para, def, wrk_para2, v_kt);
+
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
+        public SubDlgSel2ViewModel GetSel2(string[] init_para = null, string[] init_para2 = null, string qs = "", string[] init_para3 = null)
+        { 
+            var view = new SubDlgSel2View();
+            var vm = view.DataContext as SubDlgSel2ViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(init_para, init_para2, qs, init_para3);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
             return vm;
         }
     }
