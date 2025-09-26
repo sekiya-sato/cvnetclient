@@ -30,9 +30,15 @@ namespace CvnetClient.ViewModels
         private BizArray wrk_jodai; /* セールマスタ参照配列 */
         private BizArray sv_init_para; /* init_para退避配列 */
 
-        public SelValueModel? selectedValue; /* Return value for CvnetBtListView */
+        [ObservableProperty]
+        SelValueModel? selectedValue; /* Return value for CvnetBtListView */
         public BizArray SelShoResult0;
         public Tuple<string, BizArray> SelShoResult1; /* Default return result method, datatype depends on DoExecute() */
+
+        public void OnInit(string v_mstname, string[] init_para = null, string[] v_para2 = null)
+        {
+            OnInit(v_mstname, init_para, v_para2, null, null, 0);
+        }
 
         public void OnInit(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0)
         {
@@ -64,9 +70,14 @@ namespace CvnetClient.ViewModels
             };
             SearchOpt.SelCond02 = Cond02List.FirstOrDefault().Key;
             #endregion
-             
-            if (wrk_para[0] == "3" || wrk_para[0] == "4" || wrk_para[0] == "5") 
-                SearchOpt.SelInvChk = true;
+
+            SearchOpt.SelInvChk = false;
+            if (wrk_para != null)
+            {
+                if (wrk_para[0] == "3" || wrk_para[0] == "4" || wrk_para[0] == "5")
+                    SearchOpt.SelInvChk = true;
+            }  
+
 
             if (wrk_para2 != null) wrk_jodai = new BizArray(wrk_para2);
             else wrk_jodai = new BizArray();
@@ -146,8 +157,7 @@ namespace CvnetClient.ViewModels
                     v_para[v_para.Count] = ListFlexPara[i]; 
                 }
             }
-             
-
+            
             int cnt = 4;
             var pre_csv = new BizCsvDocument();
             //ListConfig.conn_flg = SearchOpt.SelJoinCond;
@@ -174,7 +184,7 @@ namespace CvnetClient.ViewModels
                             qs_str_tmp += " and ";
                         }
                     }
-                    if (!SearchOpt.SelBSChk)
+                    if (SearchOpt.SelBSChk)
                     {
                         if (SearchOpt.SelCond02 == 1)
                         {
@@ -235,7 +245,7 @@ namespace CvnetClient.ViewModels
                 sql_query += " and (" + qs_str_tmp + ")";
             }
             sv_cat.Clear();
-            if (!SearchOpt.SelInvChk)
+            if (SearchOpt.SelInvChk)
             {
                 string zais = "";
                 string zaitbl = "";
@@ -332,29 +342,33 @@ namespace CvnetClient.ViewModels
             if (para[0] == "1")
             {
                 //return result and exit from current form
-                SelShoResult1 = ret;
+                SelShoResult1 = ret; 
                 ClientLib.ExitDialogResult(this, true);
             }
             else if (para[0] == "0")
             {
                 /* 在庫問い合わせ等 */
-                if (wrk_jodai.Count > 0)
+                SubDlgSel2ViewModel vm_result = null;
+                if (wrk_jodai.Count > 0) 
+                    vm_result = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1, wrk_jodai.ToArray()); 
+                else 
+                    vm_result = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1); 
+                if (vm_result != null)
                 {
-                    var vm = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1, wrk_jodai.ToArray());
-                    SelShoResult0 = vm.ret_para;
+                    SelectedValue = new SelValueModel()
+                    {
+                        Code = (vm_result.SelectedSel2 != null) ? vm_result.SelectedSel2.ProductCD : "",
+                        Name = (vm_result.SelectedSel2 != null) ? vm_result.SelectedSel2.ProductName : "",
+                    }; 
+                    SelShoResult0 = vm_result.ret_para; 
+                    ClientLib.ExitDialogResult(this, true);
                 }
-                else
-                {
-                    var vm = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1);
-                    SelShoResult0 = vm.ret_para;
-                } 
-                ClientLib.ExitDialogResult(this, true);
             }
         }
         [RelayCommand]
         void DoExit()
         {
-            ClientLib.ExitDialogResult(this, true);
+             
         }
         #endregion
     }

@@ -28,7 +28,9 @@ namespace CvnetClient.Models {
 		public static string AppDataPath { get; set; } = System.IO.Path.Combine(AppPath, "data");
 		public static string AppConfigPath { get; set; } = System.IO.Path.Combine(AppDataPath, "appsettings.json");
 		public static IConfigurationSection AppConfig { get; set; }
-		public static string Url { get; set; }
+		public static string AspxPath { get; set; }
+		public static string DataAddPath { get; set; } 
+        public static string Url { get; set; }
 		public static ClassHttp? Http { get; set; }
 		public static DefConfig DefConfig { get; set; } = new DefConfig(); 
 		public static ClassSatoo ClassSatoo { get; set; } = new ClassSatoo();
@@ -49,7 +51,9 @@ namespace CvnetClient.Models {
 				.Build();
 			AppConfig = config.GetSection("AppSetting");
 			Url = AppConfig["Url"] ?? "https://localhost/";
-			Http = new ClassHttp(AppData.Url);
+			AspxPath = AppConfig["AspxPath"] ?? string.Empty;
+            DataAddPath = AppConfig["DataAddPath"] ?? string.Empty;
+            Http = new ClassHttp(AppData.Url);
 		}
 	}
 }

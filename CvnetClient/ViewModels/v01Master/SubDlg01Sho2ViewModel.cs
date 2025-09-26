@@ -435,14 +435,11 @@ namespace CvnetClient.ViewModels
         public void SelDspUpdate()
         {
             if (AppData.ClassCvnet.MstDialog.ContainsKey("商品"))
-            {
-                var view = new SubDlgSelShoView();
-                var vm = view.DataContext as SubDlgSelShoViewModel;
-                if (view == null || vm == null) return;
-                var ar = new string[] { "0" };
-                vm.OnInit(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
-                var ret = ClientLib.ShowDialogView(view, this);
-            } 
+            { 
+                var ar = new string[] { "0" };  
+                var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
+                //var test = vm.SelShoResult0;
+            }
         }
 
         [RelayCommand]
@@ -590,7 +587,7 @@ namespace CvnetClient.ViewModels
         }
         [RelayCommand]
         public void SelStandWare(object value)
-        {
+        { 
             // Note: Require Call SelTok to get ID before Start GetSell00 
             /*
             var get_sel00 = AppData.DlgService.GetSel00("倉庫");
