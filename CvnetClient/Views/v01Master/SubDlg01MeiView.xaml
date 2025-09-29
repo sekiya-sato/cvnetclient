@@ -58,7 +58,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Content="名称区分" VerticalAlignment="Center"/>
-                        <ComboBox ItemsSource="{Binding ListKubun}" SelectedItem="{Binding SelectKubun}" Grid.Column="1">
+                        <ComboBox ItemsSource="{Binding ListKubun}" SelectedItem="{Binding SelectKubun}" Grid.Column="1" Style="{StaticResource SearchableComboBox1}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding}" />
