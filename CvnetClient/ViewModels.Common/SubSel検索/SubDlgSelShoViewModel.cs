@@ -368,7 +368,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void DoExit()
         {
-             
+            ClientLib.ExitDialogResult(this, true);
         }
         #endregion
     }
