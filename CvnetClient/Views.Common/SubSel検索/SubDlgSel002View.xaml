@@ -57,7 +57,7 @@
 			<Button Width="70" 
 					Command="{Binding NameSearchCommand}"
 					Content="名称検索" 
-					Margin="0,0,10,0"/>
+					Margin="0,0,15,0"/>
 			<Button Width="100" 
 					Command="{Binding DoSearchCommand}"
                     Style="{StaticResource ExecButton}"

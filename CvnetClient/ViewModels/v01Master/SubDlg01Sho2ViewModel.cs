@@ -435,12 +435,20 @@ namespace CvnetClient.ViewModels
         public void SelDspUpdate()
         {
             //商品
-            if (AppData.ClassCvnet.MstDialog.ContainsKey("担当"))
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品"))
             { 
-                var ar = new string[] { "0" };  //GetSelSho
-                var vm = AppData.DlgService.GetSelUsr(AppData.ClassCvnet.MstDialog["担当"].v_mstname, null, ar);
-                //var test = vm.SelShoResult0;
+                var ar = new string[] { "0" };
+                var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar); 
             }
+
+            //担当
+            /*
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("担当"))
+            {
+                var ar = new string[] { "0" };  
+                var vm = AppData.DlgService.GetSelUsr(AppData.ClassCvnet.MstDialog["担当"].v_mstname, null, ar); 
+            }
+            */
         }
 
         [RelayCommand]

@@ -139,11 +139,11 @@
 		</Border>
 
 		<!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="2"
+		<!--<uc:ListFlexView Grid.Row="2"
 						 Config="{Binding ListConfig}" 
 						 Rows="{Binding ListFlex}"
 						 QueryString="{Binding WhereClaus, Mode=TwoWay}"
-						 QueryStrPara="{Binding ListFlexPara, Mode=TwoWay}"/>
+						 QueryStrPara="{Binding ListFlexPara, Mode=TwoWay}"/>-->
 
 		<!-- Action Buttons -->
 		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >
