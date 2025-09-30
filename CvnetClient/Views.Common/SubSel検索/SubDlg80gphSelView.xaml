@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels" 
         mc:Ignorable="d" 
-		Title="選択画面"
+		Title="{Binding Title}"
 		Height="450" 
         Width="520">
 	<Window.DataContext>
@@ -70,7 +70,7 @@
 			<Button Width="70" 
 					Command="{Binding NameSearchCommand}"
 					Content="名称検索" 
-					Margin="0,0,15,0"/>
+					Margin="0,0,10,0"/>
 			<Button Width="100" 
 					Command="{Binding DoSearchCommand}"
                     Style="{StaticResource ExecButton}"

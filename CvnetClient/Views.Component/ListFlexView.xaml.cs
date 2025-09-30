@@ -246,32 +246,41 @@ namespace CvnetClient.Views
                 else
                     qs += " and (名称CD between 'B01' and 'B10' or 名称CD between 'Y01' and 'Y20' or 名称CD in ('BRD','ITM','DZN','SZN','MKR','TNJ','SZI','GEN'" + ((AppData.ClassCvnet.config.smtflg == 1) ? " ,'BN0','BN1','BN2'" : "") + "))";
 
-                for (var i = 0; i < AppData.ClassEtc.SearchShohinCols.Length; i++) {
-                    v_col.Add(AppData.ClassEtc.SearchShohinCols[i]);
+                if (AppData.ClassEtc.SearchShohinCols != null)
+                {
+                    for (var i = 0; i < AppData.ClassEtc.SearchShohinCols.Length; i++) {
+                        v_col.Add(AppData.ClassEtc.SearchShohinCols[i]);
+                    }
                 }
                 tb_name = "hc$master_shohin";
             }
             else if (Config.flag == 1)
             {
                 qs += " and (名称CD between 'C01' and 'C10')";
-                for (var i = 0; i < AppData.ClassEtc.SearchTokuiCols.Length; i++) {
-                    v_col.Add(AppData.ClassEtc.SearchTokuiCols[i]);
+                if (AppData.ClassEtc.SearchTokuiCols != null) {
+                    for (var i = 0; i < AppData.ClassEtc.SearchTokuiCols.Length; i++) {
+                        v_col.Add(AppData.ClassEtc.SearchTokuiCols[i]);
+                    }
                 }
                 tb_name = "hc$master_tokui";
             }
             else if (Config.flag == 2)
             {
                 qs += " and (名称CD between 'D01' and 'D10')";
-                for (var i = 0; i < AppData.ClassEtc.SearchSiireCols.Length; i++) {
-                    v_col.Add(AppData.ClassEtc.SearchSiireCols[i]);
+                if (AppData.ClassEtc.SearchSiireCols != null) {
+                    for (var i = 0; i < AppData.ClassEtc.SearchSiireCols.Length; i++) {
+                        v_col.Add(AppData.ClassEtc.SearchSiireCols[i]);
+                    }
                 }
                 tb_name = "hc$master_siire";
             }
             else if (Config.flag == 3)
             {
                 qs += " and (名称CD between 'E01' and 'E05')";
-                for (var i = 0; i < AppData.ClassEtc.SearchShainCols.Length; i++) {
-                    v_col.Add(AppData.ClassEtc.SearchShainCols[i]);
+                if (AppData.ClassEtc.SearchShainCols != null) {
+                    for (var i = 0; i < AppData.ClassEtc.SearchShainCols.Length; i++) {
+                        v_col.Add(AppData.ClassEtc.SearchShainCols[i]);
+                    }
                 }
                 tb_name = "hc$master_shain";
             }

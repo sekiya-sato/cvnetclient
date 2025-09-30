@@ -6,14 +6,66 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         mc:Ignorable="d"
-        Title="選択画面"
+        Title="{Binding Title}"
 		Height="450" 
         Width="510"
         FontFamily="Meiryo UI">
 	<Window.DataContext>
 		<vm:SubDlgSel002ViewModel />
 	</Window.DataContext>
-    <Grid>
-        
-    </Grid>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="10" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="*"  />
+			<ColumnDefinition Width="10" />
+		</Grid.ColumnDefinitions>
+
+		<DataGrid Grid.Row="0" Grid.Column="1"
+				  d:ItemsSource="{d:SampleData ItemCount= 5}"
+				  IsReadOnly="True" 
+				  HeadersVisibility="Column"
+				  IsSynchronizedWithCurrentItem="True"
+				  ItemsSource="{Binding ListSel002}"
+				  SelectedItem="{Binding SelectedSel002}"
+                  Style="{StaticResource WinGridData}"
+				  SelectionMode="Single"> 
+		</DataGrid>
+
+		<StackPanel Grid.Row="1" Grid.Column="1" 
+					Orientation="Horizontal" 
+					Margin="0, 5, 0, 0">
+			<Button Width="35" 
+					Command="{Binding PrevListCommand}"
+					Content="&lt;&lt;" 
+					Margin="0,0,5,0"/>
+			<Button Width="35" 
+					Command="{Binding NextListCommand}"
+					Content="&gt;&gt;" 
+					Margin="0,0,5,0"/>
+			<Button Width="35" 
+					Command="{Binding TopListCommand}"
+					Content="Top"
+					Margin="0,0,15,0"/>
+			<TextBox Width="100"
+					 Text="{Binding SearchText}"
+					 Margin="0,0,5,0"/>
+			<Button Width="70" 
+					Command="{Binding NameSearchCommand}"
+					Content="名称検索" 
+					Margin="0,0,10,0"/>
+			<Button Width="100" 
+					Command="{Binding DoSearchCommand}"
+                    Style="{StaticResource ExecButton}"
+					Content="選択実行 (Enter)" 
+					Margin="0,0,5,0"/>
+			<Button Width="70" 
+					Command="{Binding DoExitCommand}"
+					Content="戻る (ESC)" />
+		</StackPanel> 
+	</Grid>
 </Window>

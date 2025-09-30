@@ -12,7 +12,7 @@
 		Height="500" Width="900">
 	<Window.DataContext>
 		<vm:SubDlgSelUsrViewModel />
-	</Window.DataContext>
+	</Window.DataContext> 
 	<Window.Resources>
 		<util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
 	</Window.Resources>
@@ -39,7 +39,7 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto" />
 						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" /> 
+						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*" />
@@ -58,12 +58,14 @@
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<TextBox Grid.Column="0" />
+						<TextBox Grid.Column="0"
+								 Text="{Binding SearchOpt.StartShainCD}"/>
 						<TextBlock Grid.Column="1" 
 								   Text="～" 
 								   VerticalAlignment="Center"
 								   Margin="5, 0, 5, 0"/>
-						<TextBox Grid.Column="2" />
+						<TextBox Grid.Column="2"
+								 Text="{Binding SearchOpt.EndShainCD}"/>
 					</Grid>
 
 					<TextBlock Grid.Row="1" Grid.Column="0"
@@ -81,26 +83,32 @@
 
 						<CheckBox Grid.Column="0" 
 								  Content="B/S" 
-								  Margin="0, 0, 10, 0"
+								  Margin="0,7,10,0"
+								  IsChecked="{Binding SearchOpt.SelBSChk}"
 								  VerticalAlignment="Center"/>
 
 						<ComboBox Grid.Column="1"  
 								  Margin="0, 0, 5, 0" 
 								  VerticalContentAlignment="Center"  
+								  ItemsSource="{Binding Cond01List}"
 								  DisplayMemberPath="Value" 
 								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond01}"
 								  Style="{StaticResource SearchableComboBox1}">
 						</ComboBox>
 
 						<ComboBox Grid.Column="2"  
 								  Margin="0, 0, 5, 0" 
 								  VerticalContentAlignment="Center"  
+								  ItemsSource="{Binding Cond02List}"
 								  DisplayMemberPath="Value" 
 								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding SearchOpt.SelCond02}"
 								  Style="{StaticResource SearchableComboBox1}">
 						</ComboBox>
 
 						<TextBox Grid.Column="3" 
+								 Text="{Binding SearchOpt.SelShainName}"
 								 VerticalAlignment="Center"/>
 					</Grid>
 
@@ -114,22 +122,28 @@
 								Margin="5">
 						<RadioButton Content="AND"
 									 GroupName="JoinOptions"
+									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}"
 									 Margin="0,0,10,0"/>
 						<RadioButton Content="OR"
 									 GroupName="JoinOptions"
+									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"
 									 Margin="0,0,10,0"/>
 						<CheckBox Grid.Column="0" 
 								  Content="就業FLG=0:在職のみ" 
 								  Margin="10, 0, 0, 0"
-								  VerticalAlignment="Center"/> 
-					</StackPanel> 
-					
+								  VerticalAlignment="Center"/>
+					</StackPanel>
+
 				</Grid>
 			</StackPanel>
 		</Border>
 
 		<!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="2" />
+		<uc:ListFlexView Grid.Row="2"
+						 Config="{Binding ListConfig}" 
+						 Rows="{Binding ListFlex}"
+						 QueryString="{Binding WhereClaus, Mode=TwoWay}"
+						 QueryStrPara="{Binding ListFlexPara, Mode=TwoWay}"/>
 
 		<!-- Action Buttons -->
 		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >

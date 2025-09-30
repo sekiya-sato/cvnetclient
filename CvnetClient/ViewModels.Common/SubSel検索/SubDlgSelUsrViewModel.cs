@@ -4,20 +4,29 @@ using CvnetBaseCore;
 using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
+using System.Collections.ObjectModel;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlgSelUsrViewModel : BaseViewModel
     {
+        #region ListFlexView List & Return Value
+        [ObservableProperty]
+        ObservableCollection<ListFlexItem>? listFlex = new ObservableCollection<ListFlexItem>();
+
         [ObservableProperty]
         ListFlexConfig? listConfig;
 
         [ObservableProperty]
-        SelUsrSearchOpt? m_SearchOpt;
+        string? whereClaus;
 
         [ObservableProperty]
-        string? whereClaus;
-          
+        BizArray? listFlexPara;
+
+        [ObservableProperty]
+        SelUsrSearchOpt? m_SearchOpt;
+        #endregion
+
         private BizArray para;
         private BizArray sv_cat;
         private BizArray wrk_jodai; /* セールマスタ参照配列 */
@@ -37,9 +46,13 @@ namespace CvnetClient.ViewModels
 
         public void OnInit(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null)
         {
+            if (wrk_para != null) para = new BizArray(wrk_para);
+            else para = new BizArray();
+
             ListConfig = new ListFlexConfig()
             {
                 init_csv = def ?? new List<CsvItem>(),
+                cnt_start = 3,
                 flag = 3
             };
             SearchOpt = new SelUsrSearchOpt(); 
@@ -63,7 +76,7 @@ namespace CvnetClient.ViewModels
                 { 2, "1 部分一致" },
                 { 3, "2 前方一致" }
             };
-            SearchOpt.SelCond02 = Cond02List.FirstOrDefault().Key;
+            SearchOpt.SelCond02 = 2;
             #endregion
 
             /* 付加SQL */
@@ -78,7 +91,7 @@ namespace CvnetClient.ViewModels
             }
 
             /* 範囲初期値 v_mst保存 */
-            if (init_para.Length > 0) SearchOpt.StartShainCD = init_para[0];
+            if (init_para != null && init_para.Length > 0) SearchOpt.StartShainCD = init_para[0];
             v_mst2 = v_mst; 
         }
 
@@ -147,12 +160,18 @@ namespace CvnetClient.ViewModels
                     } 
                 }
             }
-            sql_query += " 社員CD between :" + cnt + " and :" + cnt + 1 + "";
+            sql_query += " 社員CD between :" + cnt.ToString() + " and :" + (cnt + 1).ToString() + "";
             v_para[v_para.Count] = SearchOpt.StartShainCD;
             v_para[v_para.Count] = SearchOpt.EndShainCD;
             cnt = cnt + 2;
-
-            var pre_csv = new BizArray();
+             
+            if (ListFlexPara != null)
+            {
+                for (int i = 0; i < ListFlexPara.Count; i++)
+                {
+                    v_para[v_para.Count] = ListFlexPara[i];
+                }
+            } 
             sql_query += WhereClaus;
 
             if (!string.IsNullOrEmpty(SearchOpt.SelShainName))
@@ -259,8 +278,19 @@ namespace CvnetClient.ViewModels
                 ClientLib.ExitDialogResult(this, true);
             }
             else if (para[0] == "0")
-            { 
-                
+            {
+                SubDlgSel002ViewModel vm_result = null;
+                vm_result = AppData.DlgService.GetSel002(v_mst2, ret.Item1, ret.Item2);
+                if (vm_result != null)
+                {
+                    SelectedValue = new SelValueModel()
+                    {
+                        Code = (vm_result.SelectedSel002 != null) ? vm_result.SelectedSel002.Code : "",
+                        Name = (vm_result.SelectedSel002 != null) ? vm_result.SelectedSel002.Name : ""
+                    };
+                    SelUsrResult0 = vm_result.ret_para;
+                    ClientLib.ExitDialogResult(this, true);
+                }
             }
         }
         [RelayCommand]
@@ -329,11 +359,11 @@ namespace CvnetClient.ViewModels
             StartShainCD = string.Empty;
             EndShainCD = "ZZZZZZZZZZZZZZZZ";
             SelBSChk = false;
-            SelCond01 = 0;
-            SelCond02 = 0;
+            SelCond01 = 1;
+            SelCond02 = 2;
             SelShainName = string.Empty;
             SelJoinCond = 0;
-            SelEmployChk = false;
+            SelEmployChk = true;
         }
     }
 }

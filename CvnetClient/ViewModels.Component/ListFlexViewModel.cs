@@ -1,8 +1,12 @@
-﻿using CvnetClient.Class;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CvnetBaseCore;
+using CvnetClient.Class;
+using CvnetClient.Utils;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace CvnetClient.ViewModels
-{
+{ 
     /// <summary>
     /// Configuration for ListFlexView behavior
     /// </summary>

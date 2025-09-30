@@ -112,4 +112,15 @@ namespace CvnetClient.Models
         [ObservableProperty]
         long invQuantity; //在庫数
     }
+
+    /// <summary>
+    /// View Class - SubDlgSel002View
+    /// </summary>
+    public partial class SubDlgSel002Model : ObservableObject
+    {
+        [ObservableProperty]
+        string? code;
+        [ObservableProperty]
+        string? name;
+    }
 }
