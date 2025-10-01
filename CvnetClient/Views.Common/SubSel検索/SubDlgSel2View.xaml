@@ -8,124 +8,125 @@
         Title="商品CD選択画面" 
 		Style="{StaticResource MasterWindowStyle}"
 		Height="500" Width="900" >
-	<Window.DataContext>
-		<vm:SubDlgSel2ViewModel />
-	</Window.DataContext>
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="6*" />
-			<ColumnDefinition Width="4*" />
-		</Grid.ColumnDefinitions>
+    <Window.DataContext>
+        <vm:SubDlgSel2ViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="4*" />
+        </Grid.ColumnDefinitions>
 
-		<DataGrid Grid.Row="0" Grid.Column="0"
+        <DataGrid Grid.Row="0" Grid.Column="1"
 				  d:ItemsSource="{d:SampleData ItemCount=5}"
 				  FrozenColumnCount="1"
 				  IsReadOnly="True"
 				  ItemsSource="{Binding ListSel2}"
 				  SelectedItem="{Binding SelectedSel2}"
-				  IsSynchronizedWithCurrentItem="True">
-			<DataGrid.ColumnHeaderStyle>
-				<Style TargetType="DataGridColumnHeader">
-					<Setter Property="Background" Value="Black" />
-					<Setter Property="BorderBrush" Value="White" />
-					<Setter Property="BorderThickness" Value="1" />
-					<Setter Property="Foreground" Value="white" />
-				</Style>
-			</DataGrid.ColumnHeaderStyle>
-		</DataGrid>
+                  Style="{StaticResource WinGridData}"
+				  IsSynchronizedWithCurrentItem="True" Margin="1811,87,-1991,-87">
+            <!--<DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="BorderBrush" Value="White" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Foreground" Value="white" />
+                </Style>
+            </DataGrid.ColumnHeaderStyle>-->
+        </DataGrid>
 
-		<Grid Grid.Row="0" Grid.Column="1">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="*" />
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="5" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="3*" />
-				<ColumnDefinition Width="7*" />
-			</Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="5" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="7*" />
+            </Grid.ColumnDefinitions>
 
-			<DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
-				<Button DockPanel.Dock="Left" 
+            <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                <Button DockPanel.Dock="Left" 
 						Width="60" 
 						Content="&lt;&lt;" 
 						Command="{Binding PrevListCommand}"
 						Margin="0,0,5,0" />
-				<Button DockPanel.Dock="Left" 
+                <Button DockPanel.Dock="Left" 
 						Width="60" 
 						Content="&gt;&gt;" 
 						Command="{Binding NextListCommand}"
 						Margin="0,0,5,0" />
-				<Button DockPanel.Dock="Left" 
+                <Button DockPanel.Dock="Left" 
 						Width="60" 
 						Content="Top" 
 						Command="{Binding TopListCommand}"
 						Margin="0,0,5,0" />
-				<TextBox Text="{Binding DspItem.SelShohinCD}" />
-			</DockPanel>
+                <TextBox Text="{Binding DspItem.SelShohinCD}" />
+            </DockPanel>
 
-			<TextBlock Grid.Row="1" Grid.Column="0" 
+            <TextBlock Grid.Row="1" Grid.Column="0" 
 					   Text="展示会CD"
 					   Margin="5,0,0,5"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="1" Grid.Column="1" 
+            <TextBox Grid.Row="1" Grid.Column="1" 
 					 IsReadOnly="True"
 					 Text="{Binding DspItem.DspExhibit}"
 					 Margin="0,0,5,5"/>
 
-			<TextBlock Grid.Row="2" Grid.Column="0" 
+            <TextBlock Grid.Row="2" Grid.Column="0" 
 					   Text="ブランドCD"
 					   Margin="5,0,0,5"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="2" Grid.Column="1" 
+            <TextBox Grid.Row="2" Grid.Column="1" 
 					 IsReadOnly="True"
 					 Text="{Binding DspItem.DspBrand}"
 					 Margin="0,0,5,5"/>
 
-			<TextBlock Grid.Row="3" Grid.Column="0" 
+            <TextBlock Grid.Row="3" Grid.Column="0" 
 					   Text="アイテムCD"
 					   Margin="5,0,0,5"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="3" Grid.Column="1" 
+            <TextBox Grid.Row="3" Grid.Column="1" 
 					 IsReadOnly="True"
 					 Text="{Binding DspItem.DspItem}"
 					 Margin="0,0,5,5"/>
 
-			<TextBlock Grid.Row="4" Grid.Column="0" 
+            <TextBlock Grid.Row="4" Grid.Column="0" 
 					   Text="デリバリー"
 					   Margin="5,0,0,5"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="4" Grid.Column="1" 
+            <TextBox Grid.Row="4" Grid.Column="1" 
 					 IsReadOnly="True"
 					 Text="{Binding DspItem.DspCustDeliDate}"
 					 Margin="0,0,5,5"/>
 
-			<Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
 					BorderBrush="Black"
 					BorderThickness="1" CornerRadius="5"
-					Margin="5"> 
-			<Image Source="{Binding DspItem.DspImage}" />
-			</Border>
+					Margin="5">
+                <Image Source="{Binding DspItem.DspImage}" />
+            </Border>
 
-			<Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" >
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="5*" />
-					<ColumnDefinition Width="5*" />
-				</Grid.ColumnDefinitions>
-				<Button Grid.Column="0" 
+            <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" 
 						Content="選択実行(Enter)"
 						Command="{Binding DoExecuteCommand}"
 						Margin="5,0,5,0"/>
-				<Button Grid.Column="1"  
+                <Button Grid.Column="1"  
 						Content="戻る(ESC)"
 						Command="{Binding DoExitCommand}"
-						Margin="5,0,5,0" />  
-			</Grid> 
-		</Grid>
-	</Grid>
+						Margin="5,0,5,0" />
+            </Grid>
+        </Grid>
+    </Grid>
 </Window>

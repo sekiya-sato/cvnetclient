@@ -12,7 +12,8 @@
 		FontFamily="Meiryo UI"
 		Width="1440"
 		Height="1000"
-		WindowStartupLocation="CenterScreen">
+		WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MasterWindowStyle2}">
 	<Window.Resources>
 		<utils:VdateConverter x:Key="VdateConverter" />
 	</Window.Resources>

@@ -21,4 +21,37 @@ namespace CvnetClient.Utils
             return Binding.DoNothing;
         }
     }
+
+    public class SubtractHeaderFooterHeightConverter : IValueConverter
+    {
+        public double Offset { get; set; } = 0; // default = 0, but parameter overrides it
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            double offsetToUse = Offset;
+
+            if (parameter != null && double.TryParse(parameter.ToString(), out double paramOffset))
+            {
+                offsetToUse = paramOffset;
+            }
+
+            if (value is double height)
+            {
+                var result = Math.Max(0, height - offsetToUse);
+                System.Diagnostics.Debug.WriteLine(
+                    $"[SubtractHeaderFooterHeightConverter] Window height={height}, Offset={offsetToUse}, Result={result}");
+                return result;
+            }
+
+            return 0;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+
 }
