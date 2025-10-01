@@ -458,7 +458,7 @@
                         ColumnWidth="*"
                         Margin="-2,4,2,4"
                         ScrollViewer.CanContentScroll="True"
-                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        ScrollViewer.VerticalScrollBarVisibility="Auto" SelectionChanged="MyDataGrid_SelectionChanged_1">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="100">
                                 <DataGridTemplateColumn.HeaderTemplate>
@@ -527,14 +527,15 @@
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" >
                                                 <TextBox Text="{Binding Color}" Margin="2"/>
                                                 <Button Content="一覧" Margin="2" Padding="6"/>
                                             </StackPanel>
                                             <TextBox Text="{Binding ColorName}" Margin="2"/>
-
                                         </StackPanel>
+                                       
+                                        
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -551,14 +552,17 @@
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Stretch">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBox Text="{Binding Size}" Margin="2"/>
-                                                <Button Content="一覧" Margin="2" Padding="6"/>
-                                            </StackPanel>
-                                            <TextBox Text="{Binding SSizeName}" Margin="2"/>
+                                        <Grid>
+                                            <StackPanel HorizontalAlignment="Stretch">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                    <TextBox Text="{Binding Size}" Margin="2" />
+                                                    <Button Content="一覧" Margin="2" Padding="6"/>
+                                                </StackPanel>
+                                                <TextBox Text="{Binding SSizeName}" Margin="2"/>
 
-                                        </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                        
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -566,13 +570,16 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="数量" FontWeight="Bold"/>
+                                        <TextBlock Text="数量" FontWeight="Bold" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Weight}" Margin="2" Height="Auto"/>
+                                        <Grid>
+                                            <TextBox Text="{Binding Weight}" Margin="2" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                                        </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -580,7 +587,7 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
+                                        <StackPanel HorizontalAlignment="Stretch">
                                             <TextBlock Text="上代単価" FontWeight="Bold"/>
                                             <TextBlock Text="上代金額" FontWeight="Bold"/>
                                         </StackPanel>
