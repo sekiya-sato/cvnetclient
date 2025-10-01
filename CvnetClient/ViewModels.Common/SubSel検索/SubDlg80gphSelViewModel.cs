@@ -11,9 +11,9 @@ namespace CvnetClient.ViewModels
     public partial class SubDlg80gphSelViewModel : BaseViewModel
     {  
         [ObservableProperty]
-        string dlg_title = string.Empty;
+        string? title = "選択画面";
          
-        List<SubDlg80gphSelModel>? list80gphOri;
+        List<SubDlg80gphSelModel>? List80gphOri;
 
         [ObservableProperty]
         BizArray wrk_para = null;
@@ -31,7 +31,7 @@ namespace CvnetClient.ViewModels
         void Init()
         {
             if (wrk_para == null) return;
-            list80gphOri = new List<SubDlg80gphSelModel>(Init(wrk_para));
+            List80gphOri = new List<SubDlg80gphSelModel>(Init(wrk_para));
         }
 
         List<SubDlg80gphSelModel> Init(BizArray init_para = null, string v_hugo = "", string v_sort = "")
@@ -45,7 +45,7 @@ namespace CvnetClient.ViewModels
             {
                 if (init_para[0] == "HC$MASTER_MEISHO")
                 { 
-                    dlg_title = "名称を選択して下さい";
+                    Title = "名称を選択して下さい";
                     sql_query = " select 名称CD,名称,略称 from  hc$master_meisho "; 
                     if (!string.IsNullOrEmpty(init_para[1]) || 
                         !string.IsNullOrEmpty(init_para[2]))
@@ -138,16 +138,15 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void TopList()
         {
-            if (list80gphOri != null && list80gphOri.Count == 0) return; 
-            List80gph = new ObservableCollection<SubDlg80gphSelModel>(list80gphOri);
+            if (List80gphOri != null && List80gphOri.Count == 0) return; 
+            List80gph = new ObservableCollection<SubDlg80gphSelModel>(List80gphOri);
         }
 
         [RelayCommand]
         void NameSearch()
-        {
-            if (List80gph != null && List80gph.Count == 0) return;
+        { 
             if (string.IsNullOrEmpty(Text80gphSel))
-                List80gph = new ObservableCollection<SubDlg80gphSelModel>(list80gphOri);
+                List80gph = new ObservableCollection<SubDlg80gphSelModel>(List80gphOri);
             else List80gph = new ObservableCollection<SubDlg80gphSelModel>(List80gph.Where(x => x.Name.Contains(Text80gphSel)));
         }
 

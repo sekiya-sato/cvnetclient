@@ -20,7 +20,7 @@
 				Margin="5"
 				HorizontalAlignment="Left"/>
 		<DataGrid Grid.Row="1"
-				  ItemsSource="{Binding Rows, RelativeSource={RelativeSource AncestorType=UserControl}}"
+				  ItemsSource="{Binding DataSource.ListFlexSource, RelativeSource={RelativeSource AncestorType=UserControl}}"
 				  AutoGenerateColumns="False" 
 				  CanUserAddRows="False" 
 				  HeadersVisibility="Column"
@@ -35,7 +35,7 @@
 				<DataGridTemplateColumn Header="検索項目" Width="3*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<ComboBox ItemsSource="{Binding unit_list, RelativeSource={RelativeSource AncestorType=UserControl}}"
+							<ComboBox ItemsSource="{Binding DataSource.ListFlexVar.Unit_list, RelativeSource={RelativeSource AncestorType=UserControl}}"
 									  DisplayMemberPath="Value"
 									  SelectedValuePath="Value"
 								      SelectedValue="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

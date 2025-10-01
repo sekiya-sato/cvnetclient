@@ -21,6 +21,7 @@
 				  d:ItemsSource="{d:SampleData ItemCount=5}"
 				  FrozenColumnCount="1"
 				  IsReadOnly="True"
+				  Style="{StaticResource WinGridData}"
 				  ItemsSource="{Binding ListSel2}"
 				  SelectedItem="{Binding SelectedSel2}"
                   Style="{StaticResource WinGridData}"

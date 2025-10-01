@@ -11,20 +11,11 @@ namespace CvnetClient.ViewModels
     public partial class SubDlgSelShoViewModel : BaseViewModel
     {
         [ObservableProperty]
-        ObservableCollection<ListFlexItem>? listFlex = new ObservableCollection<ListFlexItem>();
+        ListFlexData listFlexData = new ListFlexData();
 
-        [ObservableProperty]
-        ListFlexConfig? listConfig;
-         
         [ObservableProperty]
         SelShoSearchOpt? m_SearchOpt;
-
-        [ObservableProperty]
-        string? whereClaus;
-
-        [ObservableProperty]
-        BizArray? listFlexPara;
-
+            
         private BizArray para;
         private BizArray sv_cat;
         private BizArray wrk_jodai; /* セールマスタ参照配列 */
@@ -42,14 +33,12 @@ namespace CvnetClient.ViewModels
 
         public void OnInit(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0)
         {
-            listFlexPara = new BizArray();
-            ListConfig = new ListFlexConfig()
+            ListFlexData.ListConfig = new ListFlexConfig()
             {
                 init_csv = def ?? new List<CsvItem>(),
                 flag = 0
             };
-            SearchOpt = new SelShoSearchOpt();
-            SearchOpt.PropertyChanged += SearchOpt_PropertyChanged;
+            SearchOpt = new SelShoSearchOpt(); 
             sv_cat = new BizArray();
             if (wrk_para != null) para = new BizArray(wrk_para);
             else para = new BizArray();
@@ -96,20 +85,7 @@ namespace CvnetClient.ViewModels
                 // Set ListFlexView design InVisible
                 SearchOpt.FlexIsVisible = 1;
             }
-        }
-
-        private void SearchOpt_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(SelShoSearchOpt.SelJoinCond))
-            {
-                if (ListConfig != null)
-                {
-                    ListConfig.conn_flg = SearchOpt?.SelJoinCond ?? 0; 
-                    ListConfig = new ListFlexConfig(ListConfig);
-                    OnPropertyChanged(nameof(ListConfig)); 
-                }
-            }
-        }
+        } 
 
         #region Combobox List 
         /// <summary>
@@ -150,18 +126,11 @@ namespace CvnetClient.ViewModels
             v_para[0] = SearchOpt.StartProdCD;
             v_para[1] = SearchOpt.EndProdCD;
             v_para[2] = SearchOpt.SelInitLaunchDate.ToString("yyyyMMdd");
-
-            if (ListFlexPara != null) {
-                for (int i = 0; i < ListFlexPara.Count; i++)
-                {
-                    v_para[v_para.Count] = ListFlexPara[i]; 
-                }
-            }
-            
+              
             int cnt = 4;
             var pre_csv = new BizCsvDocument();
-            //ListConfig.conn_flg = SearchOpt.SelJoinCond;
-            sql_query += WhereClaus;
+            //ListConfig.conn_flg = SearchOpt.SelJoinCond; 
+            sql_query +=  ListFlexData.GetQueryStr(v_para, cnt, SearchOpt.SelJoinCond);
 
             if (!string.IsNullOrEmpty(SearchOpt.SelProductName))
             {
@@ -368,7 +337,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void DoExit()
         {
-             
+            ClientLib.ExitDialogResult(this, true);
         }
         #endregion
     }

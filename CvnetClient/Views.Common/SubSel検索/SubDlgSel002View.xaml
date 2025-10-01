@@ -1,23 +1,18 @@
-﻿<Window x:Class="CvnetClient.Views.SubDlg80gphSelView"
+﻿<Window x:Class="CvnetClient.Views.SubDlgSel002View"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-		xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CvnetClient.Views"
-        xmlns:vm="clr-namespace:CvnetClient.ViewModels" 
-        mc:Ignorable="d" 
-		Title="{Binding Title}"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        mc:Ignorable="d"
+        Title="{Binding Title}"
 		Height="450" 
-        Width="520">
+        Width="510"
+        FontFamily="Meiryo UI">
 	<Window.DataContext>
-		<vm:SubDlg80gphSelViewModel />
+		<vm:SubDlgSel002ViewModel />
 	</Window.DataContext>
-	<behaviors:Interaction.Triggers>
-		<behaviors:EventTrigger EventName="ContentRendered">
-			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-		</behaviors:EventTrigger>
-	</behaviors:Interaction.Triggers>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
@@ -35,18 +30,10 @@
 				  IsReadOnly="True" 
 				  HeadersVisibility="Column"
 				  IsSynchronizedWithCurrentItem="True"
-				  ItemsSource="{Binding List80gph}"
-				  SelectedItem="{Binding Select80gphItem}"
+				  ItemsSource="{Binding ListSel002}"
+				  SelectedItem="{Binding SelectedSel002}"
                   Style="{StaticResource WinGridData}"
-				  SelectionMode="Single">
-			<!--<DataGrid.ColumnHeaderStyle>
-				<Style TargetType="DataGridColumnHeader">
-					<Setter Property="Background" Value="Black" />
-					<Setter Property="BorderBrush" Value="White" />
-					<Setter Property="BorderThickness" Value="1" />
-					<Setter Property="Foreground" Value="white" />
-				</Style>
-			</DataGrid.ColumnHeaderStyle>-->
+				  SelectionMode="Single"> 
 		</DataGrid>
 
 		<StackPanel Grid.Row="1" Grid.Column="1" 
@@ -65,12 +52,12 @@
 					Content="Top"
 					Margin="0,0,15,0"/>
 			<TextBox Width="100"
-					 Text="{Binding Text80gphSel}"
+					 Text="{Binding SearchText}"
 					 Margin="0,0,5,0"/>
 			<Button Width="70" 
 					Command="{Binding NameSearchCommand}"
 					Content="名称検索" 
-					Margin="0,0,10,0"/>
+					Margin="0,0,15,0"/>
 			<Button Width="100" 
 					Command="{Binding DoSearchCommand}"
                     Style="{StaticResource ExecButton}"
@@ -79,7 +66,6 @@
 			<Button Width="70" 
 					Command="{Binding DoExitCommand}"
 					Content="戻る (ESC)" />
-		</StackPanel>
-
+		</StackPanel> 
 	</Grid>
 </Window>
