@@ -229,10 +229,8 @@
 		</Border>
 
 		<!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="2" 
-						 FlexData="{Binding ListFlexData}"
-						 Config="{Binding ListFlexData.ListConfig}"
-						 DataSource="{Binding ListFlexData.ListFlexSource}">
+		<uc:ListFlexView Grid.Row="2"   
+						 DataSource="{Binding ListFlexData}">
 			<uc:ListFlexView.Style>
 				<Style TargetType="uc:ListFlexView">
 					<Setter Property="Visibility" Value="Visible" />

@@ -38,8 +38,7 @@ namespace CvnetClient.ViewModels
                 init_csv = def ?? new List<CsvItem>(),
                 flag = 0
             };
-            SearchOpt = new SelShoSearchOpt();
-            SearchOpt.PropertyChanged += SearchOpt_PropertyChanged;
+            SearchOpt = new SelShoSearchOpt(); 
             sv_cat = new BizArray();
             if (wrk_para != null) para = new BizArray(wrk_para);
             else para = new BizArray();
@@ -86,20 +85,7 @@ namespace CvnetClient.ViewModels
                 // Set ListFlexView design InVisible
                 SearchOpt.FlexIsVisible = 1;
             }
-        }
-
-        private void SearchOpt_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(SelShoSearchOpt.SelJoinCond))
-            {
-                if (ListFlexData.ListConfig != null)
-                {
-                    ListFlexData.ListConfig.conn_flg = SearchOpt?.SelJoinCond ?? 0;
-                    ListFlexData.ListConfig = new ListFlexConfig(ListFlexData.ListConfig);
-                    OnPropertyChanged(nameof(ListFlexData.ListConfig)); 
-                }
-            }
-        }
+        } 
 
         #region Combobox List 
         /// <summary>
@@ -145,7 +131,6 @@ namespace CvnetClient.ViewModels
             var pre_csv = new BizCsvDocument();
             //ListConfig.conn_flg = SearchOpt.SelJoinCond; 
             sql_query +=  ListFlexData.GetQueryStr(v_para, cnt, SearchOpt.SelJoinCond);
-            //sql_query += WhereClaus;
 
             if (!string.IsNullOrEmpty(SearchOpt.SelProductName))
             {
