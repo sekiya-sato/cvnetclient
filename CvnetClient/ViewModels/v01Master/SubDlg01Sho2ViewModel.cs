@@ -1,10 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
-using CvnetClient.Views;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.ObjectModel;
 using System.Data; 
 
@@ -442,10 +438,17 @@ namespace CvnetClient.ViewModels
             //}
 
             //担当 
-            if (AppData.ClassCvnet.MstDialog.ContainsKey("担当"))
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("担当"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelUsr("担当", null, ar);
+            //}
+
+            //Ac得意先
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("Ac得意先"))
             {
                 var ar = new string[] { "0" };
-                var vm = AppData.DlgService.GetSelUsr("担当", null, ar);
+                var vm = AppData.DlgService.GetSelTok("Ac得意先", null, ar);
             }
         }
 

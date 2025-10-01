@@ -67,7 +67,7 @@ namespace CvnetClient.ViewModels
             #endregion
 
             /* 付加SQL */
-            Mst_sql = string.Empty;
+            Mst_sql = string.Empty; Mst_sql2 = string.Empty;
             if (AppData.ClassCvnet.MstDialog.ContainsKey(v_mst))
             {
                 MstItem add = AppData.ClassCvnet.MstDialog[v_mst]; 
