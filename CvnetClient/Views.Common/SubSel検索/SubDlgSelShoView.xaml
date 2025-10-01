@@ -18,7 +18,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="6*"/>
+			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
@@ -218,21 +218,19 @@
 								Margin="5">
 						<RadioButton Content="AND"
 									 GroupName="JoinOptions"
-									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"
+									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}"
 									 Margin="0,0,10,0"/>
 						<RadioButton Content="OR"
 									 GroupName="JoinOptions"
-									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=2}"/>
+									 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"/>
 					</StackPanel>
 				</Grid>
 			</StackPanel>
 		</Border>
 
 		<!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="2" 
-						 Config="{Binding ListConfig}"
-						 Rows="{Binding ListFlex}"
-						 QueryString="{Binding WhereClaus, Mode=TwoWay}">
+		<uc:ListFlexView Grid.Row="2"   
+						 DataSource="{Binding ListFlexData}">
 			<uc:ListFlexView.Style>
 				<Style TargetType="uc:ListFlexView">
 					<Setter Property="Visibility" Value="Visible" />

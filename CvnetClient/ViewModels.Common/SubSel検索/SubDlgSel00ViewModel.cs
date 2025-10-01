@@ -20,7 +20,7 @@ namespace CvnetClient.ViewModels
         int nullflg = 0;
 
         bool is1stInit = true;
-        List<Sel00Model>? listSel00Ori;
+        List<Sel00Model>? ListSel00Ori;
 
         [ObservableProperty]
         string mstname = string.Empty; 
@@ -80,7 +80,7 @@ namespace CvnetClient.ViewModels
                     ListSel00.Add(model);
                 }
             }
-            if (is1stInit == true) { listSel00Ori = new List<Sel00Model>(ListSel00.ToList()); is1stInit = false; }
+            if (is1stInit == true) { ListSel00Ori = new List<Sel00Model>(ListSel00.ToList()); is1stInit = false; }
         }
 
         [RelayCommand]
@@ -94,16 +94,15 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void TopList()
         {
-            if (listSel00Ori != null && listSel00Ori.Count == 0) return;
-            ListSel00 = new ObservableCollection<Sel00Model>(listSel00Ori);
+            if (ListSel00Ori != null && ListSel00Ori.Count == 0) return;
+            ListSel00 = new ObservableCollection<Sel00Model>(ListSel00Ori);
         }
 
         [RelayCommand]
         void NameSearch()
-        {
-            if (ListSel00 != null && ListSel00.Count == 0) return;
+        { 
             if (string.IsNullOrEmpty(Textmeisho))
-                ListSel00 = new ObservableCollection<Sel00Model>(listSel00Ori);
+                ListSel00 = new ObservableCollection<Sel00Model>(ListSel00Ori);
             else ListSel00 = new ObservableCollection<Sel00Model>(ListSel00.Where(x => x.Name.Contains(Textmeisho)).ToList());
         }
 

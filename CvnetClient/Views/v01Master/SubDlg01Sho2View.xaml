@@ -128,6 +128,7 @@
 								<Button Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
+                                        Style="{StaticResource FileUploadBtn}"
 										Content="絵型名1" />
 								<TextBox Width="200"
 										 Margin="5,0,0,0" 
@@ -153,6 +154,7 @@
 								<Button  Width="85"
 										Margin="5,0,0,0"
 										VerticalAlignment="Top"
+                                          Style="{StaticResource FileUploadBtn}"
 										Content="絵型名2" />
 								<TextBox  Width="200"
 										 Margin="5,0,0,0" 
@@ -720,7 +722,7 @@
 								<uc:CvnetBtListView Width="85"  
 													Margin="5,0,0,0"
 													Title="基準倉庫CD"
-													MstName="倉庫"
+													MstName="担当"
 													SelectedValue="{Binding EditProduct.StandWareCD}"
 													Command="{Binding SelStandWareCommand}"/>
 								<TextBox Width="200"
@@ -907,7 +909,7 @@
 									   Content="販売開始日" />
 								<DatePicker Width="150"
 											Margin="5,0,0,0"
-											Style="{StaticResource DatePickerStyle}"
+											
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center" />
 								<Label Width="85" 
@@ -916,7 +918,7 @@
 									   Content="販売終了日" />
 								<DatePicker Width="150" 
 											Margin="5,0,0,0"
-											Style="{StaticResource DatePickerStyle}"
+											
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center" />
 								<Label Width="85"
@@ -1006,10 +1008,9 @@
 									BorderThickness="1">
 								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
-									<Button    
+                                    <Button Style="{StaticResource ImageUploadBtn}"   
 											VerticalAlignment="Bottom"
-											
-											Content="Upload..." />
+											Content="Upload" />
 								</StackPanel>
 							</Border>
 							<Border BorderBrush="Black"
@@ -1021,10 +1022,7 @@
 									BorderThickness="1">
 								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
-									<Button    
-											VerticalAlignment="Bottom"
-											
-											Content="Upload..." />
+                                    <Button Style="{StaticResource ImageUploadBtn}" VerticalAlignment="Bottom"/>
 								</StackPanel>
 							</Border>
 						</StackPanel>
@@ -1043,7 +1041,6 @@
 								   Content="納品日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
-										Style="{StaticResource DatePickerStyle}"
 										HorizontalAlignment="Center" 
 										VerticalAlignment="Center" />
 							<Label  Width="85"
@@ -1053,7 +1050,6 @@
 								   Content="店頭投入日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
-										Style="{StaticResource DatePickerStyle}"
 										HorizontalAlignment="Center" 
 										VerticalAlignment="Center" />
 							<Label  Width="85"
@@ -1063,7 +1059,6 @@
 								   Content="売変日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
-										Style="{StaticResource DatePickerStyle}"
 										HorizontalAlignment="Center" 
 										VerticalAlignment="Center" />
 						</StackPanel>
@@ -1076,7 +1071,6 @@
 								   Content="デリバリー日" />
 							<DatePicker Width="150"
 									Margin="5,0,0,0"
-									Style="{StaticResource DatePickerStyle}"
 									HorizontalAlignment="Center" 
 									VerticalAlignment="Center" />
 							<Label  Width="85"
@@ -1086,7 +1080,6 @@
 								   Content="リピート日" />
 							<DatePicker Width="150"
 									Margin="5,0,0,0"
-									Style="{StaticResource DatePickerStyle}"
 									HorizontalAlignment="Center" 
 									VerticalAlignment="Center" />
 						</StackPanel>

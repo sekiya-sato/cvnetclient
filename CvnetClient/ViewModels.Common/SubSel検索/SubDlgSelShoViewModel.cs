@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
+using CommunityToolkit.Mvvm.Input; 
 using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using System;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
@@ -13,34 +11,34 @@ namespace CvnetClient.ViewModels
     public partial class SubDlgSelShoViewModel : BaseViewModel
     {
         [ObservableProperty]
-        ObservableCollection<ListFlexItem>? listFlex = new ObservableCollection<ListFlexItem>();
+        ListFlexData listFlexData = new ListFlexData();
 
-        [ObservableProperty]
-        ListFlexConfig? listConfig;
-         
         [ObservableProperty]
         SelShoSearchOpt? m_SearchOpt;
-
-        [ObservableProperty]
-        string? whereClaus;
-
+            
         private BizArray para;
         private BizArray sv_cat;
         private BizArray wrk_jodai; /* セールマスタ参照配列 */
         private BizArray sv_init_para; /* init_para退避配列 */
 
-        public SelValueModel? selectedValue; /* Return value for CvnetBtListView */
-        public object? SelShoResult; /* Default return result method, datatype depends on DoExecute() */
+        [ObservableProperty]
+        SelValueModel? selectedValue; /* Return value for CvnetBtListView */
+        public BizArray SelShoResult0;
+        public Tuple<string, BizArray> SelShoResult1; /* Default return result method, datatype depends on DoExecute() */
+
+        public void OnInit(string v_mstname, string[] init_para = null, string[] v_para2 = null)
+        {
+            OnInit(v_mstname, init_para, v_para2, null, null, 0);
+        }
 
         public void OnInit(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0)
         {
-            ListConfig = new ListFlexConfig()
+            ListFlexData.ListConfig = new ListFlexConfig()
             {
                 init_csv = def ?? new List<CsvItem>(),
                 flag = 0
             };
-            SearchOpt = new SelShoSearchOpt();
-            SearchOpt.PropertyChanged += SearchOpt_PropertyChanged;
+            SearchOpt = new SelShoSearchOpt(); 
             sv_cat = new BizArray();
             if (wrk_para != null) para = new BizArray(wrk_para);
             else para = new BizArray();
@@ -61,13 +59,20 @@ namespace CvnetClient.ViewModels
             };
             SearchOpt.SelCond02 = Cond02List.FirstOrDefault().Key;
             #endregion
-             
-            if (wrk_para[0] == "3" || wrk_para[0] == "4" || wrk_para[0] == "5") 
-                SearchOpt.SelInvChk = true;
+
+            SearchOpt.SelInvChk = false;
+            if (wrk_para != null)
+            {
+                if (wrk_para[0] == "3" || wrk_para[0] == "4" || wrk_para[0] == "5")
+                    SearchOpt.SelInvChk = true;
+            }  
+
 
             if (wrk_para2 != null) wrk_jodai = new BizArray(wrk_para2);
+            else wrk_jodai = new BizArray();
 
             if (init_para != null) sv_init_para = new BizArray(init_para);
+            else sv_init_para = new BizArray();
 
             if (AppData.ClassCvnet.config.oroshi != 0)
             {
@@ -80,16 +85,7 @@ namespace CvnetClient.ViewModels
                 // Set ListFlexView design InVisible
                 SearchOpt.FlexIsVisible = 1;
             }
-        }
-
-        private void SearchOpt_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(SelShoSearchOpt.SelJoinCond))
-            {
-                if(ListConfig != null)
-                   ListConfig.conn_flg = SearchOpt?.SelJoinCond ?? 0;
-            }
-        }
+        } 
 
         #region Combobox List 
         /// <summary>
@@ -106,6 +102,10 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Functions
+        /// <summary>
+        /// Generate query from current form
+        /// </summary>
+        /// <returns>Item 1: Query, Item 2: Parameters </returns>
         Tuple<string, BizArray> OnQueryString()
         {
             if (SearchOpt  == null) return Tuple.Create<string, BizArray>("", null);
@@ -126,11 +126,11 @@ namespace CvnetClient.ViewModels
             v_para[0] = SearchOpt.StartProdCD;
             v_para[1] = SearchOpt.EndProdCD;
             v_para[2] = SearchOpt.SelInitLaunchDate.ToString("yyyyMMdd");
-
+              
             int cnt = 4;
             var pre_csv = new BizCsvDocument();
-            //ListConfig.conn_flg = SearchOpt.SelJoinCond;
-            sql_query += WhereClaus;
+            //ListConfig.conn_flg = SearchOpt.SelJoinCond; 
+            sql_query +=  ListFlexData.GetQueryStr(v_para, cnt, SearchOpt.SelJoinCond);
 
             if (!string.IsNullOrEmpty(SearchOpt.SelProductName))
             {
@@ -153,7 +153,7 @@ namespace CvnetClient.ViewModels
                             qs_str_tmp += " and ";
                         }
                     }
-                    if (!SearchOpt.SelBSChk)
+                    if (SearchOpt.SelBSChk)
                     {
                         if (SearchOpt.SelCond02 == 1)
                         {
@@ -214,7 +214,7 @@ namespace CvnetClient.ViewModels
                 sql_query += " and (" + qs_str_tmp + ")";
             }
             sv_cat.Clear();
-            if (!SearchOpt.SelInvChk)
+            if (SearchOpt.SelInvChk)
             {
                 string zais = "";
                 string zaitbl = "";
@@ -311,12 +311,27 @@ namespace CvnetClient.ViewModels
             if (para[0] == "1")
             {
                 //return result and exit from current form
-                SelShoResult = ret;
+                SelShoResult1 = ret; 
                 ClientLib.ExitDialogResult(this, true);
             }
             else if (para[0] == "0")
-            { 
-                
+            {
+                /* 在庫問い合わせ等 */
+                SubDlgSel2ViewModel vm_result = null;
+                if (wrk_jodai.Count > 0) 
+                    vm_result = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1, wrk_jodai.ToArray()); 
+                else 
+                    vm_result = AppData.DlgService.GetSel2(new string[] { "1" }, ret.Item2.ToArray(), ret.Item1); 
+                if (vm_result != null)
+                {
+                    SelectedValue = new SelValueModel()
+                    {
+                        Code = (vm_result.SelectedSel2 != null) ? vm_result.SelectedSel2.ProductCD : "",
+                        Name = (vm_result.SelectedSel2 != null) ? vm_result.SelectedSel2.ProductName : "",
+                    }; 
+                    SelShoResult0 = vm_result.ret_para; 
+                    ClientLib.ExitDialogResult(this, true);
+                }
             }
         }
         [RelayCommand]

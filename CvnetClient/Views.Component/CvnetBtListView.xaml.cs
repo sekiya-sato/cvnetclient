@@ -96,8 +96,10 @@ namespace CvnetClient.Views
                 var vm = win.DataContext;
                 if (vm != null)
                 { 
-                    var method = vm.GetType().GetMethod("OnInit",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    var method = vm.GetType().GetMethod("OnInit", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                        null,
+                        new Type[] { typeof(string), typeof(string[]), typeof(string[]) },
+                        null); 
 
                     string[] v_para2 = null;
                     if (Param2 != null)
@@ -107,8 +109,8 @@ namespace CvnetClient.Views
                             v_para2 = new string[] { s };
                         }
                         else if (Param2 is string[] arr)
-                        { 
-                            Param2 = arr;
+                        {
+                            v_para2 = arr;
                         }
                     }
 

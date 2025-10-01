@@ -120,13 +120,6 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" Click="Button_Click"/>-->
                 <Button Margin="1,1,6,1"  Style="{DynamicResource NextPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
-                <Button Content="test" Width="90" IsEnabled="False" BorderBrush="Black" BorderThickness="10">
-                    <Button.Background>
-                        <SolidColorBrush Color="#FFD0D3D4" Opacity="0.5"/>
-                    </Button.Background>
-                </Button>
-
-                <Button Width="28" Height="28" Style="{StaticResource ComboButton}"/>
             </StackPanel>
         </Grid>
 
@@ -306,14 +299,8 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
                         <Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
                         <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
                         <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
-                        
-                    </Grid>
 
-                    <Button Grid.Column="8" Content="test" Width="90" IsEnabled="False" BorderBrush="Black" BorderThickness="10">
-                        <Button.Background>
-                            <SolidColorBrush Color="#FFD0D3D4" Opacity="0.5"/>
-                        </Button.Background>
-                    </Button>
+                    </Grid>
 
                 </StackPanel>
 
