@@ -722,7 +722,7 @@
 								<uc:CvnetBtListView Width="85"  
 													Margin="5,0,0,0"
 													Title="基準倉庫CD"
-													MstName="倉庫"
+													MstName="担当"
 													SelectedValue="{Binding EditProduct.StandWareCD}"
 													Command="{Binding SelStandWareCommand}"/>
 								<TextBox Width="200"

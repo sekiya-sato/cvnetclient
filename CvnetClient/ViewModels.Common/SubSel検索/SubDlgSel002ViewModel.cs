@@ -54,7 +54,13 @@ namespace CvnetClient.ViewModels
                     para2 = new BizArray(para_array);
                     para_first = para_array[0];
                 }
-                else {
+                else if (v_para2 is BizArray paras_array)
+                {
+                    para2 = paras_array;
+                    para_first = paras_array[0];
+                }
+                else
+                {
                     para2 = new BizArray();
                     nullflg = 1;
                     para_first = "";
@@ -71,7 +77,11 @@ namespace CvnetClient.ViewModels
         {
             var ret_csv = new DataTable();
 
-            if (para2 != null && para2.Count > 0) ListSel002.Clear();
+            if (para2 != null && para2.Count > 0)
+            {
+                if (ListSel002 == null) ListSel002 = new ObservableCollection<SubDlgSel002Model>();
+                else ListSel002.Clear();
+            }
 
             string v_hugo = ">=";
             if (p_sort != "") v_hugo = "<=";
