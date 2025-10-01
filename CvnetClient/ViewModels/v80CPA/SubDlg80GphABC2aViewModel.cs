@@ -92,16 +92,17 @@ namespace CvnetClient.ViewModels
                     var hitResults = AbcModel.HitTest(new HitTestArguments(args.Position, 10));
                     var first = hitResults.FirstOrDefault();
 
-                    if (args.ClickCount == 2) // double click
-                    {
-                        if (first?.Item is RectangleBarItem bar)
-                            ShowDetailWindow($"Detail for Bar Value={bar.Y1}");
-                        else if (first?.Item is DataPoint dp)
-                            ShowDetailWindow($"Detail for Point X={dp.X}, Y={dp.Y}");
-                        else
-                            ShowDetailWindow("Nothing selected");
-                    }
-                    else if (args.ClickCount == 1) // single click
+                    //if (args.ClickCount == 2)
+                    //{
+                    //    if (first?.Item is RectangleBarItem bar)
+                    //        ShowDetailWindow($"Detail for Bar Value={bar.Y1}");
+                    //    else if (first?.Item is DataPoint dp)
+                    //        ShowDetailWindow($"Detail for Point X={dp.X}, Y={dp.Y}");
+                    //    else
+                    //        ShowDetailWindow("Nothing selected");
+                    //}
+                    //else
+                    if (args.ClickCount == 1) // single click
                     {
                         if (first?.Item is RectangleBarItem bar)
                             SelectedInfo = $"Bar clicked, Value={bar.Y1}";
@@ -116,12 +117,12 @@ namespace CvnetClient.ViewModels
                 }));
         }
 
-        private void ShowDetailWindow(string message)
-        {
-            System.Windows.MessageBox.Show(message, "Detail",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Information);
-        }
+        //private void ShowDetailWindow(string message)
+        //{
+        //    System.Windows.MessageBox.Show(message, "Detail",
+        //        System.Windows.MessageBoxButton.OK,
+        //        System.Windows.MessageBoxImage.Information);
+        //}
 
         public void ShowDetailFromView(string message)
         {
