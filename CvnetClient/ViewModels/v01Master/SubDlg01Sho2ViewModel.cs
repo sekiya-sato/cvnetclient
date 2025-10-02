@@ -445,10 +445,17 @@ namespace CvnetClient.ViewModels
             //}
 
             //Ac得意先
-            if (AppData.ClassCvnet.MstDialog.ContainsKey("Ac得意先"))
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("Ac得意先"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelTok("Ac得意先", null, ar);
+            //}
+
+            //仕入先
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("仕入先"))
             {
                 var ar = new string[] { "0" };
-                var vm = AppData.DlgService.GetSelTok("Ac得意先", null, ar);
+                var vm = AppData.DlgService.GetSelSir("仕入先", null, ar);
             }
         }
 
@@ -598,7 +605,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void SelStandWare(object value)
         {
-            var get_sel00 = (SelValueModel)value;
+            //var get_sel00 = (SelValueModel)value;
             // Note: Require Call SelTok to get ID before Start GetSell00 
             /*
             var get_sel00 = AppData.DlgService.GetSel00("倉庫");
