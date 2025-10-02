@@ -598,7 +598,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void SelStandWare(object value)
         {
-            //var get_sel00 = (SelValueModel)value;
+            var get_sel00 = (SelValueModel)value;
             // Note: Require Call SelTok to get ID before Start GetSell00 
             /*
             var get_sel00 = AppData.DlgService.GetSel00("倉庫");
