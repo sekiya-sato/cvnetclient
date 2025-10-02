@@ -32,7 +32,7 @@ namespace CvnetClient.ViewModels
         public Tuple<string, BizArray> SelTokResult1; /* Default return result method, datatype depends on DoExecute() */
         public void OnInit(string v_mstname, string[] init_para = null, string[] v_para2 = null)
         {
-            OnInit(v_mstname, init_para, v_para2);
+            OnInit(v_mstname, init_para, v_para2, null, null);
         }
 
         public void OnInit(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null)
@@ -83,10 +83,13 @@ namespace CvnetClient.ViewModels
             if (AppData.ClassCvnet.MstDialog.ContainsKey(v_mst))
             {
                 MstItem add = AppData.ClassCvnet.MstDialog[v_mst];
-                if (add.v_para.Length > 0)
-                    Mst_sql = add.v_para[0] + " and ";
-                if (add.v_para.Length > 1 && wrk_para != null)
-                    Mst_sql2 = add.v_para[1] + " and ";
+                if (add.v_para != null)
+                {
+                    if (add.v_para.Length > 0)
+                        Mst_sql = add.v_para[0] + " and ";
+                    if (add.v_para.Length > 1 && wrk_para != null)
+                        Mst_sql2 = add.v_para[1] + " and ";
+                }
             }
 
             /* 配分：得意先展開対応 */

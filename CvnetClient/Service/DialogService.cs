@@ -123,6 +123,21 @@ namespace CvnetClient.Service
             return vm;
         }
 
+        public SubDlgSelSirViewModel GetSelSir(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null)
+        { 
+            var view = new SubDlgSelSirView();
+            var vm = view.DataContext as SubDlgSelSirViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(v_mst, init_para, wrk_para, def, wrk_para2);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
         public SubDlgSel002ViewModel GetSel002(string v_mstname = "", string sql_query = "", object v_para2 = null)
         {
             var view = new SubDlgSel002View();
