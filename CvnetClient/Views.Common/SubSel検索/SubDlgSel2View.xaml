@@ -24,7 +24,6 @@
 				  Style="{StaticResource WinGridData}"
 				  ItemsSource="{Binding ListSel2}"
 				  SelectedItem="{Binding SelectedSel2}"
-                  Style="{StaticResource WinGridData}"
 				  IsSynchronizedWithCurrentItem="True" Margin="1811,87,-1991,-87">
             <!--<DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
