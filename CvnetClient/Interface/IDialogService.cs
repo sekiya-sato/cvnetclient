@@ -18,6 +18,8 @@ namespace CvnetClient.Interface
 
         SubDlgSelUsrViewModel GetSelUsr(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
 
+        SubDlgSelTokViewModel GetSelTok(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
+
         SubDlgSel002ViewModel GetSel002(string v_mstname = "", string sql_query = "", object v_para2 = null);
     }
 }
