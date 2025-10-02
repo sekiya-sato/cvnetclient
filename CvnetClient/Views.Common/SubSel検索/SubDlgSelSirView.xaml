@@ -2,15 +2,199 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:uc="clr-namespace:CvnetClient.Views"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+		xmlns:util="clr-namespace:CvnetClient.Utils"
         mc:Ignorable="d" 
-        Title="SubDlgSelSirView" 
-		Height="450" Width="800">
+        Title="{Binding Title}"
+		Style="{StaticResource MasterWindowStyle}"
+		Height="500" Width="900">
 	<Window.DataContext>
 		<vm:SubDlgSelSirViewModel />
 	</Window.DataContext>
-	<Grid>
-        
-    </Grid>
+	<Window.Resources>
+		<util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
+	</Window.Resources>
+	<Grid Margin="20">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<TextBlock Grid.Row="0" 
+				   Text="検索条件"  
+				   VerticalAlignment="Center"
+				   Margin="0 0 0 5"/>
+
+		<!-- 検索条件 -->
+		<Border Grid.Row="1" 
+				CornerRadius="10" BorderThickness="1" 
+				Padding="3" Margin="3"
+				Background="White">
+			<StackPanel>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="9*" />
+					</Grid.ColumnDefinitions>
+
+					<TextBlock Grid.Row="0" Grid.Column="0"
+							   Margin="5" 
+							   Text="仕入先CD" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="0" Grid.Column="1"
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<TextBox Grid.Column="0"
+								 Text="{Binding SearchOpt.StartShiireCD}"/>
+						<TextBlock Grid.Column="1" 
+								   Text="～" 
+								   VerticalAlignment="Center"
+								   Margin="5, 0, 5, 0"/>
+						<TextBox Grid.Column="2"
+								 Text="{Binding SearchOpt.EndShiireCD}"/>
+					</Grid>
+
+					<TextBlock Grid.Row="1" Grid.Column="0"
+							   Margin="5"
+							   Text="得意先名" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="1" Grid.Column="1" 
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="4*" />
+						</Grid.ColumnDefinitions>
+
+						<CheckBox Grid.Column="0" 
+								  Content="B/S" 
+								  Margin="0,0,10,0"
+								  IsChecked="{Binding SearchOpt.SelBSChk}"
+								  VerticalAlignment="Center"/>
+
+						<ComboBox Grid.Column="1"  
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center" 
+								  ItemsSource="{Binding Cond01List}"
+								  DisplayMemberPath="Value"
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond01}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+
+						<ComboBox Grid.Column="2"  
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding Cond02List}"
+								  DisplayMemberPath="Value"
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond02}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+
+						<TextBox Grid.Column="3"  
+								 Text="{Binding SearchOpt.SelShiireName}"
+								 VerticalAlignment="Center"/>
+					</Grid>
+
+					<TextBlock Grid.Row="2" Grid.Column="0"
+							   Margin="5"
+							   Text="締日" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="2" Grid.Column="1"
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="3*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="3*" />
+							<ColumnDefinition Width="4*" />
+						</Grid.ColumnDefinitions>
+
+						<ComboBox Grid.Column="0"   
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding CloseDateList}"
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.StartCloseDate}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+
+						<TextBlock Grid.Column="1" 
+								   Text="～"  
+								   VerticalAlignment="Center"
+								   Margin="0,0,5,0"/>
+
+						<ComboBox Grid.Column="2"   
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding CloseDateList}"
+								  DisplayMemberPath="Value"
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.EndCloseDate}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+					</Grid>
+
+					<!-- 条件結合 -->
+					<TextBlock Grid.Row="3" Grid.Column="0"
+							   Margin="5"
+							   Text="条件結合" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="3" Grid.Column="1">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+						<StackPanel Grid.Column="0" 
+									Orientation="Horizontal"
+									Margin="0,0,5,0">
+							<RadioButton Content="AND"
+										 GroupName="JoinOptions"
+										 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}"
+										 Margin="0,0,10,0"/>
+							<RadioButton Content="OR"
+										 GroupName="JoinOptions"
+										 IsChecked="{Binding SearchOpt.SelJoinCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"/>
+						</StackPanel>
+
+						<CheckBox Grid.Column="1" 
+								  Content="発注停止=0:しないのみ"
+								  Margin="0,0,5,0" 
+								  IsChecked="{Binding SearchOpt.SelOrderChk}"
+								  VerticalAlignment="Center"/>
+					</Grid>
+				</Grid>
+			</StackPanel>
+		</Border>
+		
+		<!-- 条件リスト DataGrid -->
+		<uc:ListFlexView Grid.Row="2"/>
+
+		<!-- Action Buttons -->
+		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >
+			<Button Command="{Binding DoExecuteCommand}" 
+					Style="{DynamicResource ExecButton}" 
+					Margin="0, 0, 5, 0" />
+			<Button Command="{Binding DoExitCommand}" 
+					Style="{DynamicResource BackBtn}" 
+					Margin="0, 0, 5, 0" />
+		</StackPanel>
+	</Grid>
 </Window>

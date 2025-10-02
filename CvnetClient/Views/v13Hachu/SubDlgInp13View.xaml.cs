@@ -29,6 +29,6 @@ namespace CvnetClient.Views
         {
             // contoh: kita nak letak row number ke dalam column pertama (index 0)
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        }
+        } 
     }
 }

@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
         mc:Ignorable="d"
-        Title="ABC分析" Style="{StaticResource PrintWindowStyle}">
+        Title="ABC分析" Style="{StaticResource MasterWindowStyle}">
     <Window.DataContext>
         <vm:SubDlg80GphABC2ViewModel/>
     </Window.DataContext>
@@ -17,105 +17,111 @@
             <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
         </behaviors:EventTrigger>
     </behaviors:Interaction.Triggers>
-    
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="700*"/>
+            <ColumnDefinition Width="300*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="1" BorderThickness="1" BorderBrush="Black" Background="White">
-            <Grid>
+        <Grid  Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+
+            <local:ListFlexView Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="8" Margin="0" DataSource="{Binding ListFlexData}"/>
+
+            <!--<Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>-->
+            <Label Grid.Row="1" Grid.Column="1" Content="期間" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0"/>
+            <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" />
+            <Label Grid.Row="1" Grid.Column="5"  Content="~" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="6"  Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo2}"/>
+
+            <RadioButton Grid.Row="2" Grid.Column="6" Content="全店" 
+             GroupName="BarcodeType"
+                      Margin="0"/>
+            <RadioButton Grid.Row="2" Grid.Column="7" Content="店別" GroupName="BarcodeType"/>
+            <Label Grid.Row="2" Grid.Column="1" Content="店舗" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0"/>
+            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3"   Text="{Binding EditSearch.DenpyoNo1}" />
+            <Button Grid.Row="2" Grid.Column="5" Style="{DynamicResource ComboButton}" Margin="0" HorizontalAlignment="Left"/>
+
+
+            <Label Grid.Row="3" Grid.Column="1" Content="集計項目１" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
+            <ComboBox Grid.Row="3"  Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
+
+            <Label Grid.Row="4" Grid.Column="1" Content="集計項目2" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
+            <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
+
+            
+            
+            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="7" BorderThickness="1" BorderBrush="Black" CornerRadius="4"></Border>
+            <Label  Grid.Row="5" Grid.Column="1" Content="ABC比較" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
+
+            <Grid Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="7">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <local:ListFlexView Grid.Row="0"></local:ListFlexView>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBox Grid.Row="0" Grid.Column="1"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" />
-                    <Label Grid.Row="0" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                    <TextBox Grid.Row="0" Grid.Column="3"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo2}"/>
-                </Grid>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <RadioButton Grid.Column="1" Content="全店" 
-             GroupName="BarcodeType"
-                      Margin="0,0,20,0"/>
-                    <RadioButton Grid.Column="2" Content="店別" GroupName="BarcodeType"/>
-                    <Label Grid.Row="1" Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" />
-                    <Button Grid.Row="1" Grid.Column="3" Style="{DynamicResource ComboButton}" Margin="2,0,0,0" HorizontalAlignment="Left"/>
-                </Grid>
-                <Grid Grid.Row="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Label  Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                        <ComboBox  Grid.Column="1" Grid.ColumnSpan="2"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
-                    </Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Column="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Label  Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                        <ComboBox  Grid.Column="1" Grid.ColumnSpan="2"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
-                    </Grid>
-                </Grid>
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Label   Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                        <ComboBox  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Label Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                        <ComboBox  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                        <Label   Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                        <ComboBox  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
-                    </StackPanel>
-                </Grid>
+                <Label Grid.Column="0" Content="Aグループ" VerticalAlignment="Center" Margin="0"/>
+                <TextBox Grid.Column="1" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Width="auto"/>
+
+                <Label Grid.Column="3" Content="Bグループ" VerticalAlignment="Center" Margin="0"/>
+                <TextBox Grid.Column="4"  Margin="0" Text="{Binding EditSearch.DenpyoNo1}"/>
+
+                <Label Grid.Column="6"   Content="Cグループ" VerticalAlignment="Center" Margin="0"/>
+                <TextBox Grid.Column="7"  Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource ReadOnlyTextBox}"/>
+
             </Grid>
-        </Border>
+            <TextBlock Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" Text="※ 店頭売上金額でABC分析を行います。"/>
 
-        <Grid Grid.Row="2">
+        </Grid>
+
+
+        <Grid Grid.Row="2" Margin="6,6,6,6" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button  Margin="13,6" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}"  HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                 <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
             </StackPanel>
-            
-        </Grid>
+            </Grid>
     </Grid>
 </Window>
