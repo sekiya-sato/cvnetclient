@@ -10,10 +10,9 @@
 		Title="商品マスタ"
         mc:Ignorable="d"
 		FontFamily="Meiryo UI"
-		Width="1450"
+		Width="1440"
 		Height="1000"
-		WindowStartupLocation="CenterScreen"
-        Style="{StaticResource MasterWindowStyle2}">
+		WindowStartupLocation="CenterScreen">
 	<Window.Resources>
 		<utils:VdateConverter x:Key="VdateConverter" />
 	</Window.Resources>
@@ -38,12 +37,12 @@
 			  Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}" 
 			  Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="0.3*" />
-				<RowDefinition Height="9.7*" />
+				<RowDefinition Height="0.5*" />
+				<RowDefinition Height="9.5*" />
 			</Grid.RowDefinitions>
 
 			<Button Grid.Row="0" Grid.Column="0" 
-					Margin="10,0"
+					Margin="10,10,10,0"
 					VerticalAlignment="Top"
 					HorizontalAlignment="Right"
                     Style="{StaticResource ExecButton}"
@@ -69,7 +68,7 @@
 				<RowDefinition Height="auto" />
 			</Grid.RowDefinitions>
 
-			<TabControl Grid.Row="0" Grid.Column="0" Margin="0">
+			<TabControl Grid.Row="0" Grid.Column="0" Margin="10">
 				<TabItem Header="基本情報 (Shift+F1)">
 					<Grid>
 						<StackPanel Orientation="Vertical">
@@ -187,30 +186,8 @@
 										 d:Text="JAN連番：Data"
 										 Text="{Binding EditProduct.JanCode2}"
 										 TextWrapping="Wrap" />
-                                <Label Width="85"
-				   Margin="5,0,0,0"
-				   VerticalContentAlignment="Center"
-				   Content="年度" />
-                                <TextBox Width="150"
-								 Margin="5,0,0,0" 
-								 HorizontalAlignment="Left"
-								 VerticalAlignment="Top"
-								 d:Text="年度：Data"    
-								 Text="{Binding EditProduct.JanCode1}" 
-								 TextWrapping="Wrap" />
-                                <Label Width="85"
-				   Margin="5,0,0,0"
-				   VerticalContentAlignment="Center"
-				   Content="製品番号" />
-                                <TextBox Width="150"
-								 Margin="5,0,0,0" 
-								 HorizontalAlignment="Left"
-								 VerticalAlignment="Top"
-								 d:Text="製品番号：Data"   
-								 Text=""
-								 TextWrapping="Wrap" />
-                            </StackPanel>
-							<!--<StackPanel Orientation="Horizontal" 
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
 								<Label Width="85"
 									   Margin="5,0,0,0"
@@ -234,7 +211,7 @@
 										 d:Text="製品番号：Data"   
 										 Text=""
 										 TextWrapping="Wrap" />
-							</StackPanel>-->
+							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
 								<uc:CvnetBtListView Width="85"
@@ -991,7 +968,7 @@
 										 d:Text="最終修正者：Data" 
 										 TextWrapping="Wrap" />
 							</StackPanel>
-							<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" 
+							<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
 								<Button Width="120"
 										Margin="10,0,0,0"
@@ -1021,15 +998,15 @@
 						</StackPanel>
 
 						<StackPanel Orientation="Horizontal"
-									HorizontalAlignment="Left" Margin="660,0,0,0">
+									HorizontalAlignment="Left" Margin="662,0,0,0">
 							<Border BorderBrush="Black"
 									CornerRadius="2"
 									VerticalAlignment="Top"
 									HorizontalAlignment="Right"
 									Height="140" Width="150"  
-									Margin="1"
+									Margin="0,5,5,0"
 									BorderThickness="1">
-								<StackPanel Orientation="Vertical" Margin="4">
+								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
                                     <Button Style="{StaticResource ImageUploadBtn}"   
 											VerticalAlignment="Bottom"
@@ -1041,9 +1018,9 @@
 									VerticalAlignment="Top"
 									HorizontalAlignment="Right"
 									Height="140" Width="150"  
-									Margin="1"
+									Margin="0,5,5,0"
 									BorderThickness="1">
-                                <StackPanel Orientation="Vertical" Margin="4">
+								<StackPanel Orientation="Vertical">
 									<Image Height="100"/>
                                     <Button Style="{StaticResource ImageUploadBtn}" VerticalAlignment="Bottom"/>
 								</StackPanel>
@@ -1053,8 +1030,8 @@
 					</Grid>
 				</TabItem>
 
-                <TabItem Header="拡張情報 (Shift+F2)">
-					<StackPanel Orientation="Vertical" >
+				<TabItem Header="拡張情報 (Shift+F2)">
+					<StackPanel Orientation="Vertical">
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
 							<Label Width="85"
@@ -1662,7 +1639,7 @@
 									  SelectedValuePath="Key" 
 									  SelectedValue="{Binding EditProduct.CollabOutCate}"
 									  Style="{StaticResource SearchableComboBox1}"/>
-							<Label  Width="85"
+							<Button  Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
 									 
@@ -1677,7 +1654,7 @@
 									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
-									Margin="0,50,0,0">
+									Margin="0,5,0,0">
 							<Button  Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
@@ -1689,7 +1666,7 @@
 
 			<StackPanel Grid.Row="1" Grid.Column="0"  
 						Orientation="Horizontal" 
-						VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+						VerticalAlignment="Center" HorizontalAlignment="Center">
 				<Button 
 						Margin="10,0,50,0"
 						HorizontalAlignment="Left"

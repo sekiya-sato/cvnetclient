@@ -138,6 +138,21 @@ namespace CvnetClient.Service
             return vm;
         }
 
+        public SubDlgSelKokyakuViewModel GetSelKokyaku(string v_mstname, string[] init_para = null)
+        { 
+            var view = new SubDlgSelKokyakuView();
+            var vm = view.DataContext as SubDlgSelKokyakuViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(v_mstname, init_para);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
         public SubDlgSel002ViewModel GetSel002(string v_mstname = "", string sql_query = "", object v_para2 = null)
         {
             var view = new SubDlgSel002View();
