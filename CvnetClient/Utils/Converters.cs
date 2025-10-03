@@ -52,6 +52,44 @@ namespace CvnetClient.Utils
         }
     }
 
+    public class PercentageBelowConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is double d)
+            {
+                return d.ToString("00.0") + "%以下";
+            }
+            return string.Empty;
+        }
 
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var str = value?.ToString()?.Replace("%以下", "").Trim();
+            if (double.TryParse(str, out double result))
+            {
+                return result;
+            }
+            return null;
+        }
+    }
+
+    public class EnumToBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null || parameter == null) return false;
+            return value.ToString() == parameter.ToString();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((bool)value && parameter != null)
+            {
+                return Enum.Parse(targetType, parameter.ToString());
+            }
+            return Binding.DoNothing;
+        }
+    }
 
 }

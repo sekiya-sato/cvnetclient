@@ -245,7 +245,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "★T.L-アナライザー★", WindowId="" },
                 new ButtonConfig { Text = "★C.G-アナライザー★", WindowId="" },
                 new ButtonConfig { Text = "ナンでも？CSV", WindowId="" },
-                new ButtonConfig { Text = "ABC分析", WindowId=typeof(Views.SubDlg80GphABC2aView).FullName },
+                new ButtonConfig { Text = "ABC分析", WindowId=typeof(Views.SubDlg80GphABC2View).FullName },
                 new ButtonConfig { Text = "在庫データ出力", WindowId="" },
                 new ButtonConfig { Text = "在庫受払照会", WindowId="" },
                 new ButtonConfig { Text = "商品分析ビュー", WindowId="" },

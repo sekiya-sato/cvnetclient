@@ -12,6 +12,11 @@
     <Window.DataContext>
         <vm:SubDlg80GphABC2ViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <utils:PercentageBelowConverter x:Key="PercentageBelowConverter"/>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+        <utils:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+    </Window.Resources>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
             <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
@@ -54,36 +59,27 @@
 
             <local:ListFlexView Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="8" Margin="0" DataSource="{Binding ListFlexData}"/>
 
-            <!--<Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>-->
             <Label Grid.Row="1" Grid.Column="1" Content="期間" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0"/>
-            <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" />
+            <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding ListSearch.KikanFrom, StringFormat={}{0:yyyy/MM/dd}}" />
             <Label Grid.Row="1" Grid.Column="5"  Content="~" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"/>
-            <TextBox Grid.Row="1" Grid.Column="6"  Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo2}"/>
+            <TextBox Grid.Row="1" Grid.Column="6"  Grid.ColumnSpan="3" Margin="0" Text="{Binding ListSearch.KikanTo, StringFormat={}{0:yyyy/MM/dd}}"/>
 
-            <RadioButton Grid.Row="2" Grid.Column="6" Content="全店" 
-             GroupName="BarcodeType"
-                      Margin="0"/>
-            <RadioButton Grid.Row="2" Grid.Column="7" Content="店別" GroupName="BarcodeType"/>
+            <RadioButton Grid.Row="2" Grid.Column="6" Content="全店" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=全店, Mode=TwoWay}" Margin="0"/>
+            <RadioButton Grid.Row="2" Grid.Column="7" Content="店別" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=店別, Mode=TwoWay}" />
             <Label Grid.Row="2" Grid.Column="1" Content="店舗" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0"/>
-            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3"   Text="{Binding EditSearch.DenpyoNo1}" />
-            <Button Grid.Row="2" Grid.Column="5" Style="{DynamicResource ComboButton}" Margin="0" HorizontalAlignment="Left"/>
+            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding ListSearch.Tenpo}" IsEnabled="{Binding IsTenpoEnabled}"/>
+            <Button Grid.Row="2" Grid.Column="5" Style="{DynamicResource ComboButton}" Margin="0" HorizontalAlignment="Left" IsEnabled="{Binding IsTenpoEnabled}"/>
 
 
             <Label Grid.Row="3" Grid.Column="1" Content="集計項目１" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
-            <ComboBox Grid.Row="3"  Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
+            <ComboBox Grid.Row="3"  Grid.Column="2" Grid.ColumnSpan="3" Margin="0" ItemsSource="{Binding ComboListShukei1}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ListSearch.Shukei1}" Style="{StaticResource SearchableComboBox1}"/>
 
             <Label Grid.Row="4" Grid.Column="1" Content="集計項目2" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
-            <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource SearchableComboBox1}"/>
+            <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" ItemsSource="{Binding ComboListShukei2}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ListSearch.Shukei2}" Style="{StaticResource SearchableComboBox1}"/>
 
             
             
-            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="7" BorderThickness="1" BorderBrush="Black" CornerRadius="4"></Border>
+            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="7" BorderThickness="1" BorderBrush="LightGray" CornerRadius="4"></Border>
             <Label  Grid.Row="5" Grid.Column="1" Content="ABC比較" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
 
             <Grid Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="7">
@@ -103,13 +99,13 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" Content="Aグループ" VerticalAlignment="Center" Margin="0"/>
-                <TextBox Grid.Column="1" Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Width="auto"/>
+                <TextBox Grid.Column="1" Margin="0" Text="{Binding ListSearch.Agroup, Converter={StaticResource PercentageBelowConverter}, UpdateSourceTrigger=PropertyChanged}" Width="auto"/>
 
                 <Label Grid.Column="3" Content="Bグループ" VerticalAlignment="Center" Margin="0"/>
-                <TextBox Grid.Column="4"  Margin="0" Text="{Binding EditSearch.DenpyoNo1}"/>
+                <TextBox Grid.Column="4"  Margin="0" Text="{Binding ListSearch.Bgroup, Converter={StaticResource PercentageBelowConverter}, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Column="6"   Content="Cグループ" VerticalAlignment="Center" Margin="0"/>
-                <TextBox Grid.Column="7"  Margin="0" Text="{Binding EditSearch.DenpyoNo1}" Style="{StaticResource ReadOnlyTextBox}"/>
+                <TextBox Grid.Column="7"  Margin="0" Text="{Binding ListSearch.Cgroup}" Style="{StaticResource ReadOnlyTextBox}" IsEnabled="False"/>
 
             </Grid>
             <TextBlock Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" Text="※ 店頭売上金額でABC分析を行います。"/>
@@ -119,7 +115,7 @@
 
         <Grid Grid.Row="2" Margin="6,6,6,6" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button  Margin="13,6" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}"  HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button  Margin="13,6" Command="{Binding DoExecCommand}" Style="{DynamicResource ExecButton}"  HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                 <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
             </StackPanel>
             </Grid>
