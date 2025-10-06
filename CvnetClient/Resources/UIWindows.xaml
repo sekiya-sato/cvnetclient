@@ -6,6 +6,7 @@
     <Style x:Key="GlobalWindowStyle" TargetType="Window">
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
         <Setter Property="Background" Value="{DynamicResource FormMenuBg}"/>
         <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
         <Setter Property="FontWeight" Value="{DynamicResource AppFontWeight}"/>
@@ -90,6 +91,9 @@
     <Style x:Key="MasterWindowStyle2" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Width" Value="1000"/>
         <Setter Property="Height" Value="800"/>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+        <Setter Property="MinWidth" Value="600"/>
+        <Setter Property="MinHeight" Value="400"/>
     </Style>
 
     <Style x:Key="ExtraMasterWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">

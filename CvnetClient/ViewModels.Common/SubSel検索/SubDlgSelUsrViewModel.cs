@@ -67,13 +67,16 @@ namespace CvnetClient.ViewModels
             #endregion
 
             /* 付加SQL */
-            Mst_sql = string.Empty;
+            Mst_sql = string.Empty; Mst_sql2 = string.Empty;
             if (AppData.ClassCvnet.MstDialog.ContainsKey(v_mst))
             {
                 MstItem add = AppData.ClassCvnet.MstDialog[v_mst];
-                foreach (var item in add.v_para)
+                if (add.v_para != null)
                 {
-                    Mst_sql = (string.IsNullOrEmpty(Mst_sql)) ? item : " and " + item ;
+                    if (add.v_para.Length > 0)
+                        Mst_sql = add.v_para[0] + " and ";
+                    if (add.v_para.Length > 1 && wrk_para != null)
+                        Mst_sql2 = add.v_para[1] + " and ";
                 }
             }
 

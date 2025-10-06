@@ -11,6 +11,8 @@
         Title="発注入力" Style="{StaticResource MasterWindowStyle2}">
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
+        <!--<utils:SubtractHeaderFooterHeightConverter x:Key="SubtractHeaderFooterHeightConverter" Offset="380"/>-->
+        <utils:SubtractHeaderFooterHeightConverter x:Key="SubtractHeaderFooterHeightConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <vm:SubDlgInp13ViewModel/>
@@ -23,12 +25,12 @@
     <Grid>
         <TabControl BorderThickness="1" Grid.Row="0">
             <TabItem Header="検索画面(Shift+F1)">
-                <Grid>
+                <Grid >
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" BorderThickness="0">
@@ -56,35 +58,35 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <Label Grid.Row="0" Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                                <TextBox Grid.Row="0" Grid.Column="1"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" />
-                                <Label Grid.Row="0" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                                <TextBox Grid.Row="0" Grid.Column="3"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo2}"/>
+                                <Label Grid.Row="0" Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,1"/>
+                                <TextBox Grid.Row="0" Grid.Column="1"  Margin="0,1" Text="{Binding EditSearch.DenpyoNo1}" />
+                                <Label Grid.Row="0" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+                                <TextBox Grid.Row="0" Grid.Column="3"  Margin="0,1" Text="{Binding EditSearch.DenpyoNo2}"/>
 
-                                <Label Grid.Row="0" Grid.Column="4" Content="納品日" VerticalAlignment="Center" Margin="0,8"/>
-                                <DatePicker Grid.Row="0" Grid.Column="5"  Margin="0,8" SelectedDate="{Binding EditSearch.NohinbiFrom}"/>
-                                <Label Grid.Row="0" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                                <DatePicker Grid.Row="0" Grid.Column="7"  Margin="0,8" SelectedDate="{Binding EditSearch.NohinbiTo}"/>
+                                <Label Grid.Row="0" Grid.Column="4" Content="納品日" VerticalAlignment="Center" Margin="0,1"/>
+                                <DatePicker Grid.Row="0" Grid.Column="5"  Margin="0,1" SelectedDate="{Binding EditSearch.NohinbiFrom}"/>
+                                <Label Grid.Row="0" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+                                <DatePicker Grid.Row="0" Grid.Column="7"  Margin="0,1" SelectedDate="{Binding EditSearch.NohinbiTo}"/>
 
-                                <Label Grid.Row="1" Grid.Column="0" Content="取引区分" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,8" ItemsSource="{Binding ComboListToriHikiFrom}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.ToriKubunFrom}" Style="{StaticResource SearchableComboBox1}"/>
-                                <Label Grid.Row="1" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                                <ComboBox Grid.Row="1" Grid.Column="3"  Margin="0,8" ItemsSource="{Binding ComboListToriHikiTo}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.ToriKubunTo}" Style="{StaticResource SearchableComboBox1}"/>
+                                <Label Grid.Row="1" Grid.Column="0" Content="取引区分" VerticalAlignment="Center" Margin="0,1"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,1" ItemsSource="{Binding ComboListToriHikiFrom}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.ToriKubunFrom}" Style="{StaticResource SearchableComboBox1}"/>
+                                <Label Grid.Row="1" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+                                <ComboBox Grid.Row="1" Grid.Column="3"  Margin="0,1" ItemsSource="{Binding ComboListToriHikiTo}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.ToriKubunTo}" Style="{StaticResource SearchableComboBox1}"/>
 
-                                <Label Grid.Row="1" Grid.Column="4" Content="関連No1" VerticalAlignment="Center" Margin="0,8"/>
-                                <TextBox Grid.Row="1" Grid.Column="5"  Margin="0,8" Text="{Binding EditSearch.Kanren1From}"/>
-                                <Label Grid.Row="1" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                                <TextBox Grid.Row="1" Grid.Column="7"  Margin="0,8" Text="{Binding EditSearch.Kanren1To}"/>
+                                <Label Grid.Row="1" Grid.Column="4" Content="関連No1" VerticalAlignment="Center" Margin="0,1"/>
+                                <TextBox Grid.Row="1" Grid.Column="5"  Margin="0,1" Text="{Binding EditSearch.Kanren1From}"/>
+                                <Label Grid.Row="1" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+                                <TextBox Grid.Row="1" Grid.Column="7"  Margin="0,1" Text="{Binding EditSearch.Kanren1To}"/>
 
-                                <Label Grid.Row="2" Grid.Column="0" Content="関連No2" VerticalAlignment="Center" Margin="0,8"/>
-                                <TextBox Grid.Row="2" Grid.Column="1"  Margin="0,8" Text="{Binding EditSearch.Kanren2From}"/>
-                                <Label Grid.Row="2" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                                <TextBox Grid.Row="2" Grid.Column="3"  Margin="0,8" Text="{Binding EditSearch.Kanren2To}"/>
+                                <Label Grid.Row="2" Grid.Column="0" Content="関連No2" VerticalAlignment="Center" Margin="0,1"/>
+                                <TextBox Grid.Row="2" Grid.Column="1"  Margin="0,1" Text="{Binding EditSearch.Kanren2From}"/>
+                                <Label Grid.Row="2" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="3"  Margin="0,1" Text="{Binding EditSearch.Kanren2To}"/>
 
-                                <Label Grid.Row="2" Grid.Column="4" Content="手入力No" VerticalAlignment="Center" Margin="0,8"/>
-                                <TextBox Grid.Row="2" Grid.Column="5"  Margin="0,8" Text="{Binding EditSearch.Tenyuryoku1}"/>
-                                <Label Grid.Row="2" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                                <TextBox Grid.Row="2" Grid.Column="7"  Margin="0,8" Text="{Binding EditSearch.Tenyuryoku2}"/>
+                                <Label Grid.Row="2" Grid.Column="4" Content="手入力No" VerticalAlignment="Center" Margin="0,1"/>
+                                <TextBox Grid.Row="2" Grid.Column="5"  Margin="0,1" Text="{Binding EditSearch.Tenyuryoku1}"/>
+                                <Label Grid.Row="2" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+                                <TextBox Grid.Row="2" Grid.Column="7"  Margin="0,1" Text="{Binding EditSearch.Tenyuryoku2}"/>
 
                             </Grid>
 
@@ -102,7 +104,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <Label Grid.Row="0" Grid.Column="0" Content="仕入先" VerticalAlignment="Center" Margin="0,8"/>
+                                <Label Grid.Row="0" Grid.Column="0" Content="仕入先" VerticalAlignment="Center" Margin="0,1"/>
                                 <Grid Grid.Row="0" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -112,7 +114,7 @@
                                     <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
                                 </Grid>
 
-                                <Label Grid.Row="0" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
+                                <Label Grid.Row="0" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
                                 <Grid Grid.Row="0" Grid.Column="3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -123,7 +125,7 @@
                                 </Grid>
 
 
-                                <Label Grid.Row="1" Grid.Column="0" Content="入庫先" VerticalAlignment="Center" Margin="0,8"/>
+                                <Label Grid.Row="1" Grid.Column="0" Content="入庫先" VerticalAlignment="Center" Margin="0,1"/>
                                 <Grid Grid.Row="1" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -133,7 +135,7 @@
                                     <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
                                 </Grid>
 
-                                <Label Grid.Row="1" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
+                                <Label Grid.Row="1" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
                                 <Grid Grid.Row="1" Grid.Column="3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -144,7 +146,7 @@
                                 </Grid>
 
 
-                                <Label Grid.Row="2" Grid.Column="0" Content="商品" VerticalAlignment="Center" Margin="0,8"/>
+                                <Label Grid.Row="2" Grid.Column="0" Content="商品" VerticalAlignment="Center" Margin="0,1"/>
                                 <Grid Grid.Row="2" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -154,7 +156,7 @@
                                     <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
                                 </Grid>
 
-                                <Label Grid.Row="2" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
+                                <Label Grid.Row="2" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
                                 <Grid Grid.Row="2" Grid.Column="3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -165,7 +167,7 @@
                                 </Grid>
 
 
-                                <Label Grid.Row="3" Grid.Column="0" Content="入力者" VerticalAlignment="Center" Margin="0,8"/>
+                                <Label Grid.Row="3" Grid.Column="0" Content="入力者" VerticalAlignment="Center" Margin="0,1"/>
                                 <Grid Grid.Row="3" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -175,7 +177,7 @@
                                     <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
                                 </Grid>
 
-                                <Label Grid.Row="3" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
+                                <Label Grid.Row="3" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
                                 <Grid Grid.Row="3" Grid.Column="3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -189,34 +191,38 @@
                             </Grid>
 
                         </Grid>
-                        
+
                     </Border>
 
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,10,0,0">
                             <Button Margin="1,6" Command="{Binding BackListCommand}" Style="{DynamicResource PrevPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                             <Button Margin="1,1,6,1" Command="{Binding NextListCommand}" Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
-                            <TextBox Text="0"/>
+                            <TextBox Text="0" MinWidth="30"/>
                             <Label Content="/0"/>
                         </StackPanel>
 
-                        <Button Grid.Column="1" Margin="13,6" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" Content="一覧登録(F5)" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                        <Button Grid.Column="1" Margin="13,10,13,0" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" Content="一覧登録(F5)" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                     </Grid>
-                    
-                    <DataGrid  Grid.Row="2" Margin="8,10,8,10" d:ItemsSource="{d:SampleData ItemCount=5}"
+
+                    <DataGrid  Grid.Row="2" Margin="8,3,8,10" d:ItemsSource="{d:SampleData ItemCount=5}"
                                 AutoGenerateColumns="False"
                                 Style="{DynamicResource WinGridData}"
                                 IsReadOnly="True"
                                 ItemsSource="{Binding ListOrder}"
                                 SelectionMode="Single"
-                                Height="260"
-                                MaxHeight="260"  
                                 ScrollViewer.CanContentScroll="True"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                MaxHeight="{Binding ActualHeight,
+                              RelativeSource={RelativeSource AncestorType=Window},
+                              Converter={StaticResource SubtractHeaderFooterHeightConverter},
+                              ConverterParameter=430}" >
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*" Binding="{Binding DenpyoNo }" Header="伝票No" />
                             <DataGridTextColumn Width="*" Binding="{Binding Nohinbi}" Header="納品日" />
@@ -232,42 +238,45 @@
 
                     </DataGrid>
 
+                    <Border Grid.Row="3" BorderThickness="0" BorderBrush="Black" Margin="8,0,8,0" HorizontalAlignment="Left" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton Grid.Column="0" Content="一覧" Margin="0,0,8,0"/>
+                            <RadioButton Grid.Column="1" Content="明細" Margin="0,0,8,0"/>
+
+                            <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="0,0,8,0"/>
+                            <Button Grid.Column="3" Content="CSV出力" Width="90" Margin="0,0,8,0"/>
+                        </Grid>
+
+                    </Border>
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-
-                        <Border  BorderThickness="0" BorderBrush="Black" Margin="0,0,8,0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-
-                                <RadioButton Grid.Column="0" Content="一覧" Margin="0,0,8,0"/>
-                                <RadioButton Grid.Column="1" Content="明細" Margin="0,0,8,0"/>
-
-                                <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="0,0,8,0"/>
-                                <Button Grid.Column="3" Content="CSV出力" Width="90" Margin="0,0,8,0"/>
-                            </Grid>
-                            
-                        </Border>
                         <Button Style="{DynamicResource UpdateIconBtn}" Margin="0,0,8,0"/>
                         <Button Style="{DynamicResource DeleteIconBtn}" Margin="0,0,8,0"/>
                         <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
                     </StackPanel>
-                    
-                    
+
+
                 </Grid>
             </TabItem>
             <TabItem Header="修正・登録画面(Shift+F2)">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="10"/>
@@ -281,14 +290,14 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        
+
                         <Grid Grid.Row="0" Grid.Column="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                            <TextBox Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.DenpyoNo}" />
+                            <Label Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,1"/>
+                            <TextBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.DenpyoNo}" />
                         </Grid>
 
                         <Grid Grid.Row="0" Grid.Column="2">
@@ -296,8 +305,8 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="取引区分" VerticalAlignment="Center" Margin="0,8"/>
-                            <ComboBox Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.ToriKubun}"/>
+                            <Label Grid.Column="0" Content="取引区分" VerticalAlignment="Center" Margin="0,1"/>
+                            <ComboBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.ToriKubun}"/>
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="0">
@@ -305,8 +314,8 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="発注日" VerticalAlignment="Center" Margin="0,8"/>
-                            <DatePicker Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.Hachubi}"/>
+                            <Label Grid.Column="0" Content="発注日" VerticalAlignment="Center" Margin="0,1"/>
+                            <DatePicker Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Hachubi}"/>
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="2">
@@ -314,8 +323,8 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="納品日" VerticalAlignment="Center" Margin="0,8"/>
-                            <DatePicker Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.Nohinbi}"/>
+                            <Label Grid.Column="0" Content="納品日" VerticalAlignment="Center" Margin="0,1"/>
+                            <DatePicker Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Nohinbi}"/>
                         </Grid>
 
                         <Grid Grid.Row="2" Grid.Column="0">
@@ -323,8 +332,8 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="関連No1" VerticalAlignment="Center" Margin="0,8"/>
-                            <TextBox Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.Kanren1}"/>
+                            <Label Grid.Column="0" Content="関連No1" VerticalAlignment="Center" Margin="0,1"/>
+                            <TextBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Kanren1}"/>
                         </Grid>
 
                         <Grid Grid.Row="2" Grid.Column="2">
@@ -332,8 +341,8 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="関連No2" VerticalAlignment="Center" Margin="0,8"/>
-                            <TextBox Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.Kanren2}"/>
+                            <Label Grid.Column="0" Content="関連No2" VerticalAlignment="Center" Margin="0,1"/>
+                            <TextBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Kanren2}"/>
                         </Grid>
 
                         <Grid Grid.Row="3" Grid.Column="0">
@@ -341,7 +350,7 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="仕入先" VerticalAlignment="Center" Margin="0,8"/>
+                            <Label Grid.Column="0" Content="仕入先" VerticalAlignment="Center" Margin="0,1"/>
                             <Grid Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -356,7 +365,7 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="入庫先" VerticalAlignment="Center" Margin="0,8"/>
+                            <Label Grid.Column="0" Content="入庫先" VerticalAlignment="Center" Margin="0,1"/>
                             <Grid Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -371,15 +380,15 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="手入力NO" VerticalAlignment="Center" Margin="0,8"/>
-                            <TextBox Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.Tenyuryoku}"/>
+                            <Label Grid.Column="0" Content="手入力NO" VerticalAlignment="Center" Margin="0,1"/>
+                            <TextBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Tenyuryoku}"/>
                         </Grid>
                         <Grid Grid.Row="4" Grid.Column="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="入力者" VerticalAlignment="Center" Margin="0,8"/>
+                            <Label Grid.Column="0" Content="入力者" VerticalAlignment="Center" Margin="0,1"/>
                             <Grid Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -394,21 +403,26 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Content="備考" VerticalAlignment="Center" Margin="0,8"/>
-                            <TextBox Grid.Column="1"  Margin="0,8" Text="{Binding SelectedOrderHeader.Biko}"/>
+                            <Label Grid.Column="0" Content="備考" VerticalAlignment="Center" Margin="0,1"/>
+                            <TextBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Biko}"/>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="展開商品CD"/>
-                            <TextBox Grid.Column="1"  Margin="0,8" />
-                            <Button Grid.Column="2" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                            <Button Grid.Column="0" Margin="4" Content="展開商品CD"/>
+                            <Grid Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0"  Margin="0,1" />
+                                <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                            </Grid>
                         </Grid>
                     </Grid>
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,4,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -428,12 +442,23 @@
                         <Button Grid.Column="8" Content="一括Refresh↩"/>
                         <Button Grid.Column="9" Content="バーコード入力"/>
                     </Grid>
-                    <DataGrid x:Name="MyDataGrid" AlternationCount="999999" Grid.Row="2" LoadingRow="MyDataGrid_LoadingRow" 
-                              Style="{DynamicResource WinGridData}" d:ItemsSource="{d:SampleData ItemCount=5}"
-                              ItemsSource="{Binding SelectedOrderDetail}"
-                              AutoGenerateColumns="False" Height="300"
-                              HeadersVisibility="Column" 
-                              CanUserAddRows="True">
+
+                    <DataGrid Grid.Row="2" x:Name="MyDataGrid" AlternationCount="999999" LoadingRow="MyDataGrid_LoadingRow" 
+                        Style="{DynamicResource WinGridData}"
+                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                        ItemsSource="{Binding SelectedOrderDetail}"
+                        MaxHeight="{Binding ActualHeight,
+                RelativeSource={RelativeSource AncestorType=Window},
+                Converter={StaticResource SubtractHeaderFooterHeightConverter},
+                ConverterParameter=380}"
+                        AutoGenerateColumns="False" 
+                        HeadersVisibility="Column" 
+                        CanUserAddRows="True" 
+                        Grid.ColumnSpan="2" 
+                        ColumnWidth="*"
+                        Margin="-2,4,2,4"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Width="100">
                                 <DataGridTemplateColumn.HeaderTemplate>
@@ -452,7 +477,7 @@
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
-                                
+
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
@@ -465,8 +490,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            
-                            <DataGridTemplateColumn Width="150">
+
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -481,16 +506,16 @@
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBox Text="{Binding ProductCD}" Margin="2"/>
-                                                <Button Content="一覧" Margin="2" Padding="2,0"/>
+                                                <Button Content="一覧" Margin="2" Padding="6"/>
                                             </StackPanel>
                                             <TextBox Text="{Binding ProductName}" Margin="2"/>
-                                            
+
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel>
@@ -502,22 +527,23 @@
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" >
                                                 <TextBox Text="{Binding Color}" Margin="2"/>
-                                                <Button Content="一覧" Margin="2" Padding="2,0"/>    
+                                                <Button Content="一覧" Margin="2" Padding="6"/>
                                             </StackPanel>
                                             <TextBox Text="{Binding ColorName}" Margin="2"/>
-                                            
                                         </StackPanel>
+                                       
+                                        
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
+                                        <StackPanel HorizontalAlignment="Stretch">
                                             <TextBlock Text="サイズ" FontWeight="Bold"/>
                                             <TextBlock Text="サイズ名" FontWeight="Bold"/>
                                         </StackPanel>
@@ -526,36 +552,42 @@
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBox Text="{Binding Size}" Margin="2"/>
-                                                <Button Content="一覧" Margin="2" Padding="2,0"/>
+                                        <Grid>
+                                            <StackPanel HorizontalAlignment="Stretch">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                    <TextBox Text="{Binding Size}" Margin="2" />
+                                                    <Button Content="一覧" Margin="2" Padding="6"/>
+                                                </StackPanel>
+                                                <TextBox Text="{Binding SSizeName}" Margin="2"/>
+
                                             </StackPanel>
-                                            <TextBox Text="{Binding SSizeName}" Margin="2"/>
-                                            
-                                        </StackPanel>
+                                        </Grid>
+                                        
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="数量" FontWeight="Bold"/>
+                                        <TextBlock Text="数量" FontWeight="Bold" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Weight}" Margin="2"/>
+                                        <Grid>
+                                            <TextBox Text="{Binding Weight}" Margin="2" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+                                        </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
+                                        <StackPanel HorizontalAlignment="Stretch">
                                             <TextBlock Text="上代単価" FontWeight="Bold"/>
                                             <TextBlock Text="上代金額" FontWeight="Bold"/>
                                         </StackPanel>
@@ -572,7 +604,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="100">
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center">
@@ -592,7 +624,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="200">
+                            <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
@@ -619,21 +651,25 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            
+
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Grid Grid.Row="3">
+
+
+
+
+                    <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="5*"/>
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <StackPanel Grid.Column="0" Orientation="Horizontal">
                             <Label Content="作成/修正日"/>
-                            <TextBox Width="80" Margin="0,8" Text="{Binding SelectedOrderHeader.CreateDate}"/>
-                            <TextBox Width="80" Margin="0,8" Text="{Binding SelectedOrderHeader.UpdateDate}"/>
+                            <TextBox Width="80" Margin="0,1" Text="{Binding SelectedOrderHeader.CreateDate}"/>
+                            <TextBox Width="80" Margin="0,1" Text="{Binding SelectedOrderHeader.UpdateDate}"/>
                             <Button Content="商品CD検索"/>
                         </StackPanel>
 
@@ -642,15 +678,15 @@
                             <Button Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
                             <Button Style="{DynamicResource PrintIconBtn}" Command="{Binding DoPrintCommand}"/>
                         </StackPanel>
-                        
+
                         <Button Grid.Column="2" Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
                     </Grid>
-                    
+
                 </Grid>
-                
+
             </TabItem>
         </TabControl>
 
-        
+
     </Grid>
 </Window>

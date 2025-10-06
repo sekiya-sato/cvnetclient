@@ -1,10 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
-using CvnetClient.Views;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.ObjectModel;
 using System.Data; 
 
@@ -435,18 +431,39 @@ namespace CvnetClient.ViewModels
         public void SelDspUpdate()
         {
             //商品
-            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品"))
-            {
-                var ar = new string[] { "0" };
-                var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
-            }
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("商品"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
+            //}
 
             //担当 
             //if (AppData.ClassCvnet.MstDialog.ContainsKey("担当"))
             //{
             //    var ar = new string[] { "0" };
-            //    var vm = AppData.DlgService.GetSelUsr(AppData.ClassCvnet.MstDialog["担当"].v_mstname, null, ar);
+            //    var vm = AppData.DlgService.GetSelUsr("担当", null, ar);
             //}
+
+            //Ac得意先
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("Ac得意先"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelTok("Ac得意先", null, ar);
+            //}
+
+            //仕入先
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("仕入先"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelSir("仕入先", null, ar);
+            //}
+
+            //顧客
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("顧客"))
+            {
+                var ar = new string[] { "1", "2", "" };
+                var vm = AppData.DlgService.GetSelKokyaku("顧客", ar);
+            }
         }
 
         [RelayCommand]
@@ -594,7 +611,8 @@ namespace CvnetClient.ViewModels
         }
         [RelayCommand]
         public void SelStandWare(object value)
-        { 
+        {
+            //var get_sel00 = (SelValueModel)value;
             // Note: Require Call SelTok to get ID before Start GetSell00 
             /*
             var get_sel00 = AppData.DlgService.GetSel00("倉庫");

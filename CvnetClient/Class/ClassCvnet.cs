@@ -4414,8 +4414,8 @@ namespace CvnetBaseCore
             if (_name == "締日")
             {
                 for (int i = 1; i < 29; i++)
-                    _list.Add((TKey)(object)i, i.ToString("00"));
-                _list.Add((TKey)(object)99, "99");
+                    _list.Add((TKey)(object)i.ToString("00"), i.ToString("00"));
+                _list.Add((TKey)(object)"99", "99");
             }
             if (_name == "週区分")
             {

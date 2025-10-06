@@ -280,7 +280,7 @@ namespace CvnetClient.Views
                 if (!(AppData.ClassSatoo.LoginKubun == 1 && row[1].ToString() == "仕入先"))
                 {
                     if (AppData.DefConfig.g_name.ContainsKey(row[1].ToString()))
-                        DataSource.ListFlexVar.Line3_ListData += ((DataSource.ListFlexVar.Line3_ListData == "") ? "" : ",") + AppData.DefConfig.g_name[row[1].ToString()];
+                        DataSource.ListFlexVar.Line3_ListData += ((string.IsNullOrEmpty(DataSource.ListFlexVar.Line3_ListData.Trim())) ? "" : ",") + AppData.DefConfig.g_name[row[1].ToString()];
                 }
             }
 
@@ -291,7 +291,9 @@ namespace CvnetClient.Views
                     if (!(!AppData.DefConfig.g_name.ContainsKey(v_col[i]) || AppData.DefConfig.g_name[v_col[i]] == ""))
                     {
                         DataSource.ListFlexVar.Unit_list2.Add(AppData.DefConfig.g_name[v_col[i]], v_col[i]);
-                        DataSource.ListFlexVar.Line3_ListData += "," + AppData.DefConfig.g_name[v_col[i]];
+                        // Handle FlexRecord1.Line3.ListData = ListData;
+                        DataSource.ListFlexVar.Unit_list.Add(AppData.DefConfig.g_name[v_col[i]], AppData.DefConfig.g_name[v_col[i]]);
+                        DataSource.ListFlexVar.Line3_ListData += ((string.IsNullOrEmpty(DataSource.ListFlexVar.Line3_ListData.Trim())) ? "" : ",") + AppData.DefConfig.g_name[v_col[i]];
                     }
                     else DataSource.ListFlexVar.Unit_list2.Add(v_col[i], v_col[i]); 
                 }
@@ -378,6 +380,7 @@ namespace CvnetClient.Views
         #region Button Event
         private void AddRow_Click(object sender, RoutedEventArgs e)
         {
+            if (DataSource.ListFlexSource == null) return;
             int nextNo = DataSource.ListFlexSource.Count + 1;
             DataSource.ListFlexSource.Add(new ListFlexItem
             {

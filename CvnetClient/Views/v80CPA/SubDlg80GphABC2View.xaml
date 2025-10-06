@@ -1,0 +1,123 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg80GphABC2View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        mc:Ignorable="d"
+        Title="ABC分析" Style="{StaticResource MasterWindowStyle}">
+    <Window.DataContext>
+        <vm:SubDlg80GphABC2ViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <utils:PercentageBelowConverter x:Key="PercentageBelowConverter"/>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+        <utils:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+    </Window.Resources>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="ContentRendered">
+            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="700*"/>
+            <ColumnDefinition Width="300*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid  Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+
+            <local:ListFlexView Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="8" Margin="0" DataSource="{Binding ListFlexData}"/>
+
+            <Label Grid.Row="1" Grid.Column="1" Content="期間" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0"/>
+            <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding ListSearch.KikanFrom, StringFormat={}{0:yyyy/MM/dd}}" />
+            <Label Grid.Row="1" Grid.Column="5"  Content="~" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"/>
+            <TextBox Grid.Row="1" Grid.Column="6"  Grid.ColumnSpan="3" Margin="0" Text="{Binding ListSearch.KikanTo, StringFormat={}{0:yyyy/MM/dd}}"/>
+
+            <RadioButton Grid.Row="2" Grid.Column="6" Content="全店" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=全店, Mode=TwoWay}" Margin="0"/>
+            <RadioButton Grid.Row="2" Grid.Column="7" Content="店別" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=店別, Mode=TwoWay}" />
+            <Label Grid.Row="2" Grid.Column="1" Content="店舗" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0"/>
+            <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding ListSearch.Tenpo}" IsEnabled="{Binding IsTenpoEnabled}"/>
+            <Button Grid.Row="2" Grid.Column="5" Style="{DynamicResource ComboButton}" Margin="0" HorizontalAlignment="Left" IsEnabled="{Binding IsTenpoEnabled}"/>
+
+
+            <Label Grid.Row="3" Grid.Column="1" Content="集計項目１" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
+            <ComboBox Grid.Row="3"  Grid.Column="2" Grid.ColumnSpan="3" Margin="0" ItemsSource="{Binding ComboListShukei1}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ListSearch.Shukei1}" Style="{StaticResource SearchableComboBox1}"/>
+
+            <Label Grid.Row="4" Grid.Column="1" Content="集計項目2" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
+            <ComboBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" ItemsSource="{Binding ComboListShukei2}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding ListSearch.Shukei2}" Style="{StaticResource SearchableComboBox1}"/>
+
+            
+            
+            <Border Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="7" BorderThickness="1" BorderBrush="LightGray" CornerRadius="4"></Border>
+            <Label  Grid.Row="5" Grid.Column="1" Content="ABC比較" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0"/>
+
+            <Grid Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="7">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Content="Aグループ" VerticalAlignment="Center" Margin="0"/>
+                <TextBox Grid.Column="1" Margin="0" Text="{Binding ListSearch.Agroup, Converter={StaticResource PercentageBelowConverter}, UpdateSourceTrigger=PropertyChanged}" Width="auto"/>
+
+                <Label Grid.Column="3" Content="Bグループ" VerticalAlignment="Center" Margin="0"/>
+                <TextBox Grid.Column="4"  Margin="0" Text="{Binding ListSearch.Bgroup, Converter={StaticResource PercentageBelowConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Column="6"   Content="Cグループ" VerticalAlignment="Center" Margin="0"/>
+                <TextBox Grid.Column="7"  Margin="0" Text="{Binding ListSearch.Cgroup}" Style="{StaticResource ReadOnlyTextBox}" IsEnabled="False"/>
+
+            </Grid>
+            <TextBlock Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Center" Text="※ 店頭売上金額でABC分析を行います。"/>
+
+        </Grid>
+
+
+        <Grid Grid.Row="2" Margin="6,6,6,6" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button  Margin="13,6" Command="{Binding DoExecCommand}" Style="{DynamicResource ExecButton}"  HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
+            </StackPanel>
+            </Grid>
+    </Grid>
+</Window>

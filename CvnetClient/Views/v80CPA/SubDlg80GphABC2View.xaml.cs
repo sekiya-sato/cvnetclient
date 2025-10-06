@@ -15,20 +15,13 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlg13HbnhtykNewView.xaml
+    /// Interaction logic for SubDlg80GphABC2View.xaml
     /// </summary>
-    public partial class SubDlg13HbnhtykNewView : Window
+    public partial class SubDlg80GphABC2View : Window
     {
-        public SubDlg13HbnhtykNewView()
+        public SubDlg80GphABC2View()
         {
             InitializeComponent();
-            MyDataGrid.Columns[0].Header = "行";
         }
-
-        private void MyDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            // contoh: kita nak letak row number ke dalam column pertama (index 0)
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        } 
     }
 }
