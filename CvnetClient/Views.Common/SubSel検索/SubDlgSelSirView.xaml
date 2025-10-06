@@ -185,7 +185,8 @@
 		</Border>
 		
 		<!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="2"/>
+		<uc:ListFlexView Grid.Row="2" 
+						 DataSource="{Binding ListFlexData}"/>
 
 		<!-- Action Buttons -->
 		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >

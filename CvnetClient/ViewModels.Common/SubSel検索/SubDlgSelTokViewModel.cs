@@ -39,7 +39,7 @@ namespace CvnetClient.ViewModels
         {
             if (wrk_para != null) para = new BizArray(wrk_para);
             else para = new BizArray();
-
+              
             ListFlexData.ListConfig = new ListFlexConfig()
             {
                 init_csv = def ?? new List<CsvItem>(), 

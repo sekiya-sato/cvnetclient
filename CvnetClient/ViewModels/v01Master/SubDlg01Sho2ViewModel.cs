@@ -452,10 +452,17 @@ namespace CvnetClient.ViewModels
             //}
 
             //仕入先
-            if (AppData.ClassCvnet.MstDialog.ContainsKey("仕入先"))
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("仕入先"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelSir("仕入先", null, ar);
+            //}
+
+            //顧客
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("顧客"))
             {
-                var ar = new string[] { "0" };
-                var vm = AppData.DlgService.GetSelSir("仕入先", null, ar);
+                var ar = new string[] { "1", "2", "" };
+                var vm = AppData.DlgService.GetSelKokyaku("顧客", ar);
             }
         }
 

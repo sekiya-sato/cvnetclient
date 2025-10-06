@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+		xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
-        Title="SubDlgSelKokyakuView" 
+        Title="{Binding Title}" 
 		Height="600" Width="900" 
         Style="{StaticResource MasterWindowStyle}">
 	<Window.DataContext>
@@ -54,48 +55,57 @@
 							   Text="顧客CD" 
 							   VerticalAlignment="Center"/> 
 					<TextBox Grid.Row="0" Grid.Column="1"
+							 Text="{Binding SearchOpt.SelCustCD}"
 							 Margin="0,0,5,0"/>
 					<ComboBox Grid.Row="0" Grid.Column="2"
 							  VerticalContentAlignment="Center"
+							  ItemsSource="{Binding CondList}"
 							  DisplayMemberPath="Value" 
 							  SelectedValuePath="Key"
+							  SelectedValue="{Binding SearchOpt.SrchNameCond}"
 							  Style="{StaticResource SearchableComboBox1}">
 					</ComboBox>
 					<TextBlock Grid.Row="0" Grid.Column="3"
 							   Margin="5"
 							   Text="登録日" 
 							   VerticalAlignment="Center"/>
-					<TextBox Grid.Row="0" Grid.Column="4"/>
+					<DatePicker Grid.Row="0" Grid.Column="4"
+								SelectedDate="{Binding SearchOpt.StartRegDate}"/>
 					<TextBlock Grid.Row="0" Grid.Column="5" 
 							   Text="～"  
 							   VerticalAlignment="Center"
 							   HorizontalAlignment="Center"/>
-					<TextBox Grid.Row="0" Grid.Column="6"/>
+					<DatePicker Grid.Row="0" Grid.Column="6"
+								SelectedDate="{Binding SearchOpt.EndRegDate}"/>
 
 					<TextBlock Grid.Row="1" Grid.Column="0"
 							   Margin="5"
 							   Text="顧客名" 
 							   VerticalAlignment="Center"/>
 					<TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
-							  Margin="0, 5, 0, 0"/>
+							 Text="{Binding SearchOpt.SelCustName}"
+							 Margin="0, 5, 0, 0"/>
 					<TextBlock Grid.Row="1" Grid.Column="3"
 							   Margin="5"
 							   Text="更新日" 
 							   VerticalAlignment="Center"/>
-					<TextBox Grid.Row="1" Grid.Column="4"
-							  Margin="0, 5, 0, 0"/>
+					<DatePicker Grid.Row="1" Grid.Column="4"
+								SelectedDate="{Binding SearchOpt.StartUpDate}"
+								Margin="0, 5, 0, 0"/>
 					<TextBlock Grid.Row="1" Grid.Column="5" 
 							   Text="～"  
 							   VerticalAlignment="Center"/>
-					<TextBox Grid.Row="1" Grid.Column="6"
-							  Margin="0, 5, 0, 0"/>
+					<DatePicker Grid.Row="1" Grid.Column="6"
+								SelectedDate="{Binding SearchOpt.EndUpDate}"
+								Margin="0, 5, 0, 0"/>
 
 					<TextBlock Grid.Row="2" Grid.Column="0"
 							   Margin="5"
 							   Text="電話番号" 
 							   VerticalAlignment="Center"/>
 					<TextBox Grid.Row="2" Grid.Column="1"
-							  Margin="0, 5, 0, 0"/>
+							 Text="{Binding SearchOpt.Tel}"
+							 Margin="0, 5, 0, 0"/>
 					<TextBlock Grid.Row="2" Grid.Column="2"
 							   Margin="5"
 							   Text="※.-は省略して指定" 
@@ -105,14 +115,16 @@
 							   Text="店舗CD" 
 							   VerticalAlignment="Center"/>
 					<Grid Grid.Row="2" Grid.Column="4"  
-							  Margin="0, 5, 0, 0">
+						  Margin="0, 5, 0, 0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="5*"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<TextBox Grid.Column="0" />
-						<Button Grid.Column="1" 
-								Style="{DynamicResource ComboButton}"/>
+						<TextBox Grid.Column="0" 
+								 Text="{Binding SearchOpt.StartStoreCD}"/>
+						<uc:CvnetBtListView Grid.Column="1" 
+											MstName="店舗"
+											Command="{Binding DoStartStoreCommand}"/>
 					</Grid>
 					<TextBlock Grid.Row="2" Grid.Column="5" 
 							   Text="～"  
@@ -123,15 +135,17 @@
 							<ColumnDefinition Width="5*"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
-						<TextBox Grid.Column="0" />
-						<Button Grid.Column="1" 
-								Style="{DynamicResource ComboButton}"/>
+						<TextBox Grid.Column="0"
+								 Text="{Binding SearchOpt.EndStoreCD}"/>
+						<uc:CvnetBtListView Grid.Column="1" 
+											MstName="店舗"
+											Command="{Binding DoEndStoreCommand}"/>
 					</Grid>
  
 					<CheckBox Grid.Row="3" Grid.Column="6"
 							  Content="出荷停止=0:しないのみ" 
 							  Margin="0,5,0,0"
-							  IsChecked="{Binding SearchOpt.SelShipChk}"
+							  IsChecked="{Binding SearchOpt.IsMemberChk}"
 							  HorizontalAlignment="Right"
 							  VerticalAlignment="Center"/> 
 				</Grid> 
@@ -143,6 +157,7 @@
 				Content="＋ 行追加" 
 				Width="80" 
 				Margin="5"
+				Command="{Binding DoAddRowCommand}"
 				HorizontalAlignment="Left"/>
 
 		<DataGrid Grid.Row="3"
@@ -150,17 +165,20 @@
 				  CanUserAddRows="False" 
 				  HeadersVisibility="Column"
 				  Margin="5" 
+				  ItemsSource="{Binding CvnetFlexList}"
 				  Style="{DynamicResource WinGridData}">
 			<DataGrid.Columns> 
 				<!--行-->
-				<DataGridTextColumn Header="行" Width="*"/>
+				<DataGridTextColumn Header="行" Binding="{Binding No}" Width="*"/>
 				
 				<!-- 検索項目 -->
 				<DataGridTemplateColumn Header="検索項目" Width="2*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<ComboBox DisplayMemberPath="Value"
-									  SelectedValuePath="Value">
+							<ComboBox ItemsSource="{Binding SearchList}" 
+									  DisplayMemberPath="Value"
+									  SelectedValuePath="Value"
+									  SelectedValue="{Binding SelSearch}">
 							</ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
@@ -170,28 +188,42 @@
 				<DataGridTemplateColumn Header="検索条件" Width="2*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<ComboBox DisplayMemberPath="Value"
-								  SelectedValuePath="Value">
+							<ComboBox ItemsSource="{Binding CondList}" 
+									  DisplayMemberPath="Value"
+									  SelectedValuePath="Value"
+									  SelectedValue="{Binding SelCond}">
 							</ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 
 				<!-- 検索文字列 (FROM) -->
-				<DataGridTextColumn Header="検索文字列 (FROM)" Width="2*"/>
+				<DataGridTextColumn Header="検索文字列 (FROM)" Binding="{Binding FromValue}" Width="2*"/>
 
 				<!-- 検索文字列 (TO) -->
-				<DataGridTextColumn Header="検索文字列 (TO)" Width="2*"/>
+				<DataGridTextColumn Header="検索文字列 (TO)" Binding="{Binding ToValue}" Width="2*"/>
+
+				<!-- 削除ボタン -->
+				<DataGridTemplateColumn Header="削除" Width="*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Button Content="🗑" 
+									Foreground="Red"
+									Command="{Binding DoDeleteRowCommand}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn> 
 			</DataGrid.Columns>
 		</DataGrid>
 
 		<!-- Action Buttons -->
 		<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" >
-			<Button Style="{DynamicResource ExecButton}" 
+			<Button Command="{Binding DoExecuteCommand}"
+					Style="{DynamicResource ExecButton}" 
 					Margin="0, 0, 5, 0" />
-			<Button Style="{DynamicResource BackBtn}" 
+			<Button Command="{Binding DoExitCommand}" 
+					Style="{DynamicResource BackBtn}" 
 					Margin="0, 0, 5, 0" />
-		</StackPanel>
-
+		</StackPanel> 
 	</Grid>
 </Window>
