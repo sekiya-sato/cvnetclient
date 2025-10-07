@@ -461,7 +461,7 @@ namespace CvnetClient.ViewModels
             //顧客
             if (AppData.ClassCvnet.MstDialog.ContainsKey("顧客"))
             {
-                var ar = new string[] { "1", "2", "" };
+                var ar = new string[] { "2", "2", "" };
                 var vm = AppData.DlgService.GetSelKokyaku("顧客", ar);
             }
         }

@@ -24,6 +24,8 @@ namespace CvnetClient.Interface
 
         SubDlgSelKokyakuViewModel GetSelKokyaku(string v_mstname, string[] init_para = null);
 
+        SubDlgSel10ViewModel GetSel10(string qs, string para2 = "", string[] para3 = null, string ken_cd = "", string ken_jyun = "");
+
         SubDlgSel002ViewModel GetSel002(string v_mstname = "", string sql_query = "", object v_para2 = null);
     }
 }

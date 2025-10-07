@@ -4,14 +4,8 @@ using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
@@ -205,7 +199,7 @@ namespace CvnetClient.ViewModels
         partial void OnSelectedWorkerChanged(MasterWorker? value)
         {
             if (value != null)
-                EditWorker = Common.CloneObject(value);
+                EditWorker = CvnetBaseCore.Common.CloneObject(value);
             else
                 EditWorker = null;
         }

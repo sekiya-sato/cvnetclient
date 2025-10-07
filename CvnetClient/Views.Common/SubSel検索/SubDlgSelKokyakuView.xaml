@@ -164,7 +164,7 @@
 				  AutoGenerateColumns="False" 
 				  CanUserAddRows="False" 
 				  HeadersVisibility="Column"
-				  Margin="5" 
+				  Margin="5"
 				  ItemsSource="{Binding CvnetFlexList}"
 				  Style="{DynamicResource WinGridData}">
 			<DataGrid.Columns> 
@@ -175,7 +175,8 @@
 				<DataGridTemplateColumn Header="検索項目" Width="2*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<ComboBox ItemsSource="{Binding SearchList}" 
+							<ComboBox ItemsSource="{Binding DataContext.SearchList,
+															RelativeSource={RelativeSource AncestorType=DataGrid}}" 
 									  DisplayMemberPath="Value"
 									  SelectedValuePath="Value"
 									  SelectedValue="{Binding SelSearch}">
@@ -188,7 +189,8 @@
 				<DataGridTemplateColumn Header="検索条件" Width="2*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<ComboBox ItemsSource="{Binding CondList}" 
+							<ComboBox ItemsSource="{Binding DataContext.CondList,
+															RelativeSource={RelativeSource AncestorType=DataGrid}}" 
 									  DisplayMemberPath="Value"
 									  SelectedValuePath="Value"
 									  SelectedValue="{Binding SelCond}">
@@ -209,7 +211,9 @@
 						<DataTemplate>
 							<Button Content="🗑" 
 									Foreground="Red"
-									Command="{Binding DoDeleteRowCommand}"/>
+									Command="{Binding DataContext.DoDeleteRowCommand, 
+													  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+									CommandParameter="{Binding}"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn> 

@@ -9,7 +9,7 @@ namespace CvnetClient.ViewModels
     public partial class SubDlgSelKokyakuViewModel : BaseViewModel
     {
         [ObservableProperty]
-        ObservableCollection<CvnetFlexItem>? m_CvnetFlexList;
+        ObservableCollection<KokyakuFlexItem>? m_CvnetFlexList;
 
         [ObservableProperty]
         SelCustSearchOpt? m_SearchOpt;
@@ -19,7 +19,7 @@ namespace CvnetClient.ViewModels
 
         private BizArray para;
 
-        SelValueModel? selectedValue; /* Return value for CvnetBtListView */
+        SelValueModel? SelectedValue; /* Return value for CvnetBtListView */
         public BizArray SelKokyakuResult0;
         public BizArray SelKokyakuResult1; 
         public void OnInit(string v_mstname, string[] init_para = null, string[] v_para2 = null)
@@ -32,7 +32,7 @@ namespace CvnetClient.ViewModels
             if(init_para != null) para = new BizArray(init_para);
             else para = new BizArray();
 
-            CvnetFlexList = new ObservableCollection<CvnetFlexItem>();
+            CvnetFlexList = new ObservableCollection<KokyakuFlexItem>();
             SearchOpt = new SelCustSearchOpt();
 
             #region Set ComboList
@@ -187,21 +187,27 @@ namespace CvnetClient.ViewModels
         #region Events
         [RelayCommand]
         void DoStartStore(object value)
-        { 
-            
+        {
+            if (value == null || SearchOpt == null) return;
+            var get_value = (SelValueModel)value;
+            SearchOpt.StartStoreCD = get_value.Code;
+            SearchOpt.EndStoreCD = get_value.Code;
         }
         
         [RelayCommand]
         void DoEndStore(object value)
-        { 
-        
+        {
+            if (value == null || SearchOpt == null) return;
+            var get_value = (SelValueModel)value;
+            SearchOpt.EndStoreCD = get_value.Code;
         }
 
+        [RelayCommand]
         void DoAddRow()
         {
             if (CvnetFlexList == null) return;
             int nextNo = CvnetFlexList.Count + 1;
-            CvnetFlexList.Add(new CvnetFlexItem
+            CvnetFlexList.Add(new KokyakuFlexItem
             {
                 No = nextNo,
                 SelSearch = string.Empty,
@@ -212,9 +218,10 @@ namespace CvnetClient.ViewModels
         }
 
         [RelayCommand]
-        void DoDeleteRow()
+        void DoDeleteRow(KokyakuFlexItem? value)
         {
-            string test = "GetDelete";
+            if(value != null && CvnetFlexList != null) 
+                CvnetFlexList.Remove(value); 
         }
 
         [RelayCommand]
@@ -229,9 +236,18 @@ namespace CvnetClient.ViewModels
                 ClientLib.ExitDialogResult(this, true);
             }
             else 
-            {
-                //SelKokyakuResult0
-
+            { 
+                SubDlgSel10ViewModel vm_result = null;
+                vm_result = AppData.DlgService.GetSel10(sql, "k");
+                if (vm_result != null)
+                {
+                    SelectedValue = new SelValueModel()
+                    {
+                        Code = (vm_result.SelectedSel10 != null) ? vm_result.SelectedSel10.Col01 : "",
+                        Name = (vm_result.SelectedSel10 != null) ? vm_result.SelectedSel10.Col02 : ""
+                    };
+                    ClientLib.ExitDialogResult(this, true);
+                }
             }
         }
 
@@ -243,7 +259,7 @@ namespace CvnetClient.ViewModels
         #endregion
     }
 
-    public partial class CvnetFlexItem : ObservableObject
+    public partial class KokyakuFlexItem : ObservableObject
     {
         /// <summary>
         /// 行
