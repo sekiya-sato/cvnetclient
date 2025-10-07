@@ -408,19 +408,18 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void ResetToOriginal()
         {
-            if (OriginalTbl == null) return;
+            if (MainTbl == null) return;
 
-            AbcModel = new PlotModel { Title = "ABC分析 (Original)" };
+
             AbcTable.Clear();
-            TblGphGeneration(OriginalTbl);
-
-            MainTbl = OriginalTbl.Copy();
+            AbcModel.Series.Clear();
+            AbcModel.Axes.Clear();
+            TblGphGeneration(MainTbl);
+            
             ClickedTbl = null;
-
-            OnPropertyChanged(nameof(MainTbl));
             OnPropertyChanged(nameof(ClickedTbl));
             OnPropertyChanged(nameof(AbcModel));
-
+            AbcModel.InvalidatePlot(true);
             IsDrilled = false;   // balik ke asal
         }
 
