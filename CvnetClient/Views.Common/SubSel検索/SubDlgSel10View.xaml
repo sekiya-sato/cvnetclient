@@ -55,9 +55,13 @@
 					Command="{Binding NextListCommand}"/>
 
 			<Button Grid.Column="3" 
+					Command="{Binding DoSearchCommand}"
 					Style="{DynamicResource ExecButton}" 
 					Margin="5,5,0,5"/>
-			<Button Grid.Column="4" Style="{DynamicResource BackBtn}" Margin="5,5,0,5"/>
+			<Button Grid.Column="4" 
+					Command="{Binding DoExitCommand}"
+					Style="{DynamicResource BackBtn}" 
+					Margin="5,5,0,5"/>
 
 		</Grid>
 		
