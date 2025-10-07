@@ -135,6 +135,7 @@
               HorizontalAlignment="Stretch"
               MouseDoubleClick="PlotView_MouseDoubleClick"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="元に戻す" Command="{Binding ResetToOriginalCommand}" Margin="8"/>
                 <Button Content="CSV出力" Style="{DynamicResource PrintIconBtn}" Margin="8"/>
                 <Button Style="{DynamicResource PrintIconBtn}" Margin="8"/>
                 <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
