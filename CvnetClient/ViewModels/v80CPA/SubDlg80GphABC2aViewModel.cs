@@ -408,7 +408,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void ResetToOriginal()
         {
-            if (MainTbl == null) return;
+            if (IsDrilled == false) return;
 
 
             AbcTable.Clear();
