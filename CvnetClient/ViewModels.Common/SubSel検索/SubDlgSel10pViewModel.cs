@@ -27,6 +27,8 @@ namespace CvnetClient.ViewModels
 
         public void OnInit(string qs = "", string para2 = null, string[] para3 = null, string ken_cd = "", string ken_jyun = "")
         {
+            if (para == null) para = new BizArray();
+
             /* 05.10.05 パラメータセーブ */
             if (string.IsNullOrEmpty(sv_qs)) sv_qs = qs;
 

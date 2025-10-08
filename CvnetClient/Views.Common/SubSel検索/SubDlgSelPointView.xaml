@@ -84,18 +84,24 @@
 						<ComboBox Grid.Column="1"  
 								  Margin="0,0,5,0" 
 								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding Cond01List}"
 								  DisplayMemberPath="Value"
 								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond01}"
 								  Style="{StaticResource SearchableComboBox1}">
 						</ComboBox>
 						<ComboBox Grid.Column="2"  
 								  Margin="0,0,5,0" 
 								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding Cond02List}"
 								  DisplayMemberPath="Value"
 								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond02}"
 								  Style="{StaticResource SearchableComboBox1}">
 						</ComboBox>
-						<TextBox Grid.Column="3" VerticalAlignment="Center"/>
+						<TextBox Grid.Column="3" 
+								 Text="{Binding SearchOpt.SelPointName}"
+								 VerticalAlignment="Center"/>
 					</Grid>
 
 					<TextBlock Grid.Row="2" Grid.Column="0"
@@ -110,13 +116,15 @@
 							<ColumnDefinition Width="2*" />
 							<ColumnDefinition Width="6*" />
 						</Grid.ColumnDefinitions>
-						<DatePicker Grid.Row="0" Grid.Column="0"/>
+						<DatePicker Grid.Row="0" Grid.Column="0"
+									SelectedDate="{Binding SearchOpt.StartGrantPd}"/>
 						<TextBlock Grid.Row="0" Grid.Column="1" 
 								   Text="～"  
 								   Margin="5,0,5,0"
 								   VerticalAlignment="Center"
 								   HorizontalAlignment="Center"/>
-						<DatePicker Grid.Row="0" Grid.Column="2"/> 
+						<DatePicker Grid.Row="0" Grid.Column="2"
+									SelectedDate="{Binding SearchOpt.EndGrantPd}"/> 
 					</Grid>
 
 					<TextBlock Grid.Row="3" Grid.Column="0"
@@ -134,20 +142,42 @@
 						<ComboBox Grid.Column="0"  
 								  Margin="0,0,5,0" 
 								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding PriorityDivList}"
 								  DisplayMemberPath="Value"
 								  SelectedValuePath="Key"
-								  Style="{StaticResource SearchableComboBox1}">
+								  SelectedValue="{Binding SearchOpt.SelPriorityDiv}">
+							<ComboBox.Style>
+								<Style TargetType="ComboBox" BasedOn="{StaticResource SearchableComboBox1}">
+									<Setter Property="IsEnabled" Value="True" />
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding SearchOpt.PrioDivEnable}" Value="1">
+											<Setter Property="IsEnabled" Value="False" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</ComboBox.Style>
 						</ComboBox>
 						<TextBlock Grid.Column="1"
 								   Margin="5"
-								   Text="優先区分" 
+								   Text="ﾎﾟｲﾝﾄ区分" 
 								   VerticalAlignment="Center"/>
 						<ComboBox Grid.Column="2"  
 								  Margin="0,0,5,0" 
 								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding PointDivList}"
 								  DisplayMemberPath="Value"
 								  SelectedValuePath="Key"
-								  Style="{StaticResource SearchableComboBox1}">
+								  SelectedValue="{Binding SearchOpt.SelPointDiv}">
+							<ComboBox.Style>
+								<Style TargetType="ComboBox" BasedOn="{StaticResource SearchableComboBox1}">
+									<Setter Property="IsEnabled" Value="True" />
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding SearchOpt.PointDivEnable}" Value="1">
+											<Setter Property="IsEnabled" Value="False" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</ComboBox.Style>
 						</ComboBox>
 					</Grid>
 				</Grid>
@@ -156,7 +186,19 @@
 		</Border>
 
 		<!-- 条件リスト DataGrid -->
-		<uc:ListFlexView Grid.Row="2"/>
+		<uc:ListFlexView Grid.Row="2"
+						 DataSource="{Binding ListFlexData}">
+			<uc:ListFlexView.Style>
+				<Style TargetType="uc:ListFlexView">
+					<Setter Property="Visibility" Value="Visible"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding SearchOpt.ListFlexIsVisble}" Value="1">
+							<Setter Property="Visibility" Value="Collapsed"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</uc:ListFlexView.Style>
+		</uc:ListFlexView>
 
 		<!-- Action Buttons -->
 		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >

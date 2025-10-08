@@ -406,6 +406,12 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public int? m_PointDivEnable;
 
+        /// <summary>
+        /// ListFlexView Visible Status (0 Visible, 1 Not Visible)
+        /// </summary>
+        [ObservableProperty]
+        public int? m_ListFlexIsVisble;
+
         public SelPointSearchOpt()
         {
             StartPointCD = string.Empty;
@@ -420,6 +426,7 @@ namespace CvnetClient.ViewModels
             PrioDivEnable = 0;
             SelPointDiv = 1;
             PointDivEnable = 0;
+            ListFlexIsVisble = 0;
         }
     }
 }

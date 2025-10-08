@@ -468,7 +468,7 @@ namespace CvnetClient.ViewModels
             //ポイント
             if (AppData.ClassCvnet.MstDialog.ContainsKey("ポイント"))
             {
-                var ar = new string[] { "1" };
+                var ar = new string[] { "2" };
                 var vm = AppData.DlgService.GetSelPoint("ポイント", null, ar);
             }
         }

@@ -27,15 +27,16 @@
  
 		<DataGrid Grid.Row="0" Grid.Column="1" 
 				  IsReadOnly="True" 
+				  AutoGenerateColumns="False" 
+				  CanUserAddRows="False" 
 				  ItemsSource="{Binding ListSel10p}"
 				  SelectedItem="{Binding SelectedSel10p}"
 				  HeadersVisibility="Column"
-				  IsSynchronizedWithCurrentItem="True" 
 				  Style="{StaticResource WinGridData}"
 				  SelectionMode="Single">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="ｺｰﾄ" Width="*"/>
-				<DataGridTextColumn Header="名称" Width="*"/>
+				<DataGridTextColumn Header="ｺｰﾄ" Binding="{Binding Code}" Width="*"/>
+				<DataGridTextColumn Header="名称" Binding="{Binding Name}" Width="*"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
