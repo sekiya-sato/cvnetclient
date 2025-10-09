@@ -24,6 +24,11 @@
     <SolidColorBrush x:Key="PrintBtnColor" Color="#6B6B6B"/>   
     <SolidColorBrush x:Key="ComboBtnColor" Color="#95a5a6"/>
 
+    <SolidColorBrush x:Key="RowHoverColor" Color="#E6F2F6"/>
+    <SolidColorBrush x:Key="RowSelectedColor" Color="#B3D9E2"/>
+    <SolidColorBrush x:Key="RowSelectedTextColor" Color="White"/>
+
+
 
     <sys:Double x:Key="AppFontSize">16</sys:Double>
     <sys:Double x:Key="MenuFontSize">14</sys:Double>
