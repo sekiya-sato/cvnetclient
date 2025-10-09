@@ -22,6 +22,14 @@ namespace CvnetClient.Interface
 
         SubDlgSelSirViewModel GetSelSir(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
 
+        SubDlgSelKokyakuViewModel GetSelKokyaku(string v_mstname, string[] init_para = null);
+
+        SubDlgSel10ViewModel GetSel10(string qs, string para2 = "", string[] para3 = null, string ken_cd = "", string ken_jyun = "");
+
+        SubDlgSelPointViewModel GetSelPoint(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
+
+        SubDlgSel10pViewModel GetSel10p(string qs = "", string para2 = null, string[] para3 = null, string ken_cd = "", string ken_jyun = "");
+
         SubDlgSel002ViewModel GetSel002(string v_mstname = "", string sql_query = "", object v_para2 = null);
     }
 }

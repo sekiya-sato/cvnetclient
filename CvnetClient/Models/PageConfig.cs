@@ -50,7 +50,7 @@ namespace CvnetClient.Models
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "社員LOGINマスタ一覧", WindowId="" },
-                new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId= typeof(Views.MasterSystemKanriView).FullName },
+                new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId= typeof(Views.MasterSystemKanriView1).FullName },
                 new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "LOGIN履歴情報(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "処理履歴情報(管理者用)", WindowId="" },
@@ -245,7 +245,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "★T.L-アナライザー★", WindowId="" },
                 new ButtonConfig { Text = "★C.G-アナライザー★", WindowId="" },
                 new ButtonConfig { Text = "ナンでも？CSV", WindowId="" },
-                new ButtonConfig { Text = "ABC分析", WindowId=typeof(Views.SubDlg80GphABC2aView).FullName },
+                new ButtonConfig { Text = "ABC分析", WindowId=typeof(Views.SubDlg80GphABC2View).FullName },
                 new ButtonConfig { Text = "在庫データ出力", WindowId="" },
                 new ButtonConfig { Text = "在庫受払照会", WindowId="" },
                 new ButtonConfig { Text = "商品分析ビュー", WindowId="" },

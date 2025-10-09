@@ -138,6 +138,66 @@ namespace CvnetClient.Service
             return vm;
         }
 
+        public SubDlgSelKokyakuViewModel GetSelKokyaku(string v_mstname, string[] init_para = null)
+        { 
+            var view = new SubDlgSelKokyakuView();
+            var vm = view.DataContext as SubDlgSelKokyakuViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(v_mstname, init_para);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
+        public SubDlgSel10ViewModel GetSel10(string qs, string para2 = "", string[] para3 = null, string ken_cd = "", string ken_jyun = "")
+        { 
+            var view = new SubDlgSel10View();
+            var vm = view.DataContext as SubDlgSel10ViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(qs, para2, para3, ken_cd, ken_jyun);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
+        public SubDlgSelPointViewModel GetSelPoint(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null)
+        { 
+            var view = new SubDlgSelPointView();
+            var vm = view.DataContext as SubDlgSelPointViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(v_mst, init_para, wrk_para, def, wrk_para2);
+              
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
+        public SubDlgSel10pViewModel GetSel10p(string qs = "", string para2 = null, string[] para3 = null, string ken_cd = "", string ken_jyun = "")
+        {
+            var view = new SubDlgSel10pView();
+            var vm = view.DataContext as SubDlgSel10pViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(qs, para2, para3, ken_cd, ken_jyun);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
         public SubDlgSel002ViewModel GetSel002(string v_mstname = "", string sql_query = "", object v_para2 = null)
         {
             var view = new SubDlgSel002View();

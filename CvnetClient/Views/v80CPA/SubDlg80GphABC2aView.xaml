@@ -9,12 +9,11 @@
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         mc:Ignorable="d"
         Title="SubDlg80GphABC2aView" Style="{StaticResource MasterWindowStyle}">
-    <Window.DataContext>
-        <vm:SubDlg80GphABC2aViewModel/>
-    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
+            <ColumnDefinition Width="12"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
@@ -36,11 +35,11 @@
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="3.5*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="選択行" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                    <Label Grid.Row="0" Grid.Column="0" Content="店舗" VerticalAlignment="Center" Margin="0,8"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SearchCondList.tenpo}" VerticalAlignment="Center" Margin="10" />
 
-                    <Label Grid.Row="0" Grid.Column="2" Content="ブランド" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="累計" VerticalAlignment="Center" Margin="0,8"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding SearchCondList.ruikei, StringFormat={}{0:N0}}" VerticalAlignment="Center" Margin="10" />
                 </Grid>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -49,14 +48,16 @@
                         <ColumnDefinition Width="0.5*"/>
                         <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
-                    <Label  Grid.Column="0" Content="伝票No" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBox  Grid.Column="1"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo1}" />
+                    <Label  Grid.Column="0" Content="集計時間" VerticalAlignment="Center" Margin="0,8"/>
+                    <TextBlock  Grid.Column="1"  Text="{Binding SearchCondList.date1}" VerticalAlignment="Center" Margin="10"/>
                     <Label  Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                    <TextBox  Grid.Column="3"  Margin="0,8" Text="{Binding EditSearch.DenpyoNo2}"/>
+                    <TextBlock  Grid.Column="3"   Text="{Binding SearchCondList.date2}" VerticalAlignment="Center" Margin="10"/>
                 </Grid>
             </Grid>
             <DataGrid Grid.Row="1"
           ItemsSource="{Binding AbcTable}"
+          SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+          SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
           AutoGenerateColumns="False"
           IsReadOnly="True"
           SelectionMode="Single"
@@ -85,9 +86,9 @@
                     <DataGridTextColumn Width="*" Binding="{Binding アイテムCD}" Header="CD"/>
                     <DataGridTextColumn Width="*" Binding="{Binding アイテム名}" Header="アイテム名"/>
                     <DataGridTextColumn Width="*" Binding="{Binding 数量}" Header="数量"/>
-                    <DataGridTextColumn Width="*" Binding="{Binding 金額}" Header="金額"/>
-                    <DataGridTextColumn Width="*" Binding="{Binding 構成比}" Header="構成比"/>
-                    <DataGridTextColumn Width="*" Binding="{Binding 累計比}" Header="累計比"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding 金額, StringFormat={}{0:N0}}" Header="金額"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding 構成比, StringFormat={}{0:N2}%}" Header="構成比"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding 累計比, StringFormat={}{0:N2}%}" Header="累計比"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Grid Grid.Row="2">
@@ -104,26 +105,26 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="選択行" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedIndex}" VerticalAlignment="Center" Margin="10" />
 
                 <Label Grid.Row="1" Grid.Column="0" Content="ブランド" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedRow.ブランド名}" VerticalAlignment="Center" Margin="10" />
 
                 <Label Grid.Row="2" Grid.Column="0" Content="アイテム" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedRow.アイテム名}" VerticalAlignment="Center" Margin="10" />
 
                 <Label Grid.Row="3" Grid.Column="0" Content="合計" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedRow.金額, StringFormat={}{0:N0}}" VerticalAlignment="Center" Margin="10" />
 
                 <Label Grid.Row="4" Grid.Column="0" Content="構成比" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedRow.構成比}" VerticalAlignment="Center" Margin="10" />
 
                 <Label Grid.Row="5" Grid.Column="0" Content="累計比" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedInfo}" VerticalAlignment="Center" Margin="10" />
+                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedRow.累計比}" VerticalAlignment="Center" Margin="10" />
             </Grid>
             
         </Grid>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="9*"/>
                 <RowDefinition Height="1*"/>
@@ -134,6 +135,7 @@
               HorizontalAlignment="Stretch"
               MouseDoubleClick="PlotView_MouseDoubleClick"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="元に戻す" Command="{Binding ResetToOriginalCommand}" Margin="8"/>
                 <Button Content="CSV出力" Style="{DynamicResource PrintIconBtn}" Margin="8"/>
                 <Button Style="{DynamicResource PrintIconBtn}" Margin="8"/>
                 <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>

@@ -29,23 +29,45 @@ namespace CvnetClient.Views
 
         private void PlotView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (DataContext is SubDlg80GphABC2aViewModel vm)
+            if (!(DataContext is SubDlg80GphABC2aViewModel vm)) return;
+
+            var plotView = (OxyPlot.Wpf.PlotView)sender;
+            var pos = e.GetPosition(plotView);
+
+            if (vm.AbcModel == null) return;
+
+            // Buat hit test
+            var args = new HitTestArguments(new ScreenPoint(pos.X, pos.Y), 10);
+            var hitResults = vm.AbcModel.HitTest(args);
+            var first = hitResults?.FirstOrDefault();
+
+            if (first == null)
             {
-                // Ambil posisi mouse dalam plot
-                var plotView = (OxyPlot.Wpf.PlotView)sender;
-                var screenPoint = new OxyPlot.ScreenPoint(e.GetPosition(plotView).X, e.GetPosition(plotView).Y);
-
-                // Buat hit test
-                var hitResults = vm.AbcModel.HitTest(new HitTestArguments(screenPoint, 10));
-                var first = hitResults.FirstOrDefault();
-
-                if (first?.Item is RectangleBarItem bar)
-                    vm.ShowDetailFromView($"DoubleClick Bar Value={bar.Y1}");
-                else if (first?.Item is DataPoint dp)
-                    vm.ShowDetailFromView($"DoubleClick Point X={dp.X}, Y={dp.Y}");
-                else
-                    vm.ShowDetailFromView("Nothing selected");
+                vm.ShowDetailFromView("Nothing selected");
+                return;
             }
+
+            // Kalau klik RectangleBarSeries (bar chart)
+            if (first.Element is RectangleBarSeries rectSeries && first.Item is RectangleBarItem rectItem)
+            {
+                int index = rectSeries.Items.IndexOf(rectItem);
+                if (index >= 0 && index < vm.AbcTable.Count)
+                {
+                    // Drill sekali sahaja
+                    vm.DrillDownByCategory(vm.AbcTable[index].Category);
+                    return;
+                }
+            }
+
+            // Kalau klik line / scatter (DataPoint)
+            if (first.Item is DataPoint dp)
+            {
+                vm.ShowDetailFromView($"DoubleClick Point X={dp.X}, Y={dp.Y}");
+                return;
+            }
+
+            vm.ShowDetailFromView("Hit test found element but item type not handled");
         }
+
     }
 }

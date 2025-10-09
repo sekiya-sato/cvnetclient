@@ -445,10 +445,31 @@ namespace CvnetClient.ViewModels
             //}
 
             //Ac得意先
-            if (AppData.ClassCvnet.MstDialog.ContainsKey("Ac得意先"))
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("Ac得意先"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelTok("Ac得意先", null, ar);
+            //}
+
+            //仕入先
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("仕入先"))
+            //{
+            //    var ar = new string[] { "0" };
+            //    var vm = AppData.DlgService.GetSelSir("仕入先", null, ar);
+            //}
+
+            //顧客
+            //if (AppData.ClassCvnet.MstDialog.ContainsKey("顧客"))
+            //{
+            //    var ar = new string[] { "1", "2", "" };
+            //    var vm = AppData.DlgService.GetSelKokyaku("顧客", ar);
+            //}
+
+            //ポイント
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("ポイント"))
             {
-                var ar = new string[] { "0" };
-                var vm = AppData.DlgService.GetSelTok("Ac得意先", null, ar);
+                var ar = new string[] { "2" };
+                var vm = AppData.DlgService.GetSelPoint("ポイント", null, ar);
             }
 
             //仕入先

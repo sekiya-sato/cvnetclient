@@ -4,13 +4,211 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+		xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
-        Title="SubDlgSelPointView" 
-		Height="450" Width="800">
+        Title="SubDlgSelPointView"
+		Style="{StaticResource MasterWindowStyle}">
 	<Window.DataContext>
 		<vm:SubDlgSelPointViewModel />
 	</Window.DataContext>
-	<Grid>
-        
-    </Grid>
+	<Grid Margin="20">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/> 
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<TextBlock Grid.Row="0" 
+				   Text="検索条件"  
+				   VerticalAlignment="Center"
+				   Margin="0 0 0 5"/>
+
+		<!-- 検索条件 -->
+		<Border Grid.Row="1" 
+				CornerRadius="10" BorderThickness="1" 
+				Padding="3" Margin="3"
+				Background="White">
+
+			<StackPanel>
+				<Grid Margin="5">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="9*" />
+					</Grid.ColumnDefinitions>
+
+					<TextBlock Grid.Row="0" Grid.Column="0"
+							   Margin="5" 
+							   Text="ﾎﾟｲﾝﾄCD" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="0" Grid.Column="1"
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<TextBox Grid.Column="0"
+								 Text="{Binding SearchOpt.StartPointCD}"/>
+						<TextBlock Grid.Column="1" 
+								   Text="～" 
+								   VerticalAlignment="Center"
+								   Margin="5, 0, 5, 0"/>
+						<TextBox Grid.Column="2"
+								 Text="{Binding SearchOpt.EndPointCD}"/>
+					</Grid>
+
+					<TextBlock Grid.Row="1" Grid.Column="0"
+							   Margin="5"
+							   Text="ﾎﾟｲﾝﾄ名" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="1" Grid.Column="1" 
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="4*" />
+						</Grid.ColumnDefinitions>
+						<CheckBox Grid.Column="0" 
+								  Content="B/S" 
+								  Margin="0,0,10,0"
+								  IsChecked="{Binding SearchOpt.SelBSChk}"
+								  VerticalAlignment="Center"/>
+						<ComboBox Grid.Column="1"  
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding Cond01List}"
+								  DisplayMemberPath="Value"
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond01}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+						<ComboBox Grid.Column="2"  
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding Cond02List}"
+								  DisplayMemberPath="Value"
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelCond02}"
+								  Style="{StaticResource SearchableComboBox1}">
+						</ComboBox>
+						<TextBox Grid.Column="3" 
+								 Text="{Binding SearchOpt.SelPointName}"
+								 VerticalAlignment="Center"/>
+					</Grid>
+
+					<TextBlock Grid.Row="2" Grid.Column="0"
+							   Margin="5"
+							   Text="付与期間" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="2" Grid.Column="1" 
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="6*" />
+						</Grid.ColumnDefinitions>
+						<DatePicker Grid.Row="0" Grid.Column="0"
+									SelectedDate="{Binding SearchOpt.StartGrantPd}"/>
+						<TextBlock Grid.Row="0" Grid.Column="1" 
+								   Text="～"  
+								   Margin="5,0,5,0"
+								   VerticalAlignment="Center"
+								   HorizontalAlignment="Center"/>
+						<DatePicker Grid.Row="0" Grid.Column="2"
+									SelectedDate="{Binding SearchOpt.EndGrantPd}"/> 
+					</Grid>
+
+					<TextBlock Grid.Row="3" Grid.Column="0"
+							   Margin="5"
+							   Text="優先区分" 
+							   VerticalAlignment="Center"/>
+					<Grid Grid.Row="3" Grid.Column="1" 
+						  Margin="5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="2*" />
+							<ColumnDefinition Width="5*" />
+						</Grid.ColumnDefinitions>
+						<ComboBox Grid.Column="0"  
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding PriorityDivList}"
+								  DisplayMemberPath="Value"
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelPriorityDiv}">
+							<ComboBox.Style>
+								<Style TargetType="ComboBox" BasedOn="{StaticResource SearchableComboBox1}">
+									<Setter Property="IsEnabled" Value="True" />
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding SearchOpt.PrioDivEnable}" Value="1">
+											<Setter Property="IsEnabled" Value="False" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</ComboBox.Style>
+						</ComboBox>
+						<TextBlock Grid.Column="1"
+								   Margin="5"
+								   Text="ﾎﾟｲﾝﾄ区分" 
+								   VerticalAlignment="Center"/>
+						<ComboBox Grid.Column="2"  
+								  Margin="0,0,5,0" 
+								  VerticalContentAlignment="Center"
+								  ItemsSource="{Binding PointDivList}"
+								  DisplayMemberPath="Value"
+								  SelectedValuePath="Key"
+								  SelectedValue="{Binding SearchOpt.SelPointDiv}">
+							<ComboBox.Style>
+								<Style TargetType="ComboBox" BasedOn="{StaticResource SearchableComboBox1}">
+									<Setter Property="IsEnabled" Value="True" />
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding SearchOpt.PointDivEnable}" Value="1">
+											<Setter Property="IsEnabled" Value="False" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</ComboBox.Style>
+						</ComboBox>
+					</Grid>
+				</Grid>
+			</StackPanel>
+
+		</Border>
+
+		<!-- 条件リスト DataGrid -->
+		<uc:ListFlexView Grid.Row="2"
+						 DataSource="{Binding ListFlexData}">
+			<uc:ListFlexView.Style>
+				<Style TargetType="uc:ListFlexView">
+					<Setter Property="Visibility" Value="Visible"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding SearchOpt.ListFlexIsVisble}" Value="1">
+							<Setter Property="Visibility" Value="Collapsed"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</uc:ListFlexView.Style>
+		</uc:ListFlexView>
+
+		<!-- Action Buttons -->
+		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" >
+			<Button Command="{Binding DoExecuteCommand}" 
+					Style="{DynamicResource ExecButton}" 
+					Margin="0, 0, 5, 0" />
+			<Button Command="{Binding DoExitCommand}" 
+					Style="{DynamicResource BackBtn}" 
+					Margin="0, 0, 5, 0" />
+		</StackPanel>
+
+	</Grid>
 </Window>

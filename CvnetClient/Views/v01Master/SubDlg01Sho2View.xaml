@@ -10,7 +10,7 @@
 		Title="商品マスタ"
         mc:Ignorable="d"
 		FontFamily="Meiryo UI"
-		Width="1450"
+		Width="1440"
 		Height="1000"
 		WindowStartupLocation="CenterScreen"
         Style="{StaticResource MasterWindowStyle2}">
@@ -191,30 +191,8 @@
 										 d:Text="JAN連番：Data"
 										 Text="{Binding EditProduct.JanCode2}"
 										 TextWrapping="Wrap" />
-                                <Label Width="85"
-				   Margin="5,0,0,0"
-				   VerticalContentAlignment="Center"
-				   Content="年度" />
-                                <TextBox Width="150"
-								 Margin="5,0,0,0" 
-								 HorizontalAlignment="Left"
-								 VerticalAlignment="Top"
-								 d:Text="年度：Data"    
-								 Text="{Binding EditProduct.JanCode1}" 
-								 TextWrapping="Wrap" />
-                                <Label Width="85"
-				   Margin="5,0,0,0"
-				   VerticalContentAlignment="Center"
-				   Content="製品番号" />
-                                <TextBox Width="150"
-								 Margin="5,0,0,0" 
-								 HorizontalAlignment="Left"
-								 VerticalAlignment="Top"
-								 d:Text="製品番号：Data"   
-								 Text=""
-								 TextWrapping="Wrap" />
-                            </StackPanel>
-                            <!--<StackPanel Orientation="Horizontal" 
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
 								<Label Width="85"
 									   Margin="5,0,0,0"
@@ -238,8 +216,8 @@
 										 d:Text="製品番号：Data"   
 										 Text=""
 										 TextWrapping="Wrap" />
-							</StackPanel>-->
-                            <StackPanel Orientation="Horizontal" 
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
 										Margin="0,5,0,0">
                                 <uc:CvnetBtListView Width="85"
 													Margin="5,0,0,0"
@@ -1025,14 +1003,28 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal"
-									HorizontalAlignment="Left" Margin="443,0,0,0" Grid.Column="1">
-                            <Border BorderBrush="Black"
+						<StackPanel Orientation="Horizontal"
+									HorizontalAlignment="Left" Margin="662,0,0,0">
+							<Border BorderBrush="Black"
 									CornerRadius="2"
 									VerticalAlignment="Top"
 									HorizontalAlignment="Right"
 									Height="140" Width="150"  
-									Margin="1"
+									Margin="0,5,5,0"
+									BorderThickness="1">
+								<StackPanel Orientation="Vertical">
+									<Image Height="100"/>
+                                    <Button Style="{StaticResource ImageUploadBtn}"   
+											VerticalAlignment="Bottom"
+											Content="Upload" />
+								</StackPanel>
+							</Border>
+							<Border BorderBrush="Black"
+									CornerRadius="2"
+									VerticalAlignment="Top"
+									HorizontalAlignment="Right"
+									Height="140" Width="150"  
+									Margin="0,5,5,0"
 									BorderThickness="1">
                                 <StackPanel Orientation="Vertical" Margin="4">
                                     <Image Height="100"/>
@@ -1667,7 +1659,7 @@
 									  SelectedValuePath="Key" 
 									  SelectedValue="{Binding EditProduct.CollabOutCate}"
 									  Style="{StaticResource SearchableComboBox1}"/>
-                            <Label  Width="85"
+							<Button  Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
 									 
