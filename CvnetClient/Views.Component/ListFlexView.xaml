@@ -27,9 +27,23 @@
 				  Margin="5" 
 				  Style="{DynamicResource WinGridData}"
 				  ColumnWidth="*">
-			<DataGrid.Columns>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </DataGrid.CellStyle>
+            
+            <DataGrid.Columns>
 				<!--行-->
-				<DataGridTextColumn Header="行" Binding="{Binding No}" Width="*"/>
+                <DataGridTextColumn Header="行" Binding="{Binding No}" Width="*">
+                <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+
+                        </Style>
+                        </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
 
 				<!-- 検索項目 -->
 				<DataGridTemplateColumn Header="検索項目" Width="3*">
@@ -52,7 +66,7 @@
 				<DataGridTemplateColumn Header="一覧" Width="0.5*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-                            <Button Content="一覧" IsEnabled="{Binding IsListFromEnabled}"  Click="ListFrom_Click" Style="{StaticResource FlexButton}"/>
+                            <Button Content="一覧" Margin="0" IsEnabled="{Binding IsListFromEnabled}"  Click="ListFrom_Click" Style="{StaticResource FlexButton}"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
@@ -74,8 +88,7 @@
 				<DataGridTemplateColumn Header="削除" Width="*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Content="🗑" 
-									Foreground="Red"
+                            <Button Style="{DynamicResource DeleteFlexBtn}"
 									Click="DeleteRow_Click"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
