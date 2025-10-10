@@ -37,17 +37,75 @@
 			  Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}" 
 			  Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="0.5*" />
-				<RowDefinition Height="9.5*" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
 
-			<Button Grid.Row="0" Grid.Column="0" 
-					Margin="10,10,10,0"
-					VerticalAlignment="Top"
-					HorizontalAlignment="Right"
-                    Style="{StaticResource ExecButton}"
-					Command="{Binding SelDspUpdateCommand}"
-					Content="表示更新(F5)" />
+			<Grid Grid.Row="0" Grid.Column="0" 
+				  Margin="0,5,0,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Label Grid.Row="0" Grid.Column="0"  
+					   Margin="5,0,0,0"
+					   VerticalContentAlignment="Center"
+					   Content="商品CD" />
+				<TextBox Grid.Row="0" Grid.Column="1"
+						 VerticalAlignment="Center"
+						 Text="{Binding SelProductCd}"
+						 Width="100"
+						 Margin="10,0,0,0" />
+				<Button Grid.Row="0" Grid.Column="3"
+						Width="35" 
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right" 
+						Content="&lt;&lt;" />
+				<Button Grid.Row="0" Grid.Column="4"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Margin="0,0,5,0" 
+						Command="{Binding SelDspUpdateCommand}"
+						Content=" 表示更新(F5) " />
+				<Button Grid.Row="0" Grid.Column="5"
+						Width="35" 
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Margin="0,0,5,0"
+						Content="&gt;&gt;" />
+
+				<Grid Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2"
+					  Margin="0,5,5,0"
+					  HorizontalAlignment="Center">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions> 
+					<TextBox Grid.Column="0"
+							 VerticalAlignment="Center" 
+							 HorizontalAlignment="Right"
+							 Width="50" />
+					<Label Grid.Column="1"
+						   VerticalAlignment="Center"  
+						   Content="/"
+						   VerticalContentAlignment="Center"/>
+					<TextBox Grid.Column="2"
+							 VerticalAlignment="Center" 
+							 HorizontalAlignment="Right"
+							 Width="50" />
+				</Grid>
+
+			</Grid>
+
 
 			<DataGrid Grid.Row="1" Grid.Column="0"
                       Margin="10"
@@ -818,6 +876,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="消化掛率：Data" 
+										 Text="{Binding EditProduct.ConsignPurcRate}"
 										 TextWrapping="Wrap" />
 								<Label Width="85"
 									   Margin="5,0,0,0"
@@ -906,19 +965,18 @@
 								<Label Width="85"
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
-									   Content="販売開始日" />
+									   Content="販売開始日"/>
 								<DatePicker Width="150"
 											Margin="5,0,0,0"
-											
 											HorizontalAlignment="Center" 
-											VerticalAlignment="Center" />
+											VerticalAlignment="Center"
+											Text="{Binding EditProduct.SaleStDate}"/>
 								<Label Width="85" 
 									   Margin="5,0,0,0"
 									   VerticalContentAlignment="Center"
 									   Content="販売終了日" />
 								<DatePicker Width="150" 
 											Margin="5,0,0,0"
-											
 											HorizontalAlignment="Center" 
 											VerticalAlignment="Center" />
 								<Label Width="85"
@@ -946,6 +1004,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="作成日：Data" 
+										 Text="{Binding EditProduct.VdateCreate}"
 										 TextWrapping="Wrap" />
 								<Label Width="85"
 									   Margin="5,0,0,0"
@@ -955,7 +1014,8 @@
 										 Margin="5,0,0,0"
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
-										 d:Text="修正日：Data" 
+										 d:Text="修正日：Data"
+										 Text="{Binding EditProduct.VdateUpdate}"
 										 TextWrapping="Wrap" />
 								<Label Width="85"
 									   Margin="5,0,0,0"
@@ -966,6 +1026,7 @@
 										 HorizontalAlignment="Left"
 										 VerticalAlignment="Top"
 										 d:Text="最終修正者：Data" 
+										 Text="{Binding EditProduct.ModifiedBy}"
 										 TextWrapping="Wrap" />
 							</StackPanel>
 							<StackPanel Orientation="Horizontal" 
@@ -1042,46 +1103,47 @@
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
 										HorizontalAlignment="Center" 
-										VerticalAlignment="Center" />
+										VerticalAlignment="Center"
+										SelectedDate="{Binding EditProduct.DeliveryDate}"/>
 							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   
 								   Content="店頭投入日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
 										HorizontalAlignment="Center" 
-										VerticalAlignment="Center" />
+										VerticalAlignment="Center"
+										SelectedDate="{Binding EditProduct.InitLaunchDate}"/>
 							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   
 								   Content="売変日" />
 							<DatePicker Width="150"
 										Margin="5,0,0,0"
 										HorizontalAlignment="Center" 
-										VerticalAlignment="Center" />
+										VerticalAlignment="Center"
+										SelectedDate="{Binding EditProduct.PriceChgDate}"/>
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
 							<Label  Width="85"
 								   Margin="5,0,0,0"
-								   VerticalContentAlignment="Center"
-								   
+								   VerticalContentAlignment="Center" 
 								   Content="デリバリー日" />
 							<DatePicker Width="150"
-									Margin="5,0,0,0"
-									HorizontalAlignment="Center" 
-									VerticalAlignment="Center" />
+										Margin="5,0,0,0"
+										HorizontalAlignment="Center" 
+										VerticalAlignment="Center"
+										SelectedDate="{Binding EditProduct.CustDeliDate}"/>
 							<Label  Width="85"
 								   Margin="5,0,0,0"
 								   VerticalContentAlignment="Center"
-								   
 								   Content="リピート日" />
 							<DatePicker Width="150"
 									Margin="5,0,0,0"
 									HorizontalAlignment="Center" 
-									VerticalAlignment="Center" />
+									VerticalAlignment="Center" 
+										Text="{Binding EditProduct.RepeatDate}"/>
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
@@ -1118,9 +1180,7 @@
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
-									 d:Text="予備02：Data" 
-									 
-									 
+									 d:Text="予備02：Data"
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1143,9 +1203,7 @@
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
-									 d:Text="予備03：Data" 
-									 
-									 
+									 d:Text="予備03：Data"
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1165,9 +1223,7 @@
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
-									 d:Text="予備04：Data" 
-									 
-									 
+									 d:Text="予備04：Data"
 									 TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
@@ -1642,15 +1698,13 @@
 							<Button  Width="85"
 									Margin="5,0,0,0"
 									VerticalContentAlignment="Center"
-									 
 									Content="洗濯表示" />
 							<TextBox  Width="200"
 									 Margin="5,0,0,0"
 									 HorizontalAlignment="Left"
 									 VerticalAlignment="Top"
 									 d:Text="洗濯表示：Data" 
-									 
-									   
+									 Text="{Binding EditProduct.CareLabel}"
 									 TextWrapping="Wrap" />
 						</StackPanel>
 						<StackPanel Orientation="Horizontal" 

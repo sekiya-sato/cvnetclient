@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         mc:Ignorable="d"
-        Title="SubDlgSel10pView"
+        Title="{Binding Title}"
 		Height="450" 
 		Width="510"
 		Style="{StaticResource MasterWindowStyle}">
