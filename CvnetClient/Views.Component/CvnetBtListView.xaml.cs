@@ -16,6 +16,41 @@ namespace CvnetClient.Views
             InitializeComponent();
         }
 
+        public int StyleDesign
+        {
+            get => (int)GetValue(ModeProperty);
+            set => SetValue(ModeProperty, value);
+        }
+
+        public static readonly DependencyProperty ModeProperty =
+            DependencyProperty.Register(
+                nameof(StyleDesign),
+                typeof(int),
+                typeof(CvnetBtListView),
+                new PropertyMetadata(1, OnModeChanged));
+
+        private static void OnModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is CvnetBtListView control)
+            {
+                control.ApplyMode();
+            }
+        }
+
+        private void ApplyMode()
+        {
+            if (StyleDesign == 1)
+                MyButton.Style = (Style)FindResource("ComboLabelBtn");
+            else if (StyleDesign == 2)
+                MyButton.Style = (Style)FindResource("ComboButton");
+            else if (StyleDesign == 3)
+                MyButton.Style = (Style)FindResource("ComboButton2");
+            else if (StyleDesign == 4)
+                MyButton.Style = (Style)FindResource("ComboButton3");
+            
+        }
+
+
         // DependencyProperty for Button Title
         public string Title
         {

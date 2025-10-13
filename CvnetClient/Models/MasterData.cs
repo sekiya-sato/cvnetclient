@@ -87,23 +87,23 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? madeInCD; //原産国CD 
 		[ObservableProperty]
-		long oriPrice; //元上代
+		decimal oriPrice; //元上代
 		[ObservableProperty]
-		long price; //上代
+        decimal price; //上代
 		[ObservableProperty]
-		string? priceChgDate; //売変日
+		DateTime? priceChgDate; //売変日
 		[ObservableProperty]
-		long cost; //原価
+        decimal cost; //原価
 		[ObservableProperty]
-		long opCostPrice; //営業原価
+        decimal opCostPrice; //営業原価
 		[ObservableProperty]
-		long manufactFee; //加工工賃
+        decimal manufactFee; //加工工賃
 		[ObservableProperty]
-		string? custDeliDate; //デリバリー日
+		DateTime? custDeliDate; //デリバリー日
 		[ObservableProperty]
-		string? deliveryDate; //納品日
+		DateTime? deliveryDate; //納品日
 		[ObservableProperty]
-		string? initLaunchDate; //店頭投入日
+		DateTime? initLaunchDate; //店頭投入日
 		[ObservableProperty]
 		string? janCode1; //JANコード1
 		[ObservableProperty]
@@ -217,19 +217,19 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		int salesCate; //セール区分
 		[ObservableProperty]
-		string? repeatDate; //リピート日
+		DateTime? repeatDate; //リピート日
 		[ObservableProperty]
 		string? makerNo; //メーカー品番
 		[ObservableProperty]
-		long purchasePrice; //仕入価格
+        decimal purchasePrice; //仕入価格
 		[ObservableProperty]
 		int deliveryCate; //納品区分
 		[ObservableProperty]
 		string? imgName2; //絵型名2
 		[ObservableProperty]
-		string? saleStDate; //販売開始日
-		[ObservableProperty]
-		long foreignCurPrice; //外貨単価
+		DateTime? saleStDate; //販売開始日
+        [ObservableProperty]
+        decimal foreignCurPrice; //外貨単価
 		[ObservableProperty]
 		int ecConnect; //EC連携
 		[ObservableProperty]

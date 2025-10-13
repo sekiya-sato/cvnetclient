@@ -220,9 +220,9 @@
                                 HorizontalAlignment="Stretch"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                 MaxHeight="{Binding ActualHeight,
-                              RelativeSource={RelativeSource AncestorType=Window},
-                              Converter={StaticResource SubtractHeaderFooterHeightConverter},
-                              ConverterParameter=430}" >
+                                      RelativeSource={RelativeSource AncestorType=Window},
+                                      Converter={StaticResource SubtractHeaderFooterHeightConverter},
+                                      ConverterParameter=430}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*" Binding="{Binding DenpyoNo }" Header="伝票No" />
                             <DataGridTextColumn Width="*" Binding="{Binding Nohinbi}" Header="納品日" />
@@ -260,8 +260,6 @@
                         <Button Style="{DynamicResource DeleteIconBtn}" Margin="0,0,8,0"/>
                         <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
                     </StackPanel>
-
-
                 </Grid>
             </TabItem>
             <TabItem Header="修正・登録画面(Shift+F2)">
@@ -306,7 +304,7 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="取引区分" VerticalAlignment="Center" Margin="0,1"/>
-                            <ComboBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.ToriKubun}"/>
+                            <ComboBox Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.ToriKubun}" Style="{StaticResource SearchableComboBox1}"/>
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="0">
@@ -424,8 +422,7 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,4,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -434,23 +431,28 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="最終行追加(F11)"/>
-                        <Label Grid.Column="3" Content="計" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="4"/>
-                        <TextBox Grid.Column="5"/>
-                        <TextBox Grid.Column="6"/>
-                        <Button Grid.Column="8" Content="一括Refresh↩"/>
-                        <Button Grid.Column="9" Content="バーコード入力"/>
+                        <Grid Grid.Column="0" Grid.ColumnSpan="2">
+                            <Button Width="auto" Content="最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0"/>
+                        </Grid>
+                        
+                        <Label Grid.Column="2" Content="計" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Column="3" Margin="5,0"/>
+                        <TextBox Grid.Column="4" Margin="5,0"/>
+                        <TextBox Grid.Column="5" Margin="5,0"/>
+                        <Button Grid.Column="6" Margin="5,0" Content="一括Refresh↩"/>
+                        <Button Grid.Column="7" Content="バーコード入力"/>
                     </Grid>
 
                     <DataGrid Grid.Row="2" x:Name="MyDataGrid" AlternationCount="999999" LoadingRow="MyDataGrid_LoadingRow" 
                         Style="{DynamicResource WinGridData}"
                         d:ItemsSource="{d:SampleData ItemCount=5}"
                         ItemsSource="{Binding SelectedOrderDetail}"
+                        IsSynchronizedWithCurrentItem="True"
                         MaxHeight="{Binding ActualHeight,
-                RelativeSource={RelativeSource AncestorType=Window},
-                Converter={StaticResource SubtractHeaderFooterHeightConverter},
-                ConverterParameter=380}"
+                            RelativeSource={RelativeSource AncestorType=Window},
+                            Converter={StaticResource SubtractHeaderFooterHeightConverter},
+                            ConverterParameter=380}"
+                              
                         AutoGenerateColumns="False" 
                         HeadersVisibility="Column" 
                         CanUserAddRows="True" 
@@ -458,35 +460,48 @@
                         ColumnWidth="*"
                         Margin="-2,4,2,4"
                         ScrollViewer.CanContentScroll="True"
-                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        GridLinesVisibility="All"
+                        HorizontalGridLinesBrush="#B0B0B0"
+                        VerticalGridLinesBrush="#B0B0B0"
+                        BorderBrush="#707070"
+                        BorderThickness="1">
+                        
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Width="100">
+                            
+                            <DataGridTemplateColumn Width="0.5*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+
                                             <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="10"/>
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="挿入" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
                                                 <TextBlock Text="削除" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Grid>
-                                            <TextBlock Text="行Refresh" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,0"/>
-                                        </StackPanel>
+
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Content="++↑" Margin="2" Padding="2,0"/>
-                                                <Button Content="X←" Margin="2" Padding="2,0"/>
-                                            </StackPanel>
-                                            <Button Content="Refresh↩" Margin="2" Padding="2,0"/>
-                                        </StackPanel>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Grid.RowSpan="2" Content="X←" Margin="1" Padding="2,0" Style="{StaticResource DeleteFlexBtn}"/>
+                                            <Button Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Content="Refresh↩" Margin="2" Padding="2,0" Style="{StaticResource DeleteFlexBtn}"/>
+                                        </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -503,38 +518,23 @@
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBox Text="{Binding ProductCD}" Margin="2"/>
-                                                <Button Content="一覧" Margin="2" Padding="6"/>
-                                            </StackPanel>
-                                            <TextBox Text="{Binding ProductName}" Margin="2"/>
-
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-
-                            <DataGridTemplateColumn Width="*">
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Text="色" FontWeight="Bold"/>
-                                            <TextBlock Text="色名" FontWeight="Bold"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
-
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal" >
-                                                <TextBox Text="{Binding Color}" Margin="2"/>
-                                                <Button Content="一覧" Margin="2" Padding="6"/>
-                                            </StackPanel>
-                                            <TextBox Text="{Binding ColorName}" Margin="2"/>
-                                        </StackPanel>
-                                       
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Width="4*"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBox Grid.Column="0" Text="{Binding ProductCD}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
+                                            <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                            <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
+                                        </Grid>
+                                        
                                         
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -543,9 +543,48 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="色" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="色名" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" >
+                                                <TextBox Text="{Binding Color}" Margin="2"/>
+                                                <Button Content="一覧" Margin="2" Padding="6" Style="{StaticResource DataGridButton}"/>
+                                            </StackPanel>
+                                            <TextBox Text="{Binding ColorName}" Margin="2"/>
+                                        </StackPanel>-->
+                                        
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Width="4*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0" Text="{Binding Color}" Margin="2" Style="{StaticResource DataGridTextBox}"/>
+                                            <Button Grid.Column="1" Content="一覧" Margin="2" Padding="6" Style="{StaticResource DataGridButton}"/>
+                                            <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName}" Margin="2" Style="{StaticResource DataGridTextBox}"/>
+                                        </Grid>
+
+
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
                                         <StackPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="サイズ" FontWeight="Bold"/>
-                                            <TextBlock Text="サイズ名" FontWeight="Bold"/>
+                                            <TextBlock Text="サイズ" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="サイズ名" FontWeight="Bold" HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -556,7 +595,7 @@
                                             <StackPanel HorizontalAlignment="Stretch">
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                                                     <TextBox Text="{Binding Size}" Margin="2" />
-                                                    <Button Content="一覧" Margin="2" Padding="6"/>
+                                                    <Button Content="一覧" Margin="2" Padding="6" Style="{StaticResource DataGridButton}"/>
                                                 </StackPanel>
                                                 <TextBox Text="{Binding SSizeName}" Margin="2"/>
 
@@ -570,7 +609,7 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="数量" FontWeight="Bold" />
+                                        <TextBlock Text="数量" FontWeight="Bold" HorizontalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
 
@@ -588,8 +627,8 @@
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="上代単価" FontWeight="Bold"/>
-                                            <TextBlock Text="上代金額" FontWeight="Bold"/>
+                                            <TextBlock Text="上代単価" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="上代金額" FontWeight="Bold" HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -608,8 +647,8 @@
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center">
-                                            <TextBlock Text="下代単価" FontWeight="Bold"/>
-                                            <TextBlock Text="下代金額" FontWeight="Bold"/>
+                                            <TextBlock Text="下代単価" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="下代金額" FontWeight="Bold" HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -628,11 +667,11 @@
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                            <TextBlock Text="摘要" FontWeight="Bold"/>
+                                            <TextBlock Text="摘要" FontWeight="Bold" HorizontalAlignment="Center"/>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="完了FLG" FontWeight="Bold"/>
-                                                <TextBlock Text="メーカー品番" FontWeight="Bold"/>
-                                                <TextBlock Text="区分" FontWeight="Bold"/>
+                                                <TextBlock Text="完了FLG" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="メーカー品番" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="区分" FontWeight="Bold" HorizontalAlignment="Center"/>
                                             </StackPanel>
                                         </StackPanel>
                                     </DataTemplate>
@@ -668,7 +707,7 @@
 
                         <StackPanel Grid.Column="0" Orientation="Horizontal">
                             <Label Content="作成/修正日"/>
-                            <TextBox Width="80" Margin="0,1" Text="{Binding SelectedOrderHeader.CreateDate}"/>
+                            <TextBox Width="80" Margin="0,1" Text="{Binding SelectedOrderHeader.CreateDate}" Style="{StaticResource ReadOnlyTextBox}"/>
                             <TextBox Width="80" Margin="0,1" Text="{Binding SelectedOrderHeader.UpdateDate}"/>
                             <Button Content="商品CD検索"/>
                         </StackPanel>
