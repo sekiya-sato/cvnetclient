@@ -14,106 +14,107 @@
 	FontSize="13"
 	ResizeMode="CanResize"
 	mc:Ignorable="d">
-	<Window.DataContext>
-		<vm:ShiireInputViewModel />
-	</Window.DataContext>
-	<Grid Margin="4" Background="#F5F6FF">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-		</Grid.ColumnDefinitions>
+    <Window.DataContext>
+        <vm:ShiireInputViewModel />
+    </Window.DataContext>
+    <Grid Margin="4" Background="#F5F6FF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="145*" />
+            <ColumnDefinition Width="1047*"/>
+        </Grid.ColumnDefinitions>
 
-		<TabControl SelectedIndex="{Binding SelectedTabIndex}">
-			<!--  検索画面タブ（既存の内容をTabItemに移動）  -->
-			<TabItem Header="検索画面">
-				<Grid Margin="4" Background="#F5F6FF">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="400" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
+        <TabControl SelectedIndex="{Binding SelectedTabIndex}" Grid.ColumnSpan="2" Margin="0,0,0,29">
+            <!--  検索画面タブ（既存の内容をTabItemに移動）  -->
+            <TabItem Header="検索画面">
+                <Grid Margin="4" Background="#F5F6FF">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="400" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-					<!--  検索条件  -->
-					<Border
+                    <!--  検索条件  -->
+                    <Border
 						Grid.Row="2"
 						Padding="6"
 						Background="#E8E8FF"
 						BorderBrush="#B0B0FF"
 						BorderThickness="1"
 						CornerRadius="4">
-						<Grid Margin="0,-2,0,2">
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="*" />
-							</Grid.ColumnDefinitions>
+                        <Grid Margin="0,-2,0,2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-							<!--  伝票No・仕入日・取引区分・手入力No をバランスよく4セットで再配置  -->
-							<!--  伝票No  -->
-							<TextBlock
+                            <!--  伝票No・仕入日・取引区分・手入力No をバランスよく4セットで再配置  -->
+                            <!--  伝票No  -->
+                            <TextBlock
 								Grid.Row="0"
 								Grid.Column="0"
 								VerticalAlignment="Center"
 								Text="伝票No" />
-							<TextBox
+                            <TextBox
 								Grid.Row="0"
 								Grid.Column="1"
 								Width="60"
 								Margin="2"
 								Text="{Binding DenpyoNoFrom, UpdateSourceTrigger=PropertyChanged}" />
-							<TextBlock
+                            <TextBlock
 								Grid.Row="0"
 								Grid.Column="2"
 								HorizontalAlignment="Center"
 								VerticalAlignment="Center"
 								Text="～" />
-							<TextBox
+                            <TextBox
 								Grid.Row="0"
 								Grid.Column="3"
 								Width="60"
 								Margin="2"
 								Text="{Binding DenpyoNoTo, UpdateSourceTrigger=PropertyChanged}" />
 
-							<!--  仕入日  -->
-							<TextBlock
+                            <!--  仕入日  -->
+                            <TextBlock
 								Grid.Row="0"
 								Grid.Column="4"
 								VerticalAlignment="Center"
 								Text="仕入日" />
-							<DatePicker
+                            <DatePicker
 								Grid.Row="0"
 								Grid.Column="5"
 								Grid.ColumnSpan="2"
@@ -121,13 +122,13 @@
 								Margin="2"
 								FontSize="10"
 								SelectedDate="{Binding ShiireDateFrom, UpdateSourceTrigger=PropertyChanged}" />
-							<TextBlock
+                            <TextBlock
 								Grid.Row="0"
 								Grid.Column="7"
 								HorizontalAlignment="Center"
 								VerticalAlignment="Center"
 								Text="～" />
-							<DatePicker
+                            <DatePicker
 								Grid.Row="0"
 								Grid.Column="8"
 								Grid.ColumnSpan="2"
@@ -136,13 +137,13 @@
 								FontSize="10"
 								SelectedDate="{Binding ShiireDateTo, UpdateSourceTrigger=PropertyChanged}" />
 
-							<!--  取引区分  -->
-							<TextBlock
+                            <!--  取引区分  -->
+                            <TextBlock
 								Grid.Row="0"
 								Grid.Column="10"
 								VerticalAlignment="Center"
 								Text="取引区分" />
-							<ComboBox
+                            <ComboBox
 								Grid.Row="0"
 								Grid.Column="11"
 								Grid.ColumnSpan="2"
@@ -151,217 +152,217 @@
 								ItemsSource="{Binding TorihikiKubunList}"
 								SelectedItem="{Binding SelectedTorihikiKubun}" />
 
-							<!--  手入力No  -->
-							<TextBlock
+                            <!--  手入力No  -->
+                            <TextBlock
 								Grid.Row="0"
 								Grid.Column="13"
 								VerticalAlignment="Center"
 								Text="手入力No" />
-							<TextBox
+                            <TextBox
 								Grid.Row="0"
 								Grid.Column="14"
 								Grid.ColumnSpan="2"
 								Width="80"
 								Margin="2"
 								Text="{Binding ManualInputNo, UpdateSourceTrigger=PropertyChanged}" />
-							<!--  残りの列は空白で埋めてバランスを取る  -->
-							<TextBlock Grid.Row="0" Grid.Column="12" />
-							<TextBlock Grid.Row="0" Grid.Column="13" />
-							<TextBlock Grid.Row="0" Grid.Column="14" />
+                            <!--  残りの列は空白で埋めてバランスを取る  -->
+                            <TextBlock Grid.Row="0" Grid.Column="12" />
+                            <TextBlock Grid.Row="0" Grid.Column="13" />
+                            <TextBlock Grid.Row="0" Grid.Column="14" />
 
-							<!--  仕入先  -->
-							<TextBlock
+                            <!--  仕入先  -->
+                            <TextBlock
 								Grid.Row="1"
 								Grid.Column="0"
 								VerticalAlignment="Center"
 								Text="仕入先" />
-							<TextBox
+                            <TextBox
 								Grid.Row="1"
 								Grid.Column="1"
 								Margin="2"
 								Text="{Binding ShiireCodeFrom}" />
-							<Button
+                            <Button
 								Grid.Row="1"
 								Grid.Column="2"
 								Width="30"
 								Margin="2"
 								Command="{Binding SelectShiireFromCommand}"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="1"
 								Grid.Column="3"
 								Grid.ColumnSpan="3"
 								Margin="2"
 								Text="{Binding ShiireNameFrom}" />
-							<TextBox
+                            <TextBox
 								Grid.Row="1"
 								Grid.Column="7"
 								Margin="2"
 								Text="{Binding ShiireCodeTo}" />
-							<Button
+                            <Button
 								Grid.Row="1"
 								Grid.Column="8"
 								Width="30"
 								Margin="2"
 								Command="{Binding SelectShiireToCommand}"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="1"
 								Grid.Column="9"
 								Grid.ColumnSpan="3"
 								Margin="2"
 								Text="{Binding ShiireNameTo}" />
 
-							<!--  倉庫  -->
-							<TextBlock
+                            <!--  倉庫  -->
+                            <TextBlock
 								Grid.Row="2"
 								Grid.Column="0"
 								VerticalAlignment="Center"
 								Text="倉庫" />
-							<TextBox
+                            <TextBox
 								Grid.Row="2"
 								Grid.Column="1"
 								Margin="2" 
 								Text="{Binding SokoCodeTo}" />
-							<Button
+                            <Button
 								Grid.Row="2"
 								Grid.Column="2"
 								Width="30"
 								Margin="2"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="2"
 								Grid.Column="3"
 								Grid.ColumnSpan="3"
 								Margin="2" 
 								Text="{Binding SokoNameTo}"/>
-							<TextBox
+                            <TextBox
 								Grid.Row="2"
 								Grid.Column="7"
 								Margin="2" 
 								Text="{Binding SokoCodeTo}" />
-							<Button
+                            <Button
 								Grid.Row="2"
 								Grid.Column="8"
 								Width="30"
 								Margin="2"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="2"
 								Grid.Column="9"
 								Grid.ColumnSpan="3"
 								Margin="2" 
 								Text="{Binding SokoNameTo}"/>
 
-							<!--  商品  -->
-							<TextBlock
+                            <!--  商品  -->
+                            <TextBlock
 								Grid.Row="3"
 								Grid.Column="0"
 								VerticalAlignment="Center"
 								Text="商品" />
-							<TextBox
+                            <TextBox
 								Grid.Row="3"
 								Grid.Column="1"
 								Margin="2"
 								Text="{Binding ShohinCodeFrom}" />
-							<Button
+                            <Button
 								Grid.Row="3"
 								Grid.Column="2"
 								Width="30"
 								Margin="2"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="3"
 								Grid.Column="3"
 								Grid.ColumnSpan="3"
 								Margin="2" 
 								Text="{Binding ShohinNameFrom}" />
-							<TextBox
+                            <TextBox
 								Grid.Row="3"
 								Grid.Column="7"
 								Margin="2" 
 								Text="{Binding ShohinCodeTo}" />
-							<Button
+                            <Button
 								Grid.Row="3"
 								Grid.Column="8"
 								Width="30"
 								Margin="2"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="3"
 								Grid.Column="9"
 								Grid.ColumnSpan="3"
 								Margin="2" 
 								Text="{Binding ShohinNameTo}" />
-							<!--  入力者  -->
-							<TextBlock
+                            <!--  入力者  -->
+                            <TextBlock
 								Grid.Row="4"
 								Grid.Column="0"
 								VerticalAlignment="Center"
 								Text="入力者" />
-							<TextBox
+                            <TextBox
 								Grid.Row="4"
 								Grid.Column="1"
 								Margin="2" 
 								Text="{Binding TantoCodeFrom}" />
-							<Button
+                            <Button
 								Grid.Row="4"
 								Grid.Column="2"
 								Width="30"
 								Margin="2"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="4"
 								Grid.Column="3"
 								Grid.ColumnSpan="3"
 								Margin="2" 
 								Text="{Binding TantoNameFrom}" />
-							<TextBox
+                            <TextBox
 								Grid.Row="4"
 								Grid.Column="7"
 								Margin="2,0,2,2" Height="20" VerticalAlignment="Bottom" 
-								Text="{Binding TantoCodeTo}" /> 
-							<Button
+								Text="{Binding TantoCodeTo}" />
+                            <Button
 								Grid.Row="4"
 								Grid.Column="8"
 								Width="30"
 								Margin="2"
 								Content="&lt;&lt;" />
-							<TextBox
+                            <TextBox
 								Grid.Row="4"
 								Grid.Column="9"
 								Grid.ColumnSpan="3"
 								Margin="2" 
 								Text="{Binding TantoNameTo}" />
-							<!--  チェックボックス・ラジオボタン  -->
-							<CheckBox
+                            <!--  チェックボックス・ラジオボタン  -->
+                            <CheckBox
 								Grid.Row="5"
 								Grid.Column="7"
 								Margin="2"
 								Content="集計上?"
 								IsChecked="{Binding IsShuukei}" />
-							<StackPanel
+                            <StackPanel
 								Grid.Row="5"
 								Grid.Column="9"
 								Grid.ColumnSpan="3"
 								Orientation="Horizontal">
-								<RadioButton
+                                <RadioButton
 									Margin="0,0,8,0"
 									Content="未承認のみ"
 									GroupName="Approval"
 									IsChecked="{Binding IsMishouninOnly}" />
-								<RadioButton
+                                <RadioButton
 									Content="全て"
 									GroupName="Approval"
 									IsChecked="{Binding IsAll}" />
-							</StackPanel>
-							<TextBlock
+                            </StackPanel>
+                            <TextBlock
 								Grid.Row="5"
 								Grid.Column="12"
 								HorizontalAlignment="Right"
 								VerticalAlignment="Center"
 								Text="{Binding PageInfo}" />
-							<Button
+                            <Button
 								Grid.Row="5"
 								Grid.Column="13"
 								Grid.ColumnSpan="2"
@@ -369,11 +370,11 @@
 								Margin="2"
 								Command="{Binding DoListCommand}"
 								Content="一覧取得(F5)" />
-						</Grid>
-					</Border>
+                        </Grid>
+                    </Border>
 
-					<!--  データグリッド  -->
-					<DataGrid
+                    <!--  データグリッド  -->
+                    <DataGrid
 						Grid.Row="3"
 						Margin="0,8,0,0"
 						AutoGenerateColumns="False"
@@ -387,399 +388,399 @@
 						SelectedItem="{Binding SelectedShiire}"
 						SelectionMode="Extended"
 						SelectionUnit="FullRow">
-						<behaviors:Interaction.Triggers>
-							<behaviors:EventTrigger EventName="MouseDoubleClick">
-								<behaviors:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" />
-							</behaviors:EventTrigger>
-						</behaviors:Interaction.Triggers>
-						<DataGrid.Columns>
-							<DataGridCheckBoxColumn
+                        <behaviors:Interaction.Triggers>
+                            <behaviors:EventTrigger EventName="MouseDoubleClick">
+                                <behaviors:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" />
+                            </behaviors:EventTrigger>
+                        </behaviors:Interaction.Triggers>
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn
 								Width="40"
 								Binding="{Binding IsUpdated}"
 								Header="更新" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="90"
 								Binding="{Binding DenpyoNo}"
 								Header="伝票No" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="90"
 								Binding="{Binding ShiireDate}"
 								Header="仕入日" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="80"
 								Binding="{Binding ShiireSaki}"
 								Header="仕入先" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="120"
 								Binding="{Binding ShiireSakiName}"
 								Header="仕入先名" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="100"
 								Binding="{Binding SokoName}"
 								Header="倉庫名" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="80"
 								Binding="{Binding TorihikiKubun}"
 								Header="取引区分" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="80"
 								Binding="{Binding Suuryou}"
 								Header="数量計" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="100"
 								Binding="{Binding Kingaku}"
 								Header="金額計" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="90"
 								Binding="{Binding KanrenNo1}"
 								Header="関連No1" />
-						</DataGrid.Columns>
-					</DataGrid>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-					<!--  下部ボタン  -->
-					<StackPanel
+                    <!--  下部ボタン  -->
+                    <StackPanel
 						Grid.Row="4"
 						Margin="0,8,0,0"
 						HorizontalAlignment="Left"
 						Orientation="Horizontal">
-						<Button
+                        <Button
 							Width="120"
 							Margin="0,0,8,0"
 							Command="{Binding UpdateSelectedFlagCommand}"
 							Content="選択行FLG更新" />
-						<RadioButton
+                        <RadioButton
 							Margin="0,0,8,0"
 							Content="一覧"
 							GroupName="ListType"
 							IsChecked="{Binding IsListMode}" />
-						<RadioButton
+                        <RadioButton
 							Margin="0,0,8,0"
 							Content="明細"
 							GroupName="ListType"
 							IsChecked="{Binding IsDetailMode}" />
-						<Button
+                        <Button
 							Width="90"
 							Margin="0,0,8,0"
 							Command="{Binding PrintCommand}"
 							Content="印刷(F9)" />
-						<Button
+                        <Button
 							Width="90"
 							Margin="0,0,8,0"
 							Command="{Binding ExportCsvCommand}"
 							Content="CSV出力" />
-						<Button
+                        <Button
 							Width="110"
 							Margin="0,0,8,0"
 							Command="{Binding EditCommand}"
 							Content="修正・照会(F6)" />
-						<Button
+                        <Button
 							Width="90"
 							Margin="0,0,8,0"
 							Command="{Binding DeleteCommand}"
 							Content="削除(F7)" />
-						<Button
+                        <Button
 							Width="90"
 							Command="{Binding CloseCommand}"
 							Content="戻る(ESC)" />
-					</StackPanel>
+                    </StackPanel>
 
-					<!--  ステータスバー  -->
-					<StatusBar Grid.Row="5" Margin="0,8,0,0">
-						<StatusBarItem>
-							<TextBlock Text="{Binding StatusMessage}" />
-						</StatusBarItem>
-					</StatusBar>
-				</Grid>
-			</TabItem>
+                    <!--  ステータスバー  -->
+                    <StatusBar Grid.Row="5" Margin="0,8,0,0">
+                        <StatusBarItem>
+                            <TextBlock Text="{Binding StatusMessage}" />
+                        </StatusBarItem>
+                    </StatusBar>
+                </Grid>
+            </TabItem>
 
-			<!--  修正・登録画面タブ  -->
-			<TabItem Header="修正・登録画面">
-				<Grid Margin="4" Background="#F5F6FF">
-					<Grid.RowDefinitions>
+            <!--  修正・登録画面タブ  -->
+            <TabItem Header="修正・登録画面">
+                <Grid Margin="4" Background="#F5F6FF">
+                    <Grid.RowDefinitions>
 
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="Auto" />
-						<RowDefinition Height="*" />
-						<RowDefinition Height="Auto" />
-					</Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-					<!--  上部情報  -->
-					<Grid Grid.Row="0" Margin="0,0,0,4">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="90" />
-							<ColumnDefinition Width="120" />
-							<ColumnDefinition Width="80" />
-							<ColumnDefinition Width="120" />
-							<ColumnDefinition Width="80" />
-							<ColumnDefinition Width="120" />
-							<ColumnDefinition Width="80" />
-							<ColumnDefinition Width="120" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<TextBlock
+                    <!--  上部情報  -->
+                    <Grid Grid.Row="0" Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
 							Grid.Column="0"
 							VerticalAlignment="Center"
 							Text="伝票No" />
-						<TextBox
+                        <TextBox
 							Grid.Column="1"
 							Margin="2"
 							Text="{Binding EditDenpyoNo}" />
-						<TextBlock
+                        <TextBlock
 							Grid.Column="2"
 							VerticalAlignment="Center"
 							Text="仕入日" />
-						<DatePicker
+                        <DatePicker
 							Grid.Column="3"
 							Margin="2"
 							SelectedDate="{Binding EditShiireDate}" />
-						<TextBlock
+                        <TextBlock
 							Grid.Column="4"
 							VerticalAlignment="Center"
 							Text="計算上日" />
-						<DatePicker
+                        <DatePicker
 							Grid.Column="5"
 							Margin="2"
 							SelectedDate="{Binding EditKeisanDate}" />
-						<TextBlock
+                        <TextBlock
 							Grid.Column="6"
 							VerticalAlignment="Center"
 							Text="集計上?" />
-						<ComboBox
+                        <ComboBox
 							Grid.Column="7"
 							Margin="2"
 							ItemsSource="{Binding ShuukeiList}"
 							SelectedItem="{Binding EditShuukei}" />
-					</Grid>
+                    </Grid>
 
-					<!--  仕入先・倉庫・備考  -->
-					<Grid Grid.Row="1" Margin="0,0,0,4">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="90" />
-							<ColumnDefinition Width="200" />
-							<ColumnDefinition Width="40" />
-							<ColumnDefinition Width="90" />
-							<ColumnDefinition Width="200" />
-							<ColumnDefinition Width="40" />
-							<ColumnDefinition Width="90" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<TextBlock
+                    <!--  仕入先・倉庫・備考  -->
+                    <Grid Grid.Row="1" Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
 							Grid.Column="0"
 							VerticalAlignment="Center"
 							Text="仕入先" />
-						<TextBox
+                        <TextBox
 							Grid.Column="1"
 							Margin="2"
 							Text="{Binding EditShiireSaki}" />
-						<Button
+                        <Button
 							Grid.Column="2"
 							Width="30"
 							Margin="2"
 							Content="&lt;&lt;" />
-						<TextBlock
+                        <TextBlock
 							Grid.Column="3"
 							VerticalAlignment="Center"
 							Text="倉庫" />
-						<TextBox
+                        <TextBox
 							Grid.Column="4"
 							Margin="2"
 							Text="{Binding EditSoko}" />
-						<Button
+                        <Button
 							Grid.Column="5"
 							Width="30"
 							Margin="2"
 							Content="&lt;&lt;" />
-						<TextBlock
+                        <TextBlock
 							Grid.Column="6"
 							VerticalAlignment="Center"
 							Text="備考" />
-						<TextBox
+                        <TextBox
 							Grid.Column="7"
 							Margin="2"
 							Text="{Binding EditBiko}" />
-					</Grid>
+                    </Grid>
 
-					<!--  関連No・手入力No  -->
-					<Grid Grid.Row="2" Margin="0,0,0,4">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="90" />
-							<ColumnDefinition Width="120" />
-							<ColumnDefinition Width="90" />
-							<ColumnDefinition Width="120" />
-							<ColumnDefinition Width="90" />
-							<ColumnDefinition Width="120" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<TextBlock
+                    <!--  関連No・手入力No  -->
+                    <Grid Grid.Row="2" Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
 							Grid.Column="0"
 							VerticalAlignment="Center"
 							Text="関連No1" />
-						<TextBox
+                        <TextBox
 							Grid.Column="1"
 							Margin="2"
 							Text="{Binding EditKanrenNo1}" />
-						<TextBlock
+                        <TextBlock
 							Grid.Column="2"
 							VerticalAlignment="Center"
 							Text="関連No2" />
-						<TextBox
+                        <TextBox
 							Grid.Column="3"
 							Margin="2"
 							Text="{Binding EditKanrenNo2}" />
-						<TextBlock
+                        <TextBlock
 							Grid.Column="4"
 							VerticalAlignment="Center"
 							Text="手入力No" />
-						<TextBox
+                        <TextBox
 							Grid.Column="5"
 							Margin="2"
 							Text="{Binding EditManualInputNo}" />
-					</Grid>
+                    </Grid>
 
-					<!--  明細グリッド  -->
-					<DataGrid
+                    <!--  明細グリッド  -->
+                    <DataGrid
 						Grid.Row="3"
 						Margin="0,0,0,4"
 						AutoGenerateColumns="False"
 						ItemsSource="{Binding EditMeisaiList}"
 						SelectedItem="{Binding SelectedMeisai}">
-						<DataGrid.Columns>
-							<DataGridTemplateColumn Width="40" Header="行">
-								<DataGridTemplateColumn.CellTemplate>
-									<DataTemplate>
-										<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-											<Button
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="40" Header="行">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Button
 												Width="20"
 												Height="20"
 												Margin="0,0,2,0"
 												Command="{Binding DataContext.MoveUpCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
 												CommandParameter="{Binding}"
 												Content="↑" />
-											<Button
+                                            <Button
 												Width="20"
 												Height="20"
 												Command="{Binding DataContext.MoveDownCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
 												CommandParameter="{Binding}"
 												Content="↓" />
-										</StackPanel>
-									</DataTemplate>
-								</DataGridTemplateColumn.CellTemplate>
-							</DataGridTemplateColumn>
-							<DataGridTemplateColumn Width="40" Header="挿入">
-								<DataGridTemplateColumn.CellTemplate>
-									<DataTemplate>
-										<Button
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="40" Header="挿入">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
 											Width="36"
 											Command="{Binding DataContext.InsertRowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
 											CommandParameter="{Binding}"
 											Content="+1" />
-									</DataTemplate>
-								</DataGridTemplateColumn.CellTemplate>
-							</DataGridTemplateColumn>
-							<DataGridTemplateColumn Width="40" Header="削除">
-								<DataGridTemplateColumn.CellTemplate>
-									<DataTemplate>
-										<Button
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="40" Header="削除">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
 											Width="36"
 											Command="{Binding DataContext.DeleteRowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
 											CommandParameter="{Binding}"
 											Content="×" />
-									</DataTemplate>
-								</DataGridTemplateColumn.CellTemplate>
-							</DataGridTemplateColumn>
-							<DataGridTextColumn
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn
 								Width="90"
 								Binding="{Binding ShohinCd}"
 								Header="商品CD" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="150"
 								Binding="{Binding ShohinName}"
 								Header="商品名" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="60"
 								Binding="{Binding Color}"
 								Header="色" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="60"
 								Binding="{Binding Size}"
 								Header="サイズ" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="60"
 								Binding="{Binding Suuryou}"
 								Header="数量" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="90"
 								Binding="{Binding JoudaiKingaku}"
 								Header="上代金額" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="90"
 								Binding="{Binding GedaiKingaku}"
 								Header="下代金額" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="120"
 								Binding="{Binding MakerHinban}"
 								Header="メーカー品番" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="120"
 								Binding="{Binding Tekiyou}"
 								Header="摘要" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="80"
 								Binding="{Binding Soko}"
 								Header="倉庫" />
-							<DataGridTextColumn
+                            <DataGridTextColumn
 								Width="60"
 								Binding="{Binding Kubun}"
 								Header="区分" />
-						</DataGrid.Columns>
-					</DataGrid>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-					<!--  下部ボタン  -->
-					<StackPanel
+                    <!--  下部ボタン  -->
+                    <StackPanel
 						Grid.Row="4"
 						Margin="0,8,0,0"
 						HorizontalAlignment="Left"
 						Orientation="Horizontal">
-						<Button
+                        <Button
 							Width="120"
 							Margin="0,0,8,0"
 							Content="作成/修正日" />
-						<TextBox
+                        <TextBox
 							Width="150"
 							Margin="0,0,8,0"
 							Text="{Binding EditCreatedDate}" />
-						<TextBox
+                        <TextBox
 							Width="150"
 							Margin="0,0,8,0"
 							Text="{Binding EditModifiedDate}" />
-						<Button
+                        <Button
 							Width="120"
 							Margin="0,0,8,0"
 							Command="{Binding ShohinCdSearchCommand}"
 							Content="商品CD検索" />
-						<Button
+                        <Button
 							Width="90"
 							Margin="0,0,8,0"
 							Command="{Binding EditCommand}"
 							Content="修正(F6)" />
-						<Button
+                        <Button
 							Width="90"
 							Margin="0,0,8,0"
 							Command="{Binding AddCommand}"
 							Content="追加(F8)" />
-						<Button
+                        <Button
 							Width="90"
 							Margin="0,0,8,0"
 							Command="{Binding PrintCommand}"
 							Content="印刷(F9)" />
-						<Button
+                        <Button
 							Width="90"
 							Command="{Binding BackToListCommand}"
 							Content="一覧へ(ESC)" />
-					</StackPanel>
-				</Grid>
-			</TabItem>
-		</TabControl>
-	</Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>

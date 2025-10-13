@@ -334,71 +334,71 @@ namespace CvnetClient.Models
         [ObservableProperty]
         decimal vdateUpdate;
 		[ObservableProperty]
-		string? workerCD;
+		string? workerCD;	//社員CD
 		[ObservableProperty]
-		string? name;
+		string? name;	//名前
 		[ObservableProperty]
-		string? department;
-		[ObservableProperty]
-		string? shopCD;
-		[ObservableProperty]
-		int? salesFlg;
-		[ObservableProperty]
-		string? mail;
-		[ObservableProperty]
-		string? telNo;
-		[ObservableProperty]
-		string? specialFlg;
-		[ObservableProperty]
-		string? furigana;
-		[ObservableProperty]
-		string? positionCD;
-		[ObservableProperty]
-		string? employmentFLG;
+		string? department; //部門
         [ObservableProperty]
-        int? outputFLG;
-		[ObservableProperty]
-        string? notes;
-		[ObservableProperty]
+		string? shopCD; //店舗CD
+        [ObservableProperty]
+		int? salesFlg;  //営業FLG
+        [ObservableProperty]
+		string? mail;   //メール
+        [ObservableProperty]
+		string? telNo;  //携帯TEL
+        [ObservableProperty]
+		string? specialFlg; //特権FLG
+        [ObservableProperty]
+		string? furigana;   //フリガナ
+        [ObservableProperty]
+		string? positionCD; //役職CD
+        [ObservableProperty]
+		string? employmentFLG;	//就業FLG
+        [ObservableProperty]
+        int? outputFLG; //出力FLG
+        [ObservableProperty]
+        string? notes;  //備考
+        [ObservableProperty]
         string? felica;
         [ObservableProperty]
-        string? joiningDate;
+        string? joiningDate;	//入社日
         [ObservableProperty]
-        string? vacationRemaining;
+        string? vacationRemaining;	//有給残
         [ObservableProperty]
-        string? salaryCate;
-		[ObservableProperty]
-        int? salaryAmount;
+        string? salaryCate; //給与区分
         [ObservableProperty]
-        string? transExpCate;
-		[ObservableProperty]
-        int? transExpAmount;
+        int? salaryAmount;	//給与支給額
         [ObservableProperty]
-        string? sectionCD;
+        string? transExpCate;   //交通費区分
         [ObservableProperty]
-        string? nameCD01;
+        int? transExpAmount;	//交通費支給額
         [ObservableProperty]
-        string? nameCD02;
+        string? sectionCD;	//部課CD
         [ObservableProperty]
-        string? nameCD03;
+        string? nameCD01;	//名称CD01
         [ObservableProperty]
-        string? nameCD04;
+        string? nameCD02;	//名称CD02
         [ObservableProperty]
-        string? nameCD05;
-		[ObservableProperty]
-        int? posCate;
+        string? nameCD03;	//名称CD03
         [ObservableProperty]
-        int? emailFLG;
+        string? nameCD04;	//名称CD04
         [ObservableProperty]
-        string? employeeInpCD;
-		[ObservableProperty]
-        int? specHolidayRemain;
+        string? nameCD05;   //名称CD05
         [ObservableProperty]
-        string? endDate;
+        int? posCate;	//POS区分
         [ObservableProperty]
-        string? retireDate;
+        int? emailFLG;	//メールFLG
         [ObservableProperty]
-        string? profile;
+        string? employeeInpCD;  //入力社員CD
+        [ObservableProperty]
+        int? specHolidayRemain;	//特休残
+        [ObservableProperty]
+        string? endDate;	//退勤日
+        [ObservableProperty]
+        string? retireDate;	//退職日
+        [ObservableProperty]
+        string? profile;	//プロフィール
     }
 
 	public partial class MasterShop : ObservableObject
@@ -410,199 +410,318 @@ namespace CvnetClient.Models
         [ObservableProperty]
         decimal vdateUpdate;
 		[ObservableProperty]
-		string? tradingCD;
-		[ObservableProperty]
-		string? oldCD;
-		[ObservableProperty]
-		string? abbr;
-		[ObservableProperty]
-		string? tradingName;
-		[ObservableProperty]
-		string? katakana;
-		[ObservableProperty]
-		string? postal;
-		[ObservableProperty]
-		string? address1;
-		[ObservableProperty]
-		string? address2;
-		[ObservableProperty]
-		string? address3;
-		[ObservableProperty]
-		string? telNo;
-		[ObservableProperty]
-		string? faxNo;
-		[ObservableProperty]
-		string? salesRepCD;
-		[ObservableProperty]
-		string? storeCate;
-		[ObservableProperty]
-		string? area;
-		[ObservableProperty]
-		string? commissionRate;
-		[ObservableProperty]
-		string? saleCommRate;
-		[ObservableProperty]
-		string? invoiceAddrCD;
-		[ObservableProperty]
-		string? invoicePrint;
-		[ObservableProperty]
-		string? closingDate;
-		[ObservableProperty]
-		string? expectedPayMonth;
-		[ObservableProperty]
-		string? expectedPayDate;
-		[ObservableProperty]
-		string? payMethod;
-		[ObservableProperty]
-		string? lowerPriceCutoffSpec;
-		[ObservableProperty]
-		string? lowerPriceFracCate;
-		[ObservableProperty]
-		string? lowerPriceCalcFLG;
-		[ObservableProperty]
-		string? consumpTaxCD;
-		[ObservableProperty]
-		string? consumpTaxCalc;
-		[ObservableProperty]
-		string? consumpTaxFrac;
-		[ObservableProperty]
-		string? creditLimit;
-		[ObservableProperty]
-		string? paymentRate;
-		[ObservableProperty]
-		string? shipmentStopFlg;
-		[ObservableProperty]
-		string? addressFLG1;
-		[ObservableProperty]
-		string? addressFLG2;
-		[ObservableProperty]
-		string? addressFLG3;
-		[ObservableProperty]
-		string? addressName1;
-		[ObservableProperty]
-		string? addressName2;
-		[ObservableProperty]
-		string? invoiceIssueCate;
-		[ObservableProperty]
-		string? invoicePrint1;
-		[ObservableProperty]
-		string? invoicePrint2;
-		[ObservableProperty]
-		string? invoicePrint3;
-		[ObservableProperty]
-		string? invoicePrint4;
-		[ObservableProperty]
-		string? department;
-		[ObservableProperty]
-		string? notes;
-		[ObservableProperty]
-		string? invManageFLG;
-		[ObservableProperty]
-		string? autoAllocFLG;
-		[ObservableProperty]
-		string? startDate;
-		[ObservableProperty]
-		string? endDate;
-		[ObservableProperty]
-		string? nameCD01;
-		[ObservableProperty]
-		string? nameCD02;
-		[ObservableProperty]
-		string? nameCD03;
-		[ObservableProperty]
-		string? nameCD04;
-		[ObservableProperty]
-		string? nameCD05;
-		[ObservableProperty]
-		string? nameCD06;
-		[ObservableProperty]
-		string? nameCD07;
-		[ObservableProperty]
-		string? nameCD08;
-		[ObservableProperty]
-		string? nameCD09;
-		[ObservableProperty]
-		string? nameCD10;
-		[ObservableProperty]
-		string? invDate;
-		[ObservableProperty]
-		string? startTime;
-		[ObservableProperty]
-		string? endTime;
-		[ObservableProperty]
-		string? terminalID;
-		[ObservableProperty]
-		string? warehouseCate;
-		[ObservableProperty]
-		string? businHours1;
-		[ObservableProperty]
-		string? businHours2;
-		[ObservableProperty]
-		string? businHours3;
-		[ObservableProperty]
-		string? contractInfo;
-		[ObservableProperty]
-		string? developer;
-		[ObservableProperty]
-		string? businessHours;
-		[ObservableProperty]
-		string? invDateEND;
-		[ObservableProperty]
-		string? exchangeCate;
-		[ObservableProperty]
-		string? exDeciCutoff;
-		[ObservableProperty]
-		string? exFracCate;
-		[ObservableProperty]
-		string? allocRank01;
-		[ObservableProperty]
-		string? allocRank02;
-		[ObservableProperty]
-		string? shippingFLG;
-		[ObservableProperty]
-		string? baseWarehouseFLG;
-		[ObservableProperty]
-		string? baseWarehouseCD;
-		[ObservableProperty]
-		string? allocMethodFLG;
-		[ObservableProperty]
-		string? posCate;
-		[ObservableProperty]
-		string? slipPrint5;
-		[ObservableProperty]
-		string? slipPrint6;
-		[ObservableProperty]
-		string? slipPrint7;
-		[ObservableProperty]
-		string? slipPrint8;
-		[ObservableProperty]
-		string? enterEmployeeCD;
-		[ObservableProperty]
-		string? storeSalesFloorCode;
-		[ObservableProperty]
+		string? tradingCD;  //得意先CD
+        [ObservableProperty]
+		string? oldCD;  //旧コード
+        [ObservableProperty]
+		string? abbr;   //略称
+        [ObservableProperty]
+		string? tradingName;    //得意先名
+        [ObservableProperty]
+		string? katakana;   //カナ
+        [ObservableProperty]
+		string? postal; //郵便番号
+        [ObservableProperty]
+		string? address1;   //住所1
+        [ObservableProperty]
+		string? address2;   //住所2
+        [ObservableProperty]
+		string? address3;   //住所3
+        [ObservableProperty]
+		string? telNo;  //TEL
+        [ObservableProperty]
+		string? faxNo;  //FAX
+        [ObservableProperty]
+		string? salesRepCD; //営業担当CD
+        [ObservableProperty]
+		string? storeCate;  //店種区分
+        [ObservableProperty]
+		string? area;   //坪数
+        [ObservableProperty]
+		string? commissionRate; //掛率
+        [ObservableProperty]
+		string? saleCommRate;   //セール掛率
+		[ObservableProperty]
+		string? inStoreSaleRate;	//店頭セール掛率
+        [ObservableProperty]
+		string? invoiceAddrCD;  //請求先CD
+        [ObservableProperty]
+		string? invoicePrint;   //請求印刷
+        [ObservableProperty]
+		string? closingDate;    //締日
+        [ObservableProperty]
+		string? expectedPayMonth;   //入金予定月
+        [ObservableProperty]
+		string? expectedPayDate;    //入金予定日
+        [ObservableProperty]
+		string? payMethod;  //入金方法
+        [ObservableProperty]
+		string? lowerPriceCutoffSpec;   //下代桁切指定
+        [ObservableProperty]
+		string? lowerPriceFracCate; //下代端数区分
+        [ObservableProperty]
+		string? lowerPriceCalcFLG;  //下代計算FLG
+        [ObservableProperty]
+		string? consumpTaxCD;   //消費税CD
+        [ObservableProperty]
+		string? consumpTaxCalc; //消費税計算方法
+        [ObservableProperty]
+		string? consumpTaxFrac; //消費税端数
+        [ObservableProperty]
+		string? creditLimit;    //与信限度額
+        [ObservableProperty]
+		string? paymentRate;    //入金率
+        [ObservableProperty]
+		string? shipmentStopFlg;    //出荷停止FLG
+        [ObservableProperty]
+		string? addressFLG1;    //宛名FLG1
+        [ObservableProperty]
+		string? addressFLG2;    //宛名FLG2
+        [ObservableProperty]
+		string? addressFLG3;    //宛名FLG3
+        [ObservableProperty]
+		string? addressName1;   //宛名名称1
+        [ObservableProperty]
+		string? addressName2;   //宛名名称2
+        [ObservableProperty]
+		string? invoiceIssueCate;   //伝票発行区分
+        [ObservableProperty]
+		string? invoicePrint1;  //伝票印字1
+        [ObservableProperty]
+		string? invoicePrint2;  //伝票印字2
+        [ObservableProperty]
+		string? invoicePrint3;  //伝票印字3
+        [ObservableProperty]
+		string? invoicePrint4;  //伝票印字4
+        [ObservableProperty]
+		string? department; //部門
+        [ObservableProperty]
+		string? notes;  //備考
+        [ObservableProperty]
+		string? invManageFLG;   //在庫管理FLG
+        [ObservableProperty]
+		string? autoAllocFLG;   //自動配分FLG
+        [ObservableProperty]
+		string? startDate;  //開始日
+        [ObservableProperty]
+		string? endDate;    //終了日
+        [ObservableProperty]
+		string? nameCD01;   //名称CD01
+        [ObservableProperty]
+		string? nameCD02;   //名称CD02
+        [ObservableProperty]
+		string? nameCD03;   //名称CD03
+        [ObservableProperty]
+		string? nameCD04;   //名称CD04
+        [ObservableProperty]
+		string? nameCD05;   //名称CD05
+        [ObservableProperty]
+		string? nameCD06;   //名称CD06
+        [ObservableProperty]
+		string? nameCD07;   //名称CD07
+        [ObservableProperty]
+		string? nameCD08;   //名称CD08
+        [ObservableProperty]
+		string? nameCD09;   //名称CD09
+        [ObservableProperty]
+		string? nameCD10;   //名称CD10
+        [ObservableProperty]
+		string? invDate;    //棚卸日
+        [ObservableProperty]
+		string? startTime;  //開始時刻
+        [ObservableProperty]
+		string? endTime;    //終了時刻
+        [ObservableProperty]
+		string? terminalID; //端末ID
+        [ObservableProperty]
+		string? warehouseCate;  //倉庫区分
+        [ObservableProperty]
+		string? businHours1;    //営業時間1
+        [ObservableProperty]
+		string? businHours2;    //営業時間2
+        [ObservableProperty]
+		string? businHours3;    //営業時間3
+        [ObservableProperty]
+		string? contractInfo;   //施工業者情報
+        [ObservableProperty]
+		string? developer;  //デベロッパ
+        [ObservableProperty]
+		string? businessHours;  //営業時間
+        [ObservableProperty]
+		string? invDateEND; //棚卸日END
+        [ObservableProperty]
+		string? exchangeCate;   //為替区分
+        [ObservableProperty]
+		string? exDeciCutoff;   //為替桁切指定
+        [ObservableProperty]
+		string? exFracCate; //為替端数区分
+        [ObservableProperty]
+		string? allocRank01;    //配分ランク01
+        [ObservableProperty]
+		string? allocRank02;    //配分ランク02
+        [ObservableProperty]
+		string? shippingFLG;    //出荷FLG
+        [ObservableProperty]
+		string? baseWarehouseFLG;   //基準倉庫FLG
+        [ObservableProperty]
+		string? baseWarehouseCD;    //基準倉庫CD
+        [ObservableProperty]
+		string? allocMethodFLG; //配分方法FLG
+        [ObservableProperty]
+		string? posCate;    //POS区分
+        [ObservableProperty]
+		string? slipPrint5; //伝票印字5
+        [ObservableProperty]
+		string? slipPrint6; //伝票印字6
+        [ObservableProperty]
+		string? slipPrint7; //伝票印字7
+        [ObservableProperty]
+		string? slipPrint8; //伝票印字8
+        [ObservableProperty]
+		string? enterEmployeeCD;    //入力社員CD
+        [ObservableProperty]
+		string? storeSalesFloorCode;    //店舗売場コード
+        [ObservableProperty]
 		string? ecFLG;
+        [ObservableProperty]
+		string? baseSales01;    //基準売上01
+        [ObservableProperty]
+		string? baseSales02;    //基準売上02
+        [ObservableProperty]
+		string? baseSales03;    //基準売上03
+        [ObservableProperty]
+		string? commissionRate01;   //歩率01
+        [ObservableProperty]
+		string? commissionRate02;   //歩率02
+        [ObservableProperty]
+		string? commissionRate03;   //歩率03
+        [ObservableProperty]
+		string? otherRatio01;   //他比率01
+        [ObservableProperty]
+		string? otherRatio02;   //他比率02
+        [ObservableProperty]
+		string? otherRatio03;   //他比率03
+        [ObservableProperty]
+		string? otherExpenses01;    //他費用01
+        [ObservableProperty]
+		string? otherExpenses02;    //他費用02
+        [ObservableProperty]
+        string? otherExpenses03;    //他費用03
+        [ObservableProperty]
+        string? nameCD11;   //名称CD11
+        [ObservableProperty]
+        string? nameCD12;   //名称CD12
+        [ObservableProperty]
+        string? nameCD13;   //名称CD13
+        [ObservableProperty]
+        string? nameCD14;   //名称CD14
+        [ObservableProperty]
+        string? nameCD15;   //名称CD15
+        [ObservableProperty]
+        string? nameCD16;   //名称CD16
+        [ObservableProperty]
+        string? nameCD17;   //名称CD17
+        [ObservableProperty]
+        string? nameCD18;   //名称CD18
+        [ObservableProperty]
+        string? nameCD19;   //名称CD19
+        [ObservableProperty]
+        string? nameCD20;   //名称CD20
+        [ObservableProperty]
+        int? rentCalcFLG;        //賃料計算FLG
+        [ObservableProperty]
+        int? minRent;       //最低保障家賃
+        [ObservableProperty]
+        int? closeDate2;    //締日2
 		[ObservableProperty]
-		string? baseSales01;
+		int? closeDate3;        //締日3
 		[ObservableProperty]
-		string? baseSales02;
+		int? xpPayMon2;     //入金予定月2
 		[ObservableProperty]
-		string? baseSales03;
+		int? xpPayDate2;        //入金予定日2
 		[ObservableProperty]
-		string? commissionRate01;
+		int? xpPayMon3;     //入金予定月3
 		[ObservableProperty]
-		string? commissionRate02;
+		int? xpPayDate3;        //入金予定日3
 		[ObservableProperty]
-		string? commissionRate03;
+		string? invoCompName;       //伝票社名
 		[ObservableProperty]
-		string? otherRatio01;
+		string? invoStoreName;      //伝票店名
 		[ObservableProperty]
-		string? otherRatio02;
+		int? transCate;     //移動区分
 		[ObservableProperty]
-		string? otherRatio03;
+		string? corpCD;     //法人CD
 		[ObservableProperty]
-		string? otherExpenses01;
+		string? affiCD;     //連携CD
 		[ObservableProperty]
-		string? otherExpenses02;
+		string? affiCorpCD;     //連携先法人CD
+		[ObservableProperty]
+		string? payDesti1;      //振込先1
+		[ObservableProperty]
+		string? payDesti2;      //振込先2
+		[ObservableProperty]
+		string? payDesti3;      //振込先3
+		[ObservableProperty]
+		string? custBrdCD;      //得意先ブランドCD
+		[ObservableProperty]
+		int? dueDate;       //期日
+		[ObservableProperty]
+		int? minAm;     //下限額
+		[ObservableProperty]
+		int? transDays;     //移動日数
+		[ObservableProperty]
+		string? custEmail;      //得意先MAIL
+		[ObservableProperty]
+		string? storeImgName;       //店舗画像名
+		[ObservableProperty]
+		string? closedDays;     //定休日
+		[ObservableProperty]
+		string? appeal;     //アピール
+		[ObservableProperty]
+		string? statName;       //駅名
+		[ObservableProperty]
+		long? longitude;        //経度
+		[ObservableProperty]
+		long? latitude;     //緯度
+		[ObservableProperty]
+		int? eCDisp;        //EC表示
+		[ObservableProperty]
+		string? eCDispName;     //EC表示名
+		[ObservableProperty]
+		int? area2;      //地域
+		[ObservableProperty]
+		string? brand;      //ブランド
+		[ObservableProperty]
+		int? reservation;       //取置
+		[ObservableProperty]
+		int? order;     //取寄
+		[ObservableProperty]
+		int? orderSeq;      //取寄順
+		[ObservableProperty]
+		string? eCBusHours;     //EC営業時間
+		[ObservableProperty]
+		string? iNSTA;      //INSTA
+		[ObservableProperty]
+		string? wEAR;       //WEAR
+		[ObservableProperty]
+		string? bLOG;       //BLOG
+		[ObservableProperty]
+		string? mAPURL;     //MAPURL
+		[ObservableProperty]
+		string? eCAppeal;       //ECアピール
+		[ObservableProperty]
+		string? site;        //サイト
+		[ObservableProperty]
+		int? adjustedInv;       //調整在庫
+		[ObservableProperty]
+		string? registNum;      //登録番号
+		[ObservableProperty]
+		string? aPPBusHours;        //APP営業時間
+		[ObservableProperty]
+		string? oriStoreImgName;        //元店舗画像名
+		[ObservableProperty]
+		int? dispOrder;		//表示順
+
     }
 
     public partial class MasterSHKiji : ObservableObject
