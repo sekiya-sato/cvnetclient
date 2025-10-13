@@ -40,7 +40,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId="" },
                 new ButtonConfig { Text = "社員使用メニュー一覧", WindowId="" },
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId="" },
-                new ButtonConfig { Text = "週マスタ", WindowId="" },
+                new ButtonConfig { Text = "週マスタ", WindowId=typeof(Views.SubDlg01WeekView).FullName },
                 new ButtonConfig { Text = "バーコードブック印刷", WindowId="" },
                 new ButtonConfig { Text = "各種マスタ印刷", WindowId="" },
                 new ButtonConfig { Text = "タックシール印刷", WindowId="" }
