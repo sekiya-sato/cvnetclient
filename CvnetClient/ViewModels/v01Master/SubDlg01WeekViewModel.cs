@@ -4,6 +4,7 @@ using CvnetClient.Models;
 using CvnetClient.Utils;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 
 namespace CvnetClient.ViewModels
 {
@@ -17,6 +18,9 @@ namespace CvnetClient.ViewModels
 
         [ObservableProperty]
         Week01SearchOpt? m_SearchOpt;
+
+        [ObservableProperty]
+        string? m_Mess2;
 
         private BizArray para;
         private int Chg_flg = 0;
@@ -54,6 +58,10 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void DoSearch()
         {
+            if (SearchOpt  == null) return;
+            SearchOpt.YearTbCor = 0;
+            SearchOpt.WeekNoTbCor = 0;
+
             var v_para = new BizArray();
             v_para[0] = SearchOpt.SelYear.Trim();
 
@@ -66,14 +74,44 @@ namespace CvnetClient.ViewModels
                 v_para[0] = SearchOpt.SelYear.Trim();
                 v_para[1] = SearchOpt.SelBaseWeek.ToString();
                 wrk_csv2 = OnQuery2(v_para.ToArray());
-            } 
 
+                SearchOpt.YearTbCor = 1;
+                SearchOpt.WeekNoTbCor = 1;
+            }
+
+            if (wrk_csv2.Rows.Count > 0)
+            {
+                var list = (from DataRow dr in wrk_csv2.Rows
+                            select new MasterWeekEx
+                            {
+                                Year = int.TryParse(dr["年"].ToString(), out var _year) ? _year : 0,
+                                WeekNo = int.TryParse(dr["週NO"].ToString(), out var _weekNo) ? _weekNo : 0,
+                                StartDate = DateTime.TryParseExact(dr["開始日"].ToString(), "yyyyMMdd",
+                                            CultureInfo.InvariantCulture, DateTimeStyles.None,
+                                            out var _startDate) ? _startDate : new DateTime(1901, 1, 1),
+                                StartDayWeek = dr["開始曜日"].ToString() ?? string.Empty,
+                                EndDate = DateTime.TryParseExact(dr["終了日"].ToString(), "yyyyMMdd",
+                                          CultureInfo.InvariantCulture, DateTimeStyles.None,
+                                          out var _endDate) ? _endDate : new DateTime(1901, 1, 1),
+                                EndDayWeek = dr["終了曜日"].ToString() ?? string.Empty,
+                                Memo = dr["メモ"].ToString() ?? string.Empty
+                            });
+                WeekList = new ObservableCollection<MasterWeekEx>(list);
+            }
         }
 
         [RelayCommand]
         void DoDelete()
         {
+            if (BaseWeekList?.Count == 0) return;
 
+            var wrk_para = new BizArray();
+            wrk_para[0] = "MASTER_WEEK";
+            wrk_para[1] = "年=" + SearchOpt?.SelYear;
+            var ret_csv = AppData.Http?.AspxSqlQuery2("mi_del", wrk_para.ToArray(), "", -1);
+
+            var ret_code = ret_csv?.Split("\n")[0];
+            //if(ret_code == "0") Mess2 = 
         }
 
         [RelayCommand]
@@ -106,6 +144,8 @@ namespace CvnetClient.ViewModels
             int week_cnt = 0;
             if (v_para[1] == "0") week_cnt = 52; 
             else week_cnt = 53;
+
+            if (AppData.ClassCvnet.SysMst == null) return new DataTable();
 
             /* (10.02.18) 【システム管理】週区分 */
             int week_kubun = int.TryParse(AppData.ClassCvnet.SysMst._data.Rows[0][18].ToString(), out var _kubun) ? _kubun : 0;
@@ -149,8 +189,12 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public int m_YearTbCor;
 
-
-
+        /// <summary>
+        /// 週NO CvnetFlexView Column Backgroud Color Setup (0 Default, 1 Red)
+        /// </summary>
+        [ObservableProperty]
+        public int m_WeekNoTbCor;
+         
         public Week01SearchOpt()
         { 
             SelYear = DateTime.Now.ToString("yyyy");

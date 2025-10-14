@@ -22,6 +22,7 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="30" />
 		</Grid.RowDefinitions>
 
 		<Grid Grid.Row="0" Margin="5">
@@ -57,7 +58,7 @@
 					Content="表示更新(F5)" />
 		</Grid>
 
-		<uc:CvnetFlexView Grid.Row="1" DataSource="{Binding WeekList}">
+		<uc:CvnetFlexView Grid.Row="1" ItemsSource="{Binding WeekList}">
 			<uc:CvnetFlexView.Columns>
 				<DataGridTextColumn Header="年" Binding="{Binding Year}" Width="*" />
 				<DataGridTextColumn Header="週NO" Binding="{Binding WeekNo}" Width="*" />
@@ -108,6 +109,15 @@
 					Command="{Binding DoExitCommand}"
 					Content="戻る(ESC)" />
 		</Grid>
-		
+
+		<Grid Grid.Row="3" Margin="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="5*" />
+				<ColumnDefinition Width="5*" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Column="1" 
+				   Foreground="Red"
+				   Content="{Binding Mess2}" />
+		</Grid>
 	</Grid>
 </Window>

@@ -27,7 +27,7 @@
 		<Setter Property="BorderThickness" Value="1"></Setter> 
 		<Setter Property="HeadersVisibility" Value="Column"></Setter>
 		<Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"></Setter>
-        <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+        <Setter Property="GridLinesVisibility" Value="Horizontal"/> 
         <Setter Property="CellStyle">
             <Setter.Value>
                 <Style TargetType="DataGridCell">
@@ -70,7 +70,11 @@
                          <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
                          <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
                          <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
-                     </Style.Resources>
+						<Style TargetType="DatePicker">
+							<Setter Property="Foreground" Value="Black"/>
+							<Setter Property="Background" Value="White"/>
+						</Style>
+					</Style.Resources>
                 </Style>
             </Setter.Value>
         </Setter>

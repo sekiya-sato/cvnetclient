@@ -1,6 +1,8 @@
-﻿using System.Data;
+﻿using System.Collections;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace CvnetClient.Views
@@ -26,39 +28,58 @@ namespace CvnetClient.Views
             MouseRightButtonUp += CvnetFlexView_MouseRightButtonUp;
         }
 
-        #region DataSource Bind & Changed
-        public static readonly DependencyProperty DataSourceProperty =
-                   DependencyProperty.Register(nameof(DataSource), typeof(DataTable), typeof(CvnetFlexView),
-                       new PropertyMetadata(null, OnDataSourceChanged));
+        #region Index & Delete Features
 
-        public DataTable DataSource
+        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
-            get => (DataTable)GetValue(DataSourceProperty);
-            set => SetValue(DataSourceProperty, value);
+            base.OnItemsSourceChanged(oldValue, newValue);
+            AddIndexColumn();
+            AddDeleteColumn();   
         }
 
-        private static void OnDataSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void AddIndexColumn()
         {
-            var grid = (CvnetFlexView)d;
-            grid.ItemsSource = (e.NewValue as DataTable)?.DefaultView;
-
-            grid.AddDeleteColumn();
-        }
-        #endregion
-
-        #region Delete Features
-        private void AddDeleteColumn()
-        {
-            // Check if already added
+            // Check if "行" column already exists (regardless of column type)
             foreach (var col in Columns)
             {
-                if (col is DataGridTemplateColumn templateCol && templateCol.Header?.ToString() == "Delete")
+                if (col.Header?.ToString() == "行")
+                    return;
+            }
+
+            var textFactory = new FrameworkElementFactory(typeof(TextBlock));
+            textFactory.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding
+            {
+                RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(DataGridRow), 1),
+                Path = new PropertyPath("Header")
+            });
+            textFactory.SetValue(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+
+            var cellTemplate = new DataTemplate();
+            cellTemplate.VisualTree = textFactory;
+
+            var indexColumn = new DataGridTemplateColumn
+            {
+                Header = "行",
+                IsReadOnly = true,
+                Width = 40,
+                CellTemplate = cellTemplate
+            };
+
+            Columns.Insert(0, indexColumn);
+        }
+
+        private void AddDeleteColumn()
+        {
+            // already added?
+            foreach (var col in Columns)
+            {
+                if (col is DataGridTemplateColumn templateCol && templateCol.Header?.ToString() == "削除")
                     return;
             }
 
             var deleteTemplate = new DataTemplate();
             var factory = new FrameworkElementFactory(typeof(Button));
-            factory.SetValue(Button.ContentProperty, "✖");
+            factory.SetValue(Button.ContentProperty, "🗑");
             factory.SetValue(Button.ForegroundProperty, System.Windows.Media.Brushes.Red);
             factory.SetValue(Button.PaddingProperty, new Thickness(4));
             factory.AddHandler(Button.ClickEvent, new RoutedEventHandler(DeleteButton_Click));
@@ -68,26 +89,57 @@ namespace CvnetClient.Views
 
             var deleteColumn = new DataGridTemplateColumn
             {
-                Header = "Delete",
-                CellTemplate = deleteTemplate
+                Header = "削除",
+                CellTemplate = deleteTemplate,
+                Width = 70
             };
 
             Columns.Add(deleteColumn);
         }
 
+        private void RenumberRows()
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                var row = ItemContainerGenerator.ContainerFromIndex(i) as DataGridRow;
+                if (row != null)
+                {
+                    row.Header = (i + 1).ToString();
+                }
+            }
+        }
+
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.CommandParameter is DataRowView rowView)
+            if (sender is Button button && button.CommandParameter is object item)
             {
-                DataSource?.Rows.Remove(rowView.Row);
+                if (ItemsSource is IList list)
+                {
+                    list.Remove(item);
+                    RenumberRows();
+                }
             }
         }
         #endregion
 
         #region Events
         private void CvnetFlexView_LoadingRow(object? sender, DataGridRowEventArgs e)
-        {
+        { 
+            // Show row number in row header (left gray bar)
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+
+            // Show row number inside the "No" column cell
+            var index = e.Row.GetIndex() + 1;
+
+            // Get the column 0 ("No")
+            if (Columns.Count > 0 && Columns[0] is DataGridTextColumn)
+            {
+                var cellContent = Columns[0].GetCellContent(e.Row) as TextBlock;
+                if (cellContent != null)
+                {
+                    cellContent.Text = index.ToString();
+                }
+            }
         }
         private void CvnetFlexView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -109,10 +161,10 @@ namespace CvnetClient.Views
         {
             var menu = new ContextMenu();
 
-            var addItem = new MenuItem { Header = "Add Row" };
+            var addItem = new MenuItem { Header = "➕ 最終行追加" };
             addItem.Click += (s, e) => AddRow();
 
-            var deleteItem = new MenuItem { Header = "Delete Row" };
+            var deleteItem = new MenuItem { Header = "🗑 削除" };
             deleteItem.Click += (s, e) => DeleteSelectedRow();
 
             menu.Items.Add(addItem);
@@ -122,13 +174,20 @@ namespace CvnetClient.Views
         }
         private void AddRow()
         {
-            DataSource?.Rows.Add(DataSource.NewRow());
+            if (ItemsSource is IList list)
+            {
+                var itemType = list.GetType().GetGenericArguments()[0];
+                var newItem = Activator.CreateInstance(itemType);
+                list.Add(newItem);
+                RenumberRows();
+            }
         }
         private void DeleteSelectedRow()
         {
-            if (SelectedItem is DataRowView rowView)
+            if (ItemsSource is IList list)
             {
-                DataSource.Rows.Remove(rowView.Row);
+                list.Remove(SelectedItem);
+                RenumberRows();
             }
         }
         #endregion
