@@ -110,14 +110,44 @@ namespace CvnetClient.ViewModels
             wrk_para[1] = "年=" + SearchOpt?.SelYear;
             var ret_csv = AppData.Http?.AspxSqlQuery2("mi_del", wrk_para.ToArray(), "", -1);
 
-            var ret_code = ret_csv?.Split("\n")[0];
-            //if(ret_code == "0") Mess2 = 
+            if (!string.IsNullOrEmpty(ret_csv) && ret_csv.Contains("\n"))
+            {
+                var ret_result = ret_csv?.Split("\n");
+                var ret_code = (ret_result?.Length > 1) ? ret_result[0] : "-1";
+                if (ret_code == "0") Mess2 = string.Format("削除しました [{0}]", ret_result[1]);
+                else Mess2 = string.Format("エラーが起こりました [{0}]", ret_code);
+            }
         }
 
         [RelayCommand]
         void DoExecute()
-        { 
-            
+        {
+            if (WeekList?.Count == 0) return;
+
+            string wrk_para1 = "年,週NO,開始日,終了日,メモ";
+            foreach (var item in WeekList)
+            {
+                wrk_para1 += "\n";
+                wrk_para1 += string.Format("{0},{1},{2},{3},{4}", 
+                                            item.Year, 
+                                            item.WeekNo,
+                                            item.StartDate.ToString("yyyyMMdd"),
+                                            item.EndDate.ToString("yyyyMMdd"),
+                                            item.Memo);
+            }
+            var wrk_para = new BizArray();
+            wrk_para[0] = "MASTER_WEEK";
+            wrk_para[1] = wrk_para1;
+            wrk_para[2] = "2";
+            var ret_csv = AppData.Http?.AspxSqlQuery2("mi_csv", wrk_para.ToArray(), "", -1);
+
+            if (!string.IsNullOrEmpty(ret_csv) && ret_csv.Contains("\n"))
+            {
+                var ret_result = ret_csv?.Split("\n");
+                var ret_code = (ret_result?.Length > 1) ? ret_result[0] : "-1";
+                if (ret_code == "0") Mess2 = string.Format("更新しました [{0}]", ret_result[1]);
+                else Mess2 = string.Format("エラーが起こりました [{0}]", ret_code);
+            }
         }
 
         [RelayCommand]
