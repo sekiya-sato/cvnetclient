@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="得意先マスタ" Style="{StaticResource ExtraMasterWindowStyle}">
@@ -214,7 +215,7 @@
                                     </Grid>
                                                                       
                                     <Label Grid.Row="6" Content="MAIL" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.custEmail}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.CustEmail}"/>
 
                                     <Grid Grid.Row="7" Grid.ColumnSpan="2">
                                         <Grid.ColumnDefinitions>
@@ -245,8 +246,8 @@
                                                     <ColumnDefinition Width="2*"/>
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Button Content="部門" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Department}"/>
+                                                <Label Content="部門" VerticalAlignment="Center" Margin="0,8"/>
+                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.Department}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -302,7 +303,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="移動区分" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListIdo}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.transCate}"/>
+                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListIdo}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.TransCate}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -358,7 +359,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="自動補充" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListJido}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListJido}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.AutoAllocFLG}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -369,7 +370,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="ECFLG" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListEC}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListEC}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.EcFLG}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -386,7 +387,7 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="POS送信区分" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListPOS}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListPOS}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PosCate}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -397,7 +398,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="倉庫区分" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListSoko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListSoko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.WarehouseCate}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -416,7 +417,7 @@
                                                     <ColumnDefinition Width="7.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Grid.Column="0" Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.VdateCreate, Converter={StaticResource VdateConverter}}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -427,7 +428,7 @@
                                                     <ColumnDefinition Width="7.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Grid.Column="0" Content="修正日" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.VdateUpdate, Converter={StaticResource VdateConverter}}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -438,7 +439,7 @@
                                                     <ColumnDefinition Width="6.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Grid.Column="0" Content="最終修正者" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.EnterEmployeeCD}"/>
                                             </Grid>
                                         </StackPanel>
                                         
@@ -487,7 +488,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="掛率" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.CommissionRate}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -498,13 +499,13 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="セール掛率" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.SaleCommRate}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
 
                                     <Button Grid.Row="1" Content="請求先" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.InvoiceAddrCD}"/>
                             
                                     
 
@@ -520,7 +521,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="請求印刷" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding Com}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding Com}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.InvoicePrint}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -531,7 +532,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="入金方法" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" ItemsSource="{Binding Comb}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" ItemsSource="{Binding Comb}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PayMethod}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -548,7 +549,7 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="締日1" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ClosingDate}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -560,7 +561,7 @@
                                                     <ColumnDefinition Width="3*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="入金予定日1" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ExpectedPayDate}"/>
                                                 <ComboBox  Grid.Column="2" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
                                             </Grid>
                                         </StackPanel>
@@ -578,7 +579,7 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="締日2" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.CloseDate2}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -590,7 +591,7 @@
                                                     <ColumnDefinition Width="3*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="入金予定日2" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.XpPayDate2}"/>
                                                 <ComboBox  Grid.Column="2" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
                                             </Grid>
                                         </StackPanel>
@@ -608,7 +609,7 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="締日3" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.CloseDate3}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -620,7 +621,7 @@
                                                     <ColumnDefinition Width="3*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="入金予定日3" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.XpPayDate3}"/>
                                                 <ComboBox  Grid.Column="2" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
                                             </Grid>
                                         </StackPanel>
@@ -639,7 +640,7 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="下代計算" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding comboListGeKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding comboListGeKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceCalcFLG}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -650,7 +651,7 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="下代桁切" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListGeKiri}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListGeKiri}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceCutoffSpec}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -661,7 +662,7 @@
                                                     <ColumnDefinition Width="7*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="下代端数" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListGeHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListGeHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceFracCate}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -679,7 +680,7 @@
                                                     <ColumnDefinition Width="6.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="消費税計算" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxCalc}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -690,7 +691,7 @@
                                                     <ColumnDefinition Width="6.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="消費税CD" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxCD}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -701,7 +702,7 @@
                                                     <ColumnDefinition Width="6.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="消費税端数" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxFrac}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -719,7 +720,7 @@
                                                     <ColumnDefinition Width="6.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="入金率" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.PaymentRate}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -730,7 +731,7 @@
                                                     <ColumnDefinition Width="6.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="与信限度額" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.Postal}"/>
+                                                <TextBox  Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.CreditLimit}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -741,7 +742,7 @@
                                                     <ColumnDefinition Width="6.5*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="登録番号" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.Postal}"/>
+                                                <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.RegistNum}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -792,7 +793,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類01" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui01}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui01}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD01}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -803,7 +804,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類02" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui02}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui02}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD02}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -820,7 +821,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類03" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui03}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui03}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD03}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -831,7 +832,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類04" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui04}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui04}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD04}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -848,7 +849,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類05" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui05}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui05}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD05}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -859,7 +860,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類06" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui06}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui06}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD06}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -876,7 +877,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類07" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui07}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui07}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD07}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -887,7 +888,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類08" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui08}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui08}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD08}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -904,7 +905,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類09" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui09}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui09}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD09}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -915,7 +916,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類10" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui10}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui10}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD10}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -932,7 +933,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類11" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui11}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui11}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD11}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -943,7 +944,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類12" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui12}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui12}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD12}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -960,7 +961,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類13" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui13}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui13}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD13}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -971,7 +972,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類14" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui14}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui14}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD14}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -988,7 +989,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類15" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui15}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui15}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD15}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -999,7 +1000,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類16" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui16}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui16}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD16}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -1016,7 +1017,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類17" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui17}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui17}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD17}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -1027,7 +1028,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類18" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui18}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui18}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD18}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -1044,7 +1045,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類19" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui19}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui19}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD19}"/>
                                             </Grid>
                                         </StackPanel>
 
@@ -1055,7 +1056,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Label  Content="分類20" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui20}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui20}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD20}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -1141,7 +1142,7 @@
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Button  Content="UUID取得" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.TerminalID}"/>
                                             </Grid>
                                         </StackPanel>
 

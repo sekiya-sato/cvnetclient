@@ -13,9 +13,6 @@
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
     </Window.Resources>
-    <Window.DataContext>
-        <vm:SubDlg01MeiViewModel/>
-    </Window.DataContext>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
             <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
