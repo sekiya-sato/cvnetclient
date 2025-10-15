@@ -11,7 +11,7 @@
 			HorizontalAlignment="Stretch" 
             Style="{StaticResource ComboLabelBtn}"/>-->
 
-    <Button x:Name="MyButton"
+	<Button x:Name="MyButton"
             Content="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" 
             Click="BtList_Click" 
             VerticalAlignment="Stretch"
@@ -19,5 +19,3 @@
             Style="{StaticResource ComboLabelBtn}"/>
 
 </UserControl>
-    
-    

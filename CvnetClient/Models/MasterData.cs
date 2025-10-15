@@ -751,8 +751,27 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? memo; //メモ
         [ObservableProperty]
-        string? inpStaffCD; //入力社員CD
+        string? inpStaffCD; //入力社員CD 
+    }
 
+	public partial class MasterWeek : ObservableObject
+	{
+        [ObservableProperty] 
+        long seqNo;
+        [ObservableProperty]
+        decimal vdateCreate;
+        [ObservableProperty]
+        decimal vdateUpdate;
+		[ObservableProperty]
+		int year; //年
+		[ObservableProperty]
+		int weekNo; //週NO
+		[ObservableProperty]
+		DateTime startDate; //開始日
+		[ObservableProperty]
+		DateTime endDate; //終了日
+		[ObservableProperty]
+		string? memo; //メモ
     }
 
 }
