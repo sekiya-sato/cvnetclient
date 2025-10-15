@@ -434,45 +434,45 @@ namespace CvnetClient.Models
         [ObservableProperty]
 		string? salesRepCD; //営業担当CD
         [ObservableProperty]
-		string? storeCate;  //店種区分
+		int? storeCate;  //店種区分
         [ObservableProperty]
-		string? area;   //坪数
+		long? area;   //坪数
         [ObservableProperty]
-		string? commissionRate; //掛率
+		double? commissionRate; //掛率
         [ObservableProperty]
-		string? saleCommRate;   //セール掛率
+		double? saleCommRate;   //セール掛率
 		[ObservableProperty]
-		string? inStoreSaleRate;	//店頭セール掛率
+		double? inStoreSaleRate;	//店頭セール掛率
         [ObservableProperty]
 		string? invoiceAddrCD;  //請求先CD
         [ObservableProperty]
-		string? invoicePrint;   //請求印刷
+		int? invoicePrint;   //請求印刷
         [ObservableProperty]
-		string? closingDate;    //締日
+		int? closingDate;    //締日
         [ObservableProperty]
-		string? expectedPayMonth;   //入金予定月
+		int? expectedPayMonth;   //入金予定月
         [ObservableProperty]
-		string? expectedPayDate;    //入金予定日
+		int? expectedPayDate;    //入金予定日
         [ObservableProperty]
 		string? payMethod;  //入金方法
         [ObservableProperty]
-		string? lowerPriceCutoffSpec;   //下代桁切指定
+		int? lowerPriceCutoffSpec;   //下代桁切指定
         [ObservableProperty]
-		string? lowerPriceFracCate; //下代端数区分
+		int? lowerPriceFracCate; //下代端数区分
         [ObservableProperty]
-		string? lowerPriceCalcFLG;  //下代計算FLG
+		int? lowerPriceCalcFLG;  //下代計算FLG
         [ObservableProperty]
-		string? consumpTaxCD;   //消費税CD
+		int? consumpTaxCD;   //消費税CD
         [ObservableProperty]
-		string? consumpTaxCalc; //消費税計算方法
+		int? consumpTaxCalc; //消費税計算方法
         [ObservableProperty]
-		string? consumpTaxFrac; //消費税端数
+		int? consumpTaxFrac; //消費税端数
         [ObservableProperty]
-		string? creditLimit;    //与信限度額
+		int? creditLimit;    //与信限度額
         [ObservableProperty]
-		string? paymentRate;    //入金率
+		int? paymentRate;    //入金率
         [ObservableProperty]
-		string? shipmentStopFlg;    //出荷停止FLG
+		int? shipmentStopFlg;    //出荷停止FLG
         [ObservableProperty]
 		string? addressFLG1;    //宛名FLG1
         [ObservableProperty]
@@ -484,7 +484,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
 		string? addressName2;   //宛名名称2
         [ObservableProperty]
-		string? invoiceIssueCate;   //伝票発行区分
+		int? invoiceIssueCate;   //伝票発行区分
         [ObservableProperty]
 		string? invoicePrint1;  //伝票印字1
         [ObservableProperty]
@@ -498,9 +498,9 @@ namespace CvnetClient.Models
         [ObservableProperty]
 		string? notes;  //備考
         [ObservableProperty]
-		string? invManageFLG;   //在庫管理FLG
+		int? invManageFLG;   //在庫管理FLG
         [ObservableProperty]
-		string? autoAllocFLG;   //自動配分FLG
+		int? autoAllocFLG;   //自動配分FLG
         [ObservableProperty]
 		string? startDate;  //開始日
         [ObservableProperty]
@@ -534,7 +534,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
 		string? terminalID; //端末ID
         [ObservableProperty]
-		string? warehouseCate;  //倉庫区分
+		int? warehouseCate;  //倉庫区分
         [ObservableProperty]
 		string? businHours1;    //営業時間1
         [ObservableProperty]
@@ -546,29 +546,29 @@ namespace CvnetClient.Models
         [ObservableProperty]
 		string? developer;  //デベロッパ
         [ObservableProperty]
-		string? businessHours;  //営業時間
+		double? businessHours;  //営業時間
         [ObservableProperty]
 		string? invDateEND; //棚卸日END
         [ObservableProperty]
 		string? exchangeCate;   //為替区分
         [ObservableProperty]
-		string? exDeciCutoff;   //為替桁切指定
+		int? exDeciCutoff;   //為替桁切指定
         [ObservableProperty]
-		string? exFracCate; //為替端数区分
+		int? exFracCate; //為替端数区分
         [ObservableProperty]
 		string? allocRank01;    //配分ランク01
         [ObservableProperty]
 		string? allocRank02;    //配分ランク02
         [ObservableProperty]
-		string? shippingFLG;    //出荷FLG
+		int? shippingFLG;    //出荷FLG
         [ObservableProperty]
-		string? baseWarehouseFLG;   //基準倉庫FLG
+		int? baseWarehouseFLG;   //基準倉庫FLG
         [ObservableProperty]
 		string? baseWarehouseCD;    //基準倉庫CD
         [ObservableProperty]
-		string? allocMethodFLG; //配分方法FLG
+		int? allocMethodFLG; //配分方法FLG
         [ObservableProperty]
-		string? posCate;    //POS区分
+		int? posCate;    //POS区分
         [ObservableProperty]
 		string? slipPrint5; //伝票印字5
         [ObservableProperty]
@@ -582,31 +582,31 @@ namespace CvnetClient.Models
         [ObservableProperty]
 		string? storeSalesFloorCode;    //店舗売場コード
         [ObservableProperty]
-		string? ecFLG;
+		int? ecFLG;
         [ObservableProperty]
-		string? baseSales01;    //基準売上01
+		long? baseSales01;    //基準売上01
         [ObservableProperty]
-		string? baseSales02;    //基準売上02
+		long? baseSales02;    //基準売上02
         [ObservableProperty]
-		string? baseSales03;    //基準売上03
+		long? baseSales03;    //基準売上03
         [ObservableProperty]
-		string? commissionRate01;   //歩率01
+		double? commissionRate01;   //歩率01
         [ObservableProperty]
-		string? commissionRate02;   //歩率02
+		double? commissionRate02;   //歩率02
         [ObservableProperty]
-		string? commissionRate03;   //歩率03
+		double? commissionRate03;   //歩率03
         [ObservableProperty]
-		string? otherRatio01;   //他比率01
+		double? otherRatio01;   //他比率01
         [ObservableProperty]
-		string? otherRatio02;   //他比率02
+		double? otherRatio02;   //他比率02
         [ObservableProperty]
-		string? otherRatio03;   //他比率03
+		double? otherRatio03;   //他比率03
         [ObservableProperty]
-		string? otherExpenses01;    //他費用01
+		double? otherExpenses01;    //他費用01
         [ObservableProperty]
-		string? otherExpenses02;    //他費用02
+		double? otherExpenses02;    //他費用02
         [ObservableProperty]
-        string? otherExpenses03;    //他費用03
+        double? otherExpenses03;    //他費用03
         [ObservableProperty]
         string? nameCD11;   //名称CD11
         [ObservableProperty]
@@ -630,7 +630,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         int? rentCalcFLG;        //賃料計算FLG
         [ObservableProperty]
-        int? minRent;       //最低保障家賃
+        long? minRent;       //最低保障家賃
         [ObservableProperty]
         int? closeDate2;    //締日2
 		[ObservableProperty]

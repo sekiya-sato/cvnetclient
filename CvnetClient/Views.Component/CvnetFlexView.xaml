@@ -7,11 +7,11 @@
               mc:Ignorable="d"
 			  Height="450" Width="800">
     <Grid>
-		<DataGrid x:Name="dbCvnetFlex"
+        <DataGrid x:Name="dbCvnetFlex"
                   AutoGenerateColumns="True"
-                  CanUserAddRows="True"
-                  KeyDown="DataGridTable_KeyDown"
-                  MouseRightButtonUp="DataGridTable_MouseRightButtonUp">
+                  CanUserAddRows="True">
+            <!--    KeyDown="DataGridTable_KeyDown"
+                  MouseRightButtonUp="DataGridTable_MouseRightButtonUp"> -->
 			<DataGrid.Resources>
 				<!-- Button Column Style -->
 				<Style TargetType="Button">
@@ -23,9 +23,9 @@
 				<DataGridTemplateColumn Header="Action" IsReadOnly="True">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Content="Delete" 
-                                    Click="DeleteButton_Click"
-                                    HorizontalAlignment="Center" />
+                            <Button Content="Delete" HorizontalAlignment="Center" />
+                            <!--Click="DeleteButton_Click"
+                                    HorizontalAlignment="Center" />-->
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>

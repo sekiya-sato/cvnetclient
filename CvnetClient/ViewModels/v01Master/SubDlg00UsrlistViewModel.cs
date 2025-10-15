@@ -1,11 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Views;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Windows.Controls;
 
 namespace CvnetClient.ViewModels
 {
@@ -24,79 +20,45 @@ namespace CvnetClient.ViewModels
         private string fileName = string.Empty;
 
         [RelayCommand]
-        private void SelWorker(string? target)
+        public void SelWorker1(object value)
         {
-            //var get_sel00 = AppData.DlgService.GetSel00("担当");
-            //if (get_sel00 == null) return;
-
-            //var cd = get_sel00.SelectSel00?.Code;
-            //var name = get_sel00.SelectSel00?.Name;
-            AppData.DlgService.ShowSel00("担当", selected =>
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && WorkerFrom != null)
             {
-                var cd = selected.Code;
-                var name = selected.Name;
-
-                switch (target)
-                {
-                    case "From":
-                        if (WorkerFrom != null)
-                        {
-                            WorkerFrom.WorkerCD = cd;
-                            WorkerFrom.Name = name;
-                        }
-                        break;
-
-                    case "To":
-                        if (WorkerTo != null)
-                        {
-                            WorkerTo.WorkerCD = cd;
-                            WorkerTo.Name = name;
-                        }
-                        break;
-                }
-
-                OnPropertyChanged(nameof(WorkerFrom));
-                OnPropertyChanged(nameof(WorkerTo));
-            });
+                WorkerFrom.WorkerCD = get_sel00.Code;
+                WorkerFrom.Name = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelWorker2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && WorkerFrom != null)
+            {
+                WorkerTo.WorkerCD = get_sel00.Code;
+                WorkerTo.Name = get_sel00.Name;
+            }
         }
 
         [RelayCommand]
-        private void SelShop(string? target)
+        public void SelShop1(object value)
         {
-            //var get_sel00 = AppData.DlgService.GetSel00("店舗出荷倉庫");
-            //if (get_sel00 == null) return;
-
-            //var cd = get_sel00.SelectSel00?.Code;
-            //var name = get_sel00.SelectSel00?.Name;
-
-            AppData.DlgService.ShowSel00("店舗出荷倉庫",selected => { 
-                
-                var cd = selected.Code;
-                var name = selected.Name;
-
-                switch (target)
-                {
-                    case "From":
-                        if (ShopFrom != null)
-                        {
-                            ShopFrom.TradingCD = cd;
-                            ShopFrom.TradingName = name;
-                        }
-                        break;
-
-                    case "To":
-                        if (ShopTo != null)
-                        {
-                            ShopTo.TradingCD = cd;
-                            ShopTo.TradingName = name;
-                        }
-                        break;
-                }
-
-                OnPropertyChanged(nameof(ShopFrom));
-                OnPropertyChanged(nameof(ShopTo));
-
-            });            
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && WorkerFrom != null)
+            {
+                ShopFrom.TradingCD = get_sel00.Code;
+                ShopFrom.TradingName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelShop2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && WorkerFrom != null)
+            {
+                ShopTo.TradingCD = get_sel00.Code;
+                ShopTo.TradingName = get_sel00.Name;
+            }
         }
 
         [RelayCommand]
