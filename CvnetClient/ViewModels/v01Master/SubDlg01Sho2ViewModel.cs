@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using System.Collections.ObjectModel;
@@ -802,7 +803,7 @@ namespace CvnetClient.ViewModels
                                              CultureInfo.InvariantCulture, DateTimeStyles.None,
                                              out var _repeatDate) ? _repeatDate : new DateTime(1901, 1, 1),
                                 MakerNo = dr["メーカー品番"].ToString() ?? string.Empty,
-                                PurchasePrice = long.Parse(dr["仕入価格"].ToString()),
+                                PurchasePrice = long.TryParse(dr["仕入価格"].ToString(), out var _purh_price) ? _purh_price : 0,
                                 DeliveryCate = Convert.ToInt32(dr["納品区分"]),
                                 ImgName2 = dr["絵型名2"].ToString() ?? string.Empty,
                                 SaleStDate = DateTime.TryParseExact(dr["販売開始日"].ToString(), "yyyyMMdd", 
@@ -860,8 +861,16 @@ namespace CvnetClient.ViewModels
                 if (ListProduct.Count > 0)
                 {
                     SelectedProduct = ListProduct[0];
-                }
+                } 
             }catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
+
+        partial void OnSelectedProductChanged(MasterShohin? value)
+        {
+            if (value != null)
+                EditProduct = Common.CloneObject(value);
+            else
+                EditProduct = null;
         }
         #endregion
     }

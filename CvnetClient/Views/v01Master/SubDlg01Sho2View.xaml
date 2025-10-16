@@ -108,15 +108,21 @@
 			</Grid>
 
 
-            <DataGrid Grid.Row="1" Grid.Column="0"
+			<DataGrid Grid.Row="1" Grid.Column="0"
                       Margin="10"
-					  d:ItemsSource="{d:SampleData ItemCount=5}"
-					  FrozenColumnCount="1"
+					  AutoGenerateColumns="False"
+					  HeadersVisibility="Column"
 					  IsReadOnly="True"
 					  IsSynchronizedWithCurrentItem="True"
+					  d:ItemsSource="{d:SampleData ItemCount=5}"
+					  ItemsSource="{Binding ListProduct}"
+					  SelectedItem="{Binding SelectedProduct}"  
                       Style="{StaticResource WinGridData}">
-
-            </DataGrid>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCD}" Width="*" />
+					<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="*" />
+				</DataGrid.Columns>
+			</DataGrid>
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1" 
@@ -131,8 +137,8 @@
                 <TabItem Header="基本情報 (Shift+F1)">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="217*"/>
-                            <ColumnDefinition Width="782*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="7*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Vertical" Grid.ColumnSpan="2">
                             <StackPanel Orientation="Horizontal" 
