@@ -13,11 +13,9 @@
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
     </Window.Resources>
-    <behaviors:Interaction.Triggers>
-        <behaviors:EventTrigger EventName="ContentRendered">
-            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-        </behaviors:EventTrigger>
-    </behaviors:Interaction.Triggers>
+    <Window.DataContext>
+        <vm:SubDlg01MeiViewModel/>
+    </Window.DataContext>
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding DoListCommand}" />
         <KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />

@@ -3867,7 +3867,7 @@ namespace CvnetBaseCore
         /// <param name="flg">（呼び元判別FLG） 0=得意先マスタ、1=各種マスタ印刷、2=各伝票入力画面</param>
         /// <param name="wrk_para2">各種マスタ印刷専用パラメータ</param>
         /// <returns></returns>
-        public DataTable OnQueryPrintTokui(string[] wrk_para, int flg, string[] wrk_para2 = null)
+        public string OnQueryPrintTokui(string[] wrk_para, int flg, string[] wrk_para2 = null)
         { 
             int max_col = 103;
             string joken_sql1 = " WHERE A.得意先CD in (" + wrk_para[0] + ") and A.店種区分>=0";
@@ -4019,7 +4019,7 @@ namespace CvnetBaseCore
             /* 卸対応　10.04.27 */
             if (AppData.ClassCvnet.config.oroshi != 0) qfm_name = "cvnet_tokuisaki_w.qfm";
              
-            return AppData.Http?.AspxSqlQuery(sql_query, wrk_para2, qfm_name);
+            return AppData.Http?.AspxSqlQueryCsv(sql_query, wrk_para2, qfm_name);
         }
 
         /// <summary>
