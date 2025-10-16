@@ -60,6 +60,7 @@
 
                         <Label Content="生地付属CD" Width="80" VerticalAlignment="Center"/>
                         <TextBox x:Name="fabricInclCd" Text="{Binding FindFabricCd}" Grid.Column="1" Width="240" />
+                        
                     </Grid>
 
 
@@ -67,11 +68,26 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Content="仕入先CD"
 VerticalAlignment="Center"/>
-                        <TextBox x:Name="supplierCDSearch" Text="{Binding FindSupplierCd}" Grid.Column="1" Width="240"/>
+                        <!--<TextBox x:Name="supplierCDSearch" Text="{Binding FindSupplierCd}" Grid.Column="1" Width="240"/>-->
+                        <ComboBox 
+                            x:Name="supplierCDSearch"
+                            Grid.Column="1"
+                            Width="240"
+                            Margin="2,0"
+                            VerticalAlignment="Top"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding SelectKubun}"
+                            SelectedValue="{Binding FindSupplierCd}"
+                            DisplayMemberPath="Value" 
+                            SelectedValuePath="Key"
+                            Style="{StaticResource SearchableComboBox1}">
+                        </ComboBox>
+                        <Button Grid.Column="2" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
                     </Grid>
                     <!--<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
                         <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
