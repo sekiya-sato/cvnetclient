@@ -54,8 +54,7 @@ namespace CvnetClient.ViewModels
 
         string sql_list = "SELECT * FROM (SELECT *  FROM HC$MASTER_SHAIN WHERE 社員CD {0}:1 ORDER BY 社員CD {1}) WHERE ROWNUM <= {2}";
 
-        [RelayCommand]
-        void Init() {
+        public void OnInit() {
             EditWorker = new MasterWorker();
 
             var comboList = new Dictionary<string, string>();
@@ -373,7 +372,7 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "削除しますか？")) return;
             if (EditWorker == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_MEISHO", EditWorker.SeqNo, EditWorker.VdateUpdate.ToString(),
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_SHAIN", EditWorker.SeqNo, EditWorker.VdateUpdate.ToString(),
                 new string[0], new string[0]);
             if (ret.Code == 0)
             {

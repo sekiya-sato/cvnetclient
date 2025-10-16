@@ -55,11 +55,17 @@ namespace CvnetClient.ViewModels
                     var window = (Window)Activator.CreateInstance(type)!;
                     window.Title = cfg.Text;
 
-                    if (window.DataContext is BaseViewModel vm && cfg.Parameter != null)
+                    if (window.DataContext is BaseViewModel vm )
                     {
-                        // kalau ViewModel ada method InitializeParameter, panggil
-                        var method = vm.GetType().GetMethod("Init");
-                        method?.Invoke(vm, new object[] { cfg.Parameter });
+                        var method = vm.GetType().GetMethod("OnInit");
+                        if (cfg.Parameter != null)
+                        {
+                            method?.Invoke(vm, new object[] { cfg.Parameter });
+                        }
+                        else {
+                            method?.Invoke(vm, null);
+                        }
+                        
                     }
 
                     window.Show();
