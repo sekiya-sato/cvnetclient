@@ -711,7 +711,7 @@ namespace CvnetBaseCore {
 		/// <param name="p_form">PrintStreamフォーム名(ex. nouhin.qfm)</param>
 		/// <param name="AspxUserFlg">UserFlg(-1が通常、0以上が番号つき)</param>
 		/// <returns></returns>
-		public string AspxSqlQuery2(string sqlstr_cmd, string[] p_param, string p_form, int AspxUserFlg, string yobi0 = "") {
+		public string AspxSqlQuery2(string sqlstr_cmd, string[] p_param, string p_form = "", int AspxUserFlg = -1, string yobi0 = "") {
 			Hashtable vals = new Hashtable();
 			vals["rd"] = v_randid;
 			vals["qs"] = sqlstr_cmd;

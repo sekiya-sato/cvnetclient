@@ -58,14 +58,18 @@ namespace CvnetClient.ViewModels
                     if (window.DataContext is BaseViewModel vm )
                     {
                         var method = vm.GetType().GetMethod("OnInit");
-                        if (cfg.Parameter != null)
+                        if (method != null)
                         {
-                            method?.Invoke(vm, new object[] { cfg.Parameter });
+                            var parameters = method.GetParameters();
+                            if (parameters.Length == 0)
+                            {
+                                method.Invoke(vm, null);
+                            }
+                            else
+                            {
+                                method.Invoke(vm, new object?[] { cfg.Parameter });
+                            }
                         }
-                        else {
-                            method?.Invoke(vm, null);
-                        }
-                        
                     }
 
                     window.Show();
