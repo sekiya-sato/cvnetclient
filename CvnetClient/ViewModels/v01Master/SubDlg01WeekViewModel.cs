@@ -26,7 +26,7 @@ namespace CvnetClient.ViewModels
         private int Chg_flg = 0;
 
         [RelayCommand]
-        void Init()
+        void Init(object? init_para)
         {
             OnInit(null);
         }
