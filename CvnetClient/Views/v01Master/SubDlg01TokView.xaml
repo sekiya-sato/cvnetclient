@@ -16,11 +16,6 @@
     <Window.DataContext>
         <vm:SubDlg01TokViewModel/>
     </Window.DataContext>
-    <behaviors:Interaction.Triggers>
-        <behaviors:EventTrigger EventName="ContentRendered">
-            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-        </behaviors:EventTrigger>
-    </behaviors:Interaction.Triggers>
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding DoListCommand}" />
         <KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
@@ -30,9 +25,9 @@
     </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="12"/>
-            <ColumnDefinition />
+            <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
 
         <Grid Margin="15">

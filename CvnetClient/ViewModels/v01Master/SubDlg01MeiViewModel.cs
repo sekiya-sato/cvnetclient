@@ -153,7 +153,7 @@ namespace CvnetClient.ViewModels
         /// <summary>
         /// 初期化
         /// </summary>
-        public void Init(object? param)
+        public void OnInit(object? param)
         {
             if (param is string mode) { 
                 _mode = mode;
