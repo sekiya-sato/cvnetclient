@@ -453,7 +453,16 @@ namespace CvnetBaseCore {
 				using (Stream resStream = res.GetResponseStream()) {
 					if (res.ContentLength > 5 || res.ContentLength < 0) {
 						using (StreamReader sr = new StreamReader(resStream, Encoding.UTF8)) {
-							retTable.ReadXml(sr);
+
+                            // Replace <...>.</...> or <... /> with empty string safely
+                            string xml = sr.ReadToEnd();
+                            xml = xml.Replace(">.<", "><");
+                            using (var stringReader = new StringReader(xml))
+                            {
+                                retTable.ReadXml(stringReader);
+                            }
+
+                            //retTable.ReadXml(sr);
 						}
 					}
 				}
