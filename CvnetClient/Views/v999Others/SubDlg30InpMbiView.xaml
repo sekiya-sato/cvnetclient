@@ -19,8 +19,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="6*"/>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="6.5*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -32,85 +32,85 @@
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="8">
-                    <Label Content="年月"></Label>
-                    <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Margin="0" Text="{Binding SearchCond.Date, StringFormat={}{0:yyyy/MM}}" />
-                </StackPanel>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8">
-                    <uc:CvnetBtListView Width="85"
+                <Label Grid.Column="0" Content="年月"></Label>
+                    <TextBox  Grid.Column="1"  Margin="0" Text="{Binding SearchCond.Date, StringFormat={}{0:yyyy/MM}}" />
+
+
+
+                <uc:CvnetBtListView Width="85" Grid.Column="2"
 							Margin="5,0,0,0"
 							Title="ブランド" 
 							MstName="ブランド"
-                StyleDesign="1"
+                            StyleDesign="1"
 							SelectedValue ="{Binding SearchCond.Brd}"
 							Command="{Binding SelBrandCommand}" />
-                    <TextBox Width="300"
+                <TextBox Grid.Column="3"
 				 Margin="5,0,0,0"
-				 HorizontalAlignment="Left"
-				 VerticalAlignment="Top"
 				 d:Text="ブランド：Data"  
 				 TextWrapping="Wrap" >
                         <TextBox.Text>
                             <MultiBinding StringFormat='{}{0} {1}'>
                                 <Binding Path="SearchCond.Brd" />
-                               
+                                <Binding Path="SearchCond.BrdName" />
                             </MultiBinding>
                         </TextBox.Text>
                     </TextBox>
-                </StackPanel>
+               
             </Grid>
 
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.5*"/>
-                    <ColumnDefinition Width="4*"/>
-                    <ColumnDefinition Width="0.5*"/>
-                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4.3*"/>
+                    <ColumnDefinition Width="0.4*"/>
+                    <ColumnDefinition Width="4.3*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="アイテム" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                <Label Grid.Column="0" Content="アイテム" Margin="0,0,20,0" />
                 <StackPanel  Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                    <TextBox Width="150"
-    d:Text="アイテム：Data"  
-    TextWrapping="Wrap">
+                    <TextBox Width="350"
+                            d:Text="アイテム：Data"  
+                            TextWrapping="Wrap">
                         <TextBox.Text>
                             <MultiBinding StringFormat='{}{0} {1}'>
                                 <Binding Path="SearchCond.ItemFrom" />
-
+                                <Binding Path="SearchCond.ItemFromName" />
                             </MultiBinding>
                         </TextBox.Text>
                     </TextBox>
                     <uc:CvnetBtListView MstName="アイテム" StyleDesign="2" 
-SelectedValue ="{Binding SearchCond.ItemFrom}"
-Command="{Binding SelShop1Command}"/>
+                    SelectedValue ="{Binding SearchCond.ItemFrom}"
+                    Command="{Binding SelItem1Command}"/>
                 </StackPanel>
 
-                <TextBlock  Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock  Grid.Column="2" Text="~" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <StackPanel Grid.Column="3" Orientation="Horizontal">
-                    <TextBox Width="150"
-    d:Text="店舗：Data"  
-    TextWrapping="Wrap">
+                    <TextBox Width="350"
+                            d:Text="アイテム：Data"  
+                            TextWrapping="Wrap">
                         <TextBox.Text>
                             <MultiBinding StringFormat='{}{0} {1}'>
                                 <Binding Path="SearchCond.ItemTo" />
-
+                                <Binding Path="SearchCond.ItemToName" />
                             </MultiBinding>
                         </TextBox.Text>
                     </TextBox>
                     <uc:CvnetBtListView MstName="アイテム" StyleDesign="2" 
-SelectedValue ="{Binding SearchCond.ItemTo}"
-Command="{Binding SelShop2Command}"/>
+                    SelectedValue ="{Binding SearchCond.ItemTo}"
+                    Command="{Binding SelItem2Command}"/>
                 </StackPanel>
             </Grid>
 
             <Grid Grid.Row="2">
-                <Button Style="{DynamicResource ExecButton}" Content="検索(F5)" Command="{Binding DoSearchCommand}"></Button>
+                <Button Style="{DynamicResource ExecButton}" HorizontalAlignment="Right" Content="検索(F5)" Command="{Binding DoSearchCommand}" Margin="10"></Button>
             </Grid>
             
         </Grid>
@@ -121,14 +121,15 @@ Command="{Binding SelShop2Command}"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <DataGrid  Grid.Row="0" Margin="8,10,8,10" d:ItemsSource="{d:SampleData ItemCount=5}"
-            AutoGenerateColumns="False"
-            Style="{DynamicResource WinGridData}"
-            IsReadOnly="True"
-            ItemsSource="{Binding BudgetList}">
+                        AutoGenerateColumns="False"
+                        Style="{DynamicResource WinGridData}"
+                        IsReadOnly="False"
+                        CanUserAddRows="False"
+                        ItemsSource="{Binding BudgetList}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="80" Binding="{Binding ItemCD}" Header="アイテムCD" IsReadOnly="True" />
                     <DataGridTextColumn Width="*" Binding="{Binding ItemName}" Header="アイテム名" IsReadOnly="True" />
-                    <DataGridTextColumn Width="*" Binding="{Binding BudgetPrice}" Header="予算"/>
+                    <DataGridTextColumn Width="*" Binding="{Binding BudgetPrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="予算"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Grid Grid.Row="1">
@@ -138,7 +139,7 @@ Command="{Binding SelShop2Command}"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0,10,0">
                     <Label Content="合計" HorizontalAlignment="Right"></Label>
-                    <TextBox Text="{Binding Sum}" Width="100"></TextBox>
+                    <TextBox Text="{Binding Sum}" Width="100" IsReadOnly="True"></TextBox>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -148,7 +149,7 @@ Command="{Binding SelShop2Command}"/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Border BorderBrush="Black" BorderThickness="1" Grid.Column="1">
+            <Border BorderBrush="Black" BorderThickness="1" Grid.Column="0" Margin="10">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>

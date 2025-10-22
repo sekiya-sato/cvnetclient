@@ -26,7 +26,7 @@ namespace CvnetClient.ViewModels
 
         public void OnInit() {
             SearchCond = new Search();
-            SearchCond.ItemFrom = "zzzzzzzzzzzzzz";
+            SearchCond.ItemTo = "zzzzzzzzzzzzzz";
             //SearchCond.Date = DateOnly.TryParse(DateTime.Now.ToString(), out null);
         }
 
@@ -42,16 +42,15 @@ namespace CvnetClient.ViewModels
             wrk_para[3] = SearchCond.ItemFrom;
             wrk_para[4] = SearchCond.ItemTo;
 
-            if (wrk_para[3] == "")
+            if (wrk_para[3] == null)
             {
                 wrk_para[3] = ".";
             }
 
-            if (wrk_para[4] == "")
+            if (wrk_para[4] == null)
             {
-                wrk_para[3] = "zzzzzzzzzzzzzz";
+                wrk_para[4] = "zzzzzzzzzzzzzz";
             }
-
 
             strSql = "SELECT A.名称CD,A.名称,nvl(B.予算数量,0) AS su ,nvl(B.予算金額,0) AS kin ";
             strSql += "FROM HC$MASTER_MEISHO A LEFT OUTER JOIN HC$MASTER_YO_ITEM B ";
@@ -69,7 +68,6 @@ namespace CvnetClient.ViewModels
             strSql += " AND ランク != '.'";
             strSql += " AND 名称CD between '" + wrk_para[3] + "' and '" + wrk_para[4] + "'";
 
-
             string strSql2 = "";
             strSql2 = " select A.名称CD, A.名称, sum(A.su) su, sum(A.kin) kin ";
             strSql2 += " from (" + strSql + ") a";
@@ -84,17 +82,70 @@ namespace CvnetClient.ViewModels
                         select new Budget
                         {
                             ItemCD = dr["名称CD"].ToString() ?? string.Empty,
-                            ItemName = dr["名称"].ToString() ?? string.Empty
+                            ItemName = dr["名称"].ToString() ?? string.Empty,
+                            BudgetPrice = int.TryParse(dr["kin"].ToString(), out var _budgetPrice) ? _budgetPrice : 0,
+                            Quantity = int.TryParse(dr["su"].ToString(), out var _quantity) ? _quantity : 0
                         }).ToList();
             Common.ConvertDotStringDel(list);
             BudgetList = new ObservableCollection<Budget>(list);
+            foreach (var item in BudgetList)
 
+                item.PropertyChanged += (_, e) =>
+                {
+                    if (e.PropertyName == nameof(Budget.BudgetPrice))
+                        UpdateSum();
+                };
+
+            BudgetList.CollectionChanged += (_, __) => UpdateSum();
+
+            UpdateSum();
+        }
+
+        private void UpdateSum()
+        {
+            Sum = BudgetList?.Sum(x => x.BudgetPrice ?? 0) ?? 0;
         }
 
         [RelayCommand]
         void DoSum() 
-        { 
-        
+        {
+            var v_para = new string[3];
+            v_para[0] = "Master_YO_Item";
+            v_para[1] = "";
+            v_para[2] = "4";
+            var ret_csv = AppData.Http!.AspxSqlQuery2("mi_csv", v_para);
+        }
+
+        [RelayCommand]
+        public void SelItem1(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && SearchCond != null)
+            {
+                SearchCond.ItemFrom = get_sel00.Code;
+                SearchCond.ItemFromName = get_sel00.Name;
+            }
+        }
+
+        [RelayCommand]
+        public void SelItem2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && SearchCond != null)
+            {
+                SearchCond.ItemTo = get_sel00.Code;
+                SearchCond.ItemToName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelBrand(object value) 
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && SearchCond != null)
+            {
+                SearchCond.Brd = get_sel00.Code;
+                SearchCond.BrdName = get_sel00.Name;
+            }
         }
     }
 
@@ -106,6 +157,8 @@ namespace CvnetClient.ViewModels
         public string? itemName;
         [ObservableProperty]
         public int? budgetPrice;
+        [ObservableProperty]
+        public int? quantity;
     }
 
     public partial class Search : ObservableObject 
@@ -114,9 +167,15 @@ namespace CvnetClient.ViewModels
         public DateOnly? date;
         [ObservableProperty]
         public string? brd;
+        [ObservableProperty] 
+        public string? brdName;
         [ObservableProperty]
         public string? itemFrom;
         [ObservableProperty]
         public string? itemTo;
+        [ObservableProperty]
+        public string? itemFromName;
+        [ObservableProperty]
+        public string? itemToName;
     }
 }
