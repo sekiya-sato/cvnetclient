@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
-		xmlns:utils="clr-namespace:CvnetClient.Utils" 
+		xmlns:utils="clr-namespace:CvnetClient.Utils"
 		xmlns:uc="clr-namespace:CvnetClient.Views"
 		Title="商品マスタ"
         mc:Ignorable="d"

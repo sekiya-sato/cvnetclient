@@ -453,7 +453,16 @@ namespace CvnetBaseCore {
 				using (Stream resStream = res.GetResponseStream()) {
 					if (res.ContentLength > 5 || res.ContentLength < 0) {
 						using (StreamReader sr = new StreamReader(resStream, Encoding.UTF8)) {
-							retTable.ReadXml(sr);
+
+                            // Replace <...>.</...> or <... /> with empty string safely
+                            string xml = sr.ReadToEnd();
+                            xml = xml.Replace(">.<", "><");
+                            using (var stringReader = new StringReader(xml))
+                            {
+                                retTable.ReadXml(stringReader);
+                            }
+
+                            //retTable.ReadXml(sr);
 						}
 					}
 				}
@@ -702,7 +711,7 @@ namespace CvnetBaseCore {
 		/// <param name="p_form">PrintStreamフォーム名(ex. nouhin.qfm)</param>
 		/// <param name="AspxUserFlg">UserFlg(-1が通常、0以上が番号つき)</param>
 		/// <returns></returns>
-		public string AspxSqlQuery2(string sqlstr_cmd, string[] p_param, string p_form, int AspxUserFlg, string yobi0 = "") {
+		public string AspxSqlQuery2(string sqlstr_cmd, string[] p_param, string p_form = "", int AspxUserFlg = -1, string yobi0 = "") {
 			Hashtable vals = new Hashtable();
 			vals["rd"] = v_randid;
 			vals["qs"] = sqlstr_cmd;
