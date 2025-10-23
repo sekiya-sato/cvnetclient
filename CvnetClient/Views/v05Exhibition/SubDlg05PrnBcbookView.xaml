@@ -1,0 +1,259 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg05PrnBcbookView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="バーコードブック発行" Style="{StaticResource PrintWindowStyle}">
+    <Window.DataContext>
+        <vm:SubDlg05PrnBcbookViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!--<RowDefinition Height="Auto"/>-->
+            <!-- Title -->
+            <RowDefinition Height="*"/>
+            <!-- Content -->
+            <RowDefinition Height="Auto"/>
+            <!-- Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Content -->
+        <Border Grid.Row="0"
+        Background="White"
+        CornerRadius="12"
+        Padding="30"
+        BorderBrush="#dcdde1"
+        BorderThickness="1"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Label column -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- Input column -->
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="展示会" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"
+                                d:Text="展示会：Data"  
+                                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ExhibitionFrom" />
+                                    <Binding Path="Condition.ExhibitionFromName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="展示会" StyleDesign="2" 
+                                            SelectedValue ="{Binding Condition.ExhibitionFrom}"
+                                            Command="{Binding SelExhibition1Command}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150"
+                            d:Text="展示会：Data"  
+                            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ExhibitionTo" />
+                                    <Binding Path="Condition.ExhibitionToName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="展示会" StyleDesign="2" 
+                    SelectedValue ="{Binding Condition.ExhibitionTo}"
+                    Command="{Binding SelExhibition2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="ブランド" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"
+                                d:Text="店舗：Data"  
+                                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.BrdFrom" />
+                                    <Binding Path="Condition.BrdFromName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="ブランド" StyleDesign="2" 
+                            SelectedValue ="{Binding Condition.BrdFrom}"
+                            Command="{Binding SelBrd1Command}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150"
+                                d:Text="店舗：Data"  
+                                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.BrdTo" />
+                                    <Binding Path="Condition.BrdToName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="ブランド" StyleDesign="2" 
+                            SelectedValue ="{Binding Condition.BrdTo}"
+                            Command="{Binding SelBrd2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="商品CD" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"
+                d:Text="商品：Data"  
+                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ProductFrom" />
+                                    <Binding Path="Condition.ProductFromName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="商品" StyleDesign="2" 
+            SelectedValue ="{Binding Condition.ProductFrom}"
+            Command="{Binding SelProd1Command}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150"
+                d:Text="商品：Data"  
+                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ProductTo" />
+                                    <Binding Path="Condition.ProductToName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="商品" StyleDesign="2" 
+            SelectedValue ="{Binding Condition.ProductTo}"
+            Command="{Binding SelProd2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- バーコード -->
+                <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="出力区分:" 
+               VerticalAlignment="Center" 
+               Margin="0,0,20,0"/>
+
+                    <RadioButton Grid.Column="1" Content="正規商品" 
+GroupName="OutputType"
+        IsChecked="{Binding SelectedOutPut, 
+                            Converter={StaticResource StringToBoolConverter}, 
+                            ConverterParameter=正規商品, Mode=TwoWay}"
+Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="中止商品CD" 
+                 GroupName="OutputType"
+                         IsChecked="{Binding SelectedOutPut, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=中止商品CD, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="3" Content="全て" GroupName="OutputType"
+                         IsChecked="{Binding SelectedOutPut, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=全て, Mode=TwoWay}"/>
+                </Grid>
+                <!-- バーコード -->
+                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="バーコード:" 
+               VerticalAlignment="Center" 
+               Margin="0,0,20,0"/>
+
+                    <RadioButton Grid.Column="1" Content="JAN" 
+GroupName="BarcodeType2"
+        IsChecked="{Binding SelectedBarcode, 
+                            Converter={StaticResource StringToBoolConverter}, 
+                            ConverterParameter=JAN, Mode=TwoWay}"
+Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="CODE39" 
+                 GroupName="BarcodeType2"
+                         IsChecked="{Binding SelectedBarcode, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=CODE39, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="3" Content="NW7" GroupName="BarcodeType2"
+                         IsChecked="{Binding SelectedBarcode, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=NW7, Mode=TwoWay}"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,20,0,0">
+
+            <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+            <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+
+        </StackPanel>
+    </Grid>
+</Window>
