@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CvnetClient.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace CvnetClient.ViewModels
     public enum BarcodeType2 { JAN,CODE39, NW7 }
     public partial class SubDlg05PrnBcbookViewModel : BaseViewModel
     {
+        
         public void OnInit() 
         { 
         
