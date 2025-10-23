@@ -30,7 +30,7 @@ namespace CvnetClient.ViewModels
         public bool IsTenpoEnabled => SelectedTenpo == TenpoType.店別;
 
         [RelayCommand]
-        void Init()
+        void OnInit()
         {
             List<CsvItem> def = null;
 

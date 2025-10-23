@@ -31,7 +31,7 @@ namespace CvnetClient.Models
         }},
         { "マスタ補助", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "名称マスタコピー作成", WindowId="" },
+                new ButtonConfig { Text = "名称マスタコピー作成", WindowId=typeof(Views.SubDlg01MeiConvView).FullName },
                 new ButtonConfig { Text = "取込レイアウト作成", WindowId=typeof(Views.SubDlg00InputCsvView).FullName },
                 new ButtonConfig { Text = "外部CSVデータ取込", WindowId="" },
                 new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId="" },
@@ -75,7 +75,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "店別ブランド別予算マスタ", WindowId="" },
                 new ButtonConfig { Text = "販売員別予算マスタ", WindowId="" },
                 new ButtonConfig { Text = "営業担当別予算マスタ", WindowId="" },
-                new ButtonConfig { Text = "月別ﾌﾞﾗﾝﾄﾞｱｲﾃﾑ仕入予算マスタ", WindowId="" },
+                new ButtonConfig { Text = "月別ﾌﾞﾗﾝﾄﾞｱｲﾃﾑ仕入予算マスタ", WindowId=typeof(Views.SubDlg30InpMbiView).FullName },
                 new ButtonConfig { Text = "店舗予算表", WindowId="" },
                 new ButtonConfig { Text = "店舗別予算実績対比", WindowId="" },
                 new ButtonConfig { Text = "販売員予算表", WindowId="" },
