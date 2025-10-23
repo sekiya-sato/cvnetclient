@@ -177,6 +177,7 @@ namespace CvnetClient.Utils
             int i = 0;
             foreach (DataColumn col in csv_doc.Columns)
             {
+                if (i >= columns.Count) break;
                 col.ColumnName = columns[i++] ?? string.Empty;
             }
         }
@@ -195,6 +196,7 @@ namespace CvnetClient.Utils
             int i = 0;
             foreach (DataColumn col in csv_doc.Columns)
             {
+                if (i >= colName.Length) break;
                 col.ColumnName = colName[i++] ?? string.Empty;
             }
         }

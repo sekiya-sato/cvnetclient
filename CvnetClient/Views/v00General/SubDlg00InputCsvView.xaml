@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -60,7 +62,51 @@
 					Command="{Binding DoSelAllColCommand}"/> 
 		</Grid>
 
-		<DataGrid Margin="0,5,0,5" Grid.Row="1" />
+		<DataGrid Grid.Row="1"
+				  Margin="0,5,0,5" 
+				  AutoGenerateColumns="False"
+				  HeadersVisibility="Column"
+				  IsReadOnly="True"
+				  IsSynchronizedWithCurrentItem="True"
+				  d:ItemsSource="{d:SampleData ItemCount=5}"
+				  ItemsSource="{Binding InputCsvList}"
+				  Style="{StaticResource WinGridData}"> 
+			<DataGrid.Columns>
+				<DataGridTemplateColumn Header="選択" Width="40"> 
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox IsChecked="{Binding IsChecked}"
+									  VerticalAlignment="Center"
+									  HorizontalAlignment="Center"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn> 
+				<DataGridTextColumn Header="列名" Binding="{Binding Line1}" Width="2*"/>
+				<DataGridTextColumn Header="データ型" Binding="{Binding Line2}" Width="2*"/>
+				<DataGridTemplateColumn Header="桁数" Width="3*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<TextBox Grid.Column="0" TextAlignment="Right" Text="{Binding Line3}" />
+								<TextBox Grid.Column="1" TextAlignment="Right" Text="{Binding Line4}" />
+							</Grid>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="備考" Width="3*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBox TextAlignment="Left" Text="{Binding Line7}" />
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
 
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
@@ -81,9 +127,25 @@
 					Margin="0,0,5,0"
 					VerticalAlignment="Top"
 					Content="データ取得" 
-					Command="{Binding DoSearchDataCommand}"/>
-			<DatePicker Grid.Column="2" 
-						Margin="0,0,5,0"/>
+					Command="{Binding DoSearchDateCommand}"/>
+			<xctk:DateTimePicker Grid.Column="2" 
+								 Format="Custom"
+								 FormatString="yyyy/MM/dd HH:mm:ss"
+								 Margin="0,0,5,0">
+				<xctk:DateTimePicker.Style>
+					<Style TargetType="xctk:DateTimePicker">
+						<Setter Property="IsEnabled" Value="True"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding IsDateEnable}" Value="1">
+								<Setter Property="IsEnabled" Value="True"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsDateEnable}" Value="0">
+								<Setter Property="IsEnabled" Value="False"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</xctk:DateTimePicker.Style>
+			</xctk:DateTimePicker>
 			<TextBlock Grid.Column="3"
 					   Text="以降"
 					   Margin="0,0,5,0"
