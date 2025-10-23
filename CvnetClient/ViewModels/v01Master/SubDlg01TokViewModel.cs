@@ -4,14 +4,8 @@ using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using Microsoft.VisualBasic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Globalization;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
-using System.Windows.Controls;
 
 namespace CvnetClient.ViewModels
 {
@@ -54,6 +48,8 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         int? pageTotal;
         private BizArray col_list;
+        [ObservableProperty]
+        string? startCode;
         #region ComboBox
         [ObservableProperty]
         public Dictionary<string, string> comboListBumon;
@@ -689,13 +685,62 @@ namespace CvnetClient.ViewModels
                 if (vm != null)
                 {
                     //vm.SelShoResult0 
-                    PageView(vm.SelTokResult1.Item2, 0, vm.SelTokResult1.Item1);
+                    //PageView(vm.SelTokResult1.Item2, 0, vm.SelTokResult1.Item1);
+                    //SubList(string.IsNullOrEmpty(StartCode) ? "." : StartCode, ">=", "asc", AppData.maxQueryCnt,vm.SelTokResult1.Item2, vm.SelTokResult1.Item1, );
                 }
                 return;
             }
             var v_para = new string[] { SelShopCD };
         }
+        string sql_list = "";
+        void SubList(string startCD,string sql_P1, string sql_P2, int sql_P3, BizArray v_para, string param = "")
+        {
 
+            OnQuery(v_para, param, startCD);
+            //var sql = string.Format(sql_list, sql_P1, sql_P2, sql_P3);
+            //var retData = AppData.Http?.AspxSqlQuery(sql, new string[] { startCd });
+            //if (retData == null || retData.Rows.Count == 0) return;
+            //var list = (from DataRow dr in retData.Rows
+            //            select new MasterShop
+            //            {
+            //                SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
+            //                VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
+            //                VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"]),
+                            
+            //            }).OrderBy(c => c.TradingCD).ToList();
+            //Common.ConvertDotStringDel(list);
+            //ListShop = new ObservableCollection<MasterShop>(list);
+            //if (ListShop.Count > 0)
+            //{
+            //    SelectedShop = ListShop[0];
+            //}
+        }
+
+        [RelayCommand]
+        void BackList()
+        {
+            var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
+            if (ListShop != null && ListShop.Count > 0)
+            {
+                startcd = ListShop.Min(c => c.TradingCD);
+            }
+            //SubList(startcd!, "<=", "desc", AppData.maxQueryCnt);
+            if (ListShop == null || ListShop.Count == 0)
+                ClientLib.MessageBoxOk(this, "データがありません");
+        }
+
+        [RelayCommand]
+        void NextList()
+        {
+            var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
+            if (ListShop != null && ListShop.Count > 0)
+            {
+                startcd = ListShop.Max(c => c.TradingCD);
+            }
+            //SubList(startcd!, ">=", "asc", AppData.maxQueryCnt);
+            if (ListShop == null || ListShop.Count == 0)
+                ClientLib.MessageBoxOk(this, string.Empty);
+        }
         /// <summary>
         /// 20210104 ページ表示機能
         /// </summary>
@@ -807,15 +852,14 @@ namespace CvnetClient.ViewModels
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C08' and H.名称CD=A.名称CD08),'.') 補足08名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C09' and H.名称CD=A.名称CD09),'.') 補足09名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C10' and H.名称CD=A.名称CD10),'.') 補足10名";
-            /****** 20070111 最終修正者追加対応 START ******/
+
             sql_query += ",(A.入力社員CD ||' '|| (select B.名前 from HC$MASTER_SHAIN B where B.社員CD=A.入力社員CD)) 最終修正者";
-            /****** 20070111 最終修正者追加対応 END    ******/
+
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='BMN' and H.名称CD=A.部門),'.') 部門名";
             sql_query += ",NVL((select T.得意先名 from HC$MASTER_TOKUI T where T.得意先CD=A.基準倉庫CD),'.') 基準倉庫名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='HJN' and H.名称CD=A.法人CD),'.') 法人名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='HJN' and H.名称CD=A.連携先法人CD),'.') 連携先法人名";
 
-            /* 2015.08.28 #22020対応（名称CD11～20追加）//////////////////////////////////////////////////////////////////////////////////////// start */
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C11' and H.名称CD=A.名称CD11),'.') 補足11名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C12' and H.名称CD=A.名称CD12),'.') 補足12名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C13' and H.名称CD=A.名称CD13),'.') 補足13名";
@@ -826,19 +870,15 @@ namespace CvnetClient.ViewModels
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C18' and H.名称CD=A.名称CD18),'.') 補足18名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C19' and H.名称CD=A.名称CD19),'.') 補足19名";
             sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C20' and H.名称CD=A.名称CD20),'.') 補足20名";
-            /* 2015.08.28 #22020対応（名称CD11～20追加）//////////////////////////////////////////////////////////////////////////////////////// end */
 
-            /* 2017.10.05 ide 予備名 追加対応 E */
             sql_query += " from HC$Master_TOKUI A";
 
             if (qs == null) sql_query += " where A.得意先CD >= :1";
             else sql_query += " where A.得意先CD in (" + qs + ")";
 
-            /* 20210104 ページ表示機能 */
             if (para_seq != null)
                 sql_query += " and A.得意先CD >= '" + para_seq + "' ";
             sql_query += " order by A.得意先CD asc ";
-            /* 20210104 ページ表示機能 */
             if (para_seq != null) sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
 
             var retData = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
@@ -931,18 +971,6 @@ namespace CvnetClient.ViewModels
                                 EnterEmployeeCD = dr["最終修正者"].ToString() ?? string.Empty,
                                 StoreSalesFloorCode = dr["店舗売場コード"].ToString() ?? string.Empty,
                                 EcFLG = int.TryParse(dr["ECFLG"].ToString(), out var _ecFLG) ? _ecFLG : 0,
-                                //BaseSales01 = long.TryParse(dr["基準売上01"].ToString(), out var _baseSales01) ? _baseSales01 : 0,
-                                //BaseSales02 = long.TryParse(dr["基準売上02"].ToString(), out var _baseSales02) ? _baseSales02 : 0,
-                                //BaseSales03 = long.TryParse(dr["基準売上03"].ToString(), out var _baseSales03) ? _baseSales03 : 0,
-                                //CommissionRate01 = double.TryParse(dr["歩率01"].ToString(), out var _commissionRate01) ? _commissionRate01 : 0.0,
-                                //CommissionRate02 = double.TryParse(dr["歩率02"].ToString(), out var _commissionRate02) ? _commissionRate02 : 0.0,
-                                //CommissionRate03 = double.TryParse(dr["歩率03"].ToString(), out var _commissionRate03) ? _commissionRate03 : 0.0,
-                                //OtherRatio01 = double.TryParse(dr["他比率01"].ToString(), out var _otherRatio01) ? _otherRatio01 : 0.0,
-                                //OtherRatio02 = double.TryParse(dr["他比率02"].ToString(), out var _otherRatio02) ? _otherRatio02 : 0.0,
-                                //OtherRatio03 = double.TryParse(dr["他比率03"].ToString(), out var _otherRatio03) ? _otherRatio03 : 0.0,
-                                //OtherExpenses01 = double.TryParse(dr["他費用01"].ToString(), out var _otherExpenses01) ? _otherExpenses01 : 0.0,
-                                //OtherExpenses02 = double.TryParse(dr["他費用02"].ToString(), out var _otherExpenses02) ? _otherExpenses02 : 0.0,
-                                //OtherExpenses03 = double.TryParse(dr["他費用03"].ToString(), out var _otherExpenses03) ? _otherExpenses03 : 0.0,
                                 NameCD11 = dr["名称CD11"].ToString() ?? string.Empty,
                                 NameCD12 = dr["名称CD12"].ToString() ?? string.Empty,
                                 NameCD13 = dr["名称CD13"].ToString() ?? string.Empty,
@@ -953,8 +981,6 @@ namespace CvnetClient.ViewModels
                                 NameCD18 = dr["名称CD18"].ToString() ?? string.Empty,
                                 NameCD19 = dr["名称CD19"].ToString() ?? string.Empty,
                                 NameCD20 = dr["名称CD20"].ToString() ?? string.Empty,
-                                //RentCalcFLG = int.TryParse(dr["賃料計算FLG"].ToString(), out var _rentCalcFLG) ? _rentCalcFLG : 0,
-                                //MinRent = long.TryParse(dr["最低保障家賃"].ToString(), out var _minRent) ? _minRent : 0,
                                 CloseDate2 = int.TryParse(dr["締日2"].ToString(), out var _closeDate2) ? _closeDate2 : 0,
                                 CloseDate3 = int.TryParse(dr["締日3"].ToString(), out var _closeDate3) ? _closeDate3 : 0,
                                 XpPayMon2 = int.TryParse(dr["入金予定月2"].ToString(), out var _xpPayMon2) ? _xpPayMon2 : 0,
@@ -970,32 +996,9 @@ namespace CvnetClient.ViewModels
                                 PayDesti1 = dr["振込先1"].ToString() ?? string.Empty,
                                 PayDesti2 = dr["振込先2"].ToString() ?? string.Empty,
                                 PayDesti3 = dr["振込先3"].ToString() ?? string.Empty,
-                                //CustBrdCD = dr["得意先ブランドCD"].ToString() ?? string.Empty,
                                 DueDate = int.TryParse(dr["期日"].ToString(), out var _dueDate) ? _dueDate : 0,
                                 MinAm = int.TryParse(dr["下限額"].ToString(), out var _minAm) ? _minAm : 0,
-                                //TransDays = int.TryParse(dr["移動日数"].ToString(), out var _transDays) ? _transDays : 0,
                                 CustEmail = dr["得意先MAIL"].ToString() ?? string.Empty,
-                                //StoreImgName = dr["店舗画像名"].ToString() ?? string.Empty,
-                                //ClosedDays = dr["定休日"].ToString() ?? string.Empty,
-                                //Appeal = dr["アピール"].ToString() ?? string.Empty,
-                                //StatName = dr["駅名"].ToString() ?? string.Empty,
-                                //Longitude = long.TryParse(dr["経度"].ToString(), out var _longitude) ? _longitude : 0,
-                                //Latitude = long.TryParse(dr["緯度"].ToString(), out var _latitude) ? _latitude : 0,
-                                //ECDisp = int.TryParse(dr["EC表示"].ToString(), out var _ecDisp) ? _ecDisp : 0,
-                                //ECDispName = dr["EC表示名"].ToString() ?? string.Empty,
-                                //Area2 = int.TryParse(dr["地域"].ToString(), out var _area2) ? _area2 : 0,
-                                //Brand = dr["ブランド"].ToString() ?? string.Empty,
-                                //Reservation = int.TryParse(dr["取置"].ToString(), out var _reservation) ? _reservation : 0,
-                                //Order = int.TryParse(dr["取寄"].ToString(), out var _order) ? _order : 0,
-                                //OrderSeq = int.TryParse(dr["取寄順"].ToString(), out var _orderseq) ? _orderseq : 0,
-                                //ECBusHours = dr["EC営業時間"].ToString() ?? string.Empty,
-                                //INSTA = dr["INSTA"].ToString() ?? string.Empty,
-                                //WEAR = dr["WEAR"].ToString() ?? string.Empty,
-                                //BLOG = dr["BLOG"].ToString() ?? string.Empty,
-                                //MAPURL = dr["MAPURL"].ToString() ?? string.Empty,
-                                //ECAppeal = dr["ECアピール"].ToString() ?? string.Empty,
-                                //Site = dr["サイト"].ToString() ?? string.Empty,
-                                //AdjustedInv = int.TryParse(dr["調整在庫"].ToString(), out var _adjustedInv) ? _adjustedInv : 0,
                                 RegistNum = dr["登録番号"].ToString() ?? string.Empty,
                                 //APPBusHours = dr["APP営業時間"].ToString() ?? string.Empty,
                                 //OriStoreImgName = dr["元店舗画像名"].ToString() ?? string.Empty,
@@ -1022,7 +1025,11 @@ namespace CvnetClient.ViewModels
                 new string[] { "得意先CD", "得意先名", "部門", "郵便番号", "住所1","住所2","住所3","旧コード","略称","カナ",
                     "TEL","FAX","営業担当CD","店種区分","坪数","掛率","セール掛率","店頭セール掛率","請求先CD","請求印刷","締日","入金予定月","入金予定日","入金方法",
                     "下代桁切指定","下代端数区分","下代計算FLG","消費税CD","消費税計算方法","消費税端数","与信限度額","入金率","出荷停止FLG",
-                "宛名名称1","宛名名称2","伝票発行区分","備考","在庫管理FLG","自動配分FLG","開始日","終了日","","",""},
+                    "宛名名称1","宛名名称2","伝票発行区分","備考","在庫管理FLG","自動配分FLG","開始日","終了日","名称CD01","名称CD02","名称CD03","名称CD04","名称CD05","名称CD06","名称CD07","名称CD08","名称CD09","名称CD10",
+                    "棚卸日","開始時刻","終了時刻","端末ID","倉庫区分","営業時間1","営業時間2","営業時間3","施工業者情報","デベロッパ","営業時間","棚卸日END","為替区分","為替桁切指定","為替端数区分","配分ランク01","配分ランク02","出荷FLG",
+                    "基準倉庫FLG","基準倉庫CD","配分方法FLG","POS区分","伝票印字5","伝票印字6","伝票印字7","伝票印字8","入力社員CD","店舗売場コード","ECFLG","名称CD11","名称CD12","名称CD13","名称CD14","名称CD15","名称CD16","名称CD17",
+                    "名称CD18","名称CD19","名称CD20","締日2","締日3","入金予定月2","入金予定日2","入金予定月3","入金予定日3","伝票社名","伝票店名","移動区分","法人CD","連携CD","連携先法人CD","振込先1","振込先2",
+                    "振込先3","期日","下限額","得意先MAIL","登録番号"},
                 new string[] { item.TradingCD!, item.TradingName!, item.Department!, item.Postal,item.Address1!,item.Address2,item.Address3,item.OldCD,item.Abbr,item.Katakana,
                     item.TelNo,item.FaxNo,item.SalesRepCD,item.StoreCate.ToString(),item.Area.ToString(),item.CommissionRate.ToString(),item.SaleCommRate.ToString(),item.InStoreSaleRate.ToString(),
                     item.InvoiceAddrCD.ToString(),item.InvoicePrint.ToString(),item.ClosingDate.ToString(),item.ExpectedPayMonth.ToString(),item.ExpectedPayDate.ToString(),item.PayMethod,
@@ -1059,8 +1066,15 @@ namespace CvnetClient.ViewModels
             var item = Common.CloneObject(EditShop);
             Common.ConvertDotStringAdd(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "HASTER_TOKUI", item.SeqNo, item.VdateUpdate.ToString(),
-                new string[] { "得意先CD","得意先名" },
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "MASTER_TOKUI", item.SeqNo, item.VdateUpdate.ToString(),
+                new string[] { "得意先CD", "得意先名", "部門", "郵便番号", "住所1","住所2","住所3","旧コード","略称","カナ",
+                    "TEL","FAX","営業担当CD","店種区分","坪数","掛率","セール掛率","店頭セール掛率","請求先CD","請求印刷","締日","入金予定月","入金予定日","入金方法",
+                    "下代桁切指定","下代端数区分","下代計算FLG","消費税CD","消費税計算方法","消費税端数","与信限度額","入金率","出荷停止FLG",
+                    "宛名名称1","宛名名称2","伝票発行区分","備考","在庫管理FLG","自動配分FLG","開始日","終了日","名称CD01","名称CD02","名称CD03","名称CD04","名称CD05","名称CD06","名称CD07","名称CD08","名称CD09","名称CD10",
+                    "棚卸日","開始時刻","終了時刻","端末ID","倉庫区分","営業時間1","営業時間2","営業時間3","施工業者情報","デベロッパ","営業時間","棚卸日END","為替区分","為替桁切指定","為替端数区分","配分ランク01","配分ランク02","出荷FLG",
+                    "基準倉庫FLG","基準倉庫CD","配分方法FLG","POS区分","伝票印字5","伝票印字6","伝票印字7","伝票印字8","入力社員CD","店舗売場コード","ECFLG","名称CD11","名称CD12","名称CD13","名称CD14","名称CD15","名称CD16","名称CD17",
+                    "名称CD18","名称CD19","名称CD20","締日2","締日3","入金予定月2","入金予定日2","入金予定月3","入金予定日3","伝票社名","伝票店名","移動区分","法人CD","連携CD","連携先法人CD","振込先1","振込先2",
+                    "振込先3","期日","下限額","得意先MAIL","登録番号"},
                 new string[] { item.TradingCD!, item.TradingName!, item.Department!, item.Postal,item.Address1!,item.Address2,item.Address3,item.OldCD,item.Abbr,item.Katakana,
                     item.TelNo,item.FaxNo,item.SalesRepCD,item.StoreCate.ToString(),item.Area.ToString(),item.CommissionRate.ToString(),item.SaleCommRate.ToString(),item.InStoreSaleRate.ToString(),
                     item.InvoiceAddrCD.ToString(),item.InvoicePrint.ToString(),item.ClosingDate.ToString(),item.ExpectedPayMonth.ToString(),item.ExpectedPayDate.ToString(),item.PayMethod,
@@ -1192,7 +1206,6 @@ namespace CvnetClient.ViewModels
                     SelectedShop.RegistNum = item.RegistNum;
                     EditShop = Common.CloneObject(SelectedShop);
                 }
-
             }
             else
             {
@@ -1205,7 +1218,7 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "削除しますか？")) return;
             if (EditShop == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_TOKUI", EditShop.SeqNo, EditShop.VdateUpdate.ToString(),
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "MASTER_TOKUI", EditShop.SeqNo, EditShop.VdateUpdate.ToString(),
                 new string[0], new string[0]);
             if (ret.Code == 0)
             {

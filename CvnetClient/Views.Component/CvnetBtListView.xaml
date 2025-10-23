@@ -15,7 +15,7 @@
             Content="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" 
             Click="BtList_Click" 
             VerticalAlignment="Stretch"
-            HorizontalAlignment="Stretch" 
+            HorizontalAlignment="Stretch"
             Style="{StaticResource ComboLabelBtn}"/>
 
 </UserControl>

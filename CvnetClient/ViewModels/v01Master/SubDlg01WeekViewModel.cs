@@ -24,16 +24,20 @@ namespace CvnetClient.ViewModels
 
         private BizArray para;
         private int Chg_flg = 0;
-
-        [RelayCommand]
-        void Init()
-        {
-            OnInit(null);
-        }
-
-        public void OnInit(string[] init_para = null)
+           
+        public void OnInit(object? init_para = null)
         { 
-            if (init_para != null) para = new BizArray(init_para);
+            if (init_para != null) 
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para); 
+                }
+                else if (init_para is string[] arr) 
+                    para = new BizArray(arr); 
+                else para = new BizArray();
+            }
             else para = new BizArray();
 
             WeekList = new ObservableCollection<MasterWeekEx>();

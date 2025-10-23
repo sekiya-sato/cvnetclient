@@ -35,8 +35,8 @@ namespace CvnetClient.ViewModels
         private BizArray col_list;
 
         [RelayCommand]
-        void Init()
-        {
+        void Init(object? init_para)
+        {  
             EditProduct = new MasterShohin();
 
             var comboItem = AppData.ClassCvnet.comboItem00;

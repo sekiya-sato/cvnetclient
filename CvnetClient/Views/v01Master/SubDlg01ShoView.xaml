@@ -1,0 +1,1518 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg01ShoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+		xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        Title="商品マスタ"
+        mc:Ignorable="d" 
+		FontFamily="Meiryo UI"
+        Width="1440"
+        Height="1000"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MasterWindowStyle2}">
+	<Window.Resources>
+		<utils:VdateConverter x:Key="VdateConverter" />
+	</Window.Resources>
+	<Window.DataContext>
+		<vm:SubDlg01ShoViewModel />
+	</Window.DataContext> 
+	<Grid Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="3*" />
+			<ColumnDefinition Width="7*" />
+		</Grid.ColumnDefinitions>
+
+		<Grid Grid.Row="0" Grid.Column="0" 
+			  Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}" 
+			  Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+
+			<Grid Grid.Row="0" Grid.Column="0" 
+				  Margin="0,5,0,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Label Grid.Row="0" Grid.Column="0"  
+					   Margin="5,0,0,0"
+					   VerticalContentAlignment="Center"
+					   Content="商品CD" />
+				<TextBox Grid.Row="0" Grid.Column="1"
+						 VerticalAlignment="Center"
+						 Text="{Binding SelProductCd}"
+						 Width="100"
+						 Margin="10,0,0,0" />
+				<Button Grid.Row="0" Grid.Column="3"
+						Width="35" 
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right" 
+						Content="&lt;&lt;" />
+				<Button Grid.Row="0" Grid.Column="4"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Margin="0,0,5,0" 
+						Command="{Binding SelDspUpdateCommand}"
+						Content=" 表示更新(F5) " />
+				<Button Grid.Row="0" Grid.Column="5"
+						Width="35" 
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Margin="0,0,5,0"
+						Content="&gt;&gt;" /> 
+			</Grid> 
+			
+			<DataGrid Grid.Row="1" Grid.Column="0"
+                      Margin="10"
+					  AutoGenerateColumns="False"
+					  HeadersVisibility="Column"
+					  IsReadOnly="True"
+					  IsSynchronizedWithCurrentItem="True"
+					  d:ItemsSource="{d:SampleData ItemCount=5}"
+					  ItemsSource="{Binding ListProduct}"
+					  SelectedItem="{Binding SelectedProduct}"  
+                      Style="{StaticResource WinGridData}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCD}" Width="*" />
+					<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="*" />
+				</DataGrid.Columns>
+			</DataGrid>
+		</Grid>
+
+		<Grid Grid.Row="0" Grid.Column="1" 
+			  Width="{Binding ActualWidth, ElementName=grid0, Mode=OneWay}" 
+			  Height="{Binding ActualHeight, ElementName=grid0, Mode=OneWay}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto" />
+				<RowDefinition Height="auto" />
+			</Grid.RowDefinitions>
+
+			<TabControl Grid.Row="0" Grid.Column="0" Margin="0">
+				<TabItem Header="基本情報 (Shift+F1)">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="7*"/>
+						</Grid.ColumnDefinitions>
+						<StackPanel Orientation="Vertical" Grid.ColumnSpan="2">
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="商品CD" />
+								<TextBox  Width="200"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="商品CD：Data"    
+										 Text="{Binding EditProduct.ProductCD}"
+										   
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0" 
+									   VerticalContentAlignment="Center"
+									   Content="ﾒｰｶｰ品番" />
+								<TextBox  Width="200"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="ﾒｰｶｰ品番：Data"   
+										 Text="{Binding EditProduct.MakerNo}" 
+										 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+											Margin="0,5,0,0">
+								<Label  Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="商品名" />
+								<TextBox Width="495"
+											 Margin="5,0,0,0" 
+											 HorizontalAlignment="Left"
+											 VerticalAlignment="Top"
+											 d:Text="商品名：Data"   
+											 Text="{Binding EditProduct.ProductName}" 
+											 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="略称" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="略称：Data"   
+										 Text="{Binding EditProduct.Abbreviation}"
+										 TextWrapping="Wrap" />
+								<Button Width="85"
+										Margin="5,0,0,0"
+										VerticalAlignment="Top"
+                                        Style="{StaticResource FileUploadBtn}"
+										Content="絵型名1" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="絵型名1：Data"   
+										 Text="{Binding EditProduct.ImgName}"   
+										 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="旧コード" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="旧コード：Data"
+										 Text="{Binding EditProduct.OldCode}"
+										 TextWrapping="Wrap" />
+								<Button  Width="85"
+										Margin="5,0,0,0"
+										VerticalAlignment="Top"
+                                          Style="{StaticResource FileUploadBtn}"
+										Content="絵型名2" />
+								<TextBox  Width="200"
+										 Margin="5,0,0,0" 
+										 IsEnabled="False"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="絵型名2：Data"   
+										 Text="{Binding EditProduct.ImgName2}"
+										 Style="{StaticResource ReadOnlyTextBox}"  
+										 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label  Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="JAN連番" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="JAN連番：Data"   
+										 Text="{Binding EditProduct.Jan1stdigit}" 
+										 TextWrapping="Wrap" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="JAN連番：Data"
+										 Text="{Binding EditProduct.JanCode2}"
+										 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="年度" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="年度：Data"    
+										 Text="{Binding EditProduct.JanCode1}" 
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="製品番号" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0" 
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="製品番号：Data"   
+										 Text=""
+										 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<uc:CvnetBtListView Width="85"
+													Margin="5,0,0,0"
+													Title="ブランド" 
+													MstName="ブランド"
+                                                    StyleDesign="1"
+													SelectedValue ="{Binding EditProduct.BrandCD}"
+													Command="{Binding SelBrandCommand}" />
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="ブランド：Data"  
+										 TextWrapping="Wrap" >
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.BrandCD" />
+											<Binding Path="EditProduct.BrandName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+								<uc:CvnetBtListView Width="85"
+													Margin="5,0,0,0"
+													Title="アイテム"  
+													MstName="アイテム"
+													SelectedValue="{Binding EditProduct.ItemCD}"
+													Command="{Binding SelItemCommand}"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="アイテム：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.ItemCD" />
+											<Binding Path="EditProduct.ItemName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<uc:CvnetBtListView Width="85"
+										Margin="5,0,0,0"
+										Title="シーズン" 
+										MstName="シーズン"
+										SelectedValue="{Binding EditProduct.SeasonCD}"		
+										Command="{Binding SelSeasonCommand}" />
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="シーズン：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.SeasonCD" />
+											<Binding Path="EditProduct.SeasonName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+								<uc:CvnetBtListView Width="85"
+													Margin="5,0,0,0"
+													Title="素材" 
+													MstName="素材"
+													SelectedValue="{Binding EditProduct.MaterialCD}"
+													Command="{Binding SelMaterialCommand}"
+										  />
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="素材：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.MaterialCD" />
+											<Binding Path="EditProduct.MaterialName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<uc:CvnetBtListView Width="85"
+													Margin="5,0,0,0"
+													Title="ﾃﾞｻﾞｲﾅｰ" 
+													MstName="デザイナー"
+													SelectedValue="{Binding EditProduct.DesignCD}"
+													Command="{Binding SelDesignCommand}" />
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="ﾃﾞｻﾞｲﾅｰ：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.DesignCD" />
+											<Binding Path="EditProduct.DesignName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+								<uc:CvnetBtListView Width="85"
+										Margin="5,0,0,0"
+										Title="原産国"
+										MstName="原産国"
+										SelectedValue="{Binding EditProduct.MadeInCD}"
+										Command="{Binding SelMadeInCommand}"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="原産国：Data"  
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.MadeInCD" />
+											<Binding Path="EditProduct.MadeInName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<uc:CvnetBtListView Width="85" 
+										Margin="5,0,0,0"
+										Title="展示会"
+										MstName="展示会"			
+										SelectedValue="{Binding EditProduct.ExhibitCD}"
+										Command="{Binding SelExhibitCommand}"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="展示会：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.ExhibitCD" />
+											<Binding Path="EditProduct.ExhibitName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+								<uc:CvnetBtListView Width="85" 
+													Margin="5,0,0,0"
+													Title="メーカー" 
+													MstName="メーカー"
+													SelectedValue="{Binding EditProduct.ManufactCD}"
+													Command="{Binding SelManufactCommand}"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="メーカー：Data"
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.ManufactCD" />
+											<Binding Path="EditProduct.ManufactName" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<uc:CvnetBtListView Width="85" 
+													Margin="5,0,0,0"
+													Title="補足1"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD01}"
+													Command="{Binding SelNameCommand}"
+													Param2="B01"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="補足1：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD01" />
+											<Binding Path="EditProduct.SubName01" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+								<uc:CvnetBtListView Width="85" 
+													Margin="5,0,0,0"
+													Title="補足2"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD02}"
+													Command="{Binding SelNameCommand}"
+													Param2="B02"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="補足2：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD02" />
+											<Binding Path="EditProduct.SubName02" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<uc:CvnetBtListView Width="85" 
+													Margin="5,0,0,0"
+													Title="補足3"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD03}"
+													Command="{Binding SelNameCommand}"
+													Param2="B03"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="補足3：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD03" />
+											<Binding Path="EditProduct.SubName03" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+								<uc:CvnetBtListView Width="85" 
+													Margin="5,0,0,0"
+													Title="補足4"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD04}"
+													Command="{Binding SelNameCommand}"
+													Param2="B04"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="補足4：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD04" />
+											<Binding Path="EditProduct.SubName04" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<uc:CvnetBtListView Width="85" 
+													Margin="5,0,0,0"
+													Title="補足5"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD05}"
+													Command="{Binding SelNameCommand}"
+													Param2="B05"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="補足5：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD05" />
+											<Binding Path="EditProduct.SubName05" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+								<uc:CvnetBtListView Width="85" 
+													Margin="5,0,0,0"
+													Title="補足6"
+													MstName="名称"
+													SelectedValue="{Binding EditProduct.NameCD06}"
+													Command="{Binding SelNameCommand}"
+													Param2="B06"/>
+								<TextBox Width="300"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="補足6：Data" 
+										 TextWrapping="Wrap">
+									<TextBox.Text>
+										<MultiBinding StringFormat='{}{0} {1}'>
+											<Binding Path="EditProduct.NameCD06" />
+											<Binding Path="EditProduct.SubName06" />
+										</MultiBinding>
+									</TextBox.Text>
+								</TextBox>
+							</StackPanel>  
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="元上代" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="元上代：Data" 
+										 Text="{Binding EditProduct.OriPrice}"
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="上代" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="上代：Data" 
+										 Text="{Binding EditProduct.Price}"
+										 TextWrapping="Wrap" />
+								<Label  Width="85"
+									    Margin="5,0,0,0"
+									    VerticalContentAlignment="Center"
+									    Content="売変日" />
+								<DatePicker Width="150"
+											Margin="5,0,0,0"
+											HorizontalAlignment="Center" 
+											VerticalAlignment="Center"
+											SelectedDate="{Binding EditProduct.PriceChgDate}"/>
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="外貨単価" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="外貨単価：Data"  
+										 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="仕入価格" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="仕入価格：Data" 
+										 Text="{Binding EditProduct.PurchasePrice}"
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="原価" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="原価：Data" 
+										 Text="{Binding EditProduct.Cost}"
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="営業原価" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="営業原価：Data" 
+										 Text="{Binding EditProduct.OpCostPrice}"
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="加工工賃" />
+								<TextBox Width="150"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="加工工賃：Data" 
+										 Text="{Binding EditProduct.ManufactFee}"
+										 TextWrapping="Wrap" />
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="在庫管理" />
+								<ComboBox Width="200"
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"  
+										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding InvMngmentList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.InvMngmentFLG}"
+										  Style="{StaticResource SearchableComboBox1}"/>
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="納品区分" />
+								<ComboBox Width="200" 
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"  
+										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DeliverCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DeliveryCate}"
+										  Style="{StaticResource SearchableComboBox1}"/>
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="ｻｲｽﾞ表示" />
+								<ComboBox Width="200"
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"
+										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ProdSizCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ProdSizeCate}"
+										  Style="{StaticResource SearchableComboBox1}"/>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="仕入区分" />
+								<ComboBox Width="200" 
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"  
+										  VerticalContentAlignment="Center"  
+										  ItemsSource="{Binding PurchCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.PurchaseCate}"
+										  Style="{StaticResource SearchableComboBox1}"/>
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="消化掛率" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="消化掛率：Data" 
+										 Text="{Binding EditProduct.ConsignPurcRate}"
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="POS区分" />
+								<ComboBox Width="200"
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"  
+										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding PosCateList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.PosCate}"
+										  Style="{StaticResource SearchableComboBox1}"/>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0">
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="消化桁切" />
+								<ComboBox Width="200" 
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"  
+										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding DgCutOffList}"
+										  DisplayMemberPath="Value"
+										  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.DgCutOffSpec}"
+										  Style="{StaticResource SearchableComboBox1}"/>
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="消化端数" />
+								<ComboBox Width="200"
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"  
+										  VerticalContentAlignment="Center"
+										  ItemsSource="{Binding ConPurcCateList}"
+										  DisplayMemberPath="Value"
+				  						  SelectedValuePath="Key"
+										  SelectedValue="{Binding EditProduct.ConsignPurcCate}"
+										  Style="{StaticResource SearchableComboBox1}"/>
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="消化計算" />
+								<ComboBox Width="200"
+										  Margin="5,0,0,0"
+										  VerticalAlignment="Top"  
+										  VerticalContentAlignment="Center" 
+										  DisplayMemberPath="Value"
+ 										  SelectedValuePath="Key" 
+										  Style="{StaticResource SearchableComboBox1}"/>
+							</StackPanel> 
+							<StackPanel Orientation="Horizontal" 
+										Margin="0,5,0,0"> 
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="修正日" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="修正日：Data"
+										 Text="{Binding EditProduct.VdateUpdate}"
+										 TextWrapping="Wrap" />
+								<Label Width="85"
+									   Margin="5,0,0,0"
+									   VerticalContentAlignment="Center"
+									   Content="最終修正者" />
+								<TextBox Width="200"
+										 Margin="5,0,0,0"
+										 HorizontalAlignment="Left"
+										 VerticalAlignment="Top"
+										 d:Text="最終修正者：Data" 
+										 Text="{Binding EditProduct.ModifiedBy}"
+										 TextWrapping="Wrap" />
+								<Button Width="120"
+										Margin="10,0,0,0"
+										VerticalAlignment="Top"
+										Content="連携表示" />
+							</StackPanel>
+							<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" 
+									Margin="0,5,0,0">
+								<Button Width="120"
+										Margin="10,0,0,0"
+										VerticalAlignment="Top"
+										Content="品質表示(S+F10)" />
+								<Button Width="120"
+										Margin="10,0,0,0"
+										VerticalAlignment="Top"
+										Content="原価枝番(S+F11)" />
+								<Button Width="120" 
+										Margin="10,0,0,0"
+										VerticalAlignment="Top"
+										Content="色サイズ展開(S+F12)" />
+								<Button Width="120" 
+										Margin="10,0,0,0"
+										VerticalAlignment="Top" 
+										Content="発注入力" />
+								<Button Width="120"
+										Margin="10,0,0,0"
+										VerticalAlignment="Top"
+										Content="仕入入力" />
+								<Button Width="120"  
+										Margin="10,0,0,0"
+										VerticalAlignment="Top"
+										Content="発注配分入力" />
+							</StackPanel>
+						</StackPanel>
+
+						<StackPanel Orientation="Horizontal"
+									HorizontalAlignment="Left" Margin="662,0,0,0">
+							<Border BorderBrush="Black"
+									CornerRadius="2"
+									VerticalAlignment="Top"
+									HorizontalAlignment="Right"
+									Height="140" Width="150"  
+									Margin="0,5,5,0"
+									BorderThickness="1">
+								<StackPanel Orientation="Vertical">
+									<Image Height="100"/>
+									<Button Style="{StaticResource ImageUploadBtn}"   
+											VerticalAlignment="Bottom"
+											Content="Upload" />
+								</StackPanel>
+							</Border>
+							<Border BorderBrush="Black"
+									CornerRadius="2"
+									VerticalAlignment="Top"
+									HorizontalAlignment="Right"
+									Height="140" Width="150"  
+									Margin="0,5,5,0"
+									BorderThickness="1">
+								<StackPanel Orientation="Vertical" Margin="4">
+									<Image Height="100"/>
+									<Button Style="{StaticResource ImageUploadBtn}"   
+											VerticalAlignment="Bottom"
+											Content="Upload" />
+								</StackPanel>
+							</Border>
+							<Border BorderBrush="Black"
+									CornerRadius="2"
+									VerticalAlignment="Top"
+									HorizontalAlignment="Right"
+									Height="140" Width="150"  
+									Margin="1"
+									BorderThickness="1">
+								<StackPanel Orientation="Vertical" Margin="4">
+									<Image Height="100"/>
+									<Button Style="{StaticResource ImageUploadBtn}" VerticalAlignment="Bottom"/>
+								</StackPanel>
+							</Border>
+						</StackPanel>
+
+					</Grid>
+				</TabItem>
+
+				<TabItem Header="拡張情報 (Shift+F2)">
+					<StackPanel Orientation="Vertical" >
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<Label Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center"
+								   
+								   Content="納品日" />
+							<DatePicker Width="150"
+										Margin="5,0,0,0"
+										HorizontalAlignment="Center" 
+										VerticalAlignment="Center"
+										SelectedDate="{Binding EditProduct.DeliveryDate}"/>
+							<Label  Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center"
+								   Content="店頭投入日" />
+							<DatePicker Width="150"
+										Margin="5,0,0,0"
+										HorizontalAlignment="Center" 
+										VerticalAlignment="Center"
+										SelectedDate="{Binding EditProduct.InitLaunchDate}"/> 
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<Label  Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center" 
+								   Content="デリバリー日" />
+							<DatePicker Width="150"
+										Margin="5,0,0,0"
+										HorizontalAlignment="Center" 
+										VerticalAlignment="Center"
+										SelectedDate="{Binding EditProduct.CustDeliDate}"/>
+							<Label  Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center"
+								   Content="リピート日" />
+							<DatePicker Width="150"
+									Margin="5,0,0,0"
+									HorizontalAlignment="Center" 
+									VerticalAlignment="Center" 
+										Text="{Binding EditProduct.RepeatDate}"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備01"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve01}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y01" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備01：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve01" />
+										<Binding Path="EditProduct.ReserveName01" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備02"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve02}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y02" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備02：Data"
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve02" />
+										<Binding Path="EditProduct.ReserveName02" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備03"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve03}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y03" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備03：Data"
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve03" />
+										<Binding Path="EditProduct.ReserveName03" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備04"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve04}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y04" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備04：Data"
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve04" />
+										<Binding Path="EditProduct.ReserveName04" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備05"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve05}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y05" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備05：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve05" />
+										<Binding Path="EditProduct.ReserveName05" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備06"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve06}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y06" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備06：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve06" />
+										<Binding Path="EditProduct.ReserveName06" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備07"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve07}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y07" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備07：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve07" />
+										<Binding Path="EditProduct.ReserveName07" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備08"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve08}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y08" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備08：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve08" />
+										<Binding Path="EditProduct.ReserveName08" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備09"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve09}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y09" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備09：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve09" />
+										<Binding Path="EditProduct.ReserveName09" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備10"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve10}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y10" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備10：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve10" />
+										<Binding Path="EditProduct.ReserveName10" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備11"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve11}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y11" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備11：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve11" />
+										<Binding Path="EditProduct.ReserveName11" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備12"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve12}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y12" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備12：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve12" />
+										<Binding Path="EditProduct.ReserveName12" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備13"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve13}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y13" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備13：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve13" />
+										<Binding Path="EditProduct.ReserveName13" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備14"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve14}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y14" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備14：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve14" />
+										<Binding Path="EditProduct.ReserveName14" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備15"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve15}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y15" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備15：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve15" />
+										<Binding Path="EditProduct.ReserveName15" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備16"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve16}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y16" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備16：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve16" />
+										<Binding Path="EditProduct.ReserveName16" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備17"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve17}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y17" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備17：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve17" />
+										<Binding Path="EditProduct.ReserveName17" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備18"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve18}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y18" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備18：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve18" />
+										<Binding Path="EditProduct.ReserveName18" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<uc:CvnetBtListView  Width="85"
+												Margin="5,0,0,0"
+												Title="予備19"
+												MstName="予備"
+												SelectedValue="{Binding EditProduct.Reserve19}"
+												Command="{Binding SelReserveCommand}"
+												Param2="Y19" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備19：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve19" />
+										<Binding Path="EditProduct.ReserveName19" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+							<uc:CvnetBtListView  Width="85"
+											Margin="5,0,0,0"
+											Title="予備20"
+											MstName="予備"
+											SelectedValue="{Binding EditProduct.Reserve20}"
+											Command="{Binding SelReserveCommand}"
+											Param2="Y20" />
+							<TextBox  Width="300"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="予備20：Data" 
+									 
+									 
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.Reserve20" />
+										<Binding Path="EditProduct.ReserveName20" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<Label  Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center"
+								   
+								   Content="メモ" />
+							<TextBox  Width="700"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="メモ：Data" 
+									 Text="{Binding EditProduct.Memo}"
+									 
+									 
+									 TextWrapping="Wrap" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<Label  Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center"
+								   
+								   Content="ゼロ単価区分" />
+							<ComboBox Width="200" 
+									  Margin="5,0,0,0"
+									  VerticalAlignment="Top"
+									  VerticalContentAlignment="Center" 
+									  ItemsSource="{Binding ZeroPriCateList}"
+									  DisplayMemberPath="Value" 
+									  SelectedValuePath="Key" 
+									  SelectedValue="{Binding EditProduct.ZeroPriceCate}"
+									  Style="{StaticResource SearchableComboBox1}"/>
+							<uc:CvnetBtListView  Width="85"  
+												Margin="5,0,0,0"
+												Title="男女区分"
+												MstName="名称"
+												SelectedValue="{Binding EditProduct.GenderCate}"
+												Command="{Binding SelGenderCateCommand}"
+												Param2="MLK"/>
+							<TextBox  Width="200"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="男女区分：Data"
+									 
+									   
+									 TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="EditProduct.GenderCate" />
+										<Binding Path="EditProduct.GenderCateName" />
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,5,0,0">
+							<Label  Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center"
+								   
+								   Content="消費税計算方法" />
+							<ComboBox Width="200" 
+									  Margin="5,0,0,0"
+									  VerticalAlignment="Top"
+									  VerticalContentAlignment="Center"
+									  ItemsSource="{Binding TaxCalcList}"
+									  DisplayMemberPath="Value"
+									  SelectedValuePath="Key"
+									  SelectedValue="{Binding EditProduct.TaxCalcMethod}"
+									  Style="{StaticResource SearchableComboBox1}"/>
+							<Label  Width="85"
+								   Margin="5,0,0,0"
+								   VerticalContentAlignment="Center"
+								   
+								   Content="下札サイズ" />
+							<ComboBox Width="200" 
+									  Margin="5,0,0,0"
+									  VerticalAlignment="Top"
+									  VerticalContentAlignment="Center" 
+									  ItemsSource="{Binding ColOutCateList}"
+									  DisplayMemberPath="Value" 
+									  SelectedValuePath="Key" 
+									  SelectedValue="{Binding EditProduct.CollabOutCate}"
+									  Style="{StaticResource SearchableComboBox1}"/>
+							<Button  Width="85"
+									Margin="5,0,0,0"
+									VerticalContentAlignment="Center"
+									Content="洗濯表示" />
+							<TextBox  Width="200"
+									 Margin="5,0,0,0"
+									 HorizontalAlignment="Left"
+									 VerticalAlignment="Top"
+									 d:Text="洗濯表示：Data" 
+									 Text="{Binding EditProduct.CareLabel}"
+									 TextWrapping="Wrap" />
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" 
+									Margin="0,50,0,0">
+							<Button  Width="85"
+									Margin="5,0,0,0"
+									VerticalContentAlignment="Center"
+									Content="品質表示" />
+						</StackPanel>
+					</StackPanel>
+				</TabItem>
+			</TabControl>
+
+			<StackPanel Grid.Row="1" Grid.Column="0"  
+						Orientation="Horizontal" 
+						VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+				<Button 
+						Margin="10,0,50,0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top" 
+						Style="{StaticResource UpdateIconBtn}"/>
+
+				<Button 
+						Margin="0,0,50,0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						Style="{StaticResource DeleteIconBtn}"/>
+
+				<Button 
+						Margin="0,0,50,0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						Style="{StaticResource AddIconBtn}"/>
+
+				<Button 
+						Margin="0,0,50,0"
+						HorizontalAlignment="Left"
+						VerticalAlignment="Top"
+						Style="{StaticResource PrintIconBtn}"
+						Content="印刷" />
+
+				<Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+			</StackPanel>
+		</Grid>
+
+	</Grid>
+</Window>
