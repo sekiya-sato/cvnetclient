@@ -32,7 +32,7 @@ namespace CvnetClient.Models
         { "マスタ補助", new PageData {
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "名称マスタコピー作成", WindowId="" },
-                new ButtonConfig { Text = "取込レイアウト作成", WindowId="" },
+                new ButtonConfig { Text = "取込レイアウト作成", WindowId=typeof(Views.SubDlg00InputCsvView).FullName },
                 new ButtonConfig { Text = "外部CSVデータ取込", WindowId="" },
                 new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId="" },
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
