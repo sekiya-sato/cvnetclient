@@ -190,7 +190,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "商品履歴問合せ", WindowId="" },
                 new ButtonConfig { Text = "取引データ閲覧", WindowId="" },
                 new ButtonConfig { Text = "即時移動明細書印刷", WindowId="" },
-                new ButtonConfig { Text = "移動明細書印刷", WindowId="" },
+                new ButtonConfig { Text = "移動明細書印刷", WindowId=typeof(Views.SubDlg08PrnHhtlist06View).FullName },
                 new ButtonConfig { Text = "倉庫別受払表", WindowId="" },
                 new ButtonConfig { Text = "商品別受払表", WindowId="" },
                 new ButtonConfig { Text = "倉庫別在庫集計表", WindowId="" },

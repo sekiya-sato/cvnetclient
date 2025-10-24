@@ -20,8 +20,7 @@ namespace CvnetClient.ViewModels
         public enum BarcodeType { JAN, CODE39, NW7 }
 
         [ObservableProperty]
-        Condition? condition;
-        
+        Condition? condition;        
 
         public void OnInit() 
         {
