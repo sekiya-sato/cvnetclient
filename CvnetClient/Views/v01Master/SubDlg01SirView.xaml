@@ -53,10 +53,11 @@
 
                     <Button
                         Grid.Row="0"
-                        Margin="13,6"
+                        Margin="13,5"
                         HorizontalAlignment="Right"
                         BorderBrush="Black"
                         BorderThickness="10"
+                        Click="Button_Click"
                         Command="{Binding DoListCommand}"
                         Style="{DynamicResource ExecButton}" />
 
@@ -72,12 +73,12 @@
                         Style="{DynamicResource WinGridData}">
                         <DataGrid.Columns>
                             <DataGridTextColumn
-                                Width="80"
+                                Width="3*"
                                 Binding="{Binding SupplierCD}"
                                 Header="仕入先CD" />
                             <DataGridTextColumn
-                                Width="*"
-                                Binding="{Binding Name}"
+                                Width="7*"
+                                Binding="{Binding SupplierName}"
                                 Header="仕入先名" />
                         </DataGrid.Columns>
 
@@ -111,28 +112,28 @@
         <!--  Main content  -->
         <Border
             Grid.Column="2"
-            Padding="8"
+            Padding="5"
             Background="#FFEEEEEE">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="720" />
+                    <RowDefinition Height="11*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
                 <Border
-                    Padding="8"
+                    Padding="5"
                     Background="White"
                     CornerRadius="6">
                     <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="667" />
-                            <RowDefinition Height="*" />
+                            <RowDefinition Height="9*" />
+                            <RowDefinition Height="1*" />
                         </Grid.RowDefinitions>
 
                         <TabControl Grid.Row="0" BorderThickness="1">
 
                             <TabItem Header="基本情報(Shift+F1)">
                                 <StackPanel>
-                                    <Grid Margin="0,8,0,8">
+                                    <Grid Margin="0,5,0,5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="2*" />
                                             <ColumnDefinition Width="4*" />
@@ -155,97 +156,95 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
+
                                         </Grid.RowDefinitions>
 
                                         <Label
                                             Grid.Row="0"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="仕入先CD" />
                                         <TextBox
                                             Grid.Row="0"
                                             Grid.Column="1"
-                                            Margin="0,8,0,8"
+                                            Margin="0,5,0,5"
                                             Text="{Binding EditSupplier.SupplierCD}" />
 
                                         <Label
                                             Grid.Row="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="仕入名" />
                                         <!--  Purchase name  -->
                                         <TextBox
                                             Grid.Row="1"
                                             Grid.Column="1"
-                                            Margin="0,8,0,8"
+                                            Margin="0,5,0,5"
                                             Text="{Binding EditSupplier.SupplierName}" />
 
                                         <Label
                                             Grid.Row="1"
                                             Grid.Column="2"
-                                            Margin="10,8"
+                                            Margin="10,5"
                                             VerticalAlignment="Center"
                                             Content="カナ" />
                                         <!--  kana  -->
                                         <TextBox
                                             Grid.Row="1"
                                             Grid.Column="3"
-                                            Margin="0,8,10,8"
+                                            Margin="0,5,10,5"
                                             Text="{Binding EditSupplier.Kana}" />
 
                                         <Label
-                                            Grid.Row="3"
-                                            Margin="0,8"
+                                            Grid.Row="2"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="旧コード" />
                                         <!--  old code  -->
                                         <TextBox
-                                            Grid.Row="3"
+                                            Grid.Row="2"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.OldCD}" />
 
                                         <Label
-                                            Grid.Row="3"
+                                            Grid.Row="2"
                                             Grid.Column="2"
-                                            Margin="10,8"
+                                            Margin="10,5"
                                             VerticalAlignment="Center"
                                             Content="略称" />
                                         <!--  Abbreviation  -->
                                         <TextBox
-                                            Grid.Row="3"
+                                            Grid.Row="2"
                                             Grid.Column="3"
-                                            Margin="0,0,10,0"
+                                            Margin="0,5,10,5"
                                             Text="{Binding EditSupplier.Abbreviation}" />
 
                                         <uc:CvnetBtListView
                                             Title="〒"
-                                            Grid.Row="4"
+                                            Grid.Row="3"
                                             Width="70"
                                             HorizontalAlignment="left"
                                             Command=""
                                             SelectedValue="{Binding EditSupplier.PostalCode}" />
                                         <TextBox
-                                            Grid.Row="4"
+                                            Grid.Row="3"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.PostalCode}" />
 
                                         <Label
-                                            Grid.Row="6"
-                                            Margin="0,8"
+                                            Grid.Row="4"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="住所" />
                                         <!--  address  -->
 
                                         <Grid
-                                            Grid.Row="6"
+                                            Grid.Row="4"
                                             Grid.Column="1"
                                             Grid.ColumnSpan="3"
-                                            Margin="0,0,10,0">
+                                            Margin="0,5,10,5">
 
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="5*" />
@@ -258,49 +257,49 @@
                                         </Grid>
 
                                         <Label
-                                            Grid.Row="7"
-                                            Margin="0,8"
+                                            Grid.Row="5"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="TEL" />
                                         <TextBox
-                                            Grid.Row="7"
+                                            Grid.Row="5"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.Tel}" />
 
                                         <Label
-                                            Grid.Row="7"
+                                            Grid.Row="5"
                                             Grid.Column="2"
-                                            Margin="10,8"
+                                            Margin="10,5"
                                             VerticalAlignment="Center"
                                             Content="FAX" />
                                         <TextBox
-                                            Grid.Row="7"
+                                            Grid.Row="5"
                                             Grid.Column="3"
-                                            Margin="0,0,10,0"
+                                            Margin="0,5,10,5"
                                             Text="{Binding EditSupplier.Fax}" />
 
                                         <Label
-                                            Grid.Row="8"
+                                            Grid.Row="6"
                                             Grid.Column="0"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="MAIL" />
                                         <TextBox
-                                            Grid.Row="8"
+                                            Grid.Row="6"
                                             Grid.Column="1"
                                             Grid.ColumnSpan="2"
-                                            Margin="0,0,10,0"
+                                            Margin="0,5,10,5"
                                             Text="{Binding EditSupplier.SupplierMail}" />
 
                                         <Label
-                                            Grid.Row="15"
+                                            Grid.Row="10"
                                             Grid.Column="2"
-                                            Margin="10,8"
+                                            Margin="10,5"
                                             VerticalAlignment="Center"
                                             Content="宛名FLG" />
                                         <!--  address code  -->
-                                        <Grid Grid.Row="15" Grid.Column="3">
+                                        <Grid Grid.Row="10" Grid.Column="3">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="3*" />
                                                 <ColumnDefinition Width="3*" />
@@ -308,35 +307,35 @@
                                             </Grid.ColumnDefinitions>
 
                                             <TextBox
-                                                Grid.Row="9"
+                                                Grid.Row="0"
                                                 Grid.Column="0"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 Text="{Binding EditSupplier.RecipientFlag1}" />
                                             <TextBox
-                                                Grid.Row="9"
+                                                Grid.Row="0"
                                                 Grid.Column="1"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 Text="{Binding EditSupplier.RecipientFlag2}" />
                                             <TextBox
-                                                Grid.Row="9"
+                                                Grid.Row="0"
                                                 Grid.Column="2"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 Text="{Binding EditSupplier.RecipientFlag3}" />
 
                                         </Grid>
 
                                         <Label
-                                            Grid.Row="10"
-                                            Margin="0,8"
+                                            Grid.Row="8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="宛名名称" />
                                         <!--  Address name  -->
 
                                         <Grid
-                                            Grid.Row="10"
+                                            Grid.Row="8"
                                             Grid.Column="1"
                                             Grid.ColumnSpan="3"
-                                            Margin="0,0,10,0">
+                                            Margin="0,5,10,5">
 
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="5*" />
@@ -349,31 +348,31 @@
                                         </Grid>
 
                                         <Label
-                                            Grid.Row="11"
-                                            Margin="0,8"
+                                            Grid.Row="9"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="自動発注"
                                             Visibility="{Binding IsAutoOrderVisible, Converter={StaticResource BoolToVis}}" />
 
                                         <ComboBox
-                                            Grid.Row="11"
+                                            Grid.Row="9"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             ItemsSource="{Binding ComboOrderFlag}"
                                             SelectedValue="{Binding EditSupplier.OrderFlag, Mode=TwoWay}"
                                             Style="{StaticResource SearchableComboBox1}"
                                             Visibility="{Binding IsAutoOrderVisible, Converter={StaticResource BoolToVis}}" />
 
                                         <Label
-                                            Grid.Row="12"
-                                            Margin="0,8"
+                                            Grid.Row="10"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="部門" />
                                         <!--  Department  -->
                                         <ComboBox
-                                            Grid.Row="12"
+                                            Grid.Row="10"
                                             Grid.Column="1"
-                                            Margin="0,8,0,8"
+                                            Margin="0,5,0,5"
                                             DisplayMemberPath="Value"
                                             ItemsSource="{Binding ComboDepartment}"
                                             SelectedValue="{Binding EditSupplier.Department}"
@@ -381,15 +380,15 @@
                                             Style="{StaticResource SearchableComboBox1}" />
 
                                         <Label
-                                            Grid.Row="13"
-                                            Margin="0,8"
+                                            Grid.Row="11"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
-                                            Content="発注停止" />
+                                            Content="発注停止?" />
                                         <!--  Stop ordering  -->
                                         <ComboBox
-                                            Grid.Row="13"
+                                            Grid.Row="11"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             DisplayMemberPath="Value"
                                             ItemsSource="{Binding ComboOrderStopFlag}"
                                             SelectedValue="{Binding EditSupplier.OrderStopFlag}"
@@ -397,16 +396,16 @@
                                             Style="{StaticResource SearchableComboBox1}" />
 
                                         <Label
-                                            Grid.Row="13"
+                                            Grid.Row="11"
                                             Grid.Column="2"
-                                            Margin="10,8"
+                                            Margin="10,5"
                                             VerticalAlignment="Center"
                                             Content="仕入区分" />
                                         <!--  Purchase classification  -->
                                         <ComboBox
-                                            Grid.Row="13"
+                                            Grid.Row="11"
                                             Grid.Column="3"
-                                            Margin="0,8,10,8"
+                                            Margin="0,5,10,5"
                                             DisplayMemberPath="Value"
                                             ItemsSource="{Binding ComboPurchaseType}"
                                             SelectedValue="{Binding EditSupplier.PurchaseType}"
@@ -414,70 +413,62 @@
                                             Style="{StaticResource SearchableComboBox1}" />
 
                                         <Label
-                                            Grid.Row="14"
-                                            Margin="0,8"
+                                            Grid.Row="12"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="法人CD" />
                                         <!--  Corporation CD  -->
                                         <!--  Corporation  -->
-                                        <Grid Grid.Row="14" Grid.Column="1">
+                                        <Grid Grid.Row="12" Grid.Column="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="7*" />
                                                 <ColumnDefinition Width="2*" />
                                             </Grid.ColumnDefinitions>
 
-                                            <ComboBox
+                                            <TextBox
                                                 Grid.Column="0"
-                                                Margin="0,8"
-                                                DisplayMemberPath="Value"
-                                                ItemsSource="{Binding ComboCorporationCd}"
-                                                SelectedValue="{Binding EditSupplier.CorporationCd}"
-                                                SelectedValuePath="Key"
-                                                Style="{StaticResource SearchableComboBox1}" />
+                                                Margin="0,5"
+                                                Text="{Binding EditSupplier.CorporationCd}" />
                                             <Button
                                                 Grid.Column="1"
                                                 Width="40"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 HorizontalAlignment="Left"
                                                 Style="{DynamicResource ComboButton}" />
                                         </Grid>
 
                                         <Label
-                                            Grid.Row="14"
+                                            Grid.Row="12"
                                             Grid.Column="2"
-                                            Margin="10,0,0,0"
+                                            Margin="0,5,0,5"
                                             Content="連携先法人CD" />
                                         <!--  Partner corporation CD  -->
-                                        <Grid Grid.Row="14" Grid.Column="3">
+                                        <Grid Grid.Row="12" Grid.Column="3">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="7*" />
                                                 <ColumnDefinition Width="2*" />
                                             </Grid.ColumnDefinitions>
 
-                                            <ComboBox
+                                            <TextBox
                                                 Grid.Column="0"
-                                                Margin="0,8,0,8"
-                                                DisplayMemberPath="Value"
-                                                ItemsSource="{Binding ComboLinkedCorporationCd}"
-                                                SelectedValue="{Binding EditSupplier.LinkedCorporationCd}"
-                                                SelectedValuePath="Key"
-                                                Style="{StaticResource SearchableComboBox1}" />
+                                                Margin="0,5,0,5"
+                                                Text="{Binding EditSupplier.LinkedCorporationCd}" />
                                             <Button
                                                 Grid.Column="1"
                                                 Width="40"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 HorizontalAlignment="Left"
                                                 Style="{DynamicResource ComboButton}" />
                                         </Grid>
 
                                         <Label
-                                            Grid.Row="15"
-                                            Margin="0,8"
+                                            Grid.Row="13"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="連携CD" />
                                         <!--  Cooperation CD  -->
                                         <TextBox
-                                            Grid.Row="15"
+                                            Grid.Row="13"
                                             Grid.Column="1"
                                             Text="{Binding EditSupplier.LinkCd}" />
 
@@ -493,23 +484,34 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Label Grid.Column="0" Content="作成日" />
-                                        <TextBox Grid.Column="1" Style="{DynamicResource ReadOnlyTextBox}" />
+
+                                        <TextBox
+                                            Grid.Column="1"
+                                            Style="{DynamicResource ReadOnlyTextBox}"
+                                            Text="{Binding EditSupplier.VdateCreate, Converter={StaticResource VdateConverter}}" />
 
                                         <Label
                                             Grid.Column="2"
                                             Margin="10,0,0,0"
                                             Content="修正日" />
-                                        <TextBox Grid.Column="3" Style="{DynamicResource ReadOnlyTextBox}" />
+                                        <TextBox
+                                            Grid.Column="3"
+                                            Style="{DynamicResource ReadOnlyTextBox}"
+                                            Text="{Binding EditSupplier.VdateUpdate, Converter={StaticResource VdateConverter}}" />
+
 
                                         <Label Grid.Column="4" Content="最終修正者" />
-                                        <TextBox Grid.Column="5" Style="{DynamicResource ReadOnlyTextBox}" />
+                                        <TextBox
+                                            Grid.Column="5"
+                                            Style="{DynamicResource ReadOnlyTextBox}"
+                                            Text="{Binding EditSupplier.e}" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="支払関連 (Shift+F2)">
 
                                 <StackPanel>
-                                    <Grid Margin="0,8,0,8">
+                                    <Grid Margin="0,5,0,5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="2*" />
                                             <ColumnDefinition Width="4*" />
@@ -528,87 +530,41 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
+
                                         </Grid.RowDefinitions>
 
-                                        <Label
-                                            Grid.Row="0"
-                                            Margin="0,8"
-                                            VerticalAlignment="Center"
-                                            Content="掛率" />
-                                        <!--  Multiplication rate  -->
-                                        <Grid Grid.Row="0" Grid.Column="1">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="4*" />
-                                                <ColumnDefinition Width="6*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBox
-                                                Grid.Column="0"
-                                                Margin="0,8"
-                                                Text="{Binding EditSupplier.Rate1}" />
-                                            <Label
-                                                Grid.Column="1"
-                                                Margin="0,8"
-                                                HorizontalAlignment="Left"
-                                                Content="%" />
-                                        </Grid>
-                                        <Label
-                                            Grid.Row="0"
-                                            Grid.Column="2"
-                                            Margin="10,8"
-                                            VerticalAlignment="Center"
-                                            Content="掛率2" />
-                                        <Grid Grid.Row="0" Grid.Column="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="4*" />
-                                                <ColumnDefinition Width="6*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBox
-                                                Grid.Column="0"
-                                                Margin="0,8"
-                                                Text="{Binding EditSupplier.Rate2}" />
-                                            <Label
-                                                Grid.Column="1"
-                                                Margin="0,8"
-                                                HorizontalAlignment="Left"
-                                                Content="%" />
-                                        </Grid>
+
 
                                         <Label
-                                            Grid.Row="1"
-                                            Margin="0,8"
+                                            Grid.Row="0"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="支払先" />
                                         <!--  Payee  -->
-                                        <ComboBox
-                                            Grid.Row="1"
+                                        <TextBox
+                                            Grid.Row="0"
                                             Grid.Column="1"
                                             Grid.ColumnSpan="2"
-                                            Margin="0,8,0,8"
-                                            DisplayMemberPath="Value"
-                                            ItemsSource="{Binding ComboPaymentDestinationCd}"
-                                            SelectedValue="{Binding EditSupplier.PaymentDestinationCd}"
-                                            SelectedValuePath="Key"
-                                            Style="{StaticResource SearchableComboBox1}" />
+                                            Margin="0,5,0,5"
+                                            Text="{Binding EditSupplier.PaymentDestinationCd}" />
                                         <Button
-                                            Grid.Row="1"
+                                            Grid.Row="0"
                                             Grid.Column="3"
                                             Width="40"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             HorizontalAlignment="Left"
                                             Style="{DynamicResource ComboButton}" />
 
-
                                         <Label
                                             Grid.Row="2"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="支払印刷" />
                                         <!--  payment printing  -->
                                         <ComboBox
                                             Grid.Row="2"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             DisplayMemberPath="Value"
                                             ItemsSource="{Binding ComboPaymentPrintFlag}"
                                             SelectedValue="{Binding EditSupplier.PaymentPrintFlag}"
@@ -618,68 +574,32 @@
                                         <Label
                                             Grid.Row="2"
                                             Grid.Column="2"
-                                            Margin="10,0,10,8"
+                                            Margin="10,5,10,5"
                                             VerticalAlignment="Bottom"
                                             Content="支払方法" />
                                         <!--  payment method  -->
                                         <ComboBox
                                             Grid.Row="2"
                                             Grid.Column="3"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             DisplayMemberPath="Value"
                                             ItemsSource="{Binding ComboPaymentMethod}"
                                             SelectedValue="{Binding EditSupplier.PaymentMethod}"
                                             SelectedValuePath="Key"
                                             Style="{StaticResource SearchableComboBox1}" />
 
-                                        <Label
-                                            Grid.Row="3"
-                                            Margin="0,8"
-                                            VerticalAlignment="Center"
-                                            Content="締日" />
-                                        <!--  Closing date  -->
-                                        <Grid Grid.Row="3" Grid.Column="1">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="4*" />
-                                                <ColumnDefinition Width="6*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBox
-                                                Grid.Column="0"
-                                                Margin="0,8"
-                                                Text="{Binding EditSupplier.DueDate}" />
-
-                                        </Grid>
-
-                                        <Label
-                                            Grid.Row="3"
-                                            Grid.Column="2"
-                                            Margin="10,8"
-                                            VerticalAlignment="Center"
-                                            Content="下限額" />
-                                        <!--  Lower limit amount  -->
-                                        <Grid Grid.Row="3" Grid.Column="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="4*" />
-                                                <ColumnDefinition Width="6*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBox
-                                                Grid.Column="0"
-                                                Margin="0,8"
-                                                Text="{Binding EditSupplier.MinimumAmount}" />
-
-                                        </Grid>
 
                                         <StackPanel Grid.Row="4">
                                             <Label
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 VerticalAlignment="Center"
                                                 Content="締日1" />
                                             <Label
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 VerticalAlignment="Center"
                                                 Content="締日1" />
                                             <Label
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 VerticalAlignment="Center"
                                                 Content="締日1" />
                                         </StackPanel>
@@ -708,21 +628,21 @@
                                             <ComboBox
                                                 Grid.Row="0"
                                                 Grid.Column="0"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboClosingDay}"
-                                                SelectedValue="{Binding EditSupplier.ClosingDay}"
+                                                SelectedValue="{Binding EditSupplier.ClosingDay, Mode=TwoWay}"
                                                 Style="{StaticResource SearchableComboBox1}" />
                                             <Label
                                                 Grid.Column="1"
-                                                Margin="15,0,0,0"
+                                                Margin="15,5,0,5"
                                                 VerticalAlignment="Center"
                                                 Content="支払予定日1" />
                                             <!--  Scheduled payment month  -->
                                             <ComboBox
                                                 Grid.Row="0"
                                                 Grid.Column="2"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboScheduledPaymentMonth}"
                                                 SelectedValue="{Binding EditSupplier.ScheduledPaymentMonth}"
@@ -731,10 +651,10 @@
                                             <ComboBox
                                                 Grid.Row="0"
                                                 Grid.Column="3"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboScheduledPaymentDay}"
-                                                SelectedValue="{Binding EditSupplier.ScheduledPaymentDay}"
+                                                SelectedValue="{Binding EditSupplier.ScheduledPaymentDay, Mode=TwoWay}"
                                                 Style="{StaticResource SearchableComboBox1}" />
 
                                             <TextBlock
@@ -747,21 +667,21 @@
                                             <ComboBox
                                                 Grid.Row="1"
                                                 Grid.Column="0"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboClosingDay2}"
-                                                SelectedValue="{Binding EditSupplier.ClosingDay2}"
+                                                SelectedValue="{Binding EditSupplier.ClosingDay2, Mode=TwoWay}"
                                                 Style="{StaticResource SearchableComboBox1}" />
                                             <Label
                                                 Grid.Row="1"
                                                 Grid.Column="1"
-                                                Margin="15,0,0,0"
+                                                Margin="15,5,0,5"
                                                 VerticalAlignment="Center"
                                                 Content="支払予定日2" />
                                             <ComboBox
                                                 Grid.Row="1"
                                                 Grid.Column="2"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboScheduledPaymentMonth2}"
                                                 SelectedValue="{Binding EditSupplier.ScheduledPaymentMonth2}"
@@ -770,30 +690,30 @@
                                             <ComboBox
                                                 Grid.Row="1"
                                                 Grid.Column="3"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboScheduledPaymentDay2}"
-                                                SelectedValue="{Binding EditSupplier.ScheduledPaymentDay2}"
+                                                SelectedValue="{Binding EditSupplier.ScheduledPaymentDay2, Mode=TwoWay}"
                                                 Style="{StaticResource SearchableComboBox1}" />
 
                                             <ComboBox
                                                 Grid.Row="2"
                                                 Grid.Column="0"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboClosingDay3}"
-                                                SelectedValue="{Binding EditSupplier.ClosingDay3}"
+                                                SelectedValue="{Binding EditSupplier.ClosingDay3, Mode=TwoWay}"
                                                 Style="{StaticResource SearchableComboBox1}" />
                                             <Label
                                                 Grid.Row="2"
                                                 Grid.Column="1"
-                                                Margin="15,0,0,0"
+                                                Margin="15,5,0,5"
                                                 VerticalAlignment="Center"
                                                 Content="支払予定日3" />
                                             <ComboBox
                                                 Grid.Row="2"
                                                 Grid.Column="2"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboScheduledPaymentMonth3}"
                                                 SelectedValue="{Binding EditSupplier.ScheduledPaymentMonth3}"
@@ -802,10 +722,10 @@
                                             <ComboBox
                                                 Grid.Row="2"
                                                 Grid.Column="3"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboScheduledPaymentDay3}"
-                                                SelectedValue="{Binding EditSupplier.ScheduledPaymentDay3}"
+                                                SelectedValue="{Binding EditSupplier.ScheduledPaymentDay3, Mode=TwoWay}"
                                                 Style="{StaticResource SearchableComboBox1}" />
 
                                         </Grid>
@@ -822,13 +742,13 @@
 
                                             <Label
                                                 Grid.Column="0"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 VerticalAlignment="Center"
                                                 Content="消費税CD" />
                                             <!--  consumption tax CD  -->
                                             <ComboBox
                                                 Grid.Column="1"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboTaxCd}"
                                                 SelectedValue="{Binding EditSupplier.TaxCd}"
@@ -837,13 +757,13 @@
 
                                             <Label
                                                 Grid.Column="2"
-                                                Margin="10,8"
+                                                Margin="10,5"
                                                 VerticalAlignment="Center"
                                                 Content="消費税端数" />
                                             <!--  Consumption tax fraction  -->
                                             <ComboBox
                                                 Grid.Column="3"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboTaxRounding}"
                                                 SelectedValue="{Binding EditSupplier.TaxRounding}"
@@ -852,13 +772,13 @@
 
                                             <Label
                                                 Grid.Column="4"
-                                                Margin="10,8"
+                                                Margin="10,5"
                                                 VerticalAlignment="Center"
                                                 Content="消費税計算" />
                                             <!--  Consumption tax calculation  -->
                                             <ComboBox
                                                 Grid.Column="5"
-                                                Margin="0,8,0,8"
+                                                Margin="0,5,0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboTaxCalculationMethod}"
                                                 SelectedValue="{Binding EditSupplier.TaxCalculationMethod}"
@@ -867,7 +787,7 @@
                                         </Grid>
                                         <Label
                                             Grid.Row="6"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="支払率" />
                                         <!--  payment rate  -->
@@ -878,11 +798,11 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBox
                                                 Grid.Column="0"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 Text="{Binding EditSupplier.PaymentRate}" />
                                             <Label
                                                 Grid.Column="1"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 HorizontalAlignment="Left"
                                                 Content="%" />
                                         </Grid>
@@ -890,14 +810,14 @@
                                         <Label
                                             Grid.Row="6"
                                             Grid.Column="2"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="伝票発行区分" />
                                         <!--  Invoice issue category  -->
                                         <ComboBox
                                             Grid.Row="6"
                                             Grid.Column="3"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             DisplayMemberPath="Value"
                                             ItemsSource="{Binding ComboSlipIssueType}"
                                             SelectedValue="{Binding EditSupplier.SlipIssueType}"
@@ -917,7 +837,7 @@
                                             <Label
                                                 Grid.Row="0"
                                                 Grid.Column="0"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 VerticalAlignment="Center"
                                                 Content="為替区分" />
                                             <!--  exchange classification  -->
@@ -925,7 +845,7 @@
                                             <ComboBox
                                                 Grid.Row="0"
                                                 Grid.Column="1"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboCurrencyType}"
                                                 SelectedValue="{Binding EditSupplier.CurrencyType}"
@@ -935,7 +855,7 @@
                                             <Label
                                                 Grid.Row="0"
                                                 Grid.Column="2"
-                                                Margin="10,8"
+                                                Margin="5,5"
                                                 VerticalAlignment="Center"
                                                 Content="為替桁切指定" />
                                             <!--  Exchange rate cutoff  -->
@@ -943,7 +863,7 @@
                                             <ComboBox
                                                 Grid.Row="0"
                                                 Grid.Column="3"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboCurrencyRoundingDigit}"
                                                 SelectedValue="{Binding EditSupplier.CurrencyRoundingDigit}"
@@ -953,7 +873,7 @@
                                             <Label
                                                 Grid.Row="0"
                                                 Grid.Column="4"
-                                                Margin="10,8"
+                                                Margin="5,5"
                                                 VerticalAlignment="Center"
                                                 Content="為替端数区分" />
                                             <!--  Exchange fraction division  -->
@@ -961,7 +881,7 @@
                                             <ComboBox
                                                 Grid.Row="0"
                                                 Grid.Column="5"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 DisplayMemberPath="Value"
                                                 ItemsSource="{Binding ComboCurrencyFractionType}"
                                                 SelectedValue="{Binding EditSupplier.CurrencyFractionType}"
@@ -971,7 +891,7 @@
 
                                         <Label
                                             Grid.Row="9"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="振込先" />
                                         <!--  Transfer destination  -->
@@ -982,7 +902,7 @@
                                                 <ColumnDefinition Width="5*" />
                                                 <ColumnDefinition Width="5*" />
                                                 <ColumnDefinition Width="5*" />
-                                                <ColumnDefinition Width="5*" />
+
 
                                             </Grid.ColumnDefinitions>
                                             <!--  bank  -->
@@ -999,16 +919,10 @@
                                                 Tag="支店"
                                                 Text="{Binding EditSupplier.BranchName, UpdateSourceTrigger=PropertyChanged}"
                                                 TextAlignment="Center" />
-                                            <!--  Transfer type  -->
-                                            <TextBox
-                                                Grid.Column="3"
-                                                Style="{DynamicResource TextBoxPlaceholder}"
-                                                Tag="振込種別"
-                                                Text="{Binding EditSupplier.TransferType, UpdateSourceTrigger=PropertyChanged}"
-                                                TextAlignment="Center" />
+
                                             <!--  account  -->
                                             <TextBox
-                                                Grid.Column="4"
+                                                Grid.Column="3"
                                                 Style="{DynamicResource TextBoxPlaceholder}"
                                                 Tag="口座"
                                                 Text="{Binding EditSupplier.AccountNumber, UpdateSourceTrigger=PropertyChanged}"
@@ -1017,7 +931,7 @@
                                         </Grid>
                                         <Label
                                             Grid.Row="11"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="伝票印字項目" />
                                         <!--  Slip printing items  -->
@@ -1026,7 +940,7 @@
                                             Grid.Row="11"
                                             Grid.Column="1"
                                             Grid.ColumnSpan="3"
-                                            Margin="0,8">
+                                            Margin="0,5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="5*" />
                                                 <ColumnDefinition Width="5*" />
@@ -1053,13 +967,105 @@
                                                 TextAlignment="Center" />
 
                                         </Grid>
+
                                     </Grid>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="5*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label
+                                            Grid.Column="1"
+                                            Margin="0,8"
+                                            VerticalAlignment="Center"
+                                            Content="掛率1" />
+                                        <!--  Multiplication rate  -->
+                                        <Grid Grid.Row="1" Grid.Column="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*" />
+                                                <ColumnDefinition Width="4*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox
+                                                Grid.Column="0"
+                                                Margin="0,8"
+                                                Text="{Binding EditSupplier.Rate1}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Margin="0,8"
+                                                HorizontalAlignment="Left"
+                                                Content="%" />
+                                        </Grid>
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="3"
+                                            Margin="0,8"
+                                            VerticalAlignment="Center"
+                                            Content="掛率2" />
+                                        <Grid Grid.Row="1" Grid.Column="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*" />
+                                                <ColumnDefinition Width="4*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox
+                                                Grid.Column="0"
+                                                Margin="0,8"
+                                                Text="{Binding EditSupplier.Rate2}" />
+                                            <Label
+                                                Grid.Column="1"
+                                                Margin="0,8"
+                                                HorizontalAlignment="Left"
+                                                Content="%" />
+                                        </Grid>
+                                        <Label
+                                            Grid.Column="5"
+                                            Margin="0,8"
+                                            VerticalAlignment="Center"
+                                            Content="締日" />
+                                        <!--  Closing date  -->
+                                        <Grid Grid.Column="6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*" />
+                                                <ColumnDefinition Width="4*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox
+                                                Grid.Column="0"
+                                                Margin="0,8"
+                                                Text="{Binding EditSupplier.DueDate}" />
+                                        </Grid>
+
+                                        <Label
+                                            Grid.Column="7"
+                                            Margin="0,8"
+                                            VerticalAlignment="Center"
+                                            Content="下限額" />
+                                        <!--  Lower limit amount  -->
+                                        <Grid Grid.Column="8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*" />
+                                                <ColumnDefinition Width="4*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox
+                                                Grid.Column="0"
+                                                Margin="0,8"
+                                                Text="{Binding EditSupplier.MinimumAmount}" />
+                                        </Grid>
+                                    </Grid>
+
                                 </StackPanel>
 
                             </TabItem>
                             <TabItem Header="拡張情報(Shift+F3)">
                                 <StackPanel>
-                                    <Grid Margin="0,8,0,8">
+                                    <Grid Margin="0,5,0,5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="2*" />
                                             <ColumnDefinition Width="3*" />
@@ -1074,7 +1080,7 @@
                                             <RowDefinition Height="3*" />
                                             <RowDefinition Height="3*" />
                                             <RowDefinition Height="3*" />
-                                            <RowDefinition Height="5*" />
+                                            <RowDefinition Height="4*" />
                                         </Grid.RowDefinitions>
 
                                         <uc:CvnetBtListView
@@ -1087,15 +1093,11 @@
                                             MstName="仕入先"
                                             SelectedValue="{Binding EditSupplier.SupplierCD, Mode=TwoWay}" />
 
-                                        <ComboBox
+                                        <TextBox
                                             Grid.Row="0"
                                             Grid.Column="1"
-                                            Margin="0,8"
-                                            DisplayMemberPath="Value"
-                                            ItemsSource="{Binding ComboPaymentPrintFlag}"
-                                            SelectedValue="{Binding EditSupplier.PaymentPrintFlag}"
-                                            SelectedValuePath="Key"
-                                            Style="{StaticResource SearchableComboBox1}" />
+                                            Margin="0,5"
+                                            Text="{Binding EditSupplier.NameCd01}" />
 
                                         <uc:CvnetBtListView
                                             Title="名称CD02"
@@ -1110,7 +1112,7 @@
                                         <TextBox
                                             Grid.Row="0"
                                             Grid.Column="3"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd02}" />
 
                                         <uc:CvnetBtListView
@@ -1125,7 +1127,7 @@
                                         <TextBox
                                             Grid.Row="1"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd03}" />
 
                                         <uc:CvnetBtListView
@@ -1141,7 +1143,7 @@
                                         <TextBox
                                             Grid.Row="1"
                                             Grid.Column="3"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd04}" />
 
                                         <uc:CvnetBtListView
@@ -1157,7 +1159,7 @@
                                         <TextBox
                                             Grid.Row="2"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd05}" />
 
                                         <uc:CvnetBtListView
@@ -1173,7 +1175,7 @@
                                         <TextBox
                                             Grid.Row="2"
                                             Grid.Column="3"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd06}" />
 
                                         <uc:CvnetBtListView
@@ -1189,7 +1191,7 @@
                                         <TextBox
                                             Grid.Row="3"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd07}" />
 
                                         <uc:CvnetBtListView
@@ -1205,7 +1207,7 @@
                                         <TextBox
                                             Grid.Row="3"
                                             Grid.Column="3"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd08}" />
 
                                         <uc:CvnetBtListView
@@ -1221,7 +1223,7 @@
                                         <TextBox
                                             Grid.Row="4"
                                             Grid.Column="1"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd09}" />
 
                                         <uc:CvnetBtListView
@@ -1237,12 +1239,12 @@
                                         <TextBox
                                             Grid.Row="4"
                                             Grid.Column="3"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             Text="{Binding EditSupplier.NameCd10}" />
 
                                         <Label
                                             Grid.Row="5"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             VerticalAlignment="Center"
                                             Content="生産FLG" />
                                         <!--  production FLG  -->
@@ -1250,7 +1252,7 @@
                                             Grid.Row="5"
                                             Grid.Column="1"
                                             Width="80"
-                                            Margin="0,8"
+                                            Margin="0,5"
                                             HorizontalAlignment="Left"
                                             Text="{Binding EditSupplier.ProductionFlag}" />
 
@@ -1263,13 +1265,13 @@
                                             </Grid.RowDefinitions>
                                             <Label
                                                 Grid.Row="0"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 VerticalAlignment="Center"
                                                 Content="備考1" />
                                             <!--  remarks  -->
                                             <TextBox
                                                 Grid.Row="1"
-                                                Height="100"
+                                                Height="80"
                                                 Margin="10,0,10,0"
                                                 VerticalContentAlignment="Top"
                                                 AcceptsReturn="True"
@@ -1280,12 +1282,12 @@
 
                                             <Label
                                                 Grid.Row="2"
-                                                Margin="0,8"
+                                                Margin="0,5"
                                                 VerticalAlignment="Center"
                                                 Content="備考2" />
                                             <TextBox
                                                 Grid.Row="3"
-                                                Height="100"
+                                                Height="80"
                                                 Margin="10,0,10,0"
                                                 VerticalContentAlignment="Top"
                                                 AcceptsReturn="True"
