@@ -6,6 +6,7 @@ using CvnetClient.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using static CvnetClient.ViewModels.SubDlg05PrnBcbookViewModel;
@@ -160,21 +161,35 @@ namespace CvnetClient.ViewModels
             }
             
             var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(sql_str), wrk_para, qfm);
-            if (ret.Split('\n')[1] ==  "0")
+            var lines = ret.Split('\n');
+
+            if (lines.Length < 2 || lines[1] == "0")
             {
                 ClientLib.MessageBoxError(this, "PDFデータがありません");
                 return;
             }
-            var ret1 = ret.Split('\n');
-            var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
-            await Task.Delay(1500); // PDF生成待ち
+
+            string pdfPath = lines[0];
+            string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
             var win = new WebpdfView();
-            var vm = win.DataContext as WebpdfViewModel;
-            if (vm == null) return;
-            vm.Pdfdata = url;
+            if (win.DataContext is WebpdfViewModel vm)
+            {
+                vm.Pdfdata = url;
+            }
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
+
+        
+
     }
 
 

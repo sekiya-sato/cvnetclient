@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Net.Http;
 using System.Reflection;
 
 namespace CvnetClient.Utils
@@ -35,6 +36,29 @@ namespace CvnetClient.Utils
             return result;
         }
 
+        public static async Task<bool> WaitForPdfAsync(string url, TimeSpan timeout)
+        {
+            using var httpClient = new HttpClient();
+            var start = DateTime.Now;
+
+            while (DateTime.Now - start < timeout)
+            {
+                try
+                {
+                    var response = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, url));
+                    if (response.IsSuccessStatusCode)
+                        return true; // ✅ PDF dah ada
+                }
+                catch
+                {
+                    // mungkin 404, abaikan dan cuba lagi
+                }
+
+                await Task.Delay(1000); // tunggu 1 saat sebelum cuba semula
+            }
+
+            return false; // ❌ Timeout
+        }
 
         public static List<T> ConvertDataTableToListV2<T>(DataTable table) where T : new()
         {
