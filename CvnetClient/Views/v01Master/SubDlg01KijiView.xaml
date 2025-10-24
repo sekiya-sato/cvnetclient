@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="生地付属マスタ" Style="{StaticResource MasterWindowStyle}">
@@ -60,6 +61,7 @@
 
                         <Label Content="生地付属CD" Width="80" VerticalAlignment="Center"/>
                         <TextBox x:Name="fabricInclCd" Text="{Binding FindFabricCd}" Grid.Column="1" Width="240" />
+                        
                     </Grid>
 
 
@@ -67,12 +69,17 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90"/>
                             <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="仕入先CD"
-VerticalAlignment="Center"/>
+                        <uc:CvnetBtListView Width="85"
+								Title="仕入先CD" 
+								MstName="仕入先"
+								SelectedValue="{Binding FindSupplierCd}"		
+								Command="{Binding SelSeasonCommand}" />
                         <TextBox x:Name="supplierCDSearch" Text="{Binding FindSupplierCd}" Grid.Column="1" Width="240"/>
-                    </Grid>
+                        
+                        </Grid>
                     <!--<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
                         <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>

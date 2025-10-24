@@ -153,7 +153,7 @@ namespace CvnetClient.ViewModels
         /// <summary>
         /// 初期化
         /// </summary>
-        public void Init(object? param)
+        public void OnInit(object? param)
         {
             if (param is string mode) { 
                 _mode = mode;
@@ -364,18 +364,29 @@ namespace CvnetClient.ViewModels
             if (ListMeisho == null || ListMeisho.Count == 0 || SelectKubun == null) return;
             var cdlist = string.Join(",", ListMeisho.Select(c => $"'{c.MeishoCd}'"));
             var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(printsql + " and A.名称CD in({0}) order by A.名称CD", cdlist), new string[] { SelectKubun.Split(' ')[0] }, "cvnet_meisho.qfm");
-            if (ret.Split('\n').Length < 2)
+            var lines = ret.Split('\n');
+
+            if (lines.Length < 2 || lines[1] == "0")
             {
                 ClientLib.MessageBoxError(this, "PDFデータがありません");
                 return;
             }
-            var ret1 = ret.Split('\n');
-            var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
-            await Task.Delay(1500); // PDF生成待ち
+
+            string pdfPath = lines[0];
+            string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
             var win = new WebpdfView();
-            var vm = win.DataContext as WebpdfViewModel;
-            if (vm == null) return;
-            vm.Pdfdata = url;
+            if (win.DataContext is WebpdfViewModel vm)
+            {
+                vm.Pdfdata = url;
+            }
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }

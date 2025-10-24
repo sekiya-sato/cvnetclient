@@ -124,6 +124,7 @@
 								 Text="{Binding SearchOpt.StartStoreCD}"/>
 						<uc:CvnetBtListView Grid.Column="1" 
 											MstName="店舗"
+											StyleDesign="2"
 											Command="{Binding DoStartStoreCommand}"/>
 					</Grid>
 					<TextBlock Grid.Row="2" Grid.Column="5" 
@@ -139,6 +140,7 @@
 								 Text="{Binding SearchOpt.EndStoreCD}"/>
 						<uc:CvnetBtListView Grid.Column="1" 
 											MstName="店舗"
+											StyleDesign="2"
 											Command="{Binding DoEndStoreCommand}"/>
 					</Grid>
  
