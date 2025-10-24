@@ -145,7 +145,7 @@ namespace CvnetClient.ViewModels
             var wrk_csv33 = new BizCsvDocument(get_csv);
 
             wrk_csv33.SetColHeader("TableName,Line1,Line0,Line2,Line3,Line4,Line5");
-            var wrk_csv = GlobalFunc.ConvertDataTableToListV2<InputCsvItem>(wrk_csv33.GetTable());
+            var wrk_csv = BizCsvDocument.ConvertDataTableToList<InputCsvItem>(wrk_csv33.GetTable());
              
             var sql_str = "select  c.index_name , c.column_name,constraint_type"
                             + " from user_ind_columns c"
@@ -161,7 +161,7 @@ namespace CvnetClient.ViewModels
             var csv_tb = AppData.Http?.AspxSqlQuery(sql_str, v_para.ToArray());
             var csv_doc = new BizCsvDocument(csv_tb);
             csv_doc.SetColHeader("Line0,Line1,Line2");
-            var ret_csv = GlobalFunc.ConvertDataTableToListV2<InputCsvItem>(csv_doc.GetTable());
+            var ret_csv = BizCsvDocument.ConvertDataTableToList<InputCsvItem>(csv_doc.GetTable());
 
             foreach (var row in wrk_csv)
             {

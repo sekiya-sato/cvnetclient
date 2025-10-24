@@ -315,7 +315,7 @@ namespace CvnetClient.Utils
         }
         #endregion
 
-        #region List<dynamic> Features 
+        #region List Features 
 
         /// <summary>
         /// Convert dynamic list to string format that use for CSV file generate
@@ -385,6 +385,76 @@ namespace CvnetClient.Utils
                     MessageBox.Show("Error saving file:\n" + ex.Message);
                 }
             }
+        }
+
+
+        public static List<T> ConvertDataTableToList<T>(DataTable table) where T : new()
+        {
+            var list = new List<T>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                T obj = new T();
+                foreach (DataColumn col in table.Columns)
+                {
+                    var prop = typeof(T).GetProperty(col.ColumnName);
+
+                    if (prop == null || row[col] == DBNull.Value)
+                        continue;
+
+                    try
+                    {
+                        var value = row[col];
+
+                        // Handle numeric conversions
+                        if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(int?))
+                        {
+                            if (int.TryParse(value.ToString(), out var intVal))
+                                prop.SetValue(obj, intVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(double) || prop.PropertyType == typeof(double?))
+                        {
+                            if (double.TryParse(value.ToString(), out var dblVal))
+                                prop.SetValue(obj, dblVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(decimal?))
+                        {
+                            if (decimal.TryParse(value.ToString(), out var decVal))
+                                prop.SetValue(obj, decVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(bool) || prop.PropertyType == typeof(bool?))
+                        {
+                            if (bool.TryParse(value.ToString(), out var boolVal))
+                                prop.SetValue(obj, boolVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
+                        {
+                            if (DateTime.TryParse(value.ToString(), out var dtVal))
+                                prop.SetValue(obj, dtVal);
+                            continue;
+                        }
+
+                        // For string or other types
+                        prop.SetValue(obj, Convert.ChangeType(value, prop.PropertyType));
+                    }
+                    catch
+                    {
+                        // Ignore conversion errors
+                        continue;
+                    }
+                }
+                list.Add(obj);
+            }
+
+            return list;
         }
         #endregion
     }
