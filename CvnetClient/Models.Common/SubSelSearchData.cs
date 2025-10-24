@@ -123,4 +123,15 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? name;
     }
+
+    /// <summary>
+    /// View Class - SubDlgSel10pView
+    /// </summary>
+    public partial class Sel10pItem : ObservableObject
+    {
+        [ObservableProperty]
+        string? code;
+        [ObservableProperty]
+        string? name;
+    }
 }

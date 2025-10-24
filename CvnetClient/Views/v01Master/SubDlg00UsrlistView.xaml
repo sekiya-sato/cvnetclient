@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"               
         Title="社員証印刷" 
         WindowStartupLocation="CenterScreen"
@@ -64,23 +65,35 @@
 
                 <TextBlock Grid.Column="0" Text="社員CD" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                        <TextBox  Width="150" TextWrapping="Wrap">
-                            <MultiBinding StringFormat='{}{0} {1}'>
-                                <Binding Path="WorkerFrom.WorkerCD" />
-                                <Binding Path="WorkerFrom.Name" />
-                            </MultiBinding>
+                        <TextBox Width="150"
+                                d:Text="社員：Data"  
+                                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="WorkerFrom.WorkerCD" />
+                                    <Binding Path="WorkerFrom.Name" />
+                                </MultiBinding>
+                            </TextBox.Text>
                         </TextBox>
-                        <Button Style="{DynamicResource ComboButton}" Command="{Binding SelWorkerCommand}" CommandParameter="From"/>
+                        <uc:CvnetBtListView MstName="担当" StyleDesign="2" 
+                                            SelectedValue ="{Binding WorkerFrom.WorkerCD}"
+                                            Command="{Binding SelWorker1Command}"/>
                     </StackPanel>
                     <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="3" Orientation="Horizontal">
-                        <TextBox  Width="150" TextWrapping="Wrap" >
-                            <MultiBinding StringFormat='{}{0} {1}'>
-                                <Binding Path="WorkerTo.WorkerCD" />
-                                <Binding Path="WorkerTo.Name" />
-                            </MultiBinding>
+                        <TextBox Width="150"
+                            d:Text="社員：Data"  
+                            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="WorkerTo.WorkerCD" />
+                                    <Binding Path="WorkerTo.Name" />
+                                </MultiBinding>
+                            </TextBox.Text>
                         </TextBox>
-                        <Button Style="{DynamicResource ComboButton}" Command="{Binding SelWorkerCommand}" CommandParameter="To"/>
+                        <uc:CvnetBtListView MstName="担当" StyleDesign="2" 
+                    SelectedValue ="{Binding WorkerTo.WorkerCD}"
+                    Command="{Binding SelWorker2Command}"/>
                     </StackPanel>
                 </Grid>
 
@@ -95,24 +108,36 @@
 
                     <TextBlock Grid.Column="0" Text="店舗CD" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                        <TextBox  Width="150" TextWrapping="Wrap">
-                            <MultiBinding StringFormat='{}{0} {1}'>
-                                <Binding Path="ShopFrom.TradingCD" />
-                                <Binding Path="ShopFrom.TradingName" />
-                            </MultiBinding>
+                        <TextBox Width="150"
+                                d:Text="店舗：Data"  
+                                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="ShopFrom.TradingCD" />
+                                    <Binding Path="ShopFrom.TradingName" />
+                                </MultiBinding>
+                            </TextBox.Text>
                         </TextBox>
-                        <Button Style="{DynamicResource ComboButton}" Command="{Binding SelShopCommand}" CommandParameter="From"/>
+                        <uc:CvnetBtListView MstName="得意先" StyleDesign="2" 
+                            SelectedValue ="{Binding ShopFrom.TradingCD}"
+                            Command="{Binding SelShop1Command}"/>
                     </StackPanel>
                     
                     <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="3" Orientation="Horizontal">
-                        <TextBox  Width="150" TextWrapping="Wrap">
-                            <MultiBinding StringFormat='{}{0} {1}'>
-                                <Binding Path="ShopTo.TradingCD" />
-                                <Binding Path="ShopTo.TradingName" />
-                            </MultiBinding>
+                        <TextBox Width="150"
+                                d:Text="店舗：Data"  
+                                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="ShopTo.TradingCD" />
+                                    <Binding Path="ShopTo.TradingName" />
+                                </MultiBinding>
+                            </TextBox.Text>
                         </TextBox>
-                        <Button Style="{DynamicResource ComboButton}" Command="{Binding SelShopCommand}" CommandParameter="To"/>
+                        <uc:CvnetBtListView MstName="得意先" StyleDesign="2" 
+                            SelectedValue ="{Binding ShopTo.TradingCD}"
+                            Command="{Binding SelShop2Command}"/>
                     </StackPanel>
                 </Grid>
                 <!-- バーコード -->
@@ -151,7 +176,7 @@
                     HorizontalAlignment="Right"
                     Margin="0,20,0,0">
 
-            <Button Style="{DynamicResource ExecButton}" Command="{Binding DoPrintCommand}"/>
+            <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
             <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
             
         </StackPanel>

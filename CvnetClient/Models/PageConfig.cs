@@ -12,9 +12,11 @@ namespace CvnetClient.Models
     { 
         { "マスタ", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "名称マスタ", WindowId= typeof(Views.SubDlg01MeiView).FullName },
-                new ButtonConfig { Text = "得意先マスタ", WindowId="" },
-                new ButtonConfig { Text = "仕入マスタ", WindowId= typeof(Views.SubDlg01SirView).FullName },
+
+                new ButtonConfig { Text = "名称マスタ", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter = "0" },
+                new ButtonConfig { Text = "得意先マスタ", WindowId=typeof(Views.SubDlg01TokView).FullName},
+                new ButtonConfig { Text = "仕入マスタ", WindowId=typeof(Views.SubDlg01SirView).FullName },
+
                 new ButtonConfig { Text = "商品マスタ(新規登録)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
                 new ButtonConfig { Text = "商品マスタ(修正)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
                 new ButtonConfig { Text = "商品マスタ(照会)", WindowId=typeof(Views.SubDlg01Sho2View).FullName },
@@ -40,10 +42,10 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId="" },
                 new ButtonConfig { Text = "社員使用メニュー一覧", WindowId="" },
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId="" },
-                new ButtonConfig { Text = "週マスタ", WindowId="" },
+                new ButtonConfig { Text = "週マスタ", WindowId=typeof(Views.SubDlg01WeekView).FullName },
                 new ButtonConfig { Text = "バーコードブック印刷", WindowId="" },
                 new ButtonConfig { Text = "各種マスタ印刷", WindowId="" },
-                new ButtonConfig { Text = "タックシール印刷", WindowId="" }
+                new ButtonConfig { Text = "タックシール印刷", WindowId=typeof(Views.SubDlg01StkView).FullName }
             }
         }},
         { "管理メニュー", new PageData {
@@ -51,7 +53,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "社員LOGINマスタ一覧", WindowId="" },
                 new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId= typeof(Views.MasterSystemKanriView1).FullName },
-                new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId="" },
+                new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter = "1" },
                 new ButtonConfig { Text = "LOGIN履歴情報(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "処理履歴情報(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "手動・自動実行履歴(管理者用)", WindowId="" },
@@ -430,6 +432,7 @@ namespace CvnetClient.Models
     {
         public string Text { get; set; }
         public string WindowId { get; set; }
+        public object? Parameter { get; set; }
     }
 
 }

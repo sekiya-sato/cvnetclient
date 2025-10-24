@@ -3,20 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Views;
-using Newtonsoft.Json.Linq;
-using System;
-using System.CodeDom;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace CvnetClient.ViewModels
 {
@@ -25,6 +13,8 @@ namespace CvnetClient.ViewModels
         List<string>? listKubun;
         [ObservableProperty]
         string? selectKubun;
+        private string _mode = "0";
+        public string Mode => _mode;
         partial void OnSelectKubunChanged(string? value)
         {
             // 区分が変わったらStartCodeを初期化
@@ -163,19 +153,40 @@ namespace CvnetClient.ViewModels
         /// <summary>
         /// 初期化
         /// </summary>
-        [RelayCommand]
-        void Init()
+        public void Init(object? param)
         {
-            var kubun = AppData.Http?.AspxSqlQuery("""
+            if (param is string mode) { 
+                _mode = mode;
+
+                if (mode == "0") {
+                    var kubun = AppData.Http?.AspxSqlQuery("""
 				select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='IDX'  and a.ランク>= '1' order by a.名称CD
 				""", new string[0]);
-            if (kubun != null)
-            {
-                ListKubun = (from DataRow dr in kubun.Rows
-                             select string.Format($"{dr["名称CD"]} {dr["名称"]}")
-                             ).ToList();
-                SelectKubun = ListKubun[0];
+                    if (kubun != null)
+                    {
+                        ListKubun = (from DataRow dr in kubun.Rows
+                                     select string.Format($"{dr["名称CD"]} {dr["名称"]}")
+                                     ).ToList();
+                        SelectKubun = ListKubun[0];
+                    }
+                } else if (mode == "1") { 
+                var kubun = AppData.Http?.AspxSqlQuery("""
+				                select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='IDX'  and a.ランク>= '1' order by a.名称CD
+				                """, new string[0]);
+                    if (kubun != null)
+                    {
+                        ListKubun = new List<string>();
+                        ListKubun.Add("IDX 名称区分インデックス");
+
+                        ListKubun.AddRange(
+                            from DataRow dr in kubun.Rows
+                            select $"{dr["名称CD"]} {dr["名称"]}"
+                        );
+                        SelectKubun = ListKubun[0];
+                    }
+                }
             }
+            
         }
         /// <summary>
         /// 一覧表示
