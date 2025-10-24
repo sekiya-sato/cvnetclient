@@ -4,12 +4,15 @@ using CvnetClient.Models;
 using CvnetClient.Utils;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Dynamic;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg00InputCsvViewModel : BaseViewModel
     {
         #region Variables 
+        [ObservableProperty]
+        public string? m_Title = "マスタ補助 : 取込レイアウト作成";
 
         [ObservableProperty]
         public string? m_SelKubunName;
@@ -27,9 +30,13 @@ namespace CvnetClient.ViewModels
         public int m_IsDateEnable;
 
         [ObservableProperty]
+        public DateTime m_SelDate;
+
+        [ObservableProperty]
         public ObservableCollection<InputCsvItem>? m_InputCsvList;
 
         private BizArray para;
+        private int IsChkAll = 0;
         #endregion
 
         #region Combobox List  
@@ -52,7 +59,8 @@ namespace CvnetClient.ViewModels
             }
             else para = new BizArray();
 
-            IsDateEnable = 0;
+            IsChkAll = 0;
+            IsDateEnable = 0; SelDate = DateTime.Now;
             #region Set Combobox Value
             BizCsvDocument wrk_csv;
             if (AppData.ClassCvnet.SysCnt == null ||
@@ -104,9 +112,22 @@ namespace CvnetClient.ViewModels
 
         #region OnChecked Events
         [RelayCommand]
-        void DoChkAll()
+        void DoChkAll(string headerName)
         { 
-            
+            if (string.IsNullOrEmpty(headerName) || InputCsvList?.Count() == 0) return;
+            if (headerName.Trim().Contains("選択"))
+            {
+                if (IsChkAll == 0)
+                {
+                    InputCsvList?.ToList().ForEach(x => x.IsChecked = true);
+                    IsChkAll = 1;
+                }
+                else
+                {
+                    InputCsvList?.ToList().ForEach(x => x.IsChecked = false);
+                    IsChkAll = 0;
+                }
+            }
         }
         #endregion
 
@@ -115,6 +136,7 @@ namespace CvnetClient.ViewModels
         void DoSearch()
         {
             if (string.IsNullOrEmpty(SelKubunName) || ImpSelKubun?.Count == 0) return;
+            IsChkAll = 0;
             /* スキーマ情報取得&SET */
             var wrk_para = new BizArray();
             wrk_para[0] = "1"; 
@@ -122,7 +144,7 @@ namespace CvnetClient.ViewModels
             var get_csv = AppData.Http?.AspxSqlQuery2("db_schema", wrk_para.ToArray());
             var wrk_csv33 = new BizCsvDocument(get_csv);
 
-            wrk_csv33.SetColHeader("LineX,Line1,Line0,Line2,Line3,Line4,Line5");
+            wrk_csv33.SetColHeader("TableName,Line1,Line0,Line2,Line3,Line4,Line5");
             var wrk_csv = GlobalFunc.ConvertDataTableToListV2<InputCsvItem>(wrk_csv33.GetTable());
              
             var sql_str = "select  c.index_name , c.column_name,constraint_type"
@@ -135,7 +157,7 @@ namespace CvnetClient.ViewModels
                             + " AND constraint_type='U'"
                             + " order by  c.index_name , column_position";
             var v_para = new BizArray(); 
-            v_para[0] = (wrk_csv.Count != 0) ? wrk_csv.FirstOrDefault().Line1 : string.Empty;
+            v_para[0] = (wrk_csv.Count != 0) ? wrk_csv.FirstOrDefault().TableName : string.Empty;
             var csv_tb = AppData.Http?.AspxSqlQuery(sql_str, v_para.ToArray());
             var csv_doc = new BizCsvDocument(csv_tb);
             csv_doc.SetColHeader("Line0,Line1,Line2");
@@ -206,8 +228,63 @@ namespace CvnetClient.ViewModels
 
         [RelayCommand]
         void DoExecute()
-        { 
-            
+        {
+            if (InputCsvList?.Count() == 0) return;
+            var csv_layout = new BizCsvDocument();
+
+            var layout_list = new List<dynamic>();
+            dynamic row1 = new ExpandoObject();
+            var dict1 = (IDictionary<string, object>)row1;
+
+            dynamic row2 = new ExpandoObject();
+            var dict2 = (IDictionary<string, object>)row2;
+
+            /* 横リストの作成 */
+            int u_cnt = 0;
+            string sql_cols = "";
+            int col_cnt = 0; 
+
+            for (int i = 0; i < InputCsvList.Count(); i++)
+            {
+                if (InputCsvList[i].IsChecked)
+                {
+                    dict1[$"R1_C{i}"] = InputCsvList[i].Line1;
+                    sql_cols += ((col_cnt == 0) ? "" : ",") + InputCsvList[i].Line1;
+                    col_cnt++;
+                    dict2[$"R2_C{i}"] = string.Format("半角{0}", InputCsvList[i].Line3);
+                }
+                if (InputCsvList[i].Line6 == "1") u_cnt++; 
+            }
+            if (dict1.Count < 3 || dict2.Count < 3)
+            {
+                System.Windows.MessageBox.Show("取込レイアウトには3列以上必要です", "Error",
+                            System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                return;
+            }
+
+            dynamic row0 = new ExpandoObject();
+            var dict0 = (IDictionary<string, object>)row0;
+            dict0[$"R0_C0"] = DspKubunName;
+            dict0[$"R0_C1"] = u_cnt;
+            dict0[$"R0_C2"] = u_cnt;
+
+            layout_list.Add(dict0);
+            layout_list.Add(dict1);
+            layout_list.Add(dict2);
+             
+            DataTable date_csv = new DataTable();
+            if (IsDateEnable == 1)
+            {
+                string sql_str = string.Format("select {0} from HC${1} where vdate_update >= :1 order by seq_no", sql_cols, DspKubunName); 
+                var v_para = new BizArray();
+                v_para[0] = AppData.ClassSatoo.GetVdateValue(SelDate.ToString("yyyy/MM/dd HH:mm:ss")).ToString();
+                date_csv = AppData.Http?.AspxSqlQuery(sql_str, v_para.ToArray()); 
+            }
+            var ret_csv = new BizCsvDocument(date_csv); 
+            //Merge 2 doc data
+            string csv_data = BizCsvDocument.ConvertDynamicListToCsv(layout_list) + "\r\n" + ret_csv.SaveStr(1);
+
+            BizCsvDocument.SaveStrToCsv(csv_data, SelKubunName, "保存", "取込レイアウト");
         }
 
         [RelayCommand]
@@ -226,8 +303,11 @@ namespace CvnetClient.ViewModels
 
     public partial class InputCsvItem : ObservableObject
     {
+        [ObservableProperty]
+        public string m_TableName;
+
         /// <summary>
-        /// Data Row Select Status (0: Not Selected, 1: Selected)
+        /// Data Row Select Status (False: Not Selected, True: Selected)
         /// </summary>
         [ObservableProperty]
         public bool m_IsChecked;

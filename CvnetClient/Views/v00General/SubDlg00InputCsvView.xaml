@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+		xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+		xmlns:ie="clr-namespace:CvnetClient.Behaviors"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         mc:Ignorable="d"
+		Title="{Binding Title}"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MasterWindowStyle2}">
 	<Window.DataContext>
@@ -65,25 +67,85 @@
 		<DataGrid Grid.Row="1"
 				  Margin="0,5,0,5" 
 				  AutoGenerateColumns="False"
-				  HeadersVisibility="Column"
-				  IsReadOnly="True"
+				  CanUserAddRows="False"
+				  HeadersVisibility="Column" 
 				  IsSynchronizedWithCurrentItem="True"
 				  d:ItemsSource="{d:SampleData ItemCount=5}"
 				  ItemsSource="{Binding InputCsvList}"
-				  Style="{StaticResource WinGridData}"> 
+				  Style="{StaticResource WinGridData}">
+
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="PreviewMouseDoubleClick">
+					<ie:HeaderDoubleClickCommandAction Command="{Binding DoChkAllCommand}" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+
 			<DataGrid.Columns>
 				<DataGridTemplateColumn Header="選択" Width="40"> 
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<CheckBox IsChecked="{Binding IsChecked}"
+							<CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 									  VerticalAlignment="Center"
-									  HorizontalAlignment="Center"/>
+									  HorizontalAlignment="Center">
+								<CheckBox.Style>
+									<Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+										<Setter Property="IsEnabled" Value="True" />
+										<Setter Property="Opacity" Value="1" />
+										<Setter Property="Background" Value="White" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsRowActive}" Value="0">
+												<Setter Property="IsEnabled" Value="False" />
+												<Setter Property="Opacity" Value="0.5" />
+												<Setter Property="Background" Value="Pink" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</CheckBox.Style>
+							</CheckBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn> 
-				<DataGridTextColumn Header="列名" Binding="{Binding Line1}" Width="2*"/>
-				<DataGridTextColumn Header="データ型" Binding="{Binding Line2}" Width="2*"/>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn Header="列名" Binding="{Binding Line1}" Width="2*" IsReadOnly="True">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Setter Property="Background" Value="{x:Null}"/>
+							<Setter Property="Opacity" Value="1" /> 
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding IsRowActive}" Value="0">
+									<Setter Property="Background" Value="Pink"/>
+									<Setter Property="Opacity" Value="0.5" />
+								</DataTrigger> 
+							</Style.Triggers>
+						</Style>
+					</DataGridTextColumn.CellStyle> 
+				</DataGridTextColumn>
+				<DataGridTextColumn Header="データ型" Binding="{Binding Line2}" Width="2*" IsReadOnly="True">
+					<DataGridTextColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Setter Property="Background" Value="{x:Null}"/>
+							<Setter Property="Opacity" Value="1" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding IsRowActive}" Value="0">
+									<Setter Property="Background" Value="Pink"/>
+									<Setter Property="Opacity" Value="0.5" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTextColumn.CellStyle>
+				</DataGridTextColumn>
 				<DataGridTemplateColumn Header="桁数" Width="3*">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Setter Property="Opacity" Value="1" />
+							<Setter Property="IsEnabled" Value="True" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding IsRowActive}" Value="0"> 
+									<Setter Property="Opacity" Value="0.5" />
+									<Setter Property="IsEnabled" Value="False" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<Grid>
@@ -99,9 +161,21 @@
 				</DataGridTemplateColumn>
 
 				<DataGridTemplateColumn Header="備考" Width="3*">
+					<DataGridTemplateColumn.CellStyle>
+						<Style TargetType="DataGridCell">
+							<Setter Property="Opacity" Value="1" />
+							<Setter Property="IsEnabled" Value="True" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding IsRowActive}" Value="0">
+									<Setter Property="Opacity" Value="0.5" />
+									<Setter Property="IsEnabled" Value="False" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</DataGridTemplateColumn.CellStyle>
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<TextBox TextAlignment="Left" Text="{Binding Line7}" />
+							<TextBox TextAlignment="Left" Text="{Binding Line7}" IsReadOnly="True" />
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
@@ -129,6 +203,7 @@
 					Content="データ取得" 
 					Command="{Binding DoSearchDateCommand}"/>
 			<xctk:DateTimePicker Grid.Column="2" 
+								 Value="{Binding SelDate, Mode=TwoWay}"
 								 Format="Custom"
 								 FormatString="yyyy/MM/dd HH:mm:ss"
 								 Margin="0,0,5,0">
