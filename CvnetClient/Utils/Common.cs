@@ -47,17 +47,17 @@ namespace CvnetClient.Utils
                 {
                     var response = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, url));
                     if (response.IsSuccessStatusCode)
-                        return true; // ✅ PDF dah ada
+                        return true; 
                 }
                 catch
                 {
-                    // mungkin 404, abaikan dan cuba lagi
+                   
                 }
 
-                await Task.Delay(1000); // tunggu 1 saat sebelum cuba semula
+                await Task.Delay(1000);
             }
 
-            return false; // ❌ Timeout
+            return false; 
         }
 
         public static List<T> ConvertDataTableToListV2<T>(DataTable table) where T : new()
