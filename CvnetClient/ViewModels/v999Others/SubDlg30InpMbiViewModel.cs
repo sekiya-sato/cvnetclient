@@ -3,17 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Documents;
-using static CvnetClient.ViewModels.SubDlg01MeiConvViewModel;
-using static CvnetClient.ViewModels.SubDlg80GphABC2aViewModel;
 
 namespace CvnetClient.ViewModels
 {
@@ -195,44 +186,42 @@ namespace CvnetClient.ViewModels
                 SearchCond.BrdName = get_sel00.Name;
             }
         }
-    }
+        public partial class Budget : ObservableObject
+        {
+            [ObservableProperty]
+            public string? shopCD;
+            [ObservableProperty]
+            public string? brdCD;
+            [ObservableProperty]
+            public string? itemCD;
+            [ObservableProperty]
+            public string? itemName;
+            [ObservableProperty]
+            public string? date;
+            [ObservableProperty]
+            public int? quantity;
+            [ObservableProperty]
+            public int? budgetPrice;
+            [ObservableProperty]
+            public string? inpName;
+        }
 
-    public partial class Budget : ObservableObject 
-    {
-        [ObservableProperty]
-        public string? shopCD;
-        [ObservableProperty]
-        public string? brdCD;        
-        [ObservableProperty]
-        public string? itemCD;        
-        [ObservableProperty]
-        public string? itemName;
-        [ObservableProperty]       
-        public string? date;
-        [ObservableProperty]
-        public int? quantity;
-        [ObservableProperty]
-        public int? budgetPrice;
-        [ObservableProperty]
-        public string? inpName;        
-    }
-
-    public partial class Search : ObservableObject 
-    {
-        [ObservableProperty]
-        public DateOnly? date;
-        [ObservableProperty]
-        public string? brd;
-        [ObservableProperty] 
-        public string? brdName;
-        [ObservableProperty]
-        public string? itemFrom;
-        [ObservableProperty]
-        public string? itemTo;
-        [ObservableProperty]
-        public string? itemFromName;
-        [ObservableProperty]
-        public string? itemToName;
-    }
-
+        public partial class Search : ObservableObject
+        {
+            [ObservableProperty]
+            public DateOnly? date;
+            [ObservableProperty]
+            public string? brd;
+            [ObservableProperty]
+            public string? brdName;
+            [ObservableProperty]
+            public string? itemFrom;
+            [ObservableProperty]
+            public string? itemTo;
+            [ObservableProperty]
+            public string? itemFromName;
+            [ObservableProperty]
+            public string? itemToName;
+        }
+    }   
 }
