@@ -20,6 +20,7 @@ namespace CvnetClient.ViewModels
 
         public void OnInit() {
             SearchCond = new Search();
+            SearchCond.Date = DateTime.Now;
             SearchCond.ItemTo = "zzzzzzzzzzzzzz";
             //SearchCond.Date = DateOnly.TryParse(DateTime.Now.ToString(), out null);
         }
@@ -30,7 +31,7 @@ namespace CvnetClient.ViewModels
             string strSql = "";
             //var ret_csv = null;
             string[] wrk_para = new string[5];
-            wrk_para[0] = SearchCond?.Date?.ToString("yyyyMMdd");
+            wrk_para[0] = SearchCond?.Date?.ToString("yyyyMM") + "01";
             wrk_para[1] = ".";
             wrk_para[2] = SearchCond.Brd;
             wrk_para[3] = SearchCond.ItemFrom;
@@ -97,13 +98,14 @@ namespace CvnetClient.ViewModels
             Common.ConvertDotStringDel(list);
             BudgetList = new ObservableCollection<Budget>(list);
             foreach (var item in BudgetList)
-
+            {
+                item.InpName = ".";
                 item.PropertyChanged += (_, e) =>
                 {
                     if (e.PropertyName == nameof(Budget.BudgetPrice))
                         UpdateSum();
                 };
-
+            }
             BudgetList.CollectionChanged += (_, __) => UpdateSum();
 
             UpdateSum();
@@ -141,7 +143,7 @@ namespace CvnetClient.ViewModels
             
             var v_para = new string[3];
             v_para[0] = "Master_YO_Item";
-            v_para[1] = csv_para!.SaveStr(1);
+            v_para[1] = csv_para!.SaveStr(0);
             v_para[2] = "4";
             var ret_csv = AppData.Http!.AspxSqlQuery2("mi_csv", v_para);
 
@@ -186,42 +188,43 @@ namespace CvnetClient.ViewModels
                 SearchCond.BrdName = get_sel00.Name;
             }
         }
-        public partial class Budget : ObservableObject
-        {
-            [ObservableProperty]
-            public string? shopCD;
-            [ObservableProperty]
-            public string? brdCD;
-            [ObservableProperty]
-            public string? itemCD;
-            [ObservableProperty]
-            public string? itemName;
-            [ObservableProperty]
-            public string? date;
-            [ObservableProperty]
-            public int? quantity;
-            [ObservableProperty]
-            public int? budgetPrice;
-            [ObservableProperty]
-            public string? inpName;
-        }
+    }
 
-        public partial class Search : ObservableObject
-        {
-            [ObservableProperty]
-            public DateOnly? date;
-            [ObservableProperty]
-            public string? brd;
-            [ObservableProperty]
-            public string? brdName;
-            [ObservableProperty]
-            public string? itemFrom;
-            [ObservableProperty]
-            public string? itemTo;
-            [ObservableProperty]
-            public string? itemFromName;
-            [ObservableProperty]
-            public string? itemToName;
-        }
+    public partial class Budget : ObservableObject 
+    {
+        [ObservableProperty]
+        public string? shopCD;
+        [ObservableProperty]
+        public string? brdCD;        
+        [ObservableProperty]
+        public string? itemCD;        
+        [ObservableProperty]
+        public string? itemName;
+        [ObservableProperty]       
+        public string? date;
+        [ObservableProperty]
+        public int? quantity;
+        [ObservableProperty]
+        public int? budgetPrice;
+        [ObservableProperty]
+        public string? inpName;        
+    }
+
+    public partial class Search : ObservableObject 
+    {
+        [ObservableProperty]
+        public DateTime? date;
+        [ObservableProperty]
+        public string? brd;
+        [ObservableProperty] 
+        public string? brdName;
+        [ObservableProperty]
+        public string? itemFrom;
+        [ObservableProperty]
+        public string? itemTo;
+        [ObservableProperty]
+        public string? itemFromName;
+        [ObservableProperty]
+        public string? itemToName;
     }   
 }
