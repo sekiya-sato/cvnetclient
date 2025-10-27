@@ -226,6 +226,5 @@ namespace CvnetClient.ViewModels
         public string? itemFromName;
         [ObservableProperty]
         public string? itemToName;
-    }
-
+    }   
 }

@@ -126,35 +126,36 @@ namespace CvnetClient.ViewModels
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
+        public partial class SearchCondition : ObservableObject
+        {
+            [ObservableProperty]
+            private PrintType selectedPrint = PrintType.通常発行;
+            [ObservableProperty]
+            private string? shipmentFrom;
+            [ObservableProperty]
+            private string? shipmentTo;
+            [ObservableProperty]
+            private string? shipmentFromName;
+            [ObservableProperty]
+            private string? shipmentToName;
+            [ObservableProperty]
+            private string? receiptFrom;
+            [ObservableProperty]
+            private string? receiptTo;
+            [ObservableProperty]
+            private string? receiptFromName;
+            [ObservableProperty]
+            private string? receiptToName;
+            [ObservableProperty]
+            private DateTime? dateFrom;
+            [ObservableProperty]
+            private DateTime? dateTo;
+            [ObservableProperty]
+            private long? numberFrom;
+            [ObservableProperty]
+            private long? numberTo;
+        }
     }
 
-    public partial class SearchCondition : ObservableObject 
-    {
-        [ObservableProperty]
-        private PrintType selectedPrint = PrintType.通常発行;
-        [ObservableProperty]
-        private string? shipmentFrom;
-        [ObservableProperty]
-        private string? shipmentTo;
-        [ObservableProperty]
-        private string? shipmentFromName;
-        [ObservableProperty]
-        private string? shipmentToName;
-        [ObservableProperty]
-        private string? receiptFrom;
-        [ObservableProperty]
-        private string? receiptTo;
-        [ObservableProperty]
-        private string? receiptFromName;
-        [ObservableProperty]
-        private string? receiptToName;
-        [ObservableProperty]
-        private DateTime? dateFrom;
-        [ObservableProperty]
-        private DateTime? dateTo;
-        [ObservableProperty]
-        private long? numberFrom;
-        [ObservableProperty]
-        private long? numberTo;
-    }
+    
 }
