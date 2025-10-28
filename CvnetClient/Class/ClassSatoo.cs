@@ -69,7 +69,7 @@ public class ClassSatoo
     /// </summary>
     /// <param name="v_date">String = 日付文字列(2004/01/01)</param>
     /// <returns>Number = 仮想日付数値</returns>
-    public long GetVdateValue(string v_date)
+    public decimal GetVdateValue(string v_date)
     {
         try
         {
@@ -77,7 +77,7 @@ public class ClassSatoo
             {
                 // Biz Designer Date numeric = days from base (OADate is common)
                 // Here I’ll use .NET’s DateTime.ToOADate (double) → cast to long
-                long value = (long)parsed.ToOADate();
+                decimal value = (decimal)parsed.ToOADate();
                 value -= 366; // subtract 366 as Biz Designer does
                 return value;
             }

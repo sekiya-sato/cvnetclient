@@ -38,7 +38,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "外部CSVデータ取込", WindowId="" },
                 new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId="" },
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
-                new ButtonConfig { Text = "商品サイズメンテ", WindowId="" },
+                new ButtonConfig { Text = "商品色サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
                 new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId="" },
                 new ButtonConfig { Text = "社員使用メニュー一覧", WindowId="" },
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId="" },
@@ -192,7 +192,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "商品履歴問合せ", WindowId="" },
                 new ButtonConfig { Text = "取引データ閲覧", WindowId="" },
                 new ButtonConfig { Text = "即時移動明細書印刷", WindowId="" },
-                new ButtonConfig { Text = "移動明細書印刷", WindowId="" },
+                new ButtonConfig { Text = "移動明細書印刷", WindowId=typeof(Views.SubDlg08PrnHhtlist06View).FullName },
                 new ButtonConfig { Text = "倉庫別受払表", WindowId="" },
                 new ButtonConfig { Text = "商品別受払表", WindowId="" },
                 new ButtonConfig { Text = "倉庫別在庫集計表", WindowId="" },
@@ -232,7 +232,7 @@ namespace CvnetClient.Models
         }},
         { "売上分析2", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "得意先別売上日報", WindowId="" },
+                new ButtonConfig { Text = "得意先別売上日報", WindowId=typeof(Views.SubDlg23PrnDayreportView).FullName,Parameter="" },
                 new ButtonConfig { Text = "得意先別売上月報", WindowId="" },
                 new ButtonConfig { Text = "担当得意先別予算実績対比表", WindowId="" },
                 new ButtonConfig { Text = "個人売上ランキング表", WindowId="" },
@@ -433,6 +433,7 @@ namespace CvnetClient.Models
         public string Text { get; set; }
         public string WindowId { get; set; }
         public object? Parameter { get; set; }
+        public string? Flag { get; set; }
     }
 
 }

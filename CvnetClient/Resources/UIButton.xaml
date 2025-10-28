@@ -126,7 +126,7 @@
                         <TextBlock FontFamily="Segoe MDL2 Assets"
                             Text="&#xE74D;" 	
                             FontSize="14"
-                            Margin="6"
+                            Margin="4"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Foreground="{TemplateBinding Foreground}"/>
@@ -146,6 +146,63 @@
                                     <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
                                 </Setter.Value>
                             </Setter>-->
+                        </Trigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <!--<Setter TargetName="border" Property="Opacity" Value="0.5"/>-->
+                            <!--<Setter Property="Foreground" Value="#FFD0D3D4"/>-->
+                            <!-- Light gray background -->
+                            <Setter TargetName="border" Property="Background" Value="#EEE"/>
+                            <!-- Softer border -->
+                            <Setter TargetName="border" Property="BorderBrush" Value="#AAA"/>
+                            <!-- Gray text for icon + content -->
+                            <Setter Property="Foreground" Value="#777"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RefreshFlexBtn" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#6B6B6B"/>
+        <!--<Setter Property="Background" Value="{DynamicResource DeleteBtnColor}"/>
+    <Setter Property="Foreground" Value="White"/>-->
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}"/>
+        <Setter Property="FontWeight" Value="{DynamicResource ButtonFontWeight}"/>
+        <Setter Property="FontSize" Value="{DynamicResource ButtonSize}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                x:Name="border"
+        CornerRadius="0"
+        Padding="{TemplateBinding Padding}">
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                        Text="&#xE72C;" 	
+                        FontSize="14"
+                        Margin="4"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Hover -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="Red"/>
+                        </Trigger>
+
+                        <!-- Pressed -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource BackBtnColor}"/>
+                            <!--<Setter TargetName="border" Property="RenderTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                            </Setter.Value>
+                        </Setter>-->
                         </Trigger>
 
                         <!-- Disabled -->

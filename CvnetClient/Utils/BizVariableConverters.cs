@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+
+﻿using System.Data;
+using System.Net.Http;
 using System.Data;
+using System.Dynamic;
 using System.IO; 
 using System.Text;
-using System.Windows.Documents;
 using System.Windows.Forms;
 
 namespace CvnetClient.Utils
@@ -73,14 +75,15 @@ namespace CvnetClient.Utils
 
     public class BizCsvDocument
     {
-        DataTable csv_doc;
+        DataTable csv_table; 
 
-        public BizCsvDocument() { 
-            csv_doc = new DataTable(); 
+        #region DataTable Features
+        public BizCsvDocument() {
+            csv_table = new DataTable(); 
         }
 
         public BizCsvDocument(DataTable csv_doc) {
-            this.csv_doc = csv_doc;
+            this.csv_table = csv_doc;
         }
 
         /// <summary>
@@ -95,7 +98,7 @@ namespace CvnetClient.Utils
         public BizCsvDocument(string csv_text, int head_flag = 0)
         {
             var dt = new DataTable();
-            this.csv_doc = dt;
+            this.csv_table = dt;
             if (string.IsNullOrEmpty(csv_text)) return;
 
             // Convert escaped sequences to real characters
@@ -143,27 +146,28 @@ namespace CvnetClient.Utils
                 }
                 dt.Rows.Add(rowValues);
             }
-            this.csv_doc = dt;
+            this.csv_table = dt;
         }
          
         public DataTable GetTable()
         {
-            return csv_doc;
+            return csv_table;
         }
 
         public void Clear()
         {
-            if (csv_doc != null) csv_doc.Clear();
-            else csv_doc = new DataTable();
+            if (csv_table != null) csv_table.Clear();
+            else csv_table = new DataTable();
         }
 
         /// <summary>
         /// Set each DataTable Column Name by split the string value 
         /// </summary>
         /// <param name="colName">ColName1,ColName2,ColName3</param>
-        public void SetColHeader(string colName)
+        public bool SetColHeader(string colName)
         {
-            if (string.IsNullOrEmpty(colName)) return;
+            bool isUpdate = false;
+            if (string.IsNullOrEmpty(colName) || csv_table?.Columns?.Count == 0) return isUpdate;
 
             // Clear All Column Name
             clearColHeader();
@@ -175,11 +179,12 @@ namespace CvnetClient.Utils
                                 .ToList();
               
             int i = 0;
-            foreach (DataColumn col in csv_doc.Columns)
+            foreach (DataColumn col in csv_table.Columns)
             {
                 if (i >= columns.Count) break;
                 col.ColumnName = columns[i++] ?? string.Empty;
             }
+            return isUpdate = true;
         }
 
         /// <summary>
@@ -187,14 +192,14 @@ namespace CvnetClient.Utils
         /// </summary>
         public void SetColHeader(string[] colName)
         { 
-            if (colName == null || colName.Length == 0) return;
+            if (colName == null || colName.Length == 0 || csv_table?.Columns?.Count == 0) return;
 
             // Clear All Column Name
             clearColHeader();
 
             // Set New Column Name
             int i = 0;
-            foreach (DataColumn col in csv_doc.Columns)
+            foreach (DataColumn col in csv_table.Columns)
             {
                 if (i >= colName.Length) break;
                 col.ColumnName = colName[i++] ?? string.Empty;
@@ -206,10 +211,10 @@ namespace CvnetClient.Utils
         /// </summary>
         public void clearColHeader()
         {
-            if (csv_doc == null || csv_doc?.Columns?.Count == 0) return;
+            if (csv_table == null || csv_table?.Columns?.Count == 0) return;
             // Clear All Column Name
             int i = 0;
-            foreach (DataColumn col in csv_doc.Columns)
+            foreach (DataColumn col in csv_table.Columns)
             {
                 col.ColumnName = $"Col{i++}"; 
             }
@@ -221,41 +226,44 @@ namespace CvnetClient.Utils
         /// <param name="v_flg">0:With Header,1:Without Header</param>
         public string SaveStr(int v_flg = 0)
         {
-            if (csv_doc == null || csv_doc.Columns.Count == 0) return string.Empty;
+            if (csv_table?.Columns?.Count == 0) return string.Empty;
 
             var sb = new StringBuilder();
 
             // 1. Header row (optional)
             if (v_flg == 0)
             {
-                for (int i = 0; i < csv_doc.Columns.Count; i++)
+                for (int i = 0; i < csv_table.Columns.Count; i++)
                 {
-                    sb.Append(csv_doc.Columns[i].ColumnName);
-                    if (i < csv_doc.Columns.Count - 1)
+                    sb.Append(csv_table.Columns[i].ColumnName);
+                    if (i < csv_table.Columns.Count - 1)
                         sb.Append(",");
                 }
                 sb.AppendLine();
             }
 
             // 2. Data rows
-            foreach (DataRow row in csv_doc.Rows)
+            foreach (DataRow row in csv_table.Rows)
             {
-                for (int i = 0; i < csv_doc.Columns.Count; i++)
+                for (int i = 0; i < csv_table.Columns.Count; i++)
                 {
                     var value = row[i]?.ToString() ?? string.Empty; 
                     sb.Append(value);
 
-                    if (i < csv_doc.Columns.Count - 1)
+                    if (i < csv_table.Columns.Count - 1)
                         sb.Append(",");
                 }
                 sb.AppendLine();
             }
-            return sb.ToString();
+            return sb.ToString().TrimEnd('\r', '\n');
         }
-
+        
+        /// <summary>
+        /// Direct convert DataTable into CSV File
+        /// </summary> 
         public void SaveCsv(string fileName = "export")
         {
-            if (csv_doc == null || csv_doc.Rows.Count == 0)
+            if (csv_table?.Rows?.Count == 0)
             {
                 System.Windows.MessageBox.Show("No data to export!", "Warning",
                     System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
@@ -274,22 +282,22 @@ namespace CvnetClient.Utils
                         using (var writer = new StreamWriter(dialog.FileName, false, Encoding.UTF8)) {
 
                             // Write header
-                            for (int i = 0; i < csv_doc.Columns.Count; i++)
+                            for (int i = 0; i < csv_table.Columns.Count; i++)
                             {
-                                writer.Write(csv_doc.Columns[i].ColumnName);
-                                if (i < csv_doc.Columns.Count - 1)
+                                writer.Write(csv_table.Columns[i].ColumnName);
+                                if (i < csv_table.Columns.Count - 1)
                                     writer.Write(",");
                             }
                             writer.WriteLine();
 
                             // Write rows
-                            foreach (DataRow row in csv_doc.Rows)
+                            foreach (DataRow row in csv_table.Rows)
                             {
-                                for (int i = 0; i < csv_doc.Columns.Count; i++)
+                                for (int i = 0; i < csv_table.Columns.Count; i++)
                                 {
                                     var value = row[i]?.ToString().Replace("\"", "\"\"");
                                     writer.Write($"\"{value}\"");
-                                    if (i < csv_doc.Columns.Count - 1)
+                                    if (i < csv_table.Columns.Count - 1)
                                         writer.Write(",");
                                 }
                                 writer.WriteLine();
@@ -306,5 +314,182 @@ namespace CvnetClient.Utils
                 }
             }
         }
+
+        public async Task LoadFromUrlAsync(string dataUrl, string headerUrl)
+        {
+            using var http = new HttpClient();
+
+            // 🟢 Baca sebagai byte dan decode dengan Shift-JIS
+            var headerBytes = await http.GetByteArrayAsync(headerUrl);
+            var dataBytes = await http.GetByteArrayAsync(dataUrl);
+
+            string headerText = Encoding.GetEncoding("shift_jis").GetString(headerBytes);
+            string dataText = Encoding.GetEncoding("shift_jis").GetString(dataBytes);
+
+            string[] headerCells = headerText.Trim().Split(',');
+            DataTable table = new DataTable();
+            foreach (var col in headerCells)
+                table.Columns.Add(col.Trim());
+
+            var dataLines = dataText.Split('\n');
+            if (dataLines[0].StartsWith("H"))
+                dataLines = dataLines.Skip(1).ToArray();
+
+            foreach (var line in dataLines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                var row = table.NewRow();
+                var cells = line.Trim().Split(',');
+                for (int i = 0; i < Math.Min(cells.Length, table.Columns.Count); i++)
+                    row[i] = cells[i].Trim();
+                table.Rows.Add(row);
+            }
+
+            csv_table = table;
+        }
+        #endregion
+
+        #region List Features 
+
+        /// <summary>
+        /// Convert dynamic list to string format that use for CSV file generate
+        /// Mainly to againts unconsistent column avaible format 
+        /// </summary>
+        /// <param name="data_table"></param>
+        /// <param name="includeHeader"></param>
+        /// <returns></returns>
+        public static string ConvertDynamicListToCsv(List<dynamic> data_table, bool includeHeader = false)
+        { 
+            if (data_table == null || data_table.Count == 0)  return string.Empty;
+            
+            var sb = new StringBuilder();
+            var firstRow = (IDictionary<string, object>)data_table.First();
+
+            // ✅ Add header if requested
+            if (includeHeader)
+            {
+                sb.AppendLine(string.Join(",", firstRow.Keys));
+            }
+
+            // ✅ Add each row
+            foreach (var item in data_table)
+            {
+                var dict = (IDictionary<string, object>)item;
+                var values = dict.Values.Select(v => EscapeCsvValue(v?.ToString() ?? ""));
+                sb.AppendLine(string.Join(",", values));
+            } 
+            return sb.ToString();   
+        }
+
+        /// <summary>
+        /// Escape commas, quotes, and line breaks
+        /// </summary> 
+        private static string EscapeCsvValue(string value)
+        { 
+            if (value.Contains(",") || value.Contains("\"") || value.Contains("\n"))
+            {
+                value = "\"" + value.Replace("\"", "\"\"") + "\"";
+            }
+            return value;
+        }
+
+        public static void SaveStrToCsv(string csvContent, 
+                                        string filename = "export",
+                                        string dlgTitle = "Save CSV File",
+                                        string dlgFiler = "CSV Files")
+        { 
+            if(string.IsNullOrEmpty(csvContent)) return;
+
+            // Show file dialog
+            var dialog = new SaveFileDialog
+            {
+                Title = dlgTitle,
+                Filter = $"{dlgFiler} (*.csv)|*.csv",
+                FileName = $"{filename}.csv"
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                { 
+                    File.WriteAllText(dialog.FileName, csvContent, Encoding.UTF8); 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error saving file:\n" + ex.Message);
+                }
+            }
+        }
+
+
+        public static List<T> ConvertDataTableToList<T>(DataTable table) where T : new()
+        {
+            var list = new List<T>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                T obj = new T();
+                foreach (DataColumn col in table.Columns)
+                {
+                    var prop = typeof(T).GetProperty(col.ColumnName);
+
+                    if (prop == null || row[col] == DBNull.Value)
+                        continue;
+
+                    try
+                    {
+                        var value = row[col];
+
+                        // Handle numeric conversions
+                        if (prop.PropertyType == typeof(int) || prop.PropertyType == typeof(int?))
+                        {
+                            if (int.TryParse(value.ToString(), out var intVal))
+                                prop.SetValue(obj, intVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(double) || prop.PropertyType == typeof(double?))
+                        {
+                            if (double.TryParse(value.ToString(), out var dblVal))
+                                prop.SetValue(obj, dblVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(decimal) || prop.PropertyType == typeof(decimal?))
+                        {
+                            if (decimal.TryParse(value.ToString(), out var decVal))
+                                prop.SetValue(obj, decVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(bool) || prop.PropertyType == typeof(bool?))
+                        {
+                            if (bool.TryParse(value.ToString(), out var boolVal))
+                                prop.SetValue(obj, boolVal);
+                            continue;
+                        }
+
+                        if (prop.PropertyType == typeof(DateTime) || prop.PropertyType == typeof(DateTime?))
+                        {
+                            if (DateTime.TryParse(value.ToString(), out var dtVal))
+                                prop.SetValue(obj, dtVal);
+                            continue;
+                        }
+
+                        // For string or other types
+                        prop.SetValue(obj, Convert.ChangeType(value, prop.PropertyType));
+                    }
+                    catch
+                    {
+                        // Ignore conversion errors
+                        continue;
+                    }
+                }
+                list.Add(obj);
+            }
+
+            return list;
+        }
+        #endregion
     }
 }
