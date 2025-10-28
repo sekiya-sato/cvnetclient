@@ -19,9 +19,7 @@
 	<Grid Margin="10" Background="White">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
-			<!-- Row 0: TOP BAND -->
 			<RowDefinition Height="*"/>
-			<!-- Row 1: MAIN 3-COLUMN AREA -->
 		</Grid.RowDefinitions>
 
 		<!-- ======= TOP BAND ======================= -->
@@ -30,93 +28,99 @@
 			<Grid>
 				<!-- Two rows: line1 (商品CD/商品名/単価), line2 (JANコード full width) -->
 				<Grid.RowDefinitions>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 
-				<Grid Grid.Row="0">
-					<StackPanel Orientation="Horizontal" 
-										Margin="0,5,0,0">
-						<Label Width="60"
-									   Margin="5,0,0,0"
-									   VerticalContentAlignment="Center"
-									   Content="商品CD" />
-						<TextBox  Width="250"
-										 Margin="5,0,0,0" 
-										 HorizontalAlignment="Left"
-										 VerticalAlignment="Top"
-										 d:Text="商品CD：Data"    
-										 Text="{Binding EditProduct.ProductCD}"
-										   
-										 TextWrapping="Wrap" />
-						<Label Width="60"
-									   Margin="45,0,0,0" 
-									   VerticalContentAlignment="Center"
-									   Content="カラー" />
-						<TextBox  Width="170"
-										 Margin="5,0,0,0" 
-										 HorizontalAlignment="Left"
-										 VerticalAlignment="Top"
-										 d:Text="カラー：Data"   
-										 Text="{Binding EditProduct.MakerNo}" 
-										 TextWrapping="Wrap" />
-						<Label Width="60"
-									   Margin="45,0,0,0" 
-									   VerticalContentAlignment="Center"
-									   Content="サイズ" />
-						<TextBox  Width="170"
-										 Margin="5,0,0,0" 
-										 HorizontalAlignment="Left"
-										 VerticalAlignment="Top"
-										 d:Text="サイズ：Data"   
-										 Text="{Binding EditProduct.MakerNo}" 
-										 TextWrapping="Wrap" />
-					</StackPanel>
+				<Grid Grid.Row="0" Margin="0,5,0,0">
+					<Grid.ColumnDefinitions>
+						<!-- Label | Field | spacer | Label | Field | spacer | Label | Field (flex) -->
+						<ColumnDefinition Width="70"/>
+						<!-- 商品CD label -->
+						<ColumnDefinition Width="4*"/>
+						<!-- 商品CD fixed -->
+						<ColumnDefinition Width="10"/>
+						<!-- spacer -->
+						<ColumnDefinition Width="70"/>
+						<!-- カラー label -->
+						<ColumnDefinition Width="2*"/>
+						<!-- カラー fixed -->
+						<ColumnDefinition Width="10"/>
+						<!-- spacer -->
+						<ColumnDefinition Width="70"/>
+						<!-- サイズ label -->
+						<ColumnDefinition Width="2*"/>
+						<!-- サイズ stretches with window -->
+					</Grid.ColumnDefinitions>
+
+					<Label Grid.Column="0" Content="商品CD" VerticalAlignment="Center" Margin="5,0,0,0"/>
+					<TextBox Grid.Column="1" Margin="5,0,0,0"
+				 Text="{Binding EditProduct.ProductCD}" d:Text="商品CD：Data"/>
+
+					<Label Grid.Column="3" Content="カラー" VerticalAlignment="Center"/>
+					<TextBox Grid.Column="4" Margin="5,0,0,0"
+				 Text="{Binding EditProduct.MakerNo}" d:Text="カラー：Data"/>
+
+					<Label Grid.Column="6" Content="サイズ" VerticalAlignment="Center"/>
+					<TextBox Grid.Column="7" Margin="5,0,0,0"
+				 HorizontalAlignment="Stretch"   
+				 Text="{Binding EditProduct.MakerNo}" d:Text="サイズ：Data"/>
 				</Grid>
-					
-				<Grid Grid.Row="1">
-					<StackPanel Orientation="Horizontal" 
-										Margin="0,5,0,0">
-						<Label Width="60"
-									   Margin="5,0,0,0"
-									   VerticalContentAlignment="Center"
-									   Content="JAN" />
-						<TextBox  Width="250"
-										 Margin="5,0,0,0" 
-										 HorizontalAlignment="Left"
-										 VerticalAlignment="Top"   
-										 Text="{Binding EditProduct.ProductCD}"
-										 TextWrapping="Wrap" />
-						<TextBox  Width="250"
-										 Margin="0,0,0,0" 
-										 HorizontalAlignment="Left"
-										 VerticalAlignment="Top" 
-										 Text="{Binding EditProduct.ProductCD}"
-										 TextWrapping="Wrap" />
-						<TextBox  Width="250"
-										 Margin="0,0,0,0" 
-										 HorizontalAlignment="Left"
-										 VerticalAlignment="Top" 
-										 Text="{Binding EditProduct.ProductCD}"
-										 TextWrapping="Wrap" />
-					</StackPanel>
+
+				<Grid Grid.Row="1" Margin="0,5,0,0">
+					<Grid.ColumnDefinitions>
+						<!-- Label | Field1 | spacer | Field2 | spacer | Field3 (stretch) -->
+						<ColumnDefinition Width="70"/>
+						<!-- JAN label -->
+						<ColumnDefinition Width="3*"/>
+						<!-- textbox 1 -->
+						<ColumnDefinition Width="3*"/>
+						<!-- textbox 2 -->
+						<ColumnDefinition Width="3*"/>
+						<!-- textbox 3 (fills remaining space) -->
+					</Grid.ColumnDefinitions>
+
+					<!-- Label -->
+					<Label Grid.Column="0"
+						   Content="JAN"
+						   VerticalAlignment="Center"
+						   Margin="5,0,0,0"/>
+
+					<!-- TextBox 1 -->
+					<TextBox Grid.Column="1"
+							 Margin="5,0,0,0"
+							 Text="{Binding EditProduct.ProductCD}"
+							 d:Text="JAN-1：Data"
+							 TextWrapping="Wrap"/>
+
+					<!-- TextBox 2 -->
+					<TextBox Grid.Column="2"
+							 Margin="0,0,0,0"
+							 Text="{Binding EditProduct.ProductCD}"
+							 d:Text="JAN-2：Data"
+							 TextWrapping="Wrap"/>			
+
+					<!-- TextBox 3 -->
+					<TextBox Grid.Column="3"
+							 Margin="0,0,0,0"
+							 HorizontalAlignment="Stretch"
+							 Text="{Binding EditProduct.ProductCD}"
+							 d:Text="JAN-3：Data"
+							 TextWrapping="Wrap"/>
 				</Grid>
 
 				<Grid Grid.Row="2">
-					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding DoListCommand}"
-HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
+					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding DoListCommand}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 				</Grid>
 			</Grid>
 		</Border>
 
-		<!-- ======= MAIN AREA (3 columns: table | splitter | form) ======== -->
+		<!-- ======= MAIN AREA (2 columns: table | form) ======== -->
 		<Grid Grid.Row="1">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="450"/>
-				<!-- LEFT: table -->
-				<ColumnDefinition Width="*"/>
-				<!-- RIGHT: form -->
+				<ColumnDefinition Width="4*"/>		<!-- LEFT: table -->
+				<ColumnDefinition Width="5*"/>		<!-- RIGHT: form -->
 			</Grid.ColumnDefinitions>
 
 			<!-- LEFT: TABLE -->
@@ -128,27 +132,23 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
                       RowHeaderWidth="0" RowHeight="24" ColumnHeaderHeight="24"
                       FontSize="12" ItemsSource="{Binding TableItems}">
 					<DataGrid.Columns>
-						<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCd}" Width="160"/>
-						<DataGridTextColumn Header="色"     Binding="{Binding Color}"     Width="60"/>
-						<DataGridTextColumn Header="サイズ" Binding="{Binding Size}"      Width="60"/>
-						<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="*"/>
+						<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCd}" Width="1*"/>
+						<DataGridTextColumn Header="色"     Binding="{Binding Color}"     Width="1*"/>
+						<DataGridTextColumn Header="サイズ" Binding="{Binding Size}"      Width="1*"/>
+						<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="1*"/>
 					</DataGrid.Columns>
 				</DataGrid>
 			</Border>
 
-			<!-- MIDDLE: SPLITTER --><!--
-			<GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      Background="White" ShowsPreview="True"/>-->
-
-			<!-- RIGHT: FORM (same pattern we built earlier; abbreviated here) -->
+			<!-- RIGHT: FORM -->
 			<Border Grid.Column="1" Margin="4"
-                Background="#CFCFFB" BorderBrush="#888" BorderThickness="1" CornerRadius="6">
+                BorderBrush="#888" BorderThickness="1" CornerRadius="6">
 				<ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10">
 					<StackPanel Orientation="Vertical" >
-						<!-- Example few rows; keep your full form here -->
+						<!-- 商品CD -->
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
+								<ColumnDefinition Width="70" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="34"/>
 							</Grid.ColumnDefinitions>
@@ -156,10 +156,10 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 							<TextBox Grid.Column="1" Height="26"/>
 							<Button Grid.Column="2" Content="≪" Height="24"/>
 						</Grid>
-
+						<!-- カラー -->
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
+								<ColumnDefinition Width="70" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="34"/>
 							</Grid.ColumnDefinitions>
@@ -167,11 +167,10 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 							<ComboBox Grid.Column="1" Height="26"/>
 							<Button Grid.Column="2" Content="≪" Height="24"/>
 						</Grid>
-
-						<!--  -->
+						<!-- サイズ -->
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
+								<ColumnDefinition Width="70" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="34"/>
 							</Grid.ColumnDefinitions>
@@ -179,38 +178,55 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 							<TextBox Grid.Column="1" Height="26"/>
 							<Button Grid.Column="2" Content="≪" Height="24"/>
 						</Grid>
-
+						<!-- JAN -->
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="70" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="34" />
 							</Grid.ColumnDefinitions>
 							<Label Content="JAN" Margin="0,0,0,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Width="135"
-							 Margin="0,0,0,0" 
-							 HorizontalAlignment="Left"
-							 VerticalAlignment="Top" 
-							 Text="{Binding EditProduct.ProductCD}"
-							 TextWrapping="Wrap" />
-							<TextBox Grid.Column="2" Width="135"
-							 Margin="-1,0,0,0" 
-							 HorizontalAlignment="Left"
-							 VerticalAlignment="Top" 
-							 Text="{Binding EditProduct.ProductCD}"
-							 TextWrapping="Wrap" />
-							<TextBox Grid.Column="3" Width="135"
-							 Margin="-1,0,0,0" 
-							 HorizontalAlignment="Left"
-							 VerticalAlignment="Top" 
-							 Text="{Binding EditProduct.ProductCD}"
-							 TextWrapping="Wrap" />
+							<TextBox Grid.Column="1" Height="26" 
+							 Text="{Binding EditProduct.ProductCD}" />
+							<TextBox Grid.Column="2" Height="26" 
+							 Margin="0,0,0,0"  
+							 Text="{Binding EditProduct.ProductCD}" />
+							<TextBox Grid.Column="3" Height="26" 
+							 Margin="0,0,0,0"  
+							 Text="{Binding EditProduct.ProductCD}" />
 							
 						</Grid>
+						<!-- 上代 -->
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
+								<ColumnDefinition Width="70" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="34" />
+							</Grid.ColumnDefinitions>
+							<Label Content="上代" Margin="0,0,8,0" VerticalAlignment="Center"/>
+							<TextBox Grid.Column="1" Height="26"/>
+						</Grid>
+						<!-- 中止 -->
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="70" />
+								<ColumnDefinition Width="2*" />
+								<ColumnDefinition Width="1.5*" />
+								<ColumnDefinition Width="70" />
+								<ColumnDefinition Width="2*" />
+							</Grid.ColumnDefinitions>
+							<Label Content="中止" Margin="0,0,8,0" VerticalAlignment="Center"/>
+							<ComboBox Grid.Column="1" Height="26"/>
+							<Label Grid.Column="3" Content="生産予定" Margin="0,0,8,0" VerticalAlignment="Center"/>
+							<TextBox Grid.Column="4" Height="26"/>
+						</Grid>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="36"/>
 							</Grid.ColumnDefinitions>
@@ -221,7 +237,7 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
+								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="36"/>
 							</Grid.ColumnDefinitions>
@@ -231,7 +247,7 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 						</Grid>
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
+								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="36"/>
 							</Grid.ColumnDefinitions>
@@ -242,28 +258,7 @@ HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 
 						<Grid>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="36"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="カラー" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<ComboBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="36"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="商品CD" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
-
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" SharedSizeGroup="FormLbl"/>
+								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="36"/>
 							</Grid.ColumnDefinitions>
