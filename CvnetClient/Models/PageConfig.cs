@@ -230,7 +230,7 @@ namespace CvnetClient.Models
         }},
         { "売上分析2", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "得意先別売上日報", WindowId="" },
+                new ButtonConfig { Text = "得意先別売上日報", WindowId=typeof(Views.SubDlg23PrnDayreportView).FullName,Parameter="" },
                 new ButtonConfig { Text = "得意先別売上月報", WindowId="" },
                 new ButtonConfig { Text = "担当得意先別予算実績対比表", WindowId="" },
                 new ButtonConfig { Text = "個人売上ランキング表", WindowId="" },
@@ -431,6 +431,7 @@ namespace CvnetClient.Models
         public string Text { get; set; }
         public string WindowId { get; set; }
         public object? Parameter { get; set; }
+        public string? Flag { get; set; }
     }
 
 }

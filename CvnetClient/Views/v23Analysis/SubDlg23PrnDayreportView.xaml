@@ -93,7 +93,7 @@
                     <TextBlock Grid.Column="0" Text="得意先" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
                         <TextBox Width="150"
-                                d:Text="出庫元：Data"  
+                                d:Text="得意先：Data"  
                                 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
@@ -102,23 +102,23 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
+                        <uc:CvnetBtListView MstName="得意先" StyleDesign="2" 
                                             SelectedValue ="{Binding Condition.ShopFrom}"
                                             Command="{Binding SelShop1Command}"/>
                     </StackPanel>
                     <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="3" Orientation="Horizontal">
                         <TextBox Width="150"
-                            d:Text="出庫元：Data"  
+                            d:Text="得意先：Data"  
                             TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="Condition.ShoptTo" />
+                                    <Binding Path="Condition.ShopTo" />
                                     <Binding Path="Condition.ShopToName" />
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
+                        <uc:CvnetBtListView MstName="得意先" StyleDesign="2" 
                     SelectedValue ="{Binding Condition.ShopTo}"
                     Command="{Binding SelShop2Command}"/>
                     </StackPanel>
