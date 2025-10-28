@@ -87,6 +87,11 @@
         <Setter Property="Width" Value="800"/>
     </Style>
 
+    <Style x:Key="SmallWindow" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
+        <Setter Property="Height" Value="450"/>
+        <Setter Property="Width" Value="650"/>
+    </Style>
+
     <Style x:Key="MasterWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Width" Value="1000"/>
         <Setter Property="Height" Value="650"/>

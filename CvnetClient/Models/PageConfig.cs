@@ -296,7 +296,7 @@ namespace CvnetClient.Models
         }},
         { "月次", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "締日更新", WindowId="" },
+                new ButtonConfig { Text = "締日更新", WindowId=typeof(Views.SubDlg09UpsimeView).FullName  },
                 new ButtonConfig { Text = "諸掛更新", WindowId="" },
                 new ButtonConfig { Text = "総平均原価更新", WindowId="" },
                 new ButtonConfig { Text = "最終仕入原価更新", WindowId="" },
