@@ -5,9 +5,10 @@ using CvnetClient.Views;
 
 namespace CvnetClient.ViewModels
 {
-    public enum BarcodeType { CODE39, NW7 }
+    
     public partial class SubDlg00UsrlistViewModel : BaseViewModel
     {
+        public enum BarcodeType { CODE39, NW7 }
         [ObservableProperty] MasterWorker? workerFrom = new();
         [ObservableProperty] MasterWorker? workerTo = new();
         [ObservableProperty] MasterShop? shopFrom = new();
@@ -76,7 +77,7 @@ namespace CvnetClient.ViewModels
             string[] wrk_para = new string[1];
             wrk_para[0] = "Data/img";
             
-            var ret_csv = AppData.Http!.AspxSqlQuery2("get_img_path",wrk_para,"",-1);
+            var ret_csv = AppData.Http!.AspxSqlQuery2("get_img_path",wrk_para);
             var ret_csv1 = ret_csv.Split('\n');
             string image_path = ret_csv1[0].ToString() + "\\";
             string printsql = "select A.社員CD,A.名前,'" + image_path + "'||nvl(A.携帯TEL,'.') 画像,A.店舗CD," +
@@ -111,19 +112,30 @@ namespace CvnetClient.ViewModels
             } else if (SelectedBarcode == BarcodeType.NW7) {
                 FileName = "cvnetfelica_v2.qfm";
             }
-                var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(printsql), param, FileName);
-            if (ret.Split('\n').Length < 2)
+            var ret = AppData.Http!.AspxSqlQueryCsv(string.Format(printsql), param, FileName);
+            var lines = ret.Split('\n');
+
+            if (lines.Length < 2 || lines[1] == "0")
             {
                 ClientLib.MessageBoxError(this, "PDFデータがありません");
                 return;
             }
-            var ret1 = ret.Split('\n');
-            var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
-            await Task.Delay(1500); // PDF生成待ち
+
+            string pdfPath = lines[0];
+            string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
             var win = new WebpdfView();
-            var vm = win.DataContext as WebpdfViewModel;
-            if (vm == null) return;
-            vm.Pdfdata = url;
+            if (win.DataContext is WebpdfViewModel vm)
+            {
+                vm.Pdfdata = url;
+            }
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }

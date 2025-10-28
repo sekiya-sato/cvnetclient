@@ -9,6 +9,9 @@
         xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         Title="バーコードブック発行" Style="{StaticResource PrintWindowStyle}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
     <Window.DataContext>
         <vm:SubDlg05PrnBcbookViewModel/>
     </Window.DataContext>
@@ -198,18 +201,18 @@
 
                     <RadioButton Grid.Column="1" Content="正規商品" 
 GroupName="OutputType"
-        IsChecked="{Binding SelectedOutPut, 
+        IsChecked="{Binding Condition.SelectedOutPut, 
                             Converter={StaticResource StringToBoolConverter}, 
                             ConverterParameter=正規商品, Mode=TwoWay}"
 Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="中止商品CD" 
                  GroupName="OutputType"
-                         IsChecked="{Binding SelectedOutPut, 
+                         IsChecked="{Binding Condition.SelectedOutPut, 
                                              Converter={StaticResource StringToBoolConverter}, 
                                              ConverterParameter=中止商品CD, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="3" Content="全て" GroupName="OutputType"
-                         IsChecked="{Binding SelectedOutPut, 
+                         IsChecked="{Binding Condition.SelectedOutPut, 
                                              Converter={StaticResource StringToBoolConverter}, 
                                              ConverterParameter=全て, Mode=TwoWay}"/>
                 </Grid>
@@ -228,18 +231,18 @@ Margin="0,0,20,0"/>
 
                     <RadioButton Grid.Column="1" Content="JAN" 
 GroupName="BarcodeType2"
-        IsChecked="{Binding SelectedBarcode, 
+        IsChecked="{Binding Condition.SelectedBarcode, 
                             Converter={StaticResource StringToBoolConverter}, 
                             ConverterParameter=JAN, Mode=TwoWay}"
 Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="CODE39" 
                  GroupName="BarcodeType2"
-                         IsChecked="{Binding SelectedBarcode, 
+                         IsChecked="{Binding Condition.SelectedBarcode, 
                                              Converter={StaticResource StringToBoolConverter}, 
                                              ConverterParameter=CODE39, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="3" Content="NW7" GroupName="BarcodeType2"
-                         IsChecked="{Binding SelectedBarcode, 
+                         IsChecked="{Binding Condition.SelectedBarcode, 
                                              Converter={StaticResource StringToBoolConverter}, 
                                              ConverterParameter=NW7, Mode=TwoWay}"/>
                 </Grid>

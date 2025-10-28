@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using CvnetClient.ViewModels;
+using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace CvnetClient.Views
 {
@@ -10,6 +12,6 @@ namespace CvnetClient.Views
         public SubDlg00InputCsvView()
         {
             InitializeComponent();
-        }
+        } 
     }
 }

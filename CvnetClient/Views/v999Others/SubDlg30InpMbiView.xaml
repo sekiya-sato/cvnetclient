@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils" 
@@ -39,12 +40,14 @@
                 </Grid.ColumnDefinitions>
 
 
-                <Label Grid.Column="0" Content="年月"></Label>
-                    <TextBox  Grid.Column="1"  Margin="0" Text="{Binding SearchCond.Date, StringFormat={}{0:yyyy/MM}}" />
+				<Label Grid.Column="0" Content="年月"></Label>
+				<xctk:DateTimePicker Grid.Column="1"
+					                 Value="{Binding SearchCond.Date, Mode=TwoWay}"
+					                 Format="Custom"
+									 Height="30"
+					                 FormatString="yyyy/MM"/>
 
-
-
-                <uc:CvnetBtListView Width="85" Grid.Column="2"
+				<uc:CvnetBtListView Width="85" Grid.Column="2"
 							Margin="5,0,0,0"
 							Title="ブランド" 
 							MstName="ブランド"

@@ -1,0 +1,177 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg23PrnDayreportView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="得意先別売上日報" Style="{StaticResource PrintWindowStyle}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg23PrnDayreportViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!--<RowDefinition Height="Auto"/>-->
+            <!-- Title -->
+            <RowDefinition Height="*"/>
+            <!-- Content -->
+            <RowDefinition Height="Auto"/>
+            <!-- Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Content -->
+        <Border Grid.Row="0"
+        Background="White"
+        CornerRadius="12"
+        Padding="30"
+        BorderBrush="#dcdde1"
+        BorderThickness="1"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Label column -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- Input column -->
+                </Grid.ColumnDefinitions>
+
+                <!-- バーコード -->
+                <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="出力区分:" 
+               VerticalAlignment="Center" 
+               Margin="0,0,20,0"/>
+
+                    <RadioButton Grid.Column="1" Content="スプール" 
+                                GroupName="PrintType"
+                                IsChecked="{Binding Condition.SelectedPrint, 
+                                            Converter={StaticResource StringToBoolConverter}, 
+                                            ConverterParameter=スプール, Mode=TwoWay}"
+                                Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="CSV" 
+                                GroupName="PrintType"
+                                IsChecked="{Binding Condition.SelectedPrint, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=CSV, Mode=TwoWay}"
+                                Margin="0,0,20,0"/>
+                </Grid>
+
+
+                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="得意先" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"
+                                d:Text="得意先：Data"  
+                                TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ShopFrom" />
+                                    <Binding Path="Condition.ShopFromName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="得意先" StyleDesign="2" 
+                                            SelectedValue ="{Binding Condition.ShopFrom}"
+                                            Command="{Binding SelShop1Command}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150"
+                            d:Text="得意先：Data"  
+                            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ShopTo" />
+                                    <Binding Path="Condition.ShopToName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="得意先" StyleDesign="2" 
+                    SelectedValue ="{Binding Condition.ShopTo}"
+                    Command="{Binding SelShop2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                
+
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="日付" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                    </StackPanel>
+
+
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
+                        <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                    </StackPanel>
+                </Grid>
+               
+
+            </Grid>
+        </Border>
+
+        <!-- Buttons -->
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="出力対象：得意先マスタ「卸先」及び「売仕店」の" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Grid.Row="1" Text="【出荷・売上入力】と【店舗売上入力】" VerticalAlignment="Center"></TextBlock>
+            </Grid>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+                <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+                <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>
