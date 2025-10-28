@@ -1,0 +1,334 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg23PrnTokumonthView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="得意先別売上月報" Style="{StaticResource PrintWindowStyle1}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg23PrnTokumonthViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Content -->
+        <Border Grid.Row="0"
+    Background="White"
+    CornerRadius="12"
+    Padding="30"
+    BorderBrush="#dcdde1"
+    BorderThickness="1"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- Label column -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- Input column -->
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <TextBlock Grid.Column="0" Text="日付" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.Date, Mode=TwoWay}" Margin="10"></DatePicker>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,10,0">
+                        <DatePicker  Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateFrom}" IsHitTestVisible="False"></DatePicker>
+                    </StackPanel>
+
+
+                    <TextBlock Grid.Column="3" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="4" Orientation="Horizontal" Margin="0,0,10,0">
+                        <DatePicker  Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateTo}" IsHitTestVisible="False"></DatePicker>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="伝票処理区分:" 
+                                VerticalAlignment="Center" 
+                                Margin="0,0,20,0"/>
+
+                    <RadioButton Grid.Column="1" Content="出荷売上" 
+                                 GroupName="ProcessType"
+                                 IsChecked="{Binding Condition.SelectedProcess, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=出荷売上, Mode=TwoWay}"
+                                 Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="店頭売上" 
+                                 GroupName="ProcessType"
+                                 IsChecked="{Binding Condition.SelectedProcess, 
+                                              Converter={StaticResource StringToBoolConverter}, 
+                                              ConverterParameter=店頭売上, Mode=TwoWay}"
+                                 Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="3" Content="全て" 
+                                GroupName="ProcessType"
+                                IsChecked="{Binding Condition.SelectedProcess, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=全て, Mode=TwoWay}"
+                                Margin="0,0,20,0"/>
+                </Grid>
+                <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="出力区分:" 
+           VerticalAlignment="Center" 
+           Margin="0,0,20,0"/>
+
+                    <RadioButton Grid.Column="1" Content="スプール" 
+                            GroupName="PrintType"
+                            IsChecked="{Binding Condition.SelectedPrint, 
+                                        Converter={StaticResource StringToBoolConverter}, 
+                                        ConverterParameter=スプール, Mode=TwoWay}"
+                            Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="CSV" 
+                            GroupName="PrintType"
+                            IsChecked="{Binding Condition.SelectedPrint, 
+                                         Converter={StaticResource StringToBoolConverter}, 
+                                         ConverterParameter=CSV, Mode=TwoWay}"
+                            Margin="0,0,20,0"/>
+                </Grid>
+
+                <Grid Grid.Row="6" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="担当者出力:"  Visibility="{Binding Condition.ShowOrNot}"
+                                VerticalAlignment="Center" 
+                                Margin="0,0,20,0"/>
+
+                    <RadioButton Grid.Column="1" Content="売上伝票" 
+                 GroupName="TantoType"
+                 IsChecked="{Binding Condition.SelectedTanto, 
+                             Converter={StaticResource StringToBoolConverter}, 
+                             ConverterParameter=売上伝票, Mode=TwoWay}"
+                                 Visibility="{Binding Condition.ShowOrNot}"
+                 Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="営業担当別予算マスタ" 
+                 GroupName="TantoType"
+                 IsChecked="{Binding Condition.SelectedTanto, 
+                              Converter={StaticResource StringToBoolConverter}, 
+                              ConverterParameter=営業担当別予算マスタ, Mode=TwoWay}"
+                                 Visibility="{Binding Condition.ShowOrNot}"
+                 Margin="0,0,20,0"/>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Button Grid.Column="0" Content="ブランド" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" Command="{Binding ActiveOrNotCommand}"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"
+                            d:Text="ブランド：Data" 
+                                 IsEnabled="{Binding Condition.FirstOkay}"
+                            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.BrdFrom" />
+                                    <Binding Path="Condition.BrdFromName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="ブランド" StyleDesign="2" 
+                                        SelectedValue ="{Binding Condition.BrdFrom}"
+                                            IsEnabled="{Binding Condition.FirstOkay}"
+                                        Command="{Binding SelBrd1Command}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150"
+                        d:Text="ブランド：Data"  
+                                 IsEnabled="{Binding Condition.SecondOkay}"
+                        TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.BrdTo" />
+                                    <Binding Path="Condition.BrdToName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="ブランド" StyleDesign="2" 
+                SelectedValue ="{Binding Condition.BrdTo}"
+                                            IsEnabled="{Binding Condition.SecondOkay}"
+                Command="{Binding SelShop2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <Button Grid.Column="0" Content="{Binding Condition.Tokuiname}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" Command="{Binding ChangeTokuiCommand}"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"
+            d:Text="得意先：Data"  
+            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ShopFrom" />
+                                    <Binding Path="Condition.ShopFromName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="{Binding Condition.Tokuiname}" StyleDesign="2" 
+                        SelectedValue ="{Binding Condition.ShopFrom}"
+                        Command="{Binding SelShop1Command}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150"
+        d:Text="得意先：Data"  
+        TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.ShopTo" />
+                                    <Binding Path="Condition.ShopToName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="{Binding Condition.Tokuiname}" StyleDesign="2" 
+SelectedValue ="{Binding Condition.ShopTo}"
+Command="{Binding SelShop2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="営業担当" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"
+            d:Text="営業担当：Data"  
+            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.TantoFrom" />
+                                    <Binding Path="Condition.TantoFromName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="営業担当" StyleDesign="2" 
+                        SelectedValue ="{Binding Condition.TantoFrom}"
+                        Command="{Binding SelTanto1Command}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150"
+        d:Text="営業担当：Data"  
+        TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="Condition.TantoTo" />
+                                    <Binding Path="Condition.TantoToName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <uc:CvnetBtListView MstName="営業担当" StyleDesign="2" 
+SelectedValue ="{Binding Condition.TantoTo}"
+Command="{Binding SelShop2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                
+
+
+            </Grid>
+        </Border>
+
+        <!-- Buttons -->
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="営業担当 ：【出荷売上/店舗売上伝票】担当者" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Grid.Row="1" Text="※伝票担当者未設定時は、得意先マスタの営業担当を参照" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Grid.Row="2" Text="伝票処理区分 出荷売上：得意先マスタ「卸先」の【出荷・売上入力】"></TextBlock>
+                <TextBlock Grid.Row="3" Text="伝票処理区分 店頭売上：得意先マスタ「売仕店」の【店舗売上入力】"></TextBlock>
+                <TextBlock Grid.Row="4" Text="※得意先マスタ「卸先」の【店舗売上入力】は対象外\r\n"></TextBlock>
+                <TextBlock Grid.Row="5" Text="n※得意先マスタ「売仕店」の【出荷・売上入力】は対象外"></TextBlock>
+            </Grid>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+                <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+                <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>

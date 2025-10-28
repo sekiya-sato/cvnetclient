@@ -81,7 +81,11 @@
         <Setter Property="Height" Value="450"/>
         <Setter Property="Width" Value="800"/>
     </Style>
-
+    
+    <Style x:Key="PrintWindowStyle1" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
+        <Setter Property="Height" Value="650"/>
+        <Setter Property="Width" Value="800"/>
+    </Style>
 
     <Style x:Key="MasterWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Width" Value="1000"/>
