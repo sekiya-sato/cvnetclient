@@ -426,21 +426,22 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Grid.ColumnSpan="2">
-                            <Button Width="auto" Content="最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0"/>
+                            <Button Width="auto" Content="＋最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0"/>
                         </Grid>
-                        
-                        <Label Grid.Column="2" Content="計" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="3" Margin="5,0"/>
+
+                        <Label Grid.Column="3" Content="計" HorizontalAlignment="Right"/>
                         <TextBox Grid.Column="4" Margin="5,0"/>
                         <TextBox Grid.Column="5" Margin="5,0"/>
-                        <Button Grid.Column="6" Margin="5,0" Content="一括Refresh↩"/>
-                        <Button Grid.Column="7" Content="バーコード入力"/>
+                        <TextBox Grid.Column="6" Margin="5,0"/>
+                        <Button Grid.Column="7" Margin="5,0" Content="一括Refresh　"/>
+                        <Button Grid.Column="8" Content="バーコード入力"/>
                     </Grid>
 
                     <DataGrid Grid.Row="2" x:Name="MyDataGrid" AlternationCount="999999" LoadingRow="MyDataGrid_LoadingRow" 
@@ -458,7 +459,7 @@
                         CanUserAddRows="True" 
                         Grid.ColumnSpan="2" 
                         ColumnWidth="*"
-                        Margin="-2,4,2,4"
+                        Margin="0,2,0,6"
                         ScrollViewer.CanContentScroll="True"
                         ScrollViewer.VerticalScrollBarVisibility="Auto"
                         GridLinesVisibility="All"
@@ -466,24 +467,25 @@
                         VerticalGridLinesBrush="#B0B0B0"
                         BorderBrush="#707070"
                         BorderThickness="1">
-                        
+
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Margin" Value="0"/>
                             </Style>
                         </DataGrid.CellStyle>
-                        
+
                         <DataGrid.Columns>
-                            
+
+
                             <DataGridTemplateColumn Width="0.5*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
 
-                                            <Grid>
+                                        <Grid>
 
-                                                <TextBlock Text="削除" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                            </Grid>
+                                            <TextBlock Text="削除" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Grid>
 
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -499,7 +501,7 @@
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Grid.RowSpan="2" Content="X←" Margin="1" Padding="2,0" Style="{StaticResource DeleteFlexBtn}"/>
+                                            <Button Grid.Column="0" Grid.RowSpan="2" Margin="1" Padding="2,0" Style="{StaticResource RefreshFlexBtn}"/>
                                             <Button Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Content="Refresh↩" Margin="2" Padding="2,0" Style="{StaticResource DeleteFlexBtn}"/>
                                         </Grid>
                                     </DataTemplate>
@@ -527,15 +529,15 @@
                                                 <ColumnDefinition Width="6*"/>
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
-                                            
+
                                             <TextBox Grid.Column="0" Text="{Binding ProductCD}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                            <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
-                                        
-                                        
+
+
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -544,22 +546,14 @@
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel>
-                                            <TextBlock Text="色" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                            <TextBlock Text="色名" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="色" FontWeight="Bold"/>
+                                            <TextBlock Text="色名" FontWeight="Bold"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal" >
-                                                <TextBox Text="{Binding Color}" Margin="2"/>
-                                                <Button Content="一覧" Margin="2" Padding="6" Style="{StaticResource DataGridButton}"/>
-                                            </StackPanel>
-                                            <TextBox Text="{Binding ColorName}" Margin="2"/>
-                                        </StackPanel>-->
-                                        
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
@@ -569,9 +563,12 @@
                                                 <ColumnDefinition Width="6*"/>
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBox Grid.Column="0" Text="{Binding Color}" Margin="2" Style="{StaticResource DataGridTextBox}"/>
-                                            <Button Grid.Column="1" Content="一覧" Margin="2" Padding="6" Style="{StaticResource DataGridButton}"/>
-                                            <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName}" Margin="2" Style="{StaticResource DataGridTextBox}"/>
+
+                                            <TextBox Grid.Column="0" Text="{Binding Color}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
+                                            <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
                                         </Grid>
 
 
@@ -582,9 +579,9 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="サイズ" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                            <TextBlock Text="サイズ名" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        <StackPanel>
+                                            <TextBlock Text="サイズ" FontWeight="Bold"/>
+                                            <TextBlock Text="サイズ名" FontWeight="Bold"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -592,21 +589,28 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <StackPanel HorizontalAlignment="Stretch">
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                                    <TextBox Text="{Binding Size}" Margin="2" />
-                                                    <Button Content="一覧" Margin="2" Padding="6" Style="{StaticResource DataGridButton}"/>
-                                                </StackPanel>
-                                                <TextBox Text="{Binding SSizeName}" Margin="2"/>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Width="4*"/>
+                                            </Grid.ColumnDefinitions>
 
-                                            </StackPanel>
+                                            <TextBox Grid.Column="0" Text="{Binding Size}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
+                                            <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding SizeName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
                                         </Grid>
-                                        
+
+
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn Width="0.5*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="数量" FontWeight="Bold" HorizontalAlignment="Center"/>
@@ -616,7 +620,16 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <TextBox Text="{Binding Weight}" Margin="2" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Weight}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
 
                                         </Grid>
                                     </DataTemplate>
@@ -626,19 +639,32 @@
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="上代単価" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                            <TextBlock Text="上代金額" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                        <StackPanel>
+                                            <TextBlock Text="上代単価" FontWeight="Bold"/>
+                                            <TextBlock Text="上代金額" FontWeight="Bold"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
-                                            <TextBox Text="{Binding JodaiTanka}" Margin="2"/>
-                                            <TextBox Text="{Binding JodaiKingaku}" Margin="2"/>
-                                        </StackPanel>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Width="4*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding JodaiTanka}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding JodaiKingaku}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
+                                        </Grid>
+
+
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -655,15 +681,26 @@
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
-                                            <TextBox Text="{Binding GedaiTanka}" Margin="2"/>
-                                            <TextBox Text="{Binding GedaiKingaku}" Margin="2"/>
-                                        </StackPanel>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Width="4*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding GedaiTanka}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding GedaiKingaku}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
+                                        </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn Width="2*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
@@ -679,14 +716,27 @@
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
-                                            <TextBox Text="{Binding Abstract}" Margin="2" HorizontalAlignment="Center"/>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBox Text="{Binding Kanryo}" Margin="2"/>
-                                                <TextBox Text="{Binding Maker}" Margin="2"/>
-                                                <TextBox Text="{Binding Kubun}" Margin="2"/>
-                                            </StackPanel>
-                                        </StackPanel>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstract}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <Border Grid.Row="1" Grid.ColumnSpan="4"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+
+                                            </Border>
+                                            <TextBox Grid.Row="1" Text="{Binding Kanryo}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                        </Grid>
+
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -700,25 +750,44 @@
 
                     <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,0" Grid.RowSpan="2">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="5*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
+                        <!--<Grid Grid.Column="0" Grid.ColumnSpan="2">
+                            <Button Width="auto" Content="＋最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0"/>
+                        </Grid>
 
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <Label Content="作成/修正日"/>
-                            <TextBox Width="80" Margin="0,1" Text="{Binding SelectedOrderHeader.CreateDate}" Style="{StaticResource ReadOnlyTextBox}"/>
-                            <TextBox Width="80" Margin="0,1" Text="{Binding SelectedOrderHeader.UpdateDate}"/>
-                            <Button Content="商品CD検索"/>
+                        <Label Grid.Column="3" Content="計" HorizontalAlignment="Right"/>
+                        <TextBox Grid.Column="4" Margin="5,0"/>
+                        <TextBox Grid.Column="5" Margin="5,0"/>
+                        <TextBox Grid.Column="6" Margin="5,0"/>
+                        <Button Grid.Column="7" Margin="5,0" Content="一括Refresh　"/>
+                        <Button Grid.Column="8" Content="バーコード入力"/>-->
+
+                        <Label Grid.Column="0" Grid.ColumnSpan="2" Margin="1,1" Content="作成/修正日"/>
+                        <TextBox Grid.Column="1" Margin="1,1" Text="{Binding SelectedOrderHeader.CreateDate}" Style="{StaticResource ReadOnlyTextBox}"/>
+                        <TextBox Grid.Column="2" Margin="1,1" Text="{Binding SelectedOrderHeader.UpdateDate}" Style="{StaticResource ReadOnlyTextBox}"/>
+                        <Button Grid.Column="3"  Margin="1,1"  Content="商品CD検索"/>
+
+                        <StackPanel Grid.Column="5" Grid.ColumnSpan="3" Orientation="Horizontal">
+                            <Button Grid.Column="5" Margin="1,0" Style="{DynamicResource UpdateIconBtn}" Command="{Binding DoUpdateCommand}"/>
+                            <Button Grid.Column="6" Margin="1,0" Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
+                            <Button Grid.Column="7" Margin="1,0" Style="{DynamicResource PrintIconBtn}" Command="{Binding DoPrintCommand}"/>
                         </StackPanel>
+                        
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button Style="{DynamicResource UpdateIconBtn}" Command="{Binding DoUpdateCommand}"/>
-                            <Button Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
-                            <Button Style="{DynamicResource PrintIconBtn}" Command="{Binding DoPrintCommand}"/>
-                        </StackPanel>
+                        <Button Grid.Column="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
 
-                        <Button Grid.Column="2" Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
+
+
+                        
                     </Grid>
 
                 </Grid>
