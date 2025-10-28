@@ -144,15 +144,17 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public Dictionary<string, string>? comboNameCd10;
 
-
         string sql_list = @"
-        SELECT * FROM (
-            SELECT * 
-            FROM HC$Master_SIIRE
-            WHERE 仕入先CD {0} :1
-            ORDER BY 仕入先CD {1}
-        ) WHERE ROWNUM <= {2}";
-
+            SELECT * FROM (
+                SELECT 
+                    A.*,
+                    (A.入力社員CD || ' ' || NVL(B.名前, '')) AS 最終修正者
+                FROM HC$MASTER_SIIRE A
+                LEFT JOIN HC$MASTER_SHAIN B 
+                    ON B.社員CD = A.入力社員CD
+                WHERE 仕入先CD {0} :1
+                ORDER BY 仕入先CD {1}
+            ) WHERE ROWNUM <= {2}";
 
         // ✅ Generate scheduled payment days list (1–28 + 99)
         private Dictionary<int, string> GenerateScheduledPaymentDaysDict()
@@ -530,6 +532,7 @@ namespace CvnetClient.ViewModels
                             Tel = dr["TEL"].ToString() ?? string.Empty,
                             Fax = dr["FAX"].ToString() ?? string.Empty,
                             SupplierMail = dr["仕入先MAIL"].ToString() ?? string.Empty,
+                            LastModifier = dr["最終修正者"].ToString() ?? string.Empty,
 
                             Rate1 = Convert.ToDecimal(dr["掛率"]),
                             Rate2 = Convert.ToDecimal(dr["掛率2"]),

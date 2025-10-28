@@ -13,9 +13,10 @@
     Style="{StaticResource MasterWindowStyle}"
     mc:Ignorable="d">
     <Window.DataContext>
-        <vm:SubDlg01StkViewModel/>
+        <vm:SubDlg01StkViewModel />
     </Window.DataContext>
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
     </Window.Resources>
     <Grid Margin="20">
@@ -71,12 +72,17 @@
                             IsChecked="{Binding SelCustomerSupplier, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}" />
                     </StackPanel>
 
+                    <!--  得意先範囲  -->
                     <StackPanel
                         Grid.Row="1"
                         Grid.ColumnSpan="2"
                         Margin="10"
-                        Orientation="Horizontal">
-                        <Label Width="80" Content="{Binding LabelRange}" />
+                        Orientation="Horizontal"
+                        Visibility="{Binding IsTokuiSelected, Converter={StaticResource BoolToVis}}">
+
+                        <Label Width="80" Content="得意先 範囲" />
+
+                        <!--  FROM  -->
                         <TextBox
                             Width="280"
                             Margin="5,0,0,0"
@@ -93,15 +99,15 @@
 
                         <uc:CvnetBtListView
                             Width="40"
-                            Command="{Binding SelRangeFromCommand}"
-                            MstName="{Binding LabelRange}"
-                            SelectedValue="{Binding RangeFrom.Code}"
                             Margin="-5,0"
+                            Command="{Binding SelRangeFromCommand}"
+                            MstName="得意先"
+                            SelectedValue="{Binding RangeFrom.Code}"
                             StyleDesign="2" />
 
                         <Label Content="～" />
 
-                        <!-- TO -->
+                        <!--  TO  -->
                         <TextBox
                             Width="280"
                             Margin="5,0,0,0"
@@ -118,13 +124,71 @@
 
                         <uc:CvnetBtListView
                             Width="40"
-                            Command="{Binding SelRangeToCommand}"
-                            MstName="{Binding LabelRange}"
-                            SelectedValue="{Binding RangeTo.Code}"
                             Margin="-5,0"
+                            Command="{Binding SelRangeToCommand}"
+                            MstName="得意先"
+                            SelectedValue="{Binding RangeTo.Code}"
+                            StyleDesign="2" />
+                    </StackPanel>
+
+                    <!--  仕入先範囲  -->
+                    <StackPanel
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Margin="10"
+                        Orientation="Horizontal"
+                        Visibility="{Binding IsSiiresakiSelected, Converter={StaticResource BoolToVis}}">
+                        <Label Width="80" Content="仕入先 範囲" />
+
+                        <!--  FROM  -->
+                        <TextBox
+                            Width="280"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="RangeFrom.Code" />
+                                    <Binding Path="RangeFrom.Name" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+
+                        <uc:CvnetBtListView
+                            Width="40"
+                            Margin="-5,0"
+                            Command="{Binding SelRangeFromCommand}"
+                            MstName="仕入先"
+                            SelectedValue="{Binding RangeFrom.Code}"
                             StyleDesign="2" />
 
+                        <Label Content="～" />
+
+                        <!--  TO  -->
+                        <TextBox
+                            Width="280"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="RangeTo.Code" />
+                                    <Binding Path="RangeTo.Name" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+
+                        <uc:CvnetBtListView
+                            Width="40"
+                            Margin="-5,0"
+                            Command="{Binding SelRangeToCommand}"
+                            MstName="仕入先"
+                            SelectedValue="{Binding RangeTo.Code}"
+                            StyleDesign="2" />
                     </StackPanel>
+
 
                     <!--  conditional join  -->
 
@@ -155,7 +219,18 @@
         </Border>
 
         <!--  Address modifiers  -->
-        <uc:ListFlexView Grid.Row="2" DataSource="{Binding ListFlexData}" />
+        <uc:ListFlexView Grid.Row="2" DataSource="{Binding ListFlexData}">
+            <uc:ListFlexView.Style>
+                <Style TargetType="uc:ListFlexView">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SearchOpt.FlexIsVisible}" Value="1">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </uc:ListFlexView.Style>
+        </uc:ListFlexView>
 
         <StackPanel
             Grid.Row="3"

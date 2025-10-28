@@ -57,7 +57,6 @@
                         HorizontalAlignment="Right"
                         BorderBrush="Black"
                         BorderThickness="10"
-                        Click="Button_Click"
                         Command="{Binding DoListCommand}"
                         Style="{DynamicResource ExecButton}" />
 
@@ -504,7 +503,7 @@
                                         <TextBox
                                             Grid.Column="5"
                                             Style="{DynamicResource ReadOnlyTextBox}"
-                                            Text="{Binding EditSupplier.e}" />
+                                            Text="{Binding LastModifier}" />
                                     </Grid>
                                 </StackPanel>
                             </TabItem>
