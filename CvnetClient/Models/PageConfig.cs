@@ -36,7 +36,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "外部CSVデータ取込", WindowId="" },
                 new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId="" },
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
-                new ButtonConfig { Text = "商品サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
+                new ButtonConfig { Text = "商品色サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
                 new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId="" },
                 new ButtonConfig { Text = "社員使用メニュー一覧", WindowId="" },
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId="" },
