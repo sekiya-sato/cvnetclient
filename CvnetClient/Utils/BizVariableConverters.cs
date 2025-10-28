@@ -1,9 +1,10 @@
-﻿using System.Net.Http;
+
+﻿using System.Data;
+using System.Net.Http;
 using System.Data;
 using System.Dynamic;
 using System.IO; 
 using System.Text;
-using System.Windows.Documents;
 using System.Windows.Forms;
 
 namespace CvnetClient.Utils
@@ -254,7 +255,7 @@ namespace CvnetClient.Utils
                 }
                 sb.AppendLine();
             }
-            return sb.ToString();
+            return sb.ToString().TrimEnd('\r', '\n');
         }
         
         /// <summary>
