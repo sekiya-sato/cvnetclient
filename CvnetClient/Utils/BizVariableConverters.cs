@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Net.Http;
 using System.Data;
 using System.Dynamic;
 using System.IO; 
@@ -312,6 +312,39 @@ namespace CvnetClient.Utils
                     }
                 }
             }
+        }
+
+        public async Task LoadFromUrlAsync(string dataUrl, string headerUrl)
+        {
+            using var http = new HttpClient();
+
+            // 🟢 Baca sebagai byte dan decode dengan Shift-JIS
+            var headerBytes = await http.GetByteArrayAsync(headerUrl);
+            var dataBytes = await http.GetByteArrayAsync(dataUrl);
+
+            string headerText = Encoding.GetEncoding("shift_jis").GetString(headerBytes);
+            string dataText = Encoding.GetEncoding("shift_jis").GetString(dataBytes);
+
+            string[] headerCells = headerText.Trim().Split(',');
+            DataTable table = new DataTable();
+            foreach (var col in headerCells)
+                table.Columns.Add(col.Trim());
+
+            var dataLines = dataText.Split('\n');
+            if (dataLines[0].StartsWith("H"))
+                dataLines = dataLines.Skip(1).ToArray();
+
+            foreach (var line in dataLines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                var row = table.NewRow();
+                var cells = line.Trim().Split(',');
+                for (int i = 0; i < Math.Min(cells.Length, table.Columns.Count); i++)
+                    row[i] = cells[i].Trim();
+                table.Rows.Add(row);
+            }
+
+            csv_table = table;
         }
         #endregion
 
