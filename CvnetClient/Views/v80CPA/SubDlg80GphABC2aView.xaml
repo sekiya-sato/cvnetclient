@@ -9,59 +9,59 @@
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         mc:Ignorable="d"
         Title="SubDlg80GphABC2aView" Style="{StaticResource MasterWindowStyle}">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="12"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
+        <Grid Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="4*"/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="3.5*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                
+            <Grid Grid.Row="0" Margin="2,4" >
+
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Grid Grid.Row="0" Margin="2,2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="3.5*"/>
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="3.5*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="店舗" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SearchCondList.tenpo}" VerticalAlignment="Center" Margin="10" />
+                    <Label Grid.Row="0" Grid.Column="0" Content="店舗" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SearchCondList.tenpo}" VerticalAlignment="Center" Style="{StaticResource ReadOnlyTextBox}"/>
 
-                    <Label Grid.Row="0" Grid.Column="2" Content="累計" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding SearchCondList.ruikei, StringFormat={}{0:N0}}" VerticalAlignment="Center" Margin="10" />
+                    <Label Grid.Row="0" Grid.Column="2" Content="累計" VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding SearchCondList.ruikei, StringFormat={}{0:N0}}" VerticalAlignment="Center"  Style="{StaticResource ReadOnlyTextBox}"/>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" Margin="2,2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="0.5*"/>
                         <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
-                    <Label  Grid.Column="0" Content="集計時間" VerticalAlignment="Center" Margin="0,8"/>
-                    <TextBlock  Grid.Column="1"  Text="{Binding SearchCondList.date1}" VerticalAlignment="Center" Margin="10"/>
-                    <Label  Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                    <TextBlock  Grid.Column="3"   Text="{Binding SearchCondList.date2}" VerticalAlignment="Center" Margin="10"/>
+                    <Label  Grid.Column="0" Content="集計時間" VerticalAlignment="Center"/>
+                    <TextBox  Grid.Column="1"  Text="{Binding SearchCondList.date1}" VerticalAlignment="Center"  Style="{StaticResource ReadOnlyTextBox}"/>
+                    <Label  Grid.Column="2" Content="~" VerticalAlignment="Center"  HorizontalAlignment="Center"/>
+                    <TextBox  Grid.Column="3"   Text="{Binding SearchCondList.date2}" VerticalAlignment="Center" Style="{StaticResource ReadOnlyTextBox}"/>
                 </Grid>
             </Grid>
             <DataGrid Grid.Row="1"
-          ItemsSource="{Binding AbcTable}"
-          SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
-          SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
-          AutoGenerateColumns="False"
-          IsReadOnly="True"
-          SelectionMode="Single"
-          Margin="8,10,8,10">
+                      Style="{StaticResource WinGridData}"
+                      ItemsSource="{Binding AbcTable}"
+                      SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+                      SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      Margin="8,10,8,10" >
 
                 <DataGrid.Resources>
                     <!-- Row style ikut Category -->
@@ -91,10 +91,11 @@
                     <DataGridTextColumn Width="*" Binding="{Binding 累計比, StringFormat={}{0:N2}%}" Header="累計比"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Margin="1,0,1,10" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -105,44 +106,59 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="選択行" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedIndex}" VerticalAlignment="Center" Margin="10" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedIndex}" VerticalAlignment="Center"  Style="{StaticResource ReadOnlyTextBox}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" Content="ブランド" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedRow.ブランド名}" VerticalAlignment="Center" Margin="10" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedRow.ブランド名}" VerticalAlignment="Center"  Style="{StaticResource ReadOnlyTextBox}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" Content="アイテム" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedRow.アイテム名}" VerticalAlignment="Center" Margin="10" />
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedRow.アイテム名}" VerticalAlignment="Center"  Style="{StaticResource ReadOnlyTextBox}"/>
 
                 <Label Grid.Row="3" Grid.Column="0" Content="合計" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedRow.金額, StringFormat={}{0:N0}}" VerticalAlignment="Center" Margin="10" />
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedRow.金額, StringFormat={}{0:N0}}" VerticalAlignment="Center"  Style="{StaticResource ReadOnlyTextBox}"/>
 
                 <Label Grid.Row="4" Grid.Column="0" Content="構成比" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedRow.構成比}" VerticalAlignment="Center" Margin="10" />
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SelectedRow.構成比}" VerticalAlignment="Center" Style="{StaticResource ReadOnlyTextBox}" />
 
                 <Label Grid.Row="5" Grid.Column="0" Content="累計比" VerticalAlignment="Center" Margin="0,8"/>
-                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding SelectedRow.累計比}" VerticalAlignment="Center" Margin="10" />
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding SelectedRow.累計比}" VerticalAlignment="Center" Style="{StaticResource ReadOnlyTextBox}" />
             </Grid>
-            
+
         </Grid>
+
+        <GridSplitter Grid.Column="0" VerticalAlignment="Stretch" Width="5"/>
+
+
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="9*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition />
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <oxy:PlotView Grid.Row="0" Model="{Binding AbcModel}"
               Controller="{Binding Controller}"
-              VerticalAlignment="Stretch"
-              HorizontalAlignment="Stretch"
-              MouseDoubleClick="PlotView_MouseDoubleClick"/>
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="元に戻す" Command="{Binding ResetToOriginalCommand}" Margin="8"/>
-                <Button Content="CSV出力" Style="{DynamicResource PrintIconBtn}" Margin="8"/>
-                <Button Style="{DynamicResource PrintIconBtn}" Margin="8"/>
-                <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
-            </StackPanel>
+              MouseDoubleClick="PlotView_MouseDoubleClick" Grid.RowSpan="2"/>
+            <!--<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+                <Button Content="元に戻す" Padding="8,0" Command="{Binding ResetToOriginalCommand}" Margin="8,0"/>
+                <Button Content="CSV出力" Style="{DynamicResource PrintIconBtn}" Margin="8,0"/>
+                <Button Style="{DynamicResource PrintIconBtn}" Margin="8,0"/>
+                <Button  Margin="8,0" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
+            </StackPanel>-->
+            <Grid Grid.Row="2" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="元に戻す" Padding="8,0" Command="{Binding ResetToOriginalCommand}" Margin="8,0,0,0"/>
+                <Button Grid.Column="1" Content="CSV出力" Style="{DynamicResource PrintIconBtn}" Margin="8,0,0,0"/>
+                <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="8,0,0,0"/>
+                <Button Grid.Column="3" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right" Margin="8,0"/>
+            </Grid>
         </Grid>
-        
-        
+
+
     </Grid>
 
 </Window>

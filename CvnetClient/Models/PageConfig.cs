@@ -65,7 +65,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "帳票管理マスタ(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "システムメンテナンス処理", WindowId="" },
                 new ButtonConfig { Text = "汎用SQL問い合わせ(管理者用)", WindowId="" },
-                new ButtonConfig { Text = "DB定義書出力", WindowId="" },
+                new ButtonConfig { Text = "DB定義書出力", WindowId=typeof(Views.SubDlg00DBTableView).FullName },
                 new ButtonConfig { Text = "自動実行管理マスタ", WindowId="" },
                 new ButtonConfig { Text = "自動実行スケジュール設定", WindowId="" }
             }
@@ -297,7 +297,7 @@ namespace CvnetClient.Models
         { "月次", new PageData {
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "締日更新", WindowId=typeof(Views.SubDlg09UpsimeView).FullName  },
-                new ButtonConfig { Text = "諸掛更新", WindowId="" },
+                new ButtonConfig { Text = "諸掛更新", WindowId=typeof(Views.SubDlg09Upkeihi2View).FullName  },
                 new ButtonConfig { Text = "総平均原価更新", WindowId="" },
                 new ButtonConfig { Text = "最終仕入原価更新", WindowId="" },
                 new ButtonConfig { Text = "消化仕入更新", WindowId="" },
@@ -306,8 +306,8 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "評価替一覧印刷", WindowId="" },
                 new ButtonConfig { Text = "積送中クリア更新", WindowId="" },
                 new ButtonConfig { Text = "残高登録処理", WindowId="" },
-                new ButtonConfig { Text = "在庫・掛再更新(管理者用)", WindowId="" },
-                new ButtonConfig { Text = "在庫累計更新(管理者用)", WindowId="" },
+                new ButtonConfig { Text = "在庫・掛再更新(管理者用)", WindowId=typeof(Views.SubDlg09UpallView).FullName },
+                new ButtonConfig { Text = "在庫累計更新(管理者用)", WindowId=typeof(Views.SubDlg09UpzairkNewView).FullName },
                 new ButtonConfig { Text = "消費税再計算更新(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "価格保存", WindowId="" },
                 new ButtonConfig { Text = "商品分析集計", WindowId="" },
