@@ -141,144 +141,160 @@
 			</Border>
 
 			<!-- RIGHT: FORM -->
-			<Border Grid.Column="1" Margin="4"
-                BorderBrush="#888" BorderThickness="1" CornerRadius="6">
-				<ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10">
-					<StackPanel Orientation="Vertical" >
-						<!-- 商品CD -->
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="34"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="商品CD" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
-						<!-- カラー -->
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="34"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="カラー" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<ComboBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
-						<!-- サイズ -->
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="34"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="サイズ" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
-						<!-- JAN -->
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="34" />
-							</Grid.ColumnDefinitions>
-							<Label Content="JAN" Margin="0,0,0,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Height="26" 
-							 Text="{Binding EditProduct.ProductCD}" />
-							<TextBox Grid.Column="2" Height="26" 
-							 Margin="0,0,0,0"  
-							 Text="{Binding EditProduct.ProductCD}" />
-							<TextBox Grid.Column="3" Height="26" 
-							 Margin="0,0,0,0"  
-							 Text="{Binding EditProduct.ProductCD}" />
-							
-						</Grid>
-						<!-- 上代 -->
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="34" />
-							</Grid.ColumnDefinitions>
-							<Label Content="上代" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Height="26"/>
-						</Grid>
-						<!-- 中止 -->
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="2*" />
-								<ColumnDefinition Width="1.5*" />
-								<ColumnDefinition Width="70" />
-								<ColumnDefinition Width="2*" />
-							</Grid.ColumnDefinitions>
-							<Label Content="中止" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<ComboBox Grid.Column="1" Height="26"/>
-							<Label Grid.Column="3" Content="生産予定" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="4" Height="26"/>
-						</Grid>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="36"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="商品CD" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
+			<!--<GroupBox Header="詳細" Margin="10"　BorderBrush="#B3B8F0" BorderThickness="1"　Background="#CFCFFB" Padding="8">
 
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="36"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="カラー" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<ComboBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="36"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="商品CD" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<TextBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
+			</GroupBox>-->
+			<Border Grid.Column="1" Margin="1">
+				<GroupBox Header="詳細">
+					<ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10">
+						<StackPanel Orientation="Vertical" >
+							<!-- 商品CD -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="34"/>
+								</Grid.ColumnDefinitions>
+								<Label Content="商品CD" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="1" Height="26"/>
+								<Button Grid.Column="2" Content="≪" Height="24"/>
+							</Grid>
+							<!-- カラー -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="34"/>
+								</Grid.ColumnDefinitions>
+								<Label Content="カラー" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<ComboBox Grid.Column="1" Height="26"/>
+								<Button Grid.Column="2" Content="≪" Height="24"/>
+							</Grid>
+							<!-- サイズ -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="34"/>
+								</Grid.ColumnDefinitions>
+								<Label Content="サイズ" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="1" Height="26"/>
+								<Button Grid.Column="2" Content="≪" Height="24"/>
+							</Grid>
+							<!-- JAN -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="34" />
+								</Grid.ColumnDefinitions>
+								<Label Content="JAN" Margin="0,0,0,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="1" Height="26" 
+									 Text="{Binding EditProduct.ProductCD}" />
+								<TextBox Grid.Column="2" Height="26" 
+									 Margin="0,0,0,0"  
+									 Text="{Binding EditProduct.ProductCD}" />
+								<TextBox Grid.Column="3" Height="26" 
+									 Margin="0,0,0,0"  
+									 Text="{Binding EditProduct.ProductCD}" />
 
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="36"/>
-							</Grid.ColumnDefinitions>
-							<Label Content="カラー" Margin="0,0,8,0" VerticalAlignment="Center"/>
-							<ComboBox Grid.Column="1" Height="26"/>
-							<Button Grid.Column="2" Content="≪" Height="24"/>
-						</Grid>
+							</Grid>
+							<!-- 上代 -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="34" />
+								</Grid.ColumnDefinitions>
+								<Label Content="上代" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="1" Height="26"/>
+							</Grid>
+							<!-- 中止 & 生産予定数 -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="2*" />
+									<ColumnDefinition Width="1.5*" />
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="2*" />
+								</Grid.ColumnDefinitions>
+								<Label Content="中止" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<ComboBox Grid.Column="1" Height="26"/>
+								<Label Grid.Column="3" Content="生産予定数" Margin="-10,0,6,0" VerticalAlignment="Center" />
+								<TextBox Grid.Column="4" Height="26"/>
+							</Grid>
+							<!-- 自動配分 & 裁断数 -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="2*" />
+									<ColumnDefinition Width="1.5*" />
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="2*" />
+								</Grid.ColumnDefinitions>
+								<Label Content="自動配分" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<ComboBox Grid.Column="1" Height="26"/>
+								<Label Grid.Column="3" Content="裁断数" Margin="-10,0,8,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="4" Height="26"/>
+							</Grid>
+							<!-- メモ & 下札枚数 -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="2*" />
+									<ColumnDefinition Width="1.5*" />
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="2*" />
+								</Grid.ColumnDefinitions>
+								<Label Content="メモ" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<ComboBox Grid.Column="1" Height="26"/>
+								<Label Grid.Column="3" Content="下札枚数" Margin="-10,0,8,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="4" Height="26"/>
+							</Grid>
+							<!-- 作成日 -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="34" />
+								</Grid.ColumnDefinitions>
+								<Label Content="作成日" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="1" Height="26"/>
+							</Grid>
+							<!-- 修正日 -->
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="70" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="34" />
+								</Grid.ColumnDefinitions>
+								<Label Content="修正日" Margin="0,0,8,0" VerticalAlignment="Center"/>
+								<TextBox Grid.Column="1" Height="26"/>
+							</Grid>
 
-						<StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-							<Button Content="修正(F6)"  Padding="14,4"/>
-							<Button Content="削除(F7)"  Padding="14,4"/>
-							<Button Content="追加(F8)"  Padding="14,4"/>
-							<Button Content="印刷(F9)"  Padding="14,4"/>
+
+
+							<StackPanel Orientation="Horizontal" Margin="0,8,0,0" HorizontalAlignment="Center">
+								<Button Content="修正(F6)"  Margin="20,5,20,5" Padding="14,4"/>
+								<Button Content="削除(F7)"  Margin="20,5,20,5" Padding="14,4"/>
+								<Button Content="追加(F8)"  Margin="20,5,20,5" Padding="14,4"/>
+								<Button Content="印刷(F9)"  Margin="20,5,20,5" Padding="14,4"/>
+							</StackPanel>
+
+							<!--<TextBlock Margin="0,8,0,0" TextWrapping="Wrap"
+									   Text="このメニューからの商品マスタは製造対象外です。&#10;※『商品マスタ(新規登録)』からの登録となります"/>
+							<Button Content="戻る(ESC)" Padding="16,4" HorizontalAlignment="Right" Margin="0,8,0,0"/>-->
 						</StackPanel>
-
-						<TextBlock Margin="0,8,0,0" TextWrapping="Wrap"
-                               Text="このメニューからの商品マスタは製造対象外です。&#10;※『商品マスタ(新規登録)』からの登録となります"/>
-						<Button Content="戻る(ESC)" Padding="16,4" HorizontalAlignment="Right" Margin="0,8,0,0"/>
-					</StackPanel>
-				</ScrollViewer>
+					</ScrollViewer>
+				</GroupBox>
 			</Border>
 		</Grid>
 	</Grid>
