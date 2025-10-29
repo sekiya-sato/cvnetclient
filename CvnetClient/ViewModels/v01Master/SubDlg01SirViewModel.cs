@@ -532,7 +532,7 @@ namespace CvnetClient.ViewModels
                             Tel = dr["TEL"].ToString() ?? string.Empty,
                             Fax = dr["FAX"].ToString() ?? string.Empty,
                             SupplierMail = dr["仕入先MAIL"].ToString() ?? string.Empty,
-                            LastModifier = dr["最終修正者"].ToString() ?? string.Empty,
+                            //LastModifier = dr["最終修正者"].ToString() ?? string.Empty,
 
                             Rate1 = Convert.ToDecimal(dr["掛率"]),
                             Rate2 = Convert.ToDecimal(dr["掛率2"]),
