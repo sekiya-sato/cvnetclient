@@ -15,18 +15,13 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlg01ShojanView.xaml
+    /// Interaction logic for SubDlg23PrnTokumonth.xaml
     /// </summary>
-    public partial class SubDlg01ShojanView : Window
+    public partial class SubDlg23PrnTokumonthView : Window
     {
-        public SubDlg01ShojanView()
+        public SubDlg23PrnTokumonthView()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

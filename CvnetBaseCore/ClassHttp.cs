@@ -620,8 +620,8 @@ namespace CvnetBaseCore {
 			v_cc = new CookieContainer();
 			DataTable wrk_ret = null;
 			try {
-				wrk_ret = HttpPost("login.aspx", vals);
-			}
+				wrk_ret = HttpPost("login.aspx", vals);				
+            }
 			catch (Exception) {
 				return -640; // リモート名が解決できないetc System.Web.Exception
 			}
@@ -629,7 +629,10 @@ namespace CvnetBaseCore {
 			if (v_infologin.Rows.Count > 0) {
 				v_randid = v_infologin.Rows[0][0].ToString();
 				v_loginid = v_id;
-				ret_code = 0;
+                ClassSatoo.SHAIN_CD = v_infologin.Rows[0]["SHAIN_CD"].ToString();
+                ClassSatoo.SHAIN_Name = v_infologin.Rows[0]["SHAIN_NAME"].ToString();
+                ClassSatoo.SHAIN_Tenpo = v_infologin.Rows[0]["SHAIN_TENPO"].ToString();
+                ret_code = 0;
 				return ret_code;
 			}
 			v_cc = save_cc;

@@ -774,4 +774,171 @@ namespace CvnetClient.Models
 		string? memo; //メモ
     }
 
+	public partial class MasterSupplier : ObservableObject
+	{
+        [ObservableProperty]
+        long seqNo;
+        [ObservableProperty]
+        decimal vdateCreate;
+        [ObservableProperty]
+        decimal vdateUpdate;
+		[ObservableProperty]
+		string? supplierCD; //仕入先CD
+		[ObservableProperty]
+		string? oldCD; //旧コード
+        [ObservableProperty]
+        string? abbreviation; //略称
+        [ObservableProperty]
+        string? supplierName; //仕入先名
+		[ObservableProperty]
+		string? kana; //カナ
+        [ObservableProperty]
+        string? postalCode; // 郵便番号
+        [ObservableProperty]
+        string? address1; // 住所1
+        [ObservableProperty]
+        string? address2; // 住所2
+        [ObservableProperty]
+        string? address3; // 住所3
+        [ObservableProperty]
+        string? tel; // TEL
+        [ObservableProperty]
+        string? fax; // FAX
+        [ObservableProperty]
+        decimal? rate1; // 掛率
+        [ObservableProperty]
+        decimal? rate2; // 掛率2
+        [ObservableProperty]
+        string? paymentDestinationCd; // 支払先CD
+        [ObservableProperty]
+        int? paymentPrintFlag; // 支払印刷
+        [ObservableProperty]
+        int? closingDay; // 締日
+        [ObservableProperty]
+        int? scheduledPaymentMonth; // 支払予定月
+        [ObservableProperty]
+        int? scheduledPaymentDay; // 支払予定日
+        [ObservableProperty]
+        string? paymentMethod; // 支払方法
+        [ObservableProperty]
+        decimal? taxCd; // 消費税CD
+        [ObservableProperty]
+        int? taxCalculationMethod; // 消費税計算方法
+        [ObservableProperty]
+        int? taxRounding; // 消費税端数
+        [ObservableProperty]
+        decimal? paymentRate; // 支払率
+        [ObservableProperty]
+        string? recipientFlag1; // 宛名FLG1
+        [ObservableProperty]
+        string? recipientFlag2; // 宛名FLG2
+        [ObservableProperty]
+        string? recipientFlag3; // 宛名FLG3
+        [ObservableProperty]
+        string? recipientName1; // 宛名名称1
+        [ObservableProperty]
+        string? recipientName2; // 宛名名称2
+        [ObservableProperty]
+        int? slipIssueType; // 伝票発行区分
+        [ObservableProperty]
+        string? slipPrint1; // 伝票印字1
+        [ObservableProperty]
+        string? slipPrint2; // 伝票印字2
+        [ObservableProperty]
+        string? slipPrint3; // 伝票印字3
+        [ObservableProperty]
+        string? slipPrint4; // 伝票印字4
+        [ObservableProperty]
+        string? department; // 部門
+        [ObservableProperty]
+        string? remarks; // 備考
+        [ObservableProperty]
+        string? nameCd01; // 名称CD01
+        [ObservableProperty]
+        string? nameCd02; // 名称CD02
+        [ObservableProperty]
+        string? nameCd03; // 名称CD03
+        [ObservableProperty]
+        string? nameCd04; // 名称CD04
+        [ObservableProperty]
+        string? nameCd05; // 名称CD05
+        [ObservableProperty]
+        string? nameCd06; // 名称CD06
+        [ObservableProperty]
+        string? nameCd07; // 名称CD07
+        [ObservableProperty]
+        string? nameCd08; // 名称CD08
+        [ObservableProperty]
+        string? nameCd09; // 名称CD09
+        [ObservableProperty]
+        string? nameCd10; // 名称CD10
+        [ObservableProperty]
+        string? bankName; // 振込銀行
+        [ObservableProperty]
+        string? branchName; // 振込支店
+        [ObservableProperty]
+        string? transferType; // 振込種別
+        [ObservableProperty]
+        string? accountNumber; // 振込口座
+        [ObservableProperty]
+        string? remarks2; // 備考2
+        [ObservableProperty]
+        int? orderFlag; // 発注FLG
+        [ObservableProperty]
+        int? productionFlag; // 生産FLG
+        [ObservableProperty]
+        string? currencyType; // 為替区分
+        [ObservableProperty]
+        int? currencyRoundingDigit; // 為替桁切指定
+        [ObservableProperty]
+        int? currencyFractionType; // 為替端数区分
+        [ObservableProperty]
+        int? posType; // POS区分
+        [ObservableProperty]
+        string? inputEmployeeCd; // 入力社員CD
+        [ObservableProperty]
+        int? orderStopFlag; // 発注停止FLG
+        [ObservableProperty]
+        int? purchaseType; // 仕入区分
+        [ObservableProperty]
+        string? corporationCd; // 法人CD
+        [ObservableProperty]
+        string? linkCd; // 連携CD
+        [ObservableProperty]
+        string? linkedCorporationCd; // 連携先法人CD
+        [ObservableProperty]
+        string? supplierMail; // 仕入先MAIL
+        [ObservableProperty]
+        int? dueDate; // 期日
+        [ObservableProperty]
+        decimal? minimumAmount; // 下限額
+        [ObservableProperty]
+        string? warehousePostalCode; // 倉庫郵便番号
+        [ObservableProperty]
+        string? warehouseAddress1; // 倉庫住所1
+        [ObservableProperty]
+        string? warehouseAddress2; // 倉庫住所2
+        [ObservableProperty]
+        string? warehouseAddress3; // 倉庫住所3
+        [ObservableProperty]
+        string? warehouseTel; // 倉庫TEL
+        [ObservableProperty]
+        string? warehouseFax; // 倉庫FAX
+        [ObservableProperty]
+        int? closingDay2; // 締日2
+        [ObservableProperty]
+        int? scheduledPaymentMonth2; // 支払予定月2
+        [ObservableProperty]
+        int? scheduledPaymentDay2; // 支払予定日2
+        [ObservableProperty]
+        int? closingDay3; // 締日3
+        [ObservableProperty]
+        int? scheduledPaymentMonth3; // 支払予定月3
+        [ObservableProperty]
+        int? scheduledPaymentDay3; // 支払予定日3
+        [ObservableProperty]
+        string? registrationNumber; // 登録番号
+        [ObservableProperty]
+        string? lastModifier; // 最終修正者
+    }
 }

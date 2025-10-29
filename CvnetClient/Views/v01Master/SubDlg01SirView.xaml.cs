@@ -15,18 +15,14 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlg01ShojanView.xaml
+    /// Interaction logic for SubDlg01SirView.xaml
     /// </summary>
-    public partial class SubDlg01ShojanView : Window
+    public partial class SubDlg01SirView : Window
     {
-        public SubDlg01ShojanView()
+        public SubDlg01SirView()
         {
             InitializeComponent();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
     }
 }

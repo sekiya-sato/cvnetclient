@@ -50,6 +50,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         async Task DoPrintAsync() 
         {
+            if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
             string[] wrk_para = new string[4];
             wrk_para[0] = Condition.DateFrom?.ToString("yyyyMMdd") ?? string.Empty;
             wrk_para[1] = Condition.DateTo?.ToString("yyyyMMdd") ?? string.Empty; ;
