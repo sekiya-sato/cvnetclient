@@ -276,7 +276,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
 
                         <Label Content="修正日"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="dateEdit" Grid.Column="1" Text="{Binding EditKiji.VdateUpdate, Converter={StaticResource VdateConverter}}"  IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
+                        <TextBox x:Name="dateEdit" Grid.Column="1" Text="{Binding EditKiji.VdateUpdate, Converter={StaticResource VdateConverter}}" Style="{DynamicResource ReadOnlyTextBox}"/>
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -287,19 +287,19 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
 
                         <Label Content="最終修正者"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="latsDateEdit" Grid.Column="1"  IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditKiji.InpStaffCD}"/>
+                        <TextBox x:Name="latsDateEdit" Grid.Column="1" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditKiji.InpStaffCD}"/>
                     </Grid>
 
                     <Grid Margin="8,8,15,8" >
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition  Width="12"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition  Width="12"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition  Width="12"/>
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
                         <Button Style="{DynamicResource AddIconBtn}" BorderThickness="10" Command="{Binding DoInsertCommand}"/>
