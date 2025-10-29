@@ -65,7 +65,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "帳票管理マスタ(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "システムメンテナンス処理", WindowId="" },
                 new ButtonConfig { Text = "汎用SQL問い合わせ(管理者用)", WindowId="" },
-                new ButtonConfig { Text = "DB定義書出力", WindowId="" },
+                new ButtonConfig { Text = "DB定義書出力", WindowId=typeof(Views.SubDlg00DBTableView).FullName },
                 new ButtonConfig { Text = "自動実行管理マスタ", WindowId="" },
                 new ButtonConfig { Text = "自動実行スケジュール設定", WindowId="" }
             }
