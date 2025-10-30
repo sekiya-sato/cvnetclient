@@ -35,7 +35,7 @@ namespace CvnetClient.Models
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "名称マスタコピー作成", WindowId=typeof(Views.SubDlg01MeiConvView).FullName },
                 new ButtonConfig { Text = "取込レイアウト作成", WindowId=typeof(Views.SubDlg00InputCsvView).FullName },
-                new ButtonConfig { Text = "外部CSVデータ取込", WindowId="" },
+                new ButtonConfig { Text = "外部CSVデータ取込", WindowId=typeof(Views.SubDlg01Csvshov2View).FullName },
                 new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId="" },
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
                 new ButtonConfig { Text = "商品色サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
@@ -258,7 +258,7 @@ namespace CvnetClient.Models
         }},
         { "HHT", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "HHT用マスタデータ作成(cvnetcom)", WindowId="" },
+                new ButtonConfig { Text = "HHT用マスタデータ作成(cvnetcom)", WindowId=typeof(Views.SubDlg08Hht1View).FullName,Parameter="0" },
                 new ButtonConfig { Text = "HHT未更新データ印刷", WindowId=typeof(Views.SubDlg08HhterrView).FullName },
                 new ButtonConfig { Text = "HHT未更新データ一括削除", WindowId="" },
                 new ButtonConfig { Text = "HHT用PATH設定", WindowId="" },

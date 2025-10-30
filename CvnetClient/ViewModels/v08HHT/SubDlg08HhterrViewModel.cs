@@ -43,6 +43,26 @@ namespace CvnetClient.ViewModels
             Condition.WareTo = "99999999";
         }
         [RelayCommand]
+        public void SelShop1(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && Condition != null)
+            {
+                Condition.WareFrom = get_sel00.Code;
+                Condition.WareFromName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelShop2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && Condition != null)
+            {
+                Condition.WareTo = get_sel00.Code;
+                Condition.WareToName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
         async Task DoPrintAsync()
         {
             var wrk_para = new string[4];

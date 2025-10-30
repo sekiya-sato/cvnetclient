@@ -1,0 +1,99 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg08Hht1View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="HHT用マスタデータ作成(cvnetcom)" Style="{StaticResource SmallWindow}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg08Hht1ViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoExecuteCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="HHT用マスタデータを作成します" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold"></TextBlock>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="出力先:" 
+VerticalAlignment="Center" 
+Margin="0,0,20,0"/>
+
+            <RadioButton Grid.Column="1" Content="ローカル" 
+                 GroupName="OutPutType"
+                 IsChecked="{Binding Condition.SelectedOutPut, 
+                             Converter={StaticResource StringToBoolConverter}, 
+                             ConverterParameter=ローカル, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+            <RadioButton Grid.Column="2" Content="ハンディサーバ" 
+                 GroupName="OutPutType"
+                 IsChecked="{Binding Condition.SelectedOutPut, 
+                              Converter={StaticResource StringToBoolConverter}, 
+                              ConverterParameter=ハンディサーバ, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="出力方法" Visibility="{Binding Condition.ShowOrNot}"
+VerticalAlignment="Center" 
+Margin="0,0,20,0"/>
+
+            <RadioButton Grid.Column="1" Content="全件" Visibility="{Binding Condition.ShowOrNot}"
+                 GroupName="OutPutHowType"
+                 IsChecked="{Binding Condition.SelectedOutPutHow, 
+                             Converter={StaticResource StringToBoolConverter}, 
+                             ConverterParameter=全件, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+            <RadioButton Grid.Column="2" Content="法人縛り" Visibility="{Binding Condition.ShowOrNot}"
+                 GroupName="OutPutHowType"
+                 IsChecked="{Binding Condition.SelectedOutPutHow, 
+                              Converter={StaticResource StringToBoolConverter}, 
+                              ConverterParameter=法人縛り, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+        </Grid>
+
+        <Grid Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="ファイル名" VerticalAlignment="Center" Margin="8"></TextBlock>
+            <TextBox Grid.Column="1" Width="200" Text="{Binding Condition.File}"></TextBox>
+        </Grid>
+
+        <TextBlock Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Condition.Result}"></TextBlock>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+            <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoExecuteCommand}" Content="実行(Enter)"/>
+            <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -12,6 +12,7 @@
         Title="HHT未更新データ印刷" Style="{StaticResource PrintWindowStyle}">
     <Window.Resources>
         <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+        <utils:TextBoxMultiConverter x:Key="TextBoxMultiConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <vm:SubDlg08HhterrViewModel/>
@@ -101,7 +102,9 @@
                 d:Text="倉庫：Data"  
                 TextWrapping="Wrap">
                     <TextBox.Text>
-                        <MultiBinding StringFormat='{}{0} {1}'>
+                        <MultiBinding Converter="{StaticResource TextBoxMultiConverter}" 
+                                        Mode="TwoWay" 
+                                        UpdateSourceTrigger="PropertyChanged">
                             <Binding Path="Condition.WareFrom" />
                             <Binding Path="Condition.WareFromName" />
                         </MultiBinding>
@@ -117,7 +120,9 @@
             d:Text="倉庫：Data"  
             TextWrapping="Wrap">
                     <TextBox.Text>
-                        <MultiBinding StringFormat='{}{0} {1}'>
+                        <MultiBinding Converter="{StaticResource TextBoxMultiConverter}" 
+                                        Mode="TwoWay" 
+                                        UpdateSourceTrigger="PropertyChanged">                                      
                             <Binding Path="Condition.WareTo" />
                             <Binding Path="Condition.WareToName" />
                         </MultiBinding>
