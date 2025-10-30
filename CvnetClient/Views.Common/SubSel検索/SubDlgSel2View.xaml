@@ -17,14 +17,14 @@
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Row="0" Grid.Column="1"
+        <DataGrid Grid.Row="0" Grid.Column="0"
 				  d:ItemsSource="{d:SampleData ItemCount=5}"
 				  FrozenColumnCount="1"
 				  IsReadOnly="True"
 				  Style="{StaticResource WinGridData}"
 				  ItemsSource="{Binding ListSel2}"
 				  SelectedItem="{Binding SelectedSel2}" 
-				  IsSynchronizedWithCurrentItem="True" Margin="1811,87,-1991,-87">
+				  IsSynchronizedWithCurrentItem="True">
             <!--<DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="Black" />

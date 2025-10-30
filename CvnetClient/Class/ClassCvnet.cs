@@ -5327,7 +5327,7 @@ namespace CvnetBaseCore
         /// <summary>
         /// Get normalized path
         /// </summary>
-        public string GetPath(string dirStr)
+        public string GetPath(string? dirStr)
         {
             if (string.IsNullOrEmpty(dirStr))
                 dirStr = hhtPath;
