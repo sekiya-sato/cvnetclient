@@ -67,14 +67,12 @@ namespace CvnetClient.Utils
             string code = text;
             string name = null;
 
-            // kalau ada space, pisahkan jadi code dan name
             var parts = text.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length > 0)
                 code = parts[0];
             if (parts.Length > 1)
                 name = parts[1];
 
-            // hanya update code, name boleh dibiarkan null atau Binding.DoNothing
             return new object[] { code, name ?? Binding.DoNothing };
         }
     }
