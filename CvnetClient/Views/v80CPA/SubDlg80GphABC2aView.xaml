@@ -12,8 +12,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
@@ -138,12 +138,24 @@
             <oxy:PlotView Grid.Row="0" Model="{Binding AbcModel}"
               Controller="{Binding Controller}"
               MouseDoubleClick="PlotView_MouseDoubleClick" Grid.RowSpan="2"/>
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <!--<StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" >
                 <Button Content="元に戻す" Padding="8,0" Command="{Binding ResetToOriginalCommand}" Margin="8,0"/>
                 <Button Content="CSV出力" Style="{DynamicResource PrintIconBtn}" Margin="8,0"/>
                 <Button Style="{DynamicResource PrintIconBtn}" Margin="8,0"/>
                 <Button  Margin="8,0" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
-            </StackPanel>
+            </StackPanel>-->
+            <Grid Grid.Row="2" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="元に戻す" Padding="8,0" Command="{Binding ResetToOriginalCommand}" Margin="8,0,0,0"/>
+                <Button Grid.Column="1" Content="CSV出力" Style="{DynamicResource PrintIconBtn}" Margin="8,0,0,0"/>
+                <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="8,0,0,0"/>
+                <Button Grid.Column="3" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right" Margin="8,0"/>
+            </Grid>
         </Grid>
 
 
