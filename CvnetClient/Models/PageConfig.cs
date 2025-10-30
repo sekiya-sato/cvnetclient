@@ -259,7 +259,7 @@ namespace CvnetClient.Models
         { "HHT", new PageData {
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "HHT用マスタデータ作成(cvnetcom)", WindowId="" },
-                new ButtonConfig { Text = "HHT未更新データ印刷", WindowId="" },
+                new ButtonConfig { Text = "HHT未更新データ印刷", WindowId=typeof(Views.SubDlg08HhterrView).FullName },
                 new ButtonConfig { Text = "HHT未更新データ一括削除", WindowId="" },
                 new ButtonConfig { Text = "HHT用PATH設定", WindowId="" },
                 new ButtonConfig { Text = "HHT手動データ受信(店舗固定)", WindowId="" },
