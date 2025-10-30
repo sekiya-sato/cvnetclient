@@ -59,12 +59,12 @@
 
 					<Label Grid.Column="3" Content="カラー" VerticalAlignment="Center"/>
 					<TextBox Grid.Column="4" Margin="5,0,0,0"
-							Text="{Binding EditProduct.ProductColor}" d:Text="カラー：Data"/>
+							 d:Text="カラー：Data"/>
 
 					<Label Grid.Column="6" Content="サイズ" VerticalAlignment="Center"/>
 					<TextBox Grid.Column="7" Margin="5,0,0,0"
 							HorizontalAlignment="Stretch"   
-							Text="{Binding EditProduct.ProductSize}" d:Text="サイズ：Data"/>
+							d:Text="サイズ：Data"/>
 				</Grid>
 
 				<Grid Grid.Row="1" Margin="0,5,0,0">
@@ -89,14 +89,12 @@
 					<!-- TextBox 1 -->
 					<TextBox Grid.Column="1"
 							 Margin="5,0,0,0"
-							 Text="{Binding EditProduct.ProductJAN1}"
 							 d:Text="JAN-1：Data"
 							 TextWrapping="Wrap"/>
 
 					<!-- TextBox 2 -->
 					<TextBox Grid.Column="2"
 							 Margin="0,0,0,0"
-							 Text="{Binding EditProduct.ProductJAN2}"
 							 d:Text="JAN-2：Data"
 							 TextWrapping="Wrap"/>			
 
@@ -104,7 +102,6 @@
 					<TextBox Grid.Column="3"
 							 Margin="0,0,0,0"
 							 HorizontalAlignment="Stretch"
-							 Text="{Binding EditProduct.ProductJAN3}"
 							 d:Text="JAN-3：Data"
 							 TextWrapping="Wrap"/>
 				</Grid>
@@ -150,7 +147,7 @@
 						<ScrollViewer VerticalScrollBarVisibility="Auto" Padding="10">
 							<StackPanel Orientation="Vertical" >
 								<!-- 商品CD -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="*" />
@@ -158,45 +155,65 @@
 									</Grid.ColumnDefinitions>
 									<!--<Label Content="商品CD" Margin="0,0,8,0" VerticalAlignment="Center"/>-->
 									<uc:CvnetBtListView Width="85"
-											Margin="5,0,0,0"
-											Title="ブランド" 
-											MstName="ブランド"
+											Title="商品CD" 
+											MstName="商品"
 											StyleDesign="1"
-											SelectedValue ="{Binding EditProduct.BrandCD}"
-											Command="{Binding SelBrandCommand}" />
-									<TextBox Grid.Column="1" Height="26"/>
+											SelectedValue ="{Binding EditProduct.ProductCD}"
+											Command="{Binding SelProductCommand}" />
+									<TextBox Grid.Column="1" Height="26">
+										<TextBox.Text>
+											<MultiBinding StringFormat='{}{0} {1}'>
+												<Binding Path="EditProduct.ProductCD" />
+												<Binding Path="EditProduct.ProductName" />
+											</MultiBinding>
+										</TextBox.Text>
+									</TextBox>
 									<!--<Button Grid.Column="2" Content="≪" Height="24"/>-->
 								</Grid>
 								<!-- カラー -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="34"/>
 									</Grid.ColumnDefinitions>
-									<Label Content="カラー" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26"/>
-									<Button Grid.Column="2" Content="≪" Height="24"/>
+									<uc:CvnetBtListView Width="85"
+											Title="カラー" 
+											MstName="カラー"
+											StyleDesign="1"
+											SelectedValue ="{Binding SelectedColorText}"
+											Command="{Binding SelColorCommand}" />
+									<TextBox Grid.Column="1" Height="26">
+										<TextBox.Text>
+											<Binding Path="SelectedColorText" />
+										</TextBox.Text>
+									</TextBox>
 								</Grid>
 								<!-- サイズ -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="34"/>
 									</Grid.ColumnDefinitions>
-									<Label Content="サイズ" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26"/>
-									<Button Grid.Column="2" Content="≪" Height="24"/>
+									<uc:CvnetBtListView Width="85"
+											Title="サイズ" 
+											MstName="サイズ"
+											StyleDesign="1"
+											SelectedValue ="{Binding SelectedSizeText}"
+											Command="{Binding SelSizeCommand}" />
+									<TextBox Grid.Column="1" Height="26">
+										<TextBox.Text>
+											<Binding Path="SelectedSizeText" />
+										</TextBox.Text>
+									</TextBox>
 								</Grid>
 								<!-- JAN -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="*" />
 										<ColumnDefinition Width="*" />
 										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="34" />
+
 									</Grid.ColumnDefinitions>
 									<Label Content="JAN" Margin="0,0,0,0" VerticalAlignment="Center"/>
 									<TextBox Grid.Column="1" Height="26" 
@@ -210,23 +227,22 @@
 
 								</Grid>
 								<!-- 上代 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="*" />
 										<ColumnDefinition Width="*" />
 										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="34" />
 									</Grid.ColumnDefinitions>
 									<Label Content="上代" Margin="0,0,8,0" VerticalAlignment="Center"/>
 									<TextBox Grid.Column="1" Height="26"/>
 								</Grid>
 								<!-- 中止 & 生産予定数 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
@@ -236,11 +252,11 @@
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
 								</Grid>
 								<!-- 自動配分 & 裁断数 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
@@ -250,11 +266,11 @@
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
 								</Grid>
 								<!-- 仕入価格 & 下札枚数 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
@@ -264,11 +280,11 @@
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
 								</Grid>
 								<!-- 原価 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
@@ -276,11 +292,11 @@
 									<TextBox Grid.Column="1" Height="26"/>
 								</Grid>
 								<!-- 外貨単価 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
@@ -288,11 +304,11 @@
 									<TextBox Grid.Column="1" Height="26"/>
 								</Grid>
 								<!-- メモ -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
@@ -300,11 +316,11 @@
 									<TextBox Grid.Column="1" Height="26" Visibility="Hidden"/>
 								</Grid>
 								<!-- 作成日 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
@@ -312,11 +328,11 @@
 									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26"/>
 								</Grid>
 								<!-- 修正日 -->
-								<Grid>
+								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="90" />
 										<ColumnDefinition Width="2*" />
-										<ColumnDefinition Width="35" />
+										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
