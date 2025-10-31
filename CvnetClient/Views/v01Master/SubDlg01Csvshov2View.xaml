@@ -36,7 +36,7 @@
             <Button Grid.Column="0" Style="{DynamicResource BackBtn}" Content="商品ｴﾗｰ出力" IsEnabled="False" HorizontalAlignment="Left"></Button>
             
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
-                <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+                <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoCSVCommand}" Content="実行(Enter)"/>
                 <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
             </StackPanel>
         </Grid>
