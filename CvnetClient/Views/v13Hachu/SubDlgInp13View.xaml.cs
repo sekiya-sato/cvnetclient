@@ -22,13 +22,6 @@ namespace CvnetClient.Views
         public SubDlg13HbnhtykNewView()
         {
             InitializeComponent();
-            MyDataGrid.Columns[0].Header = "行";
         }
-
-        private void MyDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            // contoh: kita nak letak row number ke dalam column pertama (index 0)
-            e.Row.Header = (e.Row.GetIndex() + 1).ToString();
-        } 
     }
 }

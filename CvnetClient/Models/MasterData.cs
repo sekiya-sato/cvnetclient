@@ -341,6 +341,8 @@ namespace CvnetClient.Models
 		string? department; //部門
         [ObservableProperty]
 		string? shopCD; //店舗CD
+		[ObservableProperty]
+		string? shopName;
         [ObservableProperty]
 		int? salesFlg;  //営業FLG
         [ObservableProperty]
@@ -362,7 +364,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? felica;
         [ObservableProperty]
-        string? joiningDate;	//入社日
+        DateTime? joiningDate;	//入社日
         [ObservableProperty]
         string? vacationRemaining;	//有給残
         [ObservableProperty]
@@ -396,7 +398,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? endDate;	//退勤日
         [ObservableProperty]
-        string? retireDate;	//退職日
+        DateTime? retireDate;	//退職日
         [ObservableProperty]
         string? profile;	//プロフィール
     }

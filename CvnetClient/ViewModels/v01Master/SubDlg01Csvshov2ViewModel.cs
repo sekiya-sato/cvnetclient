@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
@@ -62,7 +63,7 @@ namespace CvnetClient.ViewModels
         }
 
         [RelayCommand]
-        public void DoCSV() 
+        async Task DoCSV() 
         {
             try
             {
@@ -75,24 +76,34 @@ namespace CvnetClient.ViewModels
                 openDialog.ShowDialog();
                 string sourceFile = openDialog.FileName;
                 string fileName = Path.GetFileName(sourceFile);
-
+                
                 string workDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WorkShohin");
                 Directory.CreateDirectory(workDir);
 
                 string copiedPath = Path.Combine(workDir, fileName);
                 File.Copy(sourceFile, copiedPath, true);
 
+                using var fm = new FileStream(copiedPath, FileMode.Open, FileAccess.Read);
+
                 string upname = Path.GetFileNameWithoutExtension(fileName)
                                 + "_" + DateTime.Now.ToString("yyyyMMddHHmmss")
                                 + Path.GetExtension(fileName);
+                var ret = await ClassSatoo.AspxUploadAsync(fileName, fm, "", "/Wrkmst");
+
+                if (ret == 0) {
+                    System.Windows.MessageBox.Show("Upload berjaya!");
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Upload gagal!");
+                    return;
+                }
+                
                 string[] para = new string[1];
                 para[0] = upname;
-                bool uploadOk = true;
 
-                // --- 5️⃣ Query server (contoh panggilan ke DB / API) ---
                 var retCsv = AppData.Http!.AspxSqlQuery2("mi_csv2", para, null, 1);
 
-                // --- 6️⃣ Papar keputusan ---
                 string message = "";
                 if (retCsv.Split('\n')[0].ToString() != "0")
                 {
