@@ -216,14 +216,11 @@
 
 									</Grid.ColumnDefinitions>
 									<Label Content="JAN" Margin="0,0,0,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" 
-										 Text="{Binding EditProduct.ProductCD}" />
+									<TextBox Grid.Column="1" Height="26" />
 									<TextBox Grid.Column="2" Height="26" 
-										 Margin="0,0,0,0"  
-										 Text="{Binding EditProduct.ProductCD}" />
+										 Margin="0,0,0,0" />
 									<TextBox Grid.Column="3" Height="26" 
-										 Margin="0,0,0,0"  
-										 Text="{Binding EditProduct.ProductCD}" />
+										 Margin="0,0,0,0"  />
 
 								</Grid>
 								<!-- 上代 -->
@@ -247,7 +244,10 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="中止" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<ComboBox Grid.Column="1" Height="26"/>
+									<ComboBox Grid.Column="1" Height="26" ItemsSource="{Binding Chushi}"
+											  DisplayMemberPath="Value"
+											  SelectedValuePath="Key"
+											  SelectedValue="{Binding SelectedItem.chushiFLG }" Style="{StaticResource SearchableComboBox1}"/>
 									<Label Grid.Column="3" Content="生産予定数" Margin="-10,0,6,0" VerticalAlignment="Center" Visibility="Hidden" />
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
 								</Grid>
@@ -260,9 +260,17 @@
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
-									<Label Content="自動配分" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<ComboBox Grid.Column="1" Height="26"/>
-									<Label Grid.Column="3" Content="裁断数" Margin="-10,0,8,0" VerticalAlignment="Center" Visibility="Hidden"/>
+									<Label Content="自動配分" Margin="0,0,8,0" 
+										   VerticalAlignment="Center"/>
+									<ComboBox Grid.Column="1" Height="26" 
+											  ItemsSource="{Binding Jidohaibun}"
+											  DisplayMemberPath="Value"
+											  SelectedValuePath="Key"
+											  SelectedValue="{Binding SelectedItem.jidohaibunFLG}" 
+											  Style="{StaticResource SearchableComboBox1}"/>
+									<Label Grid.Column="3" Content="裁断数" 
+										   Margin="-10,0,8,0" VerticalAlignment="Center" 
+										   Visibility="Hidden"/>
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
 								</Grid>
 								<!-- 仕入価格 & 下札枚数 -->
