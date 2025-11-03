@@ -16,20 +16,23 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         ObservableCollection<MasterShohin>? listProduct;
 
-		[ObservableProperty]
-        MasterShohin? editProduct;
+        //[ObservableProperty]
+        //      MasterShohin? editProduct;
+
+        [ObservableProperty]
+        MasterShohinJan? editProduct;
 
         //[ObservableProperty]
         //ObservableCollection<DeptItem>? deptList;
 
-        [ObservableProperty]
-        FlagOpt? selectedItem;
+        //[ObservableProperty]
+        //FlagOpt? selectedItem;
 
         [ObservableProperty]
-        public Dictionary<string, string>? chushi;
+        public Dictionary<int, string>? chushi;
 
         [ObservableProperty]
-        public Dictionary<string, string>? jidohaibun;
+        public Dictionary<int, string>? jidohaibun;
 
         [ObservableProperty]
         string? selectedColorText;
@@ -53,50 +56,30 @@ namespace CvnetClient.ViewModels
 
         public void OnInit()
         {
-            EditProduct = new MasterShohin();
+            EditProduct = new MasterShohinJan();
 
-            SelectedItem = new FlagOpt();
-            Chushi = new Dictionary<string, string>
+            Chushi = new Dictionary<int, string>
             {
-                { "0", "0 正規" },
-                { "1", "1 中止" },
+                { 0, "0 正規" },
+                { 1, "1 中止" },
             };
-            SelectedItem.chushiFLG = Chushi.FirstOrDefault().Key;
+            EditProduct.UseFlag = Chushi.FirstOrDefault().Key;
 
-            Jidohaibun = new Dictionary<string, string>
+            Jidohaibun = new Dictionary<int, string>
             {
-                { "0", "0 しない" },
-                { "1", "1 売上基準" },
-                { "9", "9 商品マスタ依存" }
+                { 0, "0 しない" },
+                { 1, "1 売上基準" },
+                { 9, "9 商品マスタ依存" }
             };
-            SelectedItem.jidohaibunFLG = Jidohaibun.FirstOrDefault().Key;
+            EditProduct.AutoAllocationFlag = Jidohaibun.FirstOrDefault().Key;
+
+            string sql_query = "select nvl((select 値 from hc$master_config where フラグ名 = 'dispColSizKakaku'),0) flg from dual";
+
         }
-
         string sql_col_list = """
                               商品CD,色CD,サイズCD,JANコード1,JANコード2,JANコード3,メモ,使用FLG,生産予定数,裁断数,下札枚数,
                               自動配分FLG,上代,仕入価格,外貨仕入価格,原価
                             """;
-
-
-
-//        public void SelDspUpdate()
-//        {
-//            /* ダイアログ検索条件を追加 */
-//            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品") && AppData.ClassCvnet.ComboListFLg == 1)
-//            {
-//                var ar = new string[] { "1" };
-//                var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
-//                if (vm != null)
-//                {
-//                    //vm.SelShoResult0 
-////                  PageView(vm.SelShoResult1.Item2, 0, vm.SelShoResult1.Item1);
-//                }
-
-//                return;
-//            }
-
-//            var v_para = new string[] { SelProductCd };
-//        }
 
         [RelayCommand]
         public void SelProduct(object value)
@@ -157,10 +140,10 @@ namespace CvnetClient.ViewModels
         {
 
         }
-        public class FlagOpt
-        {
-            public string? chushiFLG { get; set; }   // 中止
-            public string? jidohaibunFLG { get; set; }   // 自動配分
-        }
+        //public class FlagOpt
+        //{
+        //    public string? chushiFLG { get; set; }   // 中止
+        //    public string? jidohaibunFLG { get; set; }   // 自動配分
+        //}
     }
 }

@@ -129,8 +129,8 @@
                       FontSize="12" ItemsSource="{Binding TableItems}">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCd}" Width="1*"/>
-						<DataGridTextColumn Header="色"     Binding="{Binding ProductColor}"     Width="1*"/>
-						<DataGridTextColumn Header="サイズ" Binding="{Binding ProductSize}"      Width="1*"/>
+						<DataGridTextColumn Header="色"     Binding="{Binding ProductColor}" Width="1*"/>
+						<DataGridTextColumn Header="サイズ" Binding="{Binding ProductSize}" Width="1*"/>
 						<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="1*"/>
 					</DataGrid.Columns>
 				</DataGrid>
@@ -216,23 +216,33 @@
 
 									</Grid.ColumnDefinitions>
 									<Label Content="JAN" Margin="0,0,0,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" />
-									<TextBox Grid.Column="2" Height="26" 
-										 Margin="0,0,0,0" />
-									<TextBox Grid.Column="3" Height="26" 
-										 Margin="0,0,0,0"  />
-
+									<!-- JANコード1 -->
+									<TextBox Grid.Column="1"
+											 d:Text="JANコード1：Data"
+											 Text="{Binding EditProduct.JanCode1}"
+											 TextWrapping="Wrap" />		
+									<!-- JANコード2 -->
+									<TextBox Grid.Column="2"
+											 d:Text="JANコード2：Data"
+											 Text="{Binding EditProduct.JanCode2}"
+											 TextWrapping="Wrap" />
+									<!-- JANコード3 -->
+									<TextBox Grid.Column="3"
+											 d:Text="JANコード3：Data"
+											 Text="{Binding EditProduct.JanCode3}"
+											 TextWrapping="Wrap" />
 								</Grid>
 								<!-- 上代 -->
 								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="90" />
-										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="2*" />
+										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="上代" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								<!-- 中止 & 生産予定数 -->
 								<Grid Margin="0,2,0,2">
@@ -244,14 +254,15 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="中止" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<ComboBox Grid.Column="1" Height="26" ItemsSource="{Binding Chushi}"
+									<ComboBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"
+											  ItemsSource="{Binding Chushi}"
 											  DisplayMemberPath="Value"
 											  SelectedValuePath="Key"
-											  SelectedValue="{Binding SelectedItem.chushiFLG }" Style="{StaticResource SearchableComboBox1}"/>
+											  SelectedValue="{Binding EditProduct.UseFlag }" Style="{StaticResource SearchableComboBox1}"/>
 									<Label Grid.Column="3" Content="生産予定数" Margin="-10,0,6,0" VerticalAlignment="Center" Visibility="Hidden" />
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
 								</Grid>
-								<!-- 自動配分 & 裁断数 -->
+								<!-- 自動配分 & メモ -->
 								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="90" />
@@ -262,13 +273,13 @@
 									</Grid.ColumnDefinitions>
 									<Label Content="自動配分" Margin="0,0,8,0" 
 										   VerticalAlignment="Center"/>
-									<ComboBox Grid.Column="1" Height="26" 
+									<ComboBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"
 											  ItemsSource="{Binding Jidohaibun}"
 											  DisplayMemberPath="Value"
 											  SelectedValuePath="Key"
-											  SelectedValue="{Binding SelectedItem.jidohaibunFLG}" 
+											  SelectedValue="{Binding EditProduct.AutoAllocationFlag}" 
 											  Style="{StaticResource SearchableComboBox1}"/>
-									<Label Grid.Column="3" Content="裁断数" 
+									<Label Grid.Column="3" Content="メモ" 
 										   Margin="-10,0,8,0" VerticalAlignment="Center" 
 										   Visibility="Hidden"/>
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
@@ -283,7 +294,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="仕入価格" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 									<Label Grid.Column="3" Content="下札枚数" Margin="-10,0,8,0" VerticalAlignment="Center" Visibility="Hidden"/>
 									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
 								</Grid>
@@ -297,7 +308,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="原価" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								<!-- 外貨単価 -->
 								<Grid Margin="0,2,0,2">
@@ -309,9 +320,9 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="外貨単価" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
-								<!-- メモ -->
+								<!-- 裁断数 -->
 								<Grid Margin="0,2,0,2">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="90" />
@@ -320,8 +331,8 @@
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
-									<Label Content="メモ" Margin="0,0,8,0" VerticalAlignment="Center" Visibility="Hidden"/>
-									<TextBox Grid.Column="1" Height="26" Visibility="Hidden"/>
+									<Label Content="裁断数" Margin="0,0,8,0" VerticalAlignment="Center"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								<!-- 作成日 -->
 								<Grid Margin="0,2,0,2">
@@ -333,7 +344,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="作成日" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26"/>
+									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								<!-- 修正日 -->
 								<Grid Margin="0,2,0,2">
@@ -345,7 +356,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="修正日" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26"/>
+									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								
 								<!-- Button (追加、修正、削除、印刷) -->
