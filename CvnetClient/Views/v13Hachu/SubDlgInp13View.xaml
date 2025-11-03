@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         Title="発注入力" Style="{StaticResource MasterWindowStyle2}">
     <Window.Resources>
@@ -444,8 +445,7 @@
                         <Button Grid.Column="8" Content="バーコード入力"/>
                     </Grid>
 
-                    <DataGrid Grid.Row="2" x:Name="MyDataGrid" AlternationCount="999999" LoadingRow="MyDataGrid_LoadingRow" 
-                        Style="{DynamicResource WinGridData}"
+                    <uc:CvnetFlexView Grid.Row="2" x:Name="MyDataGrid" AlternationCount="999999"
                         d:ItemsSource="{d:SampleData ItemCount=5}"
                         ItemsSource="{Binding SelectedOrderDetail}"
                         IsSynchronizedWithCurrentItem="True"
@@ -454,9 +454,9 @@
                             Converter={StaticResource SubtractHeaderFooterHeightConverter},
                             ConverterParameter=380}"
                               
-                        AutoGenerateColumns="False" 
+                       
                         HeadersVisibility="Column" 
-                        CanUserAddRows="True" 
+                        
                         Grid.ColumnSpan="2" 
                         ColumnWidth="*"
                         Margin="0,2,0,6"
@@ -468,45 +468,17 @@
                         BorderBrush="#707070"
                         BorderThickness="1">
 
-                        <DataGrid.CellStyle>
+                        <uc:CvnetFlexView.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Margin" Value="0"/>
                             </Style>
-                        </DataGrid.CellStyle>
+                        </uc:CvnetFlexView.CellStyle>
 
-                        <DataGrid.Columns>
+                        <uc:CvnetFlexView.Columns>
 
 
-                            <DataGridTemplateColumn Width="0.5*">
-                                <DataGridTemplateColumn.HeaderTemplate>
-                                    <DataTemplate>
-
-                                        <Grid>
-
-                                            <TextBlock Text="削除" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Grid>
-
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.HeaderTemplate>
-
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Grid.RowSpan="2" Margin="1" Padding="2,0" Style="{StaticResource RefreshFlexBtn}"/>
-                                            <Button Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Content="Refresh↩" Margin="2" Padding="2,0" Style="{StaticResource DeleteFlexBtn}"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                            
 
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
@@ -739,10 +711,40 @@
 
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
+                                
+                                
                             </DataGridTemplateColumn>
 
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            <DataGridTemplateColumn Width="0.5*">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+
+                                        <Grid>
+
+                                            <TextBlock Text="再表示" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Grid>
+
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Grid.RowSpan="2" Margin="1" Padding="2,0" Style="{StaticResource RefreshFlexBtn}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </uc:CvnetFlexView.Columns>
+                    </uc:CvnetFlexView>
 
 
 

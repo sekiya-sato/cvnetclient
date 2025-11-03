@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="社員マスタ" Style="{StaticResource MasterWindowStyle2}">
@@ -99,50 +100,141 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                    <Label Grid.Row="0" Content="社員CD" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.WorkerCD}" />
+                                    <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="社員CD" VerticalAlignment="Center" Margin="0,8"/>
+                                        <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.WorkerCD}" />
 
-                                    <Label Grid.Row="1" Content="名前" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.Name}"/>
 
-                                    <Label Grid.Row="2" Content="カナ" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.Furigana}"/>
+                                        <Label Grid.Column="2" Content="名前" VerticalAlignment="Center" Margin="0,8"/>
+                                        <TextBox Grid.Column="3"  Margin="0,8" Text="{Binding EditWorker.Name}"/>
+                                    </Grid>
 
-                                    <Label Grid.Row="3" Content="部門" VerticalAlignment="Center" Margin="0,8"/>
-                                    <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.Department}" Style="{StaticResource SearchableComboBox1}"  />
+                                    
 
-                                    <Label Grid.Row="4" Content="店舗CD" VerticalAlignment="Center" Margin="0,8"/>
-                                    <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.ShopCD}" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListShop}"/>
+                                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="カナ" VerticalAlignment="Center" Margin="0,8"/>
+                                        <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.Furigana}"/>
 
-                                    <Label Grid.Row="5" Content="営業FLG" VerticalAlignment="Center" Margin="0,8"/>
-                                    <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListSalesFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.SalesFlg}" Style="{StaticResource SearchableComboBox1}"  />
+                                        <Label Grid.Column="2" Content="部門" VerticalAlignment="Center" Margin="0,8"/>
+                                        <ComboBox Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.Department}" Style="{StaticResource SearchableComboBox1}"  />
 
-                                    <Label Grid.Row="6" Content="備考" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="6" Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.Notes}"/>
+                                    </Grid>
 
-                                    <Label Grid.Row="7" Content="出力FLG" VerticalAlignment="Center" Margin="0,8"/>
-                                    <ComboBox Grid.Row="7" Grid.Column="1"  Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.OutputFLG}" Style="{StaticResource SearchableComboBox1}" />
+                                    
+                            <uc:CvnetBtListView Width="85" Grid.Row="2"
+											Margin="5,0,0,0"
+											Title="店舗CD" 
+											MstName="{Binding TenpoFlg}"
+                                            StyleDesign="1"
+											SelectedValue ="{Binding EditWorker.ShopCD}"
+											Command="{Binding SelShopCommand}" />
+                            <TextBox Width="350"
+								             Margin="5,0,0,0"
+								             HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1"
+								             VerticalAlignment="Top"
+								             d:Text="店舗CD：Data"  
+								             TextWrapping="Wrap" >
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                        <Binding Path="EditWorker.ShopCD" />
+                                        <Binding Path="EditWorker.ShopName" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
 
-                                    <Label Grid.Row="8" Content="POS区分" VerticalAlignment="Center" Margin="0,8"/>
-                                    <ComboBox Grid.Row="8" Grid.Column="1"  Margin="0,8" ItemsSource="{Binding ComboListPosCate}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.PosCate}" Style="{StaticResource SearchableComboBox1}" />
+                                    <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Row="9" Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="9" Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.VdateCreate, Converter={StaticResource VdateConverter}}"/>
+                                        <Label  Content="営業FLG" VerticalAlignment="Center" Margin="0,8"/>
+                                        <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListSalesFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.SalesFlg}" Style="{StaticResource SearchableComboBox1}"  />
 
-                                    <Label Grid.Row="10" Content="修正日" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="10" Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.VdateUpdate, Converter={StaticResource VdateConverter}}"/>
+                                        <Label Grid.Column="2" Content="備考" VerticalAlignment="Center" Margin="0,8"/>
+                                        <TextBox Grid.Column="3"  Margin="0,8" Text="{Binding EditWorker.Notes}"/>
 
-                                    <Label Grid.Row="11" Content="最終修正者" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="11" Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.EmployeeInpCD}"/>
+                                    </Grid>
 
-                            
+                                    
 
+                            <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
+                                <Label Content="出力FLG" VerticalAlignment="Center" Margin="0,8"/>
+                                <ComboBox Grid.Column="1"  Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.OutputFLG}" Style="{StaticResource SearchableComboBox1}" />
+
+                                <Label Grid.Column="2" Content="POS区分" VerticalAlignment="Center" Margin="0,8"/>
+                                <ComboBox  Grid.Column="3"  Margin="0,8" ItemsSource="{Binding ComboListPosCate}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.PosCate}" Style="{StaticResource SearchableComboBox1}" />
+                            </Grid>
+
+                                    <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Content="メールFLG" VerticalAlignment="Center" Margin="0,8"/>
+                                        <ComboBox  Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.EmailFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListMailFLG}"/>
+
+                                        <Label Grid.Column="2" Content="メール" VerticalAlignment="Center" Margin="0,8"/>
+                                        <TextBox Grid.Column="3"  Margin="0,8" Text="{Binding EditWorker.Mail}"/>
+                                    </Grid>
+                                    
+
+                                    <Label Grid.Row="6" Content="写真/画像" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.TelNo}" />
+
+                                    <StackPanel Orientation="Vertical" Grid.Row="7" Margin="0,8">
+                                        <Image Height="100"/>
+                                        <Button Height="30"   
+				                                VerticalAlignment="Bottom"
+				                                Foreground="{StaticResource TitleLabelColor}"
+				                                Content="アップロード" />
+                                    </StackPanel>
+
+                                    <Grid Grid.Row="8" Grid.ColumnSpan="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label  Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
+                                        <TextBox  Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.VdateCreate, Converter={StaticResource VdateConverter}}" IsReadOnly="True"/>
+
+                                        <Label Grid.Column="2" Content="修正日" VerticalAlignment="Center" Margin="0,8"/>
+                                        <TextBox Grid.Column="3" Margin="0,8" Text="{Binding EditWorker.VdateUpdate, Converter={StaticResource VdateConverter}}" IsReadOnly="True"/>
+
+                                    </Grid>
+
+                                    
+                            <Label Grid.Row="9" Content="最終修正者" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox Grid.Row="9" Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.EmployeeInpCD}" IsReadOnly="True"/>
+                           
                         </Grid>
                     </StackPanel>
                 </TabItem>
@@ -241,22 +333,7 @@
                                     <Label Grid.Row="4" Content="社員分類05" VerticalAlignment="Center" Margin="0,8"/>
                                     <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.NameCD05}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListName5}"/>
 
-                                    <Label Grid.Row="5" Content="メールFLG" VerticalAlignment="Center" Margin="0,8"/>
-                                    <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.EmailFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListMailFLG}"/>
-
-                                    <Label Grid.Row="6" Content="メール" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="6" Grid.Column="1"  Margin="0,8" Text="{Binding EditWorker.Mail}"/>
-
-                                    <Label Grid.Row="7" Content="写真/画像" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="7" Grid.Column="1" Margin="0,8" Text="{Binding EditWorker.TelNo}" />
-
-                                    <StackPanel Orientation="Vertical" Grid.Row="8" Margin="0,8">
-                                <Image Height="100"/>
-                                <Button Height="30"   
-								VerticalAlignment="Bottom"
-								Foreground="{StaticResource TitleLabelColor}"
-								Content="アップロード" />
-                            </StackPanel>
+                                    
                         </Grid>
                     </StackPanel>
                 </TabItem>
