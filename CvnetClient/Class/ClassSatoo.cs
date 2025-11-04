@@ -1,7 +1,12 @@
-﻿using System.Drawing; 
- 
+﻿using CvnetClient.Models;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 public class ClassSatoo
 {
+    private static readonly HttpClient httpClient = new HttpClient();
     public int SysTest = 0; /* デバッグ用ﾃｽﾄﾌﾗｸﾞ .*/
     public int ImgLoad = 1; /* 一覧表示Imageﾌﾗｸﾞ(0:無,1:有,2:バックグラウンド)  .*/
     public string Version = "20060404"; /* Version .*/
@@ -219,7 +224,71 @@ public class ClassSatoo
         var parts = v_string.Split(' ');
         return parts.Length > 0 ? parts[0] : "";
     }
+    /* ===================================================
+		■関数 AspxUpload = .Netサーバーへファイルをアップロードする
+			引数1:I	String = ファイル名
+			引数2:I	(Readメソッドを持つオブジェクト) = D&Dのe.DataやFileオブジェクトなど
+			引数3:I	String = nullか "1"か"souko"か"tenpo"=HHT用Uploadパラメータ
+			引数4:I	String = nullか "CRS"か"PSS"=Biz/Designer用Uploadパラメータ
+			戻値		0=成功, -1=失敗
+		=================================================== */
 
+    public static async Task<int> AspxUploadAsync(
+        string filePath,
+        Stream fileData,
+        string? v_ht = null,
+        string? v_design = null)
+    {
+        try
+        {
+            string uploadUrl = AppData.Http!.URLroot + "isql/iupload2.aspx";
+
+            string base64Data;
+            using (var ms = new MemoryStream())
+            {
+                await fileData.CopyToAsync(ms);
+                base64Data = Convert.ToBase64String(ms.ToArray());
+            }
+
+            // Sediakan parameter POST
+            var content = new MultipartFormDataContent();
+            content.Add(new StringContent("RAND12345"), "rd"); // contoh random/session ID
+            content.Add(new StringContent(Path.GetFileName(filePath)), "fname");
+            content.Add(new StringContent(base64Data), "file");
+
+            // Optional params
+            if (!string.IsNullOrEmpty(v_ht))
+            {
+                if (v_ht == "img")
+                    content.Add(new StringContent(v_ht), "img");
+                else
+                    content.Add(new StringContent(v_ht), "hht");
+            }
+
+            if (!string.IsNullOrEmpty(v_design))
+            {
+                content.Add(new StringContent(v_design), "DIR");
+            }
+
+            // Hantar request
+            HttpResponseMessage response = await httpClient.PostAsync(uploadUrl, content);
+            string result = (await response.Content.ReadAsStringAsync()).ToUpperInvariant();
+
+            // Semak hasil
+            if (result.Contains("OK"))
+            {
+                // Success
+                return 0;
+            }
+
+            return -1; // Failed
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Upload failed: {ex.Message}");
+            return -1;
+        }
+    }
     /// <summary>
     /// ■関数 FullStr = 文字列の空白補完
     /// </summary>

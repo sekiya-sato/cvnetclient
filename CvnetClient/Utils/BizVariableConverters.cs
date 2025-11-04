@@ -1,7 +1,5 @@
-
-﻿using System.Data;
-using System.Net.Http;
 using System.Data;
+using System.Net.Http;
 using System.Dynamic;
 using System.IO; 
 using System.Text;
@@ -314,6 +312,60 @@ namespace CvnetClient.Utils
                 }
             }
         }
+        /// <summary>
+        /// 固定長ファイル出力
+        /// </summary> 
+        public void Save2(StreamWriter fp, string[] v_format, int? v_flg, string v_ret)
+        {
+            if (csv_table == null || csv_table.Rows.Count == 0)
+                return;
+
+            for (int i = 0; i < csv_table.Rows.Count; i++)
+            {
+                var v_line = new StringBuilder();
+
+                for (int j = 0; j < csv_table.Columns.Count; j++)
+                {
+                    string v_col = csv_table.Rows[i][j]?.ToString() ?? string.Empty;
+
+                    // Jika ada format panjang tetap
+                    if (v_format != null && j < v_format.Length && !string.IsNullOrEmpty(v_format[j]))
+                    {
+                        if (int.TryParse(v_format[j], out int width))
+                        {
+                            if (v_flg == null)
+                                v_col = FullStr(v_col, width);
+                            else
+                                v_col = FullStr(ToHalfWidth(v_col), width);
+                        }
+                    }
+
+                    v_line.Append(v_col);
+                }
+
+                v_line.Append(v_ret ?? "\n");
+
+                fp.Write(v_line.ToString());
+            }
+        }
+
+        // Pad right to fixed length (truncate if too long)
+        private string FullStr(string s, int length)
+        {
+            if (s == null) s = string.Empty;
+            if (s.Length > length)
+                return s.Substring(0, length);
+            return s.PadRight(length);
+        }
+
+        // Dummy converter: full-width → half-width (can enhance later)
+        private string ToHalfWidth(string s)
+        {
+            // 🔸 optional: implement real conversion if needed
+            // For now, return as-is
+            return s;
+        }
+
         /// <summary>
         /// Convert file from server into CSV file
         /// </summary> 

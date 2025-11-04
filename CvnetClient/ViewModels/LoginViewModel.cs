@@ -47,6 +47,7 @@ namespace CvnetClient.ViewModels {
 				ClientLib.MessageBoxOk(this, "ログイン成功しました");
 				AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
+				AppData.ClassCvnet.AspxSqlQuerySysHHTMst();
 				var win = ClientLib.GetActiveView(this);
 				if(win != null) 
 					win.DialogResult = true;

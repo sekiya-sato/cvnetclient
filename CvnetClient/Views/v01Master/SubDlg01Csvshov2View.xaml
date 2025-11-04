@@ -1,0 +1,44 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg01Csvshov2View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="外部CSVデータ取込" Style="{StaticResource SmallWindow}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg01Csvshov2ViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoCSVCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="CSV形式のマスターファイルを読み込み、登録します" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Grid.Row="1" Text="※指定形式のＣＳＶファイルから各マスターを作成します。" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{DynamicResource BackBtn}" Content="商品ｴﾗｰ出力" IsEnabled="False" HorizontalAlignment="Left"></Button>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+                <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoCSVCommand}" Content="実行(Enter)"/>
+                <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

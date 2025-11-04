@@ -52,6 +52,30 @@ namespace CvnetClient.Utils
         }
     }
 
+    public class TextBoxMultiConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var code = values[0]?.ToString() ?? "";
+            var name = values[1]?.ToString() ?? "";
+            return string.IsNullOrWhiteSpace(name) ? code : $"{code} {name}";
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            var text = value?.ToString() ?? "";
+            string code = text;
+            string name = null;
+
+            var parts = text.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0)
+                code = parts[0];
+            if (parts.Length > 1)
+                name = parts[1];
+
+            return new object[] { code, name ?? Binding.DoNothing };
+        }
+    }
     public class PercentageBelowConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

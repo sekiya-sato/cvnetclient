@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Net.Http;
 using System.Reflection;
+using System.IO;
 
 namespace CvnetClient.Utils
 {
@@ -58,6 +59,7 @@ namespace CvnetClient.Utils
             }
 
             return false; 
-        }
+        }        
+
     }
 }
