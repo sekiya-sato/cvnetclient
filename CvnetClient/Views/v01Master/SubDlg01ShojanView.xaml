@@ -55,16 +55,16 @@
 
 					<Label Grid.Column="0" Content="商品CD" VerticalAlignment="Center" Margin="5,0,0,0"/>
 					<TextBox Grid.Column="1" Margin="5,0,0,0"
-							Text="{Binding EditProduct.ProductCD}" d:Text="商品CD：Data"/>
+							Text="{Binding SelectedProduct.ProductCD}" d:Text="商品CD：Data"/>
 
 					<Label Grid.Column="3" Content="カラー" VerticalAlignment="Center"/>
 					<TextBox Grid.Column="4" Margin="5,0,0,0"
-							 d:Text="カラー：Data"/>
+							Text="{Binding SelectedProduct.ColorCD}" d:Text="カラー：Data"/>
 
 					<Label Grid.Column="6" Content="サイズ" VerticalAlignment="Center"/>
 					<TextBox Grid.Column="7" Margin="5,0,0,0"
 							HorizontalAlignment="Stretch"   
-							d:Text="サイズ：Data"/>
+							Text="{Binding SelectedProduct.SizeCD}" d:Text="サイズ：Data"/>
 				</Grid>
 
 				<Grid Grid.Row="1" Margin="0,5,0,0">
@@ -89,25 +89,28 @@
 					<!-- TextBox 1 -->
 					<TextBox Grid.Column="1"
 							 Margin="5,0,0,0"
+							 Text="{Binding SelectedProduct.JanCode1}"
 							 d:Text="JAN-1：Data"
 							 TextWrapping="Wrap"/>
 
 					<!-- TextBox 2 -->
 					<TextBox Grid.Column="2"
 							 Margin="0,0,0,0"
+							 Text="{Binding SelectedProduct.JanCode2}"
 							 d:Text="JAN-2：Data"
 							 TextWrapping="Wrap"/>			
 
 					<!-- TextBox 3 -->
 					<TextBox Grid.Column="3"
 							 Margin="0,0,0,0"
+							 Text="{Binding SelectedProduct.JanCode3}"
 							 HorizontalAlignment="Stretch"
 							 d:Text="JAN-3：Data"
 							 TextWrapping="Wrap"/>
 				</Grid>
 
 				<Grid Grid.Row="2">
-					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding DoListCommand}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
+					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding SelDspUpdateCommand}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 				</Grid>
 			</Grid>
 		</Border>
@@ -122,15 +125,17 @@
 			<!-- LEFT: TABLE -->
 			<Border Margin="4" Background="White" BorderBrush="#888" BorderThickness="1" CornerRadius="3">
 				<DataGrid x:Name="ProductGrid"
-                      AutoGenerateColumns="False" HeadersVisibility="Column"
-                      CanUserAddRows="False" CanUserDeleteRows="False"
-                      IsReadOnly="True" GridLinesVisibility="All"
-                      RowHeaderWidth="0" RowHeight="24" ColumnHeaderHeight="24"
-                      FontSize="12" ItemsSource="{Binding TableItems}">
+					AutoGenerateColumns="False" HeadersVisibility="Column"
+					CanUserAddRows="False" CanUserDeleteRows="False"
+                    IsReadOnly="True" GridLinesVisibility="All"
+                    RowHeaderWidth="0" RowHeight="24" ColumnHeaderHeight="24"
+                    FontSize="12" ItemsSource="{Binding ListShohinJan}"
+					SelectedItem="{Binding SelectedProduct}"
+					Style="{DynamicResource WinGridData}">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCd}" Width="1*"/>
-						<DataGridTextColumn Header="色"     Binding="{Binding ProductColor}" Width="1*"/>
-						<DataGridTextColumn Header="サイズ" Binding="{Binding ProductSize}" Width="1*"/>
+						<DataGridTextColumn Header="色"     Binding="{Binding ColorCD}" Width="1*"/>
+						<DataGridTextColumn Header="サイズ" Binding="{Binding SizeCD}" Width="1*"/>
 						<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="1*"/>
 					</DataGrid.Columns>
 				</DataGrid>
@@ -180,11 +185,11 @@
 											Title="カラー" 
 											MstName="カラー"
 											StyleDesign="1"
-											SelectedValue ="{Binding SelectedColorText}"
+											SelectedValue ="{Binding EditProduct.ColorCD}"
 											Command="{Binding SelColorCommand}" />
 									<TextBox Grid.Column="1" Height="26">
 										<TextBox.Text>
-											<Binding Path="SelectedColorText" />
+											<Binding Path="EditProduct.ColorCD" />
 										</TextBox.Text>
 									</TextBox>
 								</Grid>
@@ -198,11 +203,11 @@
 											Title="サイズ" 
 											MstName="サイズ"
 											StyleDesign="1"
-											SelectedValue ="{Binding SelectedSizeText}"
+											SelectedValue ="{Binding EditProduct.SizeCD}"
 											Command="{Binding SelSizeCommand}" />
 									<TextBox Grid.Column="1" Height="26">
 										<TextBox.Text>
-											<Binding Path="SelectedSizeText" />
+											<Binding Path="EditProduct.SizeCD" />
 										</TextBox.Text>
 									</TextBox>
 								</Grid>
