@@ -745,6 +745,8 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? supplierCd; //仕入先CD
         [ObservableProperty]
+        string? supplierName; //仕入先名
+        [ObservableProperty]
         string? supplierProdCd; //仕入先商品CD
         [ObservableProperty]
         decimal unitPrice; //単価
