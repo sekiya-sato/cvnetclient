@@ -75,11 +75,18 @@
                         <uc:CvnetBtListView Width="85"
 								Title="仕入先CD" 
 								MstName="仕入先"
-								SelectedValue="{Binding FindSupplierCd}"		
-								Command="{Binding SelSeasonCommand}" />
-                        <TextBox x:Name="supplierCDSearch" Text="{Binding FindSupplierCd}" Grid.Column="1" Width="240"/>
-                        
-                        </Grid>
+								SelectedValue="{Binding FindSupplierCd.SupplierCD}"		
+								Command="{Binding SelectSupplierCommand}" />
+                        <TextBox Grid.Column="1" Width="240">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="FindSupplierCd.SupplierCD" />
+                                    <Binding Path="FindSupplierCd.SupplierName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+
+                    </Grid>
                     <!--<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
                         <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
@@ -230,9 +237,19 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
                             <ColumnDefinition Width="8*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="仕入先CD"
-   VerticalAlignment="Center"/>
-                        <TextBox x:Name="supplierCD" Grid.Column="1" Text="{Binding EditKiji.SupplierCd}"/>
+                        <uc:CvnetBtListView 
+					        Title="仕入先CD" 
+					        MstName="仕入先"
+					        SelectedValue="{Binding EditKiji.SupplierCd}"		
+					        Command="{Binding SelectSupplier1Command}" />
+                        <TextBox Grid.Column="1" x:Name="supplierCD">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="EditKiji.SupplierCd" />
+                                    <Binding Path="EditKiji.SupplierName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
