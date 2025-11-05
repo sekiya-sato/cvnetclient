@@ -975,15 +975,43 @@ namespace CvnetBaseCore {
 			}
 			return retval;
 		}
-		/// <summary>
-		/// JSONファイル(UTF8)をアップロードする(圧縮あり)
-		/// </summary>
-		/// <param name="http"></param>
-		/// <param name="localname"></param>
-		/// <param name="remotename"></param>
-		/// <param name="mess"></param>
-		/// <returns></returns>
-		public bool UploadFileDeflate(string localname, string remotename, out string mess) {
+
+        public bool UploadAllFile(string localname, string remotename,string uploadlocation, out string mess)
+        {
+            mess = "";
+            bool retval = true;
+            try
+            {
+                byte[] bs = File.ReadAllBytes(localname);
+                string base64String = Convert.ToBase64String(bs);
+
+                Hashtable vals = new Hashtable();
+                vals.Add("rd", v_randid);  
+                vals.Add("fname", remotename);
+                vals.Add("file", base64String);
+                if (!string.IsNullOrEmpty(uploadlocation))
+                    vals.Add("DIR", uploadlocation);
+
+                string retStr = HttpPost("iupload2.aspx", vals, 1);
+                if (retStr.ToUpper().IndexOf("OK") < 0)
+                    retval = false;
+            }
+            catch (System.Exception ex)
+            {
+                mess = ex.Message;
+                retval = false;
+            }
+            return retval;
+        }
+        /// <summary>
+        /// JSONファイル(UTF8)をアップロードする(圧縮あり)
+        /// </summary>
+        /// <param name="http"></param>
+        /// <param name="localname"></param>
+        /// <param name="remotename"></param>
+        /// <param name="mess"></param>
+        /// <returns></returns>
+        public bool UploadFileDeflate(string localname, string remotename, out string mess) {
 			mess = "";
 			var vals = new Hashtable();
 			string base64String = "";
