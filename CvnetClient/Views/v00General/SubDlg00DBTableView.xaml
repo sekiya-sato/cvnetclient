@@ -1,0 +1,89 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg00DBTableView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="DB定義書出力" Style="{StaticResource SmallWindow}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg00DBTableViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Table名"></Label>
+            <ComboBox Grid.Column="1" Margin="0,8" 
+                      ItemsSource="{Binding ComboListTable}" 
+                      DisplayMemberPath="Name" 
+                      SelectedValuePath="ID" 
+                      Width="150"
+                      Style="{DynamicResource SearchableComboBox1}" 
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"></ComboBox>
+            <TextBox Grid.Column="2" Text="{Binding SelectedItem.TableName, Mode=OneWay}" IsReadOnly="True" Width="150" Margin="8"></TextBox>
+        </Grid>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="~"></Label>
+            <ComboBox Grid.Column="1" Margin="0,8" 
+              ItemsSource="{Binding ComboListTable}" 
+              DisplayMemberPath="Name" 
+              SelectedValuePath="ID" 
+                      Width="150"
+              Style="{DynamicResource SearchableComboBox1}" 
+              SelectedItem="{Binding SelectedItem2, Mode=TwoWay}"></ComboBox>
+            <TextBox Grid.Column="2" Text="{Binding SelectedItem2.TableName, Mode=OneWay}" IsReadOnly="True" Width="150" Margin="8"></TextBox>
+        </Grid>
+        
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <RadioButton Grid.Column="0" Content="EXCEL" 
+        GroupName="PrintType"
+        IsChecked="{Binding SelectedPrint, 
+                            Converter={StaticResource StringToBoolConverter}, 
+                            ConverterParameter=EXCEL, Mode=TwoWay}"
+Margin="0,0,20,0"/>
+            <RadioButton Grid.Column="1" Content="PDF" 
+                 GroupName="PrintType"
+                         IsChecked="{Binding SelectedPrint, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=PDF, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+        </Grid>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+            <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+            <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

@@ -1,5 +1,8 @@
 ﻿using System.Globalization; 
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace CvnetClient.Utils
 {
@@ -52,6 +55,30 @@ namespace CvnetClient.Utils
         }
     }
 
+    public class TextBoxMultiConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            var code = values[0]?.ToString() ?? "";
+            var name = values[1]?.ToString() ?? "";
+            return string.IsNullOrWhiteSpace(name) ? code : $"{code} {name}";
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            var text = value?.ToString() ?? "";
+            string code = text;
+            string name = null;
+
+            var parts = text.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0)
+                code = parts[0];
+            if (parts.Length > 1)
+                name = parts[1];
+
+            return new object[] { code, name ?? Binding.DoNothing };
+        }
+    }
     public class PercentageBelowConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -89,6 +116,34 @@ namespace CvnetClient.Utils
                 return Enum.Parse(targetType, parameter.ToString());
             }
             return Binding.DoNothing;
+        }
+    }
+
+    public static class RichTextBoxHelper
+    {
+        public static readonly DependencyProperty DocumentProperty =
+            DependencyProperty.RegisterAttached(
+                "Document",
+                typeof(FlowDocument),
+                typeof(RichTextBoxHelper),
+                new PropertyMetadata(null, OnDocumentChanged));
+
+        public static FlowDocument GetDocument(DependencyObject obj)
+        {
+            return (FlowDocument)obj.GetValue(DocumentProperty);
+        }
+
+        public static void SetDocument(DependencyObject obj, FlowDocument value)
+        {
+            obj.SetValue(DocumentProperty, value);
+        }
+
+        private static void OnDocumentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is RichTextBox rtb)
+            {
+                rtb.Document = e.NewValue as FlowDocument ?? new FlowDocument();
+            }
         }
     }
 

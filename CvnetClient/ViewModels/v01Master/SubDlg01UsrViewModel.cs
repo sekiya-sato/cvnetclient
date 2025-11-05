@@ -4,13 +4,23 @@ using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
+using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using static System.Net.WebRequestMethods;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg01UsrViewModel : BaseViewModel
     {
+
         [ObservableProperty]
         ObservableCollection<MasterWorker>? listWorker;
         [ObservableProperty]
@@ -51,12 +61,21 @@ namespace CvnetClient.ViewModels
         public Dictionary<string, string>? comboListName4;
         [ObservableProperty]
         public Dictionary<string, string>? comboListName5;
+        [ObservableProperty]
+        public string? shopName;
+        [ObservableProperty]
+        public string? tenpoFlg;
+        [ObservableProperty]
+        private BitmapImage? sourceImage;
 
-        string sql_list = "SELECT * FROM (SELECT *  FROM HC$MASTER_SHAIN WHERE 社員CD {0}:1 ORDER BY 社員CD {1}) WHERE ROWNUM <= {2}";
+        private string? _localImagePath;
+
+        private readonly string _baseUrl = AppData.Url;
+        private readonly string _dataPath = AppData.DataAddPath;
 
         public void OnInit() {
             EditWorker = new MasterWorker();
-
+            #region ComboBox
             var comboList = new Dictionary<string, string>();
             string sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='BMN' order by a.名称CD";
             var get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
@@ -193,26 +212,101 @@ namespace CvnetClient.ViewModels
             }
             ComboListName5 = comboList;
             EditWorker.NameCD05 = ComboListName5.FirstOrDefault().Key;
+            #endregion
+            if (AppData.ClassCvnet.config.MultiCoop > 0)
+            {
+                TenpoFlg = "移動倉庫S";
+            }
+            else
+            {
+                TenpoFlg = "移動倉庫";
+            }
         }
 
         partial void OnSelectedWorkerChanged(MasterWorker? value)
         {
             if (value != null)
+            {
                 EditWorker = CvnetBaseCore.Common.CloneObject(value);
+                LoadWorkerImage(value.TelNo);
+            }
+                
             else
                 EditWorker = null;
         }
 
         [RelayCommand]
-        void DoList() {
-            SubList(string.IsNullOrEmpty(StartCode) ? "." : StartCode, ">=","asc", AppData.maxQueryCnt);
-            if(ListWorker == null || ListWorker.Count == 0)
-                ClientLib.MessageBoxOk(this, "データがありません");
+        public void SelShop(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditWorker != null)
+            {
+                EditWorker.ShopCD = get_sel00.Code;
+                EditWorker.ShopName = get_sel00.Name;
+            }
         }
 
-        void SubList(string startCd, string sql_P1, string sql_P2, int sql_P3) {
-            var sql = string.Format(sql_list, sql_P1, sql_P2, sql_P3);
-            var retData = AppData.Http?.AspxSqlQuery(sql, new string[] {startCd});
+        [RelayCommand]
+        void DoList() {
+
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("社員") && AppData.ClassCvnet.ComboListFLg == 1)
+            {
+                var ar = new string[] { "A" };
+                var vm = AppData.DlgService.GetSelUsr(AppData.ClassCvnet.MstDialog["社員"].v_mstname, null, ar);
+                if (vm != null && vm.SelUsrResult1 != null)
+                {
+                    OnQuery(vm.SelUsrResult1.Item2.ToArray(),vm.SelUsrResult1.Item1,null);                    
+                }
+                return;
+            }
+            var v_para = new string[] { StartCode };
+        }
+
+        void OnQuery(string[]? v_para = null,string? qs = null,string? p_sort = null) 
+        {
+            if (qs != null) {
+                qs += " order by 社員CD";
+                var ret_Data = AppData.Http!.AspxSqlQuery(qs, v_para);
+
+                qs = string.Join(",",
+                    ret_Data.AsEnumerable()
+                           .Take(40)
+                           .Select(r => $"'{r[0]}'"));
+            }
+            
+            var v_sort = " asc ";
+            if (p_sort != null) v_sort = " desc";
+            var v_hugo = ">=";
+            if (p_sort != null) v_hugo = "<=";
+
+            var sql_query = "select A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE,(SELECT 得意先名 FROM HC$MASTER_TOKUI WHERE 得意先CD=A.店舗CD) 店舗,";            
+            sql_query += "A.社員CD,A.名前,A.部門,A.店舗CD,A.営業FLG,A.メール,A.携帯TEL,A.備考,A.特権FLG,A.プロフィール";
+            sql_query += ",A.役職CD,A.就業FLG,A.入社日,A.有給残,A.給与区分,A.給与支給額,A.交通費区分,A.交通費支給額,A.出力FLG,A.部課CD,A.POS区分";
+            sql_query += ",A.名称CD01,A.名称CD02,A.名称CD03,A.名称CD04,A.名称CD05,A.フリガナ,A.メールFLG,A.退勤日,A.退職日,A.特休残";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='BMN' and H.名称CD=A.部門),'.') 部門名";
+            sql_query += ",NVL((select H.得意先名 from HC$MASTER_TOKUI H where  H.得意先CD=A.店舗CD),'.') 店舗名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='YAK' and H.名称CD=A.役職CD),'.') 役職名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='BKA' and H.名称CD=A.部課CD),'.') 部課名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='E01' and H.名称CD=A.名称CD01),'.') 分類01名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='E02' and H.名称CD=A.名称CD02),'.') 分類02名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='E03' and H.名称CD=A.名称CD03),'.') 分類03名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='E04' and H.名称CD=A.名称CD04),'.') 分類04名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='E05' and H.名称CD=A.名称CD05),'.') 分類05名";
+            
+            sql_query += ",(A.入力社員CD ||' '|| (select B.名前 from HC$MASTER_SHAIN B where B.社員CD=A.入力社員CD)) 最終修正者";
+            sql_query += " from HC$Master_SHAIN A";
+            
+            if (qs == null)
+            {
+                sql_query += " where A.社員CD" + v_hugo.ToString() + " '"+ StartCode + "'  order by A.社員CD " + v_sort.ToString();
+            }
+            else {
+                sql_query += " where A.社員CD in (" + qs + ")  order by A.社員CD " + v_sort.ToString();
+            }
+
+            sql_query = "select * from (" + sql_query + ") where rownum <= " + AppData.maxQueryCnt;
+
+            var retData = AppData.Http!.AspxSqlQuery(sql_query, new string[] { });
             if (retData == null || retData.Rows.Count == 0) return;
             var list = (from DataRow dr in retData.Rows
                         select new MasterWorker
@@ -224,6 +318,7 @@ namespace CvnetClient.ViewModels
                             Name = dr["名前"].ToString() ?? string.Empty,
                             Department = dr["部門"].ToString() ?? string.Empty,
                             ShopCD = dr["店舗CD"].ToString() ?? string.Empty,
+                            ShopName = dr["店舗"].ToString() ?? string.Empty,
                             SalesFlg = Convert.ToInt32(dr["営業FLG"]),
                             Mail = dr["メール"].ToString() ?? string.Empty,
                             TelNo = dr["携帯TEL"].ToString() ?? string.Empty,
@@ -233,7 +328,7 @@ namespace CvnetClient.ViewModels
                             EmploymentFLG = dr["就業FLG"].ToString() ?? string.Empty,
                             OutputFLG = Convert.ToInt32(dr["出力FLG"]),
                             Notes = dr["備考"].ToString() ?? string.Empty,
-                            JoiningDate = dr["入社日"].ToString() ?? string.Empty,
+                            JoiningDate = DateTime.ParseExact(dr["入社日"]?.ToString(), "yyyyMMdd", null),
                             VacationRemaining = dr["有給残"].ToString() ?? string.Empty,
                             SalaryCate = dr["給与区分"].ToString() ?? string.Empty,
                             SalaryAmount = Convert.ToInt32(dr["給与支給額"]),
@@ -247,43 +342,50 @@ namespace CvnetClient.ViewModels
                             NameCD05 = dr["名称CD05"].ToString() ?? string.Empty,
                             PosCate = Convert.ToInt32(dr["POS区分"]),
                             EmailFLG = Convert.ToInt32(dr["メールFLG"]),
-                            EmployeeInpCD = dr["入力社員CD"].ToString() ?? string.Empty,
+                            EmployeeInpCD = dr["最終修正者"].ToString() ?? string.Empty,
                             SpecHolidayRemain = Convert.ToInt32(dr["特休残"]),
                             EndDate = dr["退勤日"].ToString() ?? string.Empty,
-                            RetireDate = dr["退職日"].ToString() ?? string.Empty,
+                            RetireDate = DateTime.ParseExact(dr["退職日"]?.ToString(), "yyyyMMdd", null),
                             Profile = dr["プロフィール"].ToString() ?? string.Empty
                         }).OrderBy(c => c.WorkerCD).ToList();
             Common.ConvertDotStringDel(list);
             ListWorker = new ObservableCollection<MasterWorker>(list);
-            if (ListWorker.Count > 0) { 
+            if (ListWorker.Count > 0)
+            {
                 SelectedWorker = ListWorker[0];
             }
-        }
+        }        
 
         [RelayCommand]
         void BackList()
         {
-            var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
-            if (ListWorker != null && ListWorker.Count > 0) 
+            if (ListWorker != null && ListWorker.Count > 0)
             {
-                startcd = ListWorker.Min(c => c.WorkerCD);
+                StartCode = ListWorker.Min(c => c.WorkerCD);
             }
-            SubList(startcd!, "<=", "desc", AppData.maxQueryCnt);
+            else 
+            { 
+                DoList();
+            }
+            OnQuery(null, null, "<=");
             if (ListWorker == null || ListWorker.Count == 0)
                 ClientLib.MessageBoxOk(this, "データがありません");
         }
 
         [RelayCommand]
         void NextList()
-        {
-            var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
+        {            
             if (ListWorker != null && ListWorker.Count > 0)
             {
-                startcd = ListWorker.Max(c => c.WorkerCD);
+                StartCode = ListWorker.Max(c => c.WorkerCD);
             }
-            SubList(startcd!, ">=", "asc", AppData.maxQueryCnt);
+            else
+            {
+                DoList();
+            }
+            OnQuery(null, null, null);
             if (ListWorker == null || ListWorker.Count == 0)
-                ClientLib.MessageBoxOk(this, string.Empty);
+                ClientLib.MessageBoxOk(this, "データがありません");
         }
 
         [RelayCommand]
@@ -291,11 +393,11 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
             var item = Common.CloneObject(EditWorker);
-            Common.ConvertDotStringAdd(item);
+            Common.ConvertDotStringAdd1(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "MASTER_SHAIN", 0, "0",
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHAIN", 0, "0",
                 new string[] { "社員CD", "名前", "部門", "店舗CD", "営業FLG", "メール", "携帯TEL", "特権FLG", "フリガナ", "役職CD", "就業FLG", "出力FLG", "備考", "入社日", "有給残", "給与区分", "給与支給額", "交通費区分", "交通費支給額", "部課CD", "名称CD01", "名称CD02", "名称CD03", "名称CD04", "名称CD05", "POS区分", "メールFLG", "入力社員CD", "特休残", "退勤日", "退職日", "プロフィール" },
-                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate!, item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, item.EmployeeInpCD!, item.SpecHolidayRemain.ToString()!, item.EndDate!, item.RetireDate!, item.Profile! });
+                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate?.ToString("yyyyMMdd"), item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, AppData.ClassSatoo.SHAIN_CD ?? ".", item.SpecHolidayRemain.ToString() ?? ".", item.EndDate!, item.RetireDate?.ToString("yyyyMMdd"), item.Profile! });
             if (ret.Code == 0)
             {
                 item.SeqNo = ret.NewSeq;
@@ -306,7 +408,7 @@ namespace CvnetClient.ViewModels
                 SelectedWorker = item;
             }
             else {
-                ClientLib.MessageBoxError(this, ret.Code.ToString());
+                ClientLib.MessageBoxError(this, "データが追加出来ませんでした");
             }
         }
 
@@ -315,11 +417,11 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "修正しますか？")) return;
             var item = Common.CloneObject(EditWorker);
-            Common.ConvertDotStringAdd(item);
+            Common.ConvertDotStringAdd1(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE,"HASTER_SHAIN", item.SeqNo, item.VdateUpdate.ToString(),
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_SHAIN", item.SeqNo, VDateHelper.ToVDate(DateTime.Now).ToString(),
                 new string[] { "社員CD", "名前", "部門", "店舗CD", "営業FLG", "メール", "携帯TEL", "特権FLG", "フリガナ", "役職CD", "就業FLG", "出力FLG", "備考", "入社日", "有給残", "給与区分", "給与支給額", "交通費区分", "交通費支給額", "部課CD", "名称CD01", "名称CD02", "名称CD03", "名称CD04", "名称CD05", "POS区分", "メールFLG", "入力社員CD", "特休残", "退勤日", "退職日", "プロフィール" },
-                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate!, item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, item.EmployeeInpCD!, item.SpecHolidayRemain.ToString()!, item.EndDate!, item.RetireDate!, item.Profile! });
+                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate?.ToString("yyyyMMdd"), item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, AppData.ClassSatoo.SHAIN_CD ?? ".", item.SpecHolidayRemain.ToString()!, item.EndDate!, item.RetireDate?.ToString("yyyyMMdd"), item.Profile! });
             if (ret.Code == 0)
             {
                 Common.ConvertDotStringDel(item);
@@ -359,11 +461,10 @@ namespace CvnetClient.ViewModels
                     SelectedWorker.RetireDate = item.RetireDate;
                     SelectedWorker.Profile = item.Profile;
                     EditWorker = Common.CloneObject(SelectedWorker);
-                }
-                
+                }                
             }
             else {
-                ClientLib.MessageBoxError(this, ret.Code.ToString());
+                ClientLib.MessageBoxError(this, "データが修正出来ませんでした");
             }
         }
 
@@ -424,35 +525,138 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
             ClientLib.CursorToWait();
-            if (ListWorker == null || ListWorker.Count == 0) return;
+            if (ListWorker == null || ListWorker.Count == 0) { ClientLib.CursorToNormal(); return; } 
             var paramNames = ListWorker.Select((c, i) => $":p{i}||''").ToList();
 
-
-            // Build SQL dengan placeholder
             var sql = printsql +
                       $" where TO_CHAR(A.社員CD) in ({string.Join(",", paramNames)}) order by A.社員CD)";
 
-            // Build parameter values
             var parameters = ListWorker.Select(c => c.WorkerCD).ToArray();
 
-            // Execute with parameters
             var ret = AppData.Http!.AspxSqlQueryCsv(sql, parameters, "cvnet_shain.qfm");
-            if (ret.Split('\n').Length < 2)
+            var lines = ret.Split('\n');
+
+            if (lines.Length < 2 || lines[1] == "0")
             {
                 ClientLib.MessageBoxError(this, "PDFデータがありません");
                 return;
             }
-            var ret1 = ret.Split('\n');
-            var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
-            await Task.Delay(1500); // PDF生成待ち
+
+            string pdfPath = lines[0];
+            string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
             var win = new WebpdfView();
-            var vm = win.DataContext as WebpdfViewModel;
-            if (vm == null) return;
-            vm.Pdfdata = url;
+            if (win.DataContext is WebpdfViewModel vm)
+            {
+                vm.Pdfdata = url;
+            }
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
 
-        
+        /// <summary>
+        /// User drop image ke dalam area
+        /// </summary>
+        public async void OnImageDropped(string filePath)
+        {
+            if (!System.IO.File.Exists(filePath)) return;
+            
+            _localImagePath = filePath;
+            if (EditWorker != null) { 
+                EditWorker.TelNo = Path.GetFileName(_localImagePath);
+            }
+            
+            SourceImage = CreateSafeBitmapImage(filePath);
+
+            if (EditWorker != null)
+                await UploadToAspxServerAsync();
+        }
+
+        /// <summary>
+        /// Buka file dialog bila tekan butang Upload
+        /// </summary>
+        [RelayCommand]
+        private async Task OpenFileDialogAsync()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "画像を選択してください",
+                //Filter = "画像ファイル|*.jpg;*.jpeg;*.png;*.bmp;*.gif"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                _localImagePath = dialog.FileName;
+                if (EditWorker != null)
+                {
+                    EditWorker.TelNo = Path.GetFileName(_localImagePath);
+                }
+                SourceImage = CreateSafeBitmapImage(_localImagePath);
+
+                if (EditWorker != null)
+                    await UploadToAspxServerAsync();
+            }
+        }
+       
+        private void LoadWorkerImage(string imageFileName)
+        {
+            if (string.IsNullOrEmpty(imageFileName))
+            {
+                SourceImage = null;
+                return;
+            }
+
+            string fullUrl = $"{_baseUrl}Data/{_dataPath}{imageFileName}?t={DateTime.Now.Ticks}";
+            SourceImage = CreateSafeBitmapImage(fullUrl);
+        }
+
+        private BitmapImage CreateSafeBitmapImage(string path)
+        {
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnLoad;
+            bmp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+
+            if (path.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                bmp.UriSource = new Uri(path, UriKind.Absolute);
+            else
+                bmp.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
+
+            bmp.EndInit();
+            return bmp;
+        }
+
+        private async Task UploadToAspxServerAsync()
+        {
+            if (string.IsNullOrEmpty(_localImagePath))
+                return;
+
+            await Task.Run(() =>
+            {
+                string mess;
+                bool ok = AppData.Http!.UploadAllFile(_localImagePath, Path.GetFileName(_localImagePath), "img", out mess);
+                if (!ok)
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ClientLib.MessageBoxError(this,$"アップロード失敗: {mess}", "エラー");
+                    });
+                }
+                else
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ClientLib.MessageBoxOk(this, "アップロード成功！", "完了");
+                    });
+                }
+            });
+        }
     }
 }

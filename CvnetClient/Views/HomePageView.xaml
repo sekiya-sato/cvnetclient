@@ -166,12 +166,12 @@
                 utils:StripButtonHelper.Icon="/Images/mainmenu_icon/LoyalCustomer.png"
                 utils:StripButtonHelper.StripColor="#eecdbc"/>
 
-                <Button Style="{StaticResource StripButtonStyle}" 
+                <!--<Button Style="{StaticResource StripButtonStyle}" 
                 Content="Time-Navi"
                 Tag="Time"
                 Click="MainMenuButton_Click"                        
                 utils:StripButtonHelper.Icon="/Images/mainmenu_icon/TimeNavi.png"
-                utils:StripButtonHelper.StripColor="#eecdbc"/>
+                utils:StripButtonHelper.StripColor="#eecdbc"/>-->
 
                 <Button Style="{StaticResource StripButtonStyle}" 
                 Content="店舗"
@@ -201,12 +201,12 @@
                 utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Noti.png"
                 utils:StripButtonHelper.StripColor="#70a1c4"/>
 
-                <Button Style="{StaticResource StripButtonStyle}" 
-                Content="---"
-                Tag="---"
+                <!--<Button Style="{StaticResource StripButtonStyle}" 
+                Content
+                Tag
                 Click="MainMenuButton_Click"                        
                 utils:StripButtonHelper.Icon="/Images/mainmenu_icon/Calendar.png"
-                utils:StripButtonHelper.StripColor="#70a1c4"/>
+                utils:StripButtonHelper.StripColor="#70a1c4"/>-->
             </WrapPanel>
         </ScrollViewer>
 

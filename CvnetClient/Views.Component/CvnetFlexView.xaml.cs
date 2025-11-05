@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -52,16 +53,27 @@ namespace CvnetClient.Views
                 Path = new PropertyPath("Header")
             });
             textFactory.SetValue(TextBlock.HorizontalAlignmentProperty, HorizontalAlignment.Center);
-
+            textFactory.SetValue(TextBlock.VerticalAlignmentProperty, VerticalAlignment.Center);
             var cellTemplate = new DataTemplate();
             cellTemplate.VisualTree = textFactory;
+            
 
             var indexColumn = new DataGridTemplateColumn
             {
-                Header = "行",
+
+                Header = new TextBlock
+                {
+                    Text = "行",
+                    FontWeight = FontWeights.Bold,
+                    TextAlignment = TextAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                },
                 IsReadOnly = true,
                 Width = 40,
-                CellTemplate = cellTemplate
+                MaxWidth = 40,
+                CellTemplate = cellTemplate,
+                
             };
 
             Columns.Insert(0, indexColumn);
@@ -75,22 +87,34 @@ namespace CvnetClient.Views
                 if (col is DataGridTemplateColumn templateCol && templateCol.Header?.ToString() == "削除")
                     return;
             }
-
+            
             var deleteTemplate = new DataTemplate();
             var factory = new FrameworkElementFactory(typeof(Button));
-            factory.SetValue(Button.ContentProperty, "🗑");
-            factory.SetValue(Button.ForegroundProperty, System.Windows.Media.Brushes.Red);
-            factory.SetValue(Button.PaddingProperty, new Thickness(4));
+            factory.SetResourceReference(Button.StyleProperty, "DeleteFlexBtn");
+            //factory.SetValue(Button.ContentProperty, "🗑");
+            //factory.SetValue(Button.ForegroundProperty, System.Windows.Media.Brushes.Black);
+            //factory.SetValue(Button.PaddingProperty, new Thickness(4));
+
             factory.AddHandler(Button.ClickEvent, new RoutedEventHandler(DeleteButton_Click));
             factory.SetBinding(Button.CommandParameterProperty, new System.Windows.Data.Binding());
 
-            deleteTemplate.VisualTree = factory;
 
+            deleteTemplate.VisualTree = factory;
+            
             var deleteColumn = new DataGridTemplateColumn
             {
-                Header = "削除",
+                Header = new TextBlock
+                {
+                    Text = "削除",
+                    FontWeight = FontWeights.Bold,
+                    TextAlignment = TextAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                },
                 CellTemplate = deleteTemplate,
-                Width = 70
+                Width = 40,
+                MaxWidth = 40,
+
             };
 
             Columns.Add(deleteColumn);

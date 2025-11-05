@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -600,16 +601,16 @@ namespace CvnetBaseCore {
 			}
 			return wrk_tb;
 		}
-		/// <summary>
-		/// LOGIN処理を実行する
-		/// </summary>
-		/// <param name="v_kubun">区分</param>
-		/// <param name="v_id">ID</param>
-		/// <param name="v_pass">PASS</param>
-		/// <returns>戻り文字列</returns>
-		public int Login(int v_kubun, string v_id, string v_pass) {
+        /// <summary>
+        /// LOGIN処理を実行する
+        /// </summary>
+        /// <param name="v_kubun">区分</param>
+        /// <param name="v_id">ID</param>
+        /// <param name="v_pass">PASS</param>
+        /// <returns>item2: SHAIN_CD, SHAIN_Name, SHAIN_Tenpo</returns>
+        public Tuple<int, dynamic> Login(int v_kubun, string v_id, string v_pass) {
 			if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-				return -638; // ネットワークエラー(net)
+				return Tuple.Create<int,dynamic>(-638, null); // ネットワークエラー(net)
 			Hashtable vals = new Hashtable();
 			int ret_code = -1;
 			vals["p_id"] = v_id;
@@ -620,21 +621,25 @@ namespace CvnetBaseCore {
 			v_cc = new CookieContainer();
 			DataTable wrk_ret = null;
 			try {
-				wrk_ret = HttpPost("login.aspx", vals);
-			}
+				wrk_ret = HttpPost("login.aspx", vals);				
+            }
 			catch (Exception) {
-				return -640; // リモート名が解決できないetc System.Web.Exception
+				return  Tuple.Create<int, dynamic>(-640, null); // リモート名が解決できないetc System.Web.Exception
 			}
 			v_infologin = wrk_ret;
 			if (v_infologin.Rows.Count > 0) {
 				v_randid = v_infologin.Rows[0][0].ToString();
 				v_loginid = v_id;
-				ret_code = 0;
-				return ret_code;
+				dynamic item2 = new ExpandoObject();
+				item2.SHAIN_CD = v_infologin.Rows[0]["SHAIN_CD"].ToString();
+                item2.SHAIN_Name = v_infologin.Rows[0]["SHAIN_NAME"].ToString();
+                item2.SHAIN_Tenpo = v_infologin.Rows[0]["SHAIN_TENPO"].ToString();
+                ret_code = 0;
+				return Tuple.Create<int, dynamic>(ret_code, item2);
 			}
 			v_cc = save_cc;
-			return ret_code;
-		}
+			return Tuple.Create<int, dynamic>(ret_code, null);
+        }
 		/* MEMO RADOM
 		 * AspxGetImage(image_str) : 未使用
 		 * 
@@ -972,15 +977,43 @@ namespace CvnetBaseCore {
 			}
 			return retval;
 		}
-		/// <summary>
-		/// JSONファイル(UTF8)をアップロードする(圧縮あり)
-		/// </summary>
-		/// <param name="http"></param>
-		/// <param name="localname"></param>
-		/// <param name="remotename"></param>
-		/// <param name="mess"></param>
-		/// <returns></returns>
-		public bool UploadFileDeflate(string localname, string remotename, out string mess) {
+
+        public bool UploadAllFile(string localname, string remotename,string uploadlocation, out string mess)
+        {
+            mess = "";
+            bool retval = true;
+            try
+            {
+                byte[] bs = File.ReadAllBytes(localname);
+                string base64String = Convert.ToBase64String(bs);
+
+                Hashtable vals = new Hashtable();
+                vals.Add("rd", v_randid);  
+                vals.Add("fname", remotename);
+                vals.Add("file", base64String);
+                if (!string.IsNullOrEmpty(uploadlocation))
+                    vals.Add("DIR", uploadlocation);
+
+                string retStr = HttpPost("iupload2.aspx", vals, 1);
+                if (retStr.ToUpper().IndexOf("OK") < 0)
+                    retval = false;
+            }
+            catch (System.Exception ex)
+            {
+                mess = ex.Message;
+                retval = false;
+            }
+            return retval;
+        }
+        /// <summary>
+        /// JSONファイル(UTF8)をアップロードする(圧縮あり)
+        /// </summary>
+        /// <param name="http"></param>
+        /// <param name="localname"></param>
+        /// <param name="remotename"></param>
+        /// <param name="mess"></param>
+        /// <returns></returns>
+        public bool UploadFileDeflate(string localname, string remotename, out string mess) {
 			mess = "";
 			var vals = new Hashtable();
 			string base64String = "";

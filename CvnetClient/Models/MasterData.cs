@@ -341,6 +341,8 @@ namespace CvnetClient.Models
 		string? department; //部門
         [ObservableProperty]
 		string? shopCD; //店舗CD
+		[ObservableProperty]
+		string? shopName;
         [ObservableProperty]
 		int? salesFlg;  //営業FLG
         [ObservableProperty]
@@ -362,7 +364,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? felica;
         [ObservableProperty]
-        string? joiningDate;	//入社日
+        DateTime? joiningDate;	//入社日
         [ObservableProperty]
         string? vacationRemaining;	//有給残
         [ObservableProperty]
@@ -396,7 +398,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? endDate;	//退勤日
         [ObservableProperty]
-        string? retireDate;	//退職日
+        DateTime? retireDate;	//退職日
         [ObservableProperty]
         string? profile;	//プロフィール
     }
@@ -745,6 +747,8 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? supplierCd; //仕入先CD
         [ObservableProperty]
+        string? supplierName; //仕入先名
+        [ObservableProperty]
         string? supplierProdCd; //仕入先商品CD
         [ObservableProperty]
         decimal unitPrice; //単価
@@ -940,5 +944,145 @@ namespace CvnetClient.Models
         int? scheduledPaymentDay3; // 支払予定日3
         [ObservableProperty]
         string? registrationNumber; // 登録番号
+        [ObservableProperty]
+        string? lastModifier; // 最終修正者
     }
+
+	public partial class MasterShohinJan : ObservableObject
+	{
+        [ObservableProperty]
+        long seqNo;
+        [ObservableProperty]
+        decimal vdateCreate;
+        [ObservableProperty]
+        decimal vdateUpdate;
+		[ObservableProperty]
+		string? productCD;					// 商品CD
+		[ObservableProperty]
+		string? colorCD;					// 色CD
+		[ObservableProperty]
+		string? sizeCD;						// ｻｲｽﾞCD
+		[ObservableProperty]
+		string? janCode1;					// JANｺｰﾄﾞ1
+		[ObservableProperty]
+		string? janCode2;					// JANｺｰﾄﾞ2
+		[ObservableProperty]
+		string? janCode3;					// JANｺｰﾄﾞ3
+		[ObservableProperty]
+		string? memo;						// ﾒﾓ
+		[ObservableProperty]
+		int? useFlag;						// 使用FLG
+		[ObservableProperty]
+		decimal? scheduledProductionQuantity;   // 生産予定数
+		[ObservableProperty]
+		decimal? cuttingQuantity;           // 裁断数
+		[ObservableProperty]
+		decimal? tagNumber;                 // 下札枚数
+		[ObservableProperty]
+		decimal? retailPrice;               // 上代
+		[ObservableProperty]
+		int? autoAllocationFlag;            // 自動配分FLG
+		[ObservableProperty]
+		int? posType;                       // POS区分
+		[ObservableProperty]
+		string? inputWorkerCD;              // 入力社員CD
+		[ObservableProperty]
+		string? ecJan;                      // ECJAN
+		[ObservableProperty]
+		int? ecDisplayFlag;                 // EC表示FLG
+		[ObservableProperty]
+		int? collabOutputType;              // ｺﾗﾎﾞ出力区分
+		[ObservableProperty]
+		int? productSpecID;                 // 商品規格ID
+		[ObservableProperty]
+		string? colorName;                  // 色名
+		[ObservableProperty]
+		string? sizeName;                   // ｻｲｽﾞ名
+		[ObservableProperty]
+		int? salesType;                     // ｾｰﾙ区分
+		[ObservableProperty]
+		string? productName;                // 商品名
+		[ObservableProperty]
+		string? remarksCD01;                // 備考CD01
+		[ObservableProperty]
+		string? remarks01;                  // 備考01
+		[ObservableProperty]
+		string? remarksCD02;                // 備考CD02
+		[ObservableProperty]
+		string? remarks02;                  // 備考02
+        [ObservableProperty]
+        string? remarksCD03;                // 備考CD02
+        [ObservableProperty]
+        string? remarks03;                  // 備考02
+		[ObservableProperty]
+		decimal? costPrice;                 // 原価
+		[ObservableProperty]
+		string? partnerProductNO;           // 相手商品NO
+		[ObservableProperty]
+		int? detailPurchaseType;            // 明細仕入区分
+		[ObservableProperty]
+		int? supplierPrice;                 // 仕入価格
+		[ObservableProperty]
+		int? originalRetailPrice;           // 元上代
+		[ObservableProperty]
+		string? supplierCD;                 // 仕入先CD
+		[ObservableProperty]
+		string? purchaseDate;               // 仕入日
+		[ObservableProperty]
+		string? finalInvWarehouseCD;        // 最終在庫倉庫CD
+		[ObservableProperty]
+		string? finalDeliveryDate;          // 最終出庫日
+		[ObservableProperty]
+		int? tagType;                       // タグ種
+		[ObservableProperty]
+		int? endSeasonDiscountType;         // 期末値引区分
+		[ObservableProperty]
+		decimal? endSeasonDiscountRate;     // 期末値引率
+		[ObservableProperty]
+		string? endTermDate;                // 期末日
+		[ObservableProperty]
+		string? endTermProcessDate;         // 期末処理日
+		[ObservableProperty]
+		int? revaluationType;               // 評価替区分
+		[ObservableProperty]
+		decimal? revaluationRate;           // 評価替率
+		[ObservableProperty]
+		string? revaluationProcessDate;     // 評価替処理日
+		[ObservableProperty]
+		decimal? latestTaxIncludedPrice;    // 最新税込上代
+		[ObservableProperty]
+		decimal? latestCostPrice;           // 最新原価
+		[ObservableProperty]
+		decimal? latestRetailPrice;         // 最新上代
+		[ObservableProperty]
+		int? responseType;                  // 対応区分
+		[ObservableProperty]
+		decimal? salesPrice;                // セール金額
+		[ObservableProperty]
+		string? skuCategoryCD01;            // SKU分類CD01
+        [ObservableProperty]
+        string? skuCategoryCD02;            // SKU分類CD02
+        [ObservableProperty]
+        string? skuCategoryCD03;            // SKU分類CD03
+        [ObservableProperty]
+        string? skuCategoryCD04;            // SKU分類CD04
+        [ObservableProperty]
+        string? skuCategoryCD05;            // SKU分類CD05
+        [ObservableProperty]
+        string? skuCategoryCD06;            // SKU分類CD06
+        [ObservableProperty]
+        string? skuCategoryCD07;            // SKU分類CD07
+        [ObservableProperty]
+        string? skuCategoryCD08;            // SKU分類CD08
+        [ObservableProperty]
+        string? skuCategoryCD09;            // SKU分類CD09
+        [ObservableProperty]
+        string? skuCategoryCD10;            // SKU分類CD10
+        [ObservableProperty]
+        int? ecReservation;                 // EC予約
+		[ObservableProperty]
+		int? foreignCurrencyPrice;			// 外貨仕入価格
+
+    }
+
 }

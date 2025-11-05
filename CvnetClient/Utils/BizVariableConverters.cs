@@ -1,11 +1,11 @@
-
-﻿using System.Data;
-using System.Net.Http;
 using System.Data;
+using System.Net.Http;
 using System.Dynamic;
 using System.IO; 
 using System.Text;
 using System.Windows.Forms;
+using System.ComponentModel;
+using CvnetClient.ViewModels;
 
 namespace CvnetClient.Utils
 {
@@ -314,7 +314,63 @@ namespace CvnetClient.Utils
                 }
             }
         }
+        /// <summary>
+        /// 固定長ファイル出力
+        /// </summary> 
+        public void Save2(StreamWriter fp, string[] v_format, int? v_flg, string v_ret)
+        {
+            if (csv_table == null || csv_table.Rows.Count == 0)
+                return;
 
+            for (int i = 0; i < csv_table.Rows.Count; i++)
+            {
+                var v_line = new StringBuilder();
+
+                for (int j = 0; j < csv_table.Columns.Count; j++)
+                {
+                    string v_col = csv_table.Rows[i][j]?.ToString() ?? string.Empty;
+
+                    // Jika ada format panjang tetap
+                    if (v_format != null && j < v_format.Length && !string.IsNullOrEmpty(v_format[j]))
+                    {
+                        if (int.TryParse(v_format[j], out int width))
+                        {
+                            if (v_flg == null)
+                                v_col = FullStr(v_col, width);
+                            else
+                                v_col = FullStr(ToHalfWidth(v_col), width);
+                        }
+                    }
+
+                    v_line.Append(v_col);
+                }
+
+                v_line.Append(v_ret ?? "\n");
+
+                fp.Write(v_line.ToString());
+            }
+        }
+
+        // Pad right to fixed length (truncate if too long)
+        private string FullStr(string s, int length)
+        {
+            if (s == null) s = string.Empty;
+            if (s.Length > length)
+                return s.Substring(0, length);
+            return s.PadRight(length);
+        }
+
+        // Dummy converter: full-width → half-width (can enhance later)
+        private string ToHalfWidth(string s)
+        {
+            // 🔸 optional: implement real conversion if needed
+            // For now, return as-is
+            return s;
+        }
+
+        /// <summary>
+        /// Convert file from server into CSV file
+        /// </summary> 
         public async Task LoadFromUrlAsync(string dataUrl, string headerUrl)
         {
             using var http = new HttpClient();
@@ -491,5 +547,72 @@ namespace CvnetClient.Utils
             return list;
         }
         #endregion
+    }
+
+    public class BtListHelper : BaseViewModel
+    {
+        private string _code;
+        private string _name;
+          
+        public string Code
+        {
+            get => _code;
+            set
+            {
+                if (_code != value)
+                {
+                    _code = value?.Trim();
+                    OnPropertyChanged(nameof(Code));
+                    OnPropertyChanged(nameof(Display));
+                }
+            }
+        }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value?.Trim();
+                    OnPropertyChanged(nameof(Name));
+                    OnPropertyChanged(nameof(Display));
+                }
+            }
+        }
+
+        // ✨ Editable Display property
+        public string Display
+        {
+            get => $"{Code} {Name}".Trim();
+            set
+            {
+                if (value == null) return;
+
+                var parts = value.Trim().Split(' ', 2);
+                Code = parts.Length > 0 ? parts[0] : string.Empty;
+                Name = parts.Length > 1 ? parts[1] : string.Empty;
+
+                OnPropertyChanged(nameof(Display));
+            }
+        }
+
+        public BtListHelper() { }
+
+        public BtListHelper(string code, string name)
+        {
+            Code = code?.Trim();
+            Name = name?.Trim();
+        }
+
+        public override string ToString() => Display;
+
+        //public string OnGetId()
+        //{ 
+        //    if (string.IsNullOrEmpty(Display)) return string.Empty;
+        //    var _code = Display.Split(' ',2);
+        //    return (_code.Length > 1) ? _code[0] : Display.Trim();
+        //} 
     }
 }

@@ -145,7 +145,7 @@ namespace CvnetClient.ViewModels
             v_para[0] = "Master_YO_Item";
             v_para[1] = csv_para!.SaveStr(0);
             v_para[2] = "4";
-            var ret_csv = AppData.Http!.AspxSqlQuery2("mi_csv", v_para);
+            var ret_csv = AppData.Http!.AspxSqlQuery2("mi_csv", v_para,"",-1);
 
             if (ret_csv.Split('\n')[0].Trim() != "0")
             {

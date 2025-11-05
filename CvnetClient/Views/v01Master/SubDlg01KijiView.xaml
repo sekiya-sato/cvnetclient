@@ -75,11 +75,12 @@
                         <uc:CvnetBtListView Width="85"
 								Title="仕入先CD" 
 								MstName="仕入先"
-								SelectedValue="{Binding FindSupplierCd}"		
-								Command="{Binding SelSeasonCommand}" />
-                        <TextBox x:Name="supplierCDSearch" Text="{Binding FindSupplierCd}" Grid.Column="1" Width="240"/>
-                        
-                        </Grid>
+								SelectedValue="{Binding FindSupplierCd.Code}"		
+								Command="{Binding SelectSupplierCommand}" />
+						<TextBox Grid.Column="1" Width="240"
+								 Text="{Binding FindSupplierCd.Display}"/>
+
+					</Grid>
                     <!--<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
                         <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
@@ -230,9 +231,19 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
                             <ColumnDefinition Width="8*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Content="仕入先CD"
-   VerticalAlignment="Center"/>
-                        <TextBox x:Name="supplierCD" Grid.Column="1" Text="{Binding EditKiji.SupplierCd}"/>
+                        <uc:CvnetBtListView 
+					        Title="仕入先CD" 
+					        MstName="仕入先"
+					        SelectedValue="{Binding EditKiji.SupplierCd}"		
+					        Command="{Binding SelectSupplier1Command}" />
+                        <TextBox Grid.Column="1" x:Name="supplierCD">
+                            <TextBox.Text>
+                                <MultiBinding StringFormat='{}{0} {1}'>
+                                    <Binding Path="EditKiji.SupplierCd" />
+                                    <Binding Path="EditKiji.SupplierName" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -276,7 +287,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
 
                         <Label Content="修正日"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="dateEdit" Grid.Column="1" Text="{Binding EditKiji.VdateUpdate, Converter={StaticResource VdateConverter}}"  IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}"/>
+                        <TextBox x:Name="dateEdit" Grid.Column="1" Text="{Binding EditKiji.VdateUpdate, Converter={StaticResource VdateConverter}}" Style="{DynamicResource ReadOnlyTextBox}"/>
                     </Grid>
 
                     <Grid Margin="0,0,0,8">
@@ -287,19 +298,19 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
 
                         <Label Content="最終修正者"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="latsDateEdit" Grid.Column="1"  IsReadOnly="True" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditKiji.InpStaffCD}"/>
+                        <TextBox x:Name="latsDateEdit" Grid.Column="1" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditKiji.InpStaffCD}"/>
                     </Grid>
 
                     <Grid Margin="8,8,15,8" >
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition  Width="12"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition  Width="12"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition  Width="12"/>
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
                         <Button Style="{DynamicResource AddIconBtn}" BorderThickness="10" Command="{Binding DoInsertCommand}"/>

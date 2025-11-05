@@ -253,7 +253,7 @@ namespace CvnetClient.ViewModels
             var lineSeries = new LineSeries
             {
                 Title = "Cumulative %",
-                Color = OxyColors.Red,
+                Color = OxyColors.Black,
                 MarkerType = MarkerType.Circle,
                 YAxisKey = "CumulativeAxis"
             };
@@ -296,9 +296,9 @@ namespace CvnetClient.ViewModels
                 double top = amount;
 
                 // Pick color by category
-                OxyColor color = OxyColors.Orange;
-                if (cumPct > aThreshold && cumPct <= bThreshold) color = OxyColors.Purple;
-                else if (cumPct > bThreshold) color = OxyColors.Green;
+                OxyColor color = OxyColors.Brown;
+                if (cumPct > aThreshold && cumPct <= bThreshold) color = OxyColors.CadetBlue;
+                else if (cumPct > bThreshold) color = OxyColors.BurlyWood;
 
                 rectBars.Items.Add(new RectangleBarItem(left, 0, right, top) { Color = color });
 
