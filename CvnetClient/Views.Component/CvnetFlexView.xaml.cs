@@ -71,6 +71,7 @@ namespace CvnetClient.Views
                 },
                 IsReadOnly = true,
                 Width = 40,
+                MaxWidth = 40,
                 CellTemplate = cellTemplate,
                 
             };
@@ -111,7 +112,8 @@ namespace CvnetClient.Views
                     VerticalAlignment = VerticalAlignment.Center
                 },
                 CellTemplate = deleteTemplate,
-                Width = 70,
+                Width = 40,
+                MaxWidth = 40,
 
             };
 

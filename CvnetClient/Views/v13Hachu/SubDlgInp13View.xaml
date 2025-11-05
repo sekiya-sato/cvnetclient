@@ -423,26 +423,33 @@
                     </Grid>
                     <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,4,0">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Grid.ColumnSpan="2">
                             <Button Width="auto" Content="＋最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0"/>
                         </Grid>
 
                         <Label Grid.Column="3" Content="計" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="4" Margin="5,0"/>
-                        <TextBox Grid.Column="5" Margin="5,0"/>
-                        <TextBox Grid.Column="6" Margin="5,0"/>
-                        <Button Grid.Column="7" Margin="5,0" Content="一括Refresh　"/>
-                        <Button Grid.Column="8" Content="バーコード入力"/>
+                        <TextBox Grid.Column="4" Margin="0"/>
+                        <TextBox Grid.Column="5" Margin="0"/>
+                        <TextBox Grid.Column="6" Margin="0"/>
+                        <Grid Grid.Column="7" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Margin="5,0" Content="一括Refresh　"/>
+                            <Button Grid.Column="1" Content="バーコード入力"/>
+                        </Grid>
+                       
                     </Grid>
 
                     <uc:CvnetFlexView Grid.Row="2" x:Name="MyDataGrid" AlternationCount="999999"
@@ -476,10 +483,6 @@
                         </uc:CvnetFlexView.CellStyle>
 
                         <uc:CvnetFlexView.Columns>
-
-
-                            
-
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
@@ -677,12 +680,13 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                                             <TextBlock Text="摘要" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="完了FLG" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                                <TextBlock Text="メーカー品番" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                                <TextBlock Text="区分" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                <TextBlock Text="完了FLG" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0"/>
+                                                <TextBlock Text="メーカー品番" FontWeight="Bold" HorizontalAlignment="Center"  Margin="10,0"/>
+                                                <TextBlock Text="区分" FontWeight="Bold" HorizontalAlignment="Right"  Margin="10,0"/>
                                             </StackPanel>
                                         </StackPanel>
+                                        
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
 
@@ -701,12 +705,22 @@
                                             </Grid.ColumnDefinitions>
 
                                             <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstract}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            
                                             <Border Grid.Row="1" Grid.ColumnSpan="4"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-
                                             </Border>
-                                            <TextBox Grid.Row="1" Text="{Binding Kanryo}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstract}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <Border Grid.Row="1"  BorderBrush="DarkGray" BorderThickness="0,0,1,0">
+                                                <TextBox Grid.Row="1" Text="{Binding Kanryo}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
+                                            <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="DarkGray" BorderThickness="0,0,1,0">
+                                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
+                                            <Border Grid.Row="1" Grid.Column="3"  BorderBrush="DarkGray">
+                                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            </Border>
+                                            <!--<TextBox Grid.Row="1" Text="{Binding Kanryo}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
-                                            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun}" Margin="0" Style="{StaticResource DataGridTextBox}"/>-->
                                         </Grid>
 
                                     </DataTemplate>
@@ -715,13 +729,13 @@
                                 
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Width="0.5*">
+                            <DataGridTemplateColumn Width="0.5*" MaxWidth="40">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
 
                                         <Grid>
 
-                                            <TextBlock Text="再表示" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <TextBlock Text="更新" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Grid>
 
                                     </DataTemplate>
