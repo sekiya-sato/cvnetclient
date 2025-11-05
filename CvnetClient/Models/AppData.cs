@@ -53,7 +53,7 @@ namespace CvnetClient.Models {
 			Url = AppConfig["Url"] ?? "https://localhost/";
 			AspxPath = AppConfig["AspxPath"] ?? string.Empty;
             DataAddPath = AppConfig["DataAddPath"] ?? string.Empty;
-            Http = new ClassHttp(AppData.Url);
+            Http = new ClassHttp(AppData.Url, AspxPath);
 		}
 	}
 }
