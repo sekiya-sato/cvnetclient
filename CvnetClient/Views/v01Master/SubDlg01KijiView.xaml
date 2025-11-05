@@ -75,18 +75,12 @@
                         <uc:CvnetBtListView Width="85"
 								Title="仕入先CD" 
 								MstName="仕入先"
-								SelectedValue="{Binding FindSupplierCd.SupplierCD}"		
+								SelectedValue="{Binding FindSupplierCd.Code}"		
 								Command="{Binding SelectSupplierCommand}" />
-                        <TextBox Grid.Column="1" Width="240">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="FindSupplierCd.SupplierCD" />
-                                    <Binding Path="FindSupplierCd.SupplierName" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
+						<TextBox Grid.Column="1" Width="240"
+								 Text="{Binding FindSupplierCd.Display}"/>
 
-                    </Grid>
+					</Grid>
                     <!--<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
                         <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>

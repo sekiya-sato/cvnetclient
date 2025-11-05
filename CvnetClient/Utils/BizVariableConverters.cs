@@ -4,6 +4,8 @@ using System.Dynamic;
 using System.IO; 
 using System.Text;
 using System.Windows.Forms;
+using System.ComponentModel;
+using CvnetClient.ViewModels;
 
 namespace CvnetClient.Utils
 {
@@ -545,5 +547,72 @@ namespace CvnetClient.Utils
             return list;
         }
         #endregion
+    }
+
+    public class BtListHelper : BaseViewModel
+    {
+        private string _code;
+        private string _name;
+          
+        public string Code
+        {
+            get => _code;
+            set
+            {
+                if (_code != value)
+                {
+                    _code = value?.Trim();
+                    OnPropertyChanged(nameof(Code));
+                    OnPropertyChanged(nameof(Display));
+                }
+            }
+        }
+
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value?.Trim();
+                    OnPropertyChanged(nameof(Name));
+                    OnPropertyChanged(nameof(Display));
+                }
+            }
+        }
+
+        // ✨ Editable Display property
+        public string Display
+        {
+            get => $"{Code} {Name}".Trim();
+            set
+            {
+                if (value == null) return;
+
+                var parts = value.Trim().Split(' ', 2);
+                Code = parts.Length > 0 ? parts[0] : string.Empty;
+                Name = parts.Length > 1 ? parts[1] : string.Empty;
+
+                OnPropertyChanged(nameof(Display));
+            }
+        }
+
+        public BtListHelper() { }
+
+        public BtListHelper(string code, string name)
+        {
+            Code = code?.Trim();
+            Name = name?.Trim();
+        }
+
+        public override string ToString() => Display;
+
+        //public string OnGetId()
+        //{ 
+        //    if (string.IsNullOrEmpty(Display)) return string.Empty;
+        //    var _code = Display.Split(' ',2);
+        //    return (_code.Length > 1) ? _code[0] : Display.Trim();
+        //} 
     }
 }
