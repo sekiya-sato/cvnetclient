@@ -907,6 +907,8 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? linkedCorporationCd; // 連携先法人CD
         [ObservableProperty]
+		string? lastModifier;
+        [ObservableProperty]
         string? supplierMail; // 仕入先MAIL
         [ObservableProperty]
         int? dueDate; // 期日

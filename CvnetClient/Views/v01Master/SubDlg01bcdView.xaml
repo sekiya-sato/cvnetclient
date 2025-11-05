@@ -1,0 +1,767 @@
+﻿<Window
+    x:Class="CvnetClient.Views.SubDlg01bcdView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:CvnetClient.Views"
+    xmlns:util="clr-namespace:CvnetClient.Utils"
+    xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+    Title="バーコードブックマスタ"
+    Width="900"
+    Height="500"
+    Style="{StaticResource PrintWindowStyle}"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:SubDlg01bcdViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--
+            ==========================================================
+            Header Section
+            ===========================================================
+        -->
+        <StackPanel
+            Grid.Row="0"
+            Margin="10,0,10,5"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,10,0"
+                VerticalAlignment="Center"
+                Text="印刷範囲指定" />
+            <Label
+                Background="White"
+                Content="※ 指定範囲商品CD、もしくは16商品CDを印刷します"
+                Foreground="#FFC0C0C0" />
+        </StackPanel>
+
+        <!--
+            ==========================================================
+            商品CD範囲 (Range Selection)
+            ===========================================================
+        -->
+        <Border
+            Grid.Row="1"
+            Margin="3"
+            Padding="3"
+            Background="White"
+            BorderThickness="1"
+            CornerRadius="10">
+
+            <!--  商品CD範囲  -->
+            <StackPanel Margin="5" Orientation="Horizontal">
+
+                <RadioButton
+                    Margin="0,0,10,0"
+                    GroupName="SelectProduct"
+                    IsChecked="{Binding SelProductSelect, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}" />
+                <Label Width="80" Content="商品CD範囲" />
+
+                <!--  FROM  -->
+                <TextBox
+                    Width="280"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap">
+                    <TextBox.Text>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="RangeFrom.Code" />
+                            <Binding Path="RangeFrom.Name" />
+                        </MultiBinding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <uc:CvnetBtListView
+                    Width="40"
+                    Margin="-10,0,0,0"
+                    Command="{Binding SelRangeFromCommand}"
+                    MstName="商品"
+                    SelectedValue="{Binding RangeFrom.Code}"
+                    StyleDesign="2" />
+
+                <Label Width="30" Content="～" />
+
+                <!--  TO  -->
+                <TextBox
+                    Width="280"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap">
+                    <TextBox.Text>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="RangeTo.Code" />
+                            <Binding Path="RangeTo.Name" />
+                        </MultiBinding>
+                    </TextBox.Text>
+                </TextBox>
+
+                <uc:CvnetBtListView
+                    Width="40"
+                    Margin="-10,0"
+                    Command="{Binding SelRangeToCommand}"
+                    MstName="商品"
+                    SelectedValue="{Binding RangeTo.Code}"
+                    StyleDesign="2" />
+            </StackPanel>
+
+        </Border>
+
+        <!--
+            ==========================================================
+            商品CD入力 (Product Code Input Area)
+            ===========================================================
+        -->
+        <Border
+            Grid.Row="2"
+            Margin="3"
+            Padding="3"
+            Background="White"
+            BorderThickness="1"
+            CornerRadius="10">
+
+            <StackPanel Margin="5">
+
+                <StackPanel Margin="0,0" Orientation="Horizontal">
+                    <RadioButton
+                        Margin="0,0,10,0"
+                        VerticalAlignment="Center"
+                        GroupName="SelectProduct"
+                        IsChecked="{Binding SelProductSelect, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}" />
+                    <Label
+                        Width="80"
+                        VerticalAlignment="Center"
+                        Content="商品CD" />
+                </StackPanel>
+
+                <ScrollViewer
+                    Height="190"
+                    Margin="0"
+                    VerticalScrollBarVisibility="Auto">
+
+                    <!--  ✅ 商品CD TextBoxes (固定6個)  -->
+                    <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                        <!--  商品1  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code01" />
+                                        <Binding Path="SelectProduct.Name01" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code01}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code02" />
+                                        <Binding Path="SelectProduct.Name02" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code02}"
+                                StyleDesign="2" />
+                        </StackPanel>
+                        <!--  商品2  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code03" />
+                                        <Binding Path="SelectProduct.Name03" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code03}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code04" />
+                                        <Binding Path="SelectProduct.Name04" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code04}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品3  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code05" />
+                                        <Binding Path="SelectProduct.Name05" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code05}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code06" />
+                                        <Binding Path="SelectProduct.Name06" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code06}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品4  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code07" />
+                                        <Binding Path="SelectProduct.Name07" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code07}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code08" />
+                                        <Binding Path="SelectProduct.Name08" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code08}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品5  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code09" />
+                                        <Binding Path="SelectProduct.Name09" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code09}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code10" />
+                                        <Binding Path="SelectProduct.Name10" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code10}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品6  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code11" />
+                                        <Binding Path="SelectProduct.Name11" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code11}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code12" />
+                                        <Binding Path="SelectProduct.Name12" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code12}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品7  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code13" />
+                                        <Binding Path="SelectProduct.Name13" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code13}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code14" />
+                                        <Binding Path="SelectProduct.Name14" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code14}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品8  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code15" />
+                                        <Binding Path="SelectProduct.Name15" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code15}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code16" />
+                                        <Binding Path="SelectProduct.Name16" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code16}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品9  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code17" />
+                                        <Binding Path="SelectProduct.Name17" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code17}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code18" />
+                                        <Binding Path="SelectProduct.Name18" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code18}"
+                                StyleDesign="2" />
+                        </StackPanel>
+
+                        <!--  商品10  -->
+                        <StackPanel Margin="5,2" Orientation="Horizontal">
+                            <Label Width="100" />
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code19" />
+                                        <Binding Path="SelectProduct.Name19" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0,0,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code19}"
+                                StyleDesign="2" />
+
+                            <Label Width="30" />
+
+                            <TextBox
+                                Width="280"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="SelectProduct.Code20" />
+                                        <Binding Path="SelectProduct.Name20" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <uc:CvnetBtListView
+                                Width="40"
+                                Margin="-10,0"
+                                Command="{Binding SelSelectProductCommand}"
+                                MstName="商品"
+                                SelectedValue="{Binding SelectProduct.Code20}"
+                                StyleDesign="2" />
+                        </StackPanel>
+                    </StackPanel>
+
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+        <Border
+            Grid.Row="3"
+            Margin="3"
+            Padding="3"
+            Background="White"
+            BorderThickness="1"
+            CornerRadius="10">
+
+            <StackPanel>
+                <StackPanel Grid.Row="4" Orientation="Horizontal">
+                    <Label Width="20" />
+                    <TextBlock
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Text="宛名修飾文字" />
+                    <!--  Genuine product  -->
+                    <RadioButton
+                        Margin="10,0,30,0"
+                        Content="正規商品"
+                        GroupName="OutputMode"
+                        IsChecked="{Binding SearchOpt.AddressCustomer, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}" />
+
+                    <!--  Discontinued products  -->
+                    <RadioButton
+                        Margin="10,0,30,0"
+                        Content="中止商品CD"
+                        GroupName="OutputMode"
+                        IsChecked="{Binding SearchOpt.AddressCustomer, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}" />
+
+                    <RadioButton
+                        Margin="10,0,10,0"
+                        Content="全て"
+                        GroupName="OutputMode"
+                        IsChecked="{Binding SearchOpt.AddressCustomer, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=2}" />
+
+                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Width="20" />
+                        <TextBlock
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="ﾊﾞｰｺｰﾄﾞ種" />
+                        <!--  Thank you  -->
+                        <RadioButton
+                            Margin="30,0,10,0"
+                            Content="JAN"
+                            GroupName="BarcodeType"
+                            IsChecked="{Binding SearchOpt.BarcodeType, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}" />
+                        <!--  Mr  -->
+                        <RadioButton
+                            Margin="10,0,10,0"
+                            Content="CODE39"
+                            GroupName="BarcodeType"
+                            IsChecked="{Binding SearchOpt.BarcodeType, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}" />
+                        <!--  To  -->
+                        <RadioButton
+                            Margin="10,0,10,0"
+                            Content="NW7"
+                            GroupName="BarcodeType"
+                            IsChecked="{Binding SearchOpt.BarcodeType, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=2}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="ﾊﾞｰｺｰﾄﾞ並び" />
+                        <!--  Thank you  -->
+                        <RadioButton
+                            Margin="10,0,10,0"
+                            Content="平行並び"
+                            GroupName="BarcodeLayout"
+                            IsChecked="{Binding SearchOpt.BarcodeLayout, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}" />
+                        <!--  vertical alignment  -->
+                        <RadioButton
+                            Margin="10,0,10,0"
+                            Content="垂直並び"
+                            GroupName="BarcodeLayout"
+                            IsChecked="{Binding SearchOpt.BarcodeLayout, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}" />
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+
+        </Border>
+
+        <!--  Action Buttons  -->
+        <StackPanel
+            Grid.Row="5"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Margin="0,0,5,0"
+                Command="{Binding DoPrintCommand}"
+                Style="{DynamicResource ExecButton}" />
+            <Button
+                Margin="0,0,5,0"
+                Command="{Binding DoExitCommand}"
+                Style="{DynamicResource BackBtn}" />
+        </StackPanel>
+
+    </Grid>
+</Window>
