@@ -9,11 +9,5 @@
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ClassSatoo">
-      <HintPath>..\ClassSatoo\bin\Debug\net9.0\ClassSatoo.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
+  
 </Project>
