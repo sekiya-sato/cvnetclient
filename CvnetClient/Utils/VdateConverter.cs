@@ -21,5 +21,16 @@ namespace CvnetClient.Utils {
 			}
 			return DependencyProperty.UnsetValue;
 		}
-	} 
+	}
+
+    public static class VDateHelper
+    {
+        private static readonly DateTime StartDate = new(1901, 1, 1, 0, 0, 0);
+
+        public static decimal ToVDate(DateTime date)
+            => (decimal)(date - StartDate).TotalDays;
+
+        public static DateTime FromVDate(decimal vdate)
+            => StartDate.AddDays((double)vdate);
+    }
 }

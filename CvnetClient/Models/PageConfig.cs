@@ -361,8 +361,8 @@ namespace CvnetClient.Models
         }},
         { "物流", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "マスタデータ作成", WindowId="" },
-                new ButtonConfig { Text = "連携データ手動送信", WindowId="" },
+                new ButtonConfig { Text = "マスタデータ作成", WindowId=typeof(Views.SubDlg71Pos1View).FullName },
+                new ButtonConfig { Text = "連携データ手動送信", WindowId=typeof(Views.SubDlg71SendManualView).FullName },
                 new ButtonConfig { Text = "連携データ手動受信", WindowId="" },
                 new ButtonConfig { Text = "連携エラーデータ照会", WindowId="" }
             }
