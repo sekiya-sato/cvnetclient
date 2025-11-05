@@ -461,7 +461,7 @@
                                VerticalAlignment="Center"/>
 
                             <!-- Dynamic text from Content -->
-                            <ContentPresenter Content="Upload"
+                            <ContentPresenter Content="ｱｯﾌﾟﾛｰﾄﾞ"
                             ContentTemplate="{TemplateBinding ContentTemplate}"
                             VerticalAlignment="Center"/>
                         </StackPanel>

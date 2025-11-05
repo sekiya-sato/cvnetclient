@@ -87,9 +87,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CvnetBaseCore">
-      <HintPath>..\CvnetBaseCore\bin\Debug\net9.0\CvnetBaseCore.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\CvnetBaseCore\CvnetBaseCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

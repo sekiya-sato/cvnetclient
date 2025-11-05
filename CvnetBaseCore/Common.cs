@@ -144,12 +144,24 @@ namespace CvnetBaseCore {
 				}
 			});
 		}
-		/// <summary>
-		/// 文字列プロパティの値が"."の場合、空白に変換する
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="item"></param>
-		public static void ConvertDotStringDel<T>(T item) where T : new() {
+
+        public static void ConvertDotStringAdd1<T>(T item) where T : new()
+        {
+            if (item == null) return;
+
+            foreach (var p in typeof(T).GetProperties().Where(p => p.PropertyType == typeof(string)))
+            {
+                var val = p.GetValue(item) as string;
+                var tmp_val = string.IsNullOrWhiteSpace(val) ? "." : val.Trim();
+                p.SetValue(item, tmp_val);
+            }
+        }
+        /// <summary>
+        /// 文字列プロパティの値が"."の場合、空白に変換する
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        public static void ConvertDotStringDel<T>(T item) where T : new() {
 			if (item == null) return;
 			List<PropertyInfo> pinfo = typeof(T).GetProperties().ToList();
 			StringBuilder sb = new StringBuilder();
