@@ -15,45 +15,26 @@ namespace CvnetClient.ViewModels
     {
         [ObservableProperty]
         ObservableCollection<MasterShohin>? listProduct;
-
-        //[ObservableProperty]
-        //      MasterShohin? editProduct;
-
         [ObservableProperty]
         MasterShohinJan? editProduct;
-
-        //[ObservableProperty]
-        //ObservableCollection<DeptItem>? deptList;
-
-        //[ObservableProperty]
-        //FlagOpt? selectedItem;
-
+        [ObservableProperty]
+        MasterShohinJan? findProduct;
         [ObservableProperty]
         public Dictionary<int, string>? chushi;
-
         [ObservableProperty]
         public Dictionary<int, string>? jidohaibun;
-
         [ObservableProperty]
         ObservableCollection<MasterShohinJan>? listShohinJan;
-
-        //[ObservableProperty]
-        //string? selectedColorText;
-
-        //[ObservableProperty]
-        //string? selectedSizeText;
-
         [ObservableProperty]
         MasterShohinJan? selectedProduct;
-
         [ObservableProperty]
         string? selProductCd;
-
         [ObservableProperty]
         int? pageNow;
-
         [ObservableProperty]
         int? pageTotal;
+
+        public int pageCnt = 0;
 
         private BizArray col_list;
 
@@ -71,12 +52,17 @@ namespace CvnetClient.ViewModels
             set => SetProperty(ref _canBack, value);
         }
 
+        public static BizArray v_para2 = new BizArray();
+        private int page = 0;
+
         public void OnInit()
         {
             SelectedProduct = new MasterShohinJan();
+            FindProduct = new MasterShohinJan();
             EditProduct = new MasterShohinJan();
 
-            string sql_query_init = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='KFK' order by a.名称CD";
+            CanBack = true;
+            CanNext = true;
 
             Chushi = new Dictionary<int, string>
             {
@@ -95,6 +81,8 @@ namespace CvnetClient.ViewModels
 
             string sql_query = "select nvl((select 値 from hc$master_config where フラグ名 = 'dispColSizKakaku'),0) flg from dual";
 
+            v_para2[0] = "0";
+
         }
 
         string[] sql_col_list =
@@ -104,31 +92,29 @@ namespace CvnetClient.ViewModels
             "自動配分FLG", "上代", "仕入価格", "外貨仕入価格", "原価"
         };
 
-        [RelayCommand]
-        void DoList()
-        {
-            if (!ClientLib.MessageBox(this, "本当にしますか？")) return;
 
-        }
+
+        //[RelayCommand]
+        //void DoList()
+        //{
+        //    if (!ClientLib.MessageBox(this, "本当にしますか？")) return;
+
+        //}
 
         [RelayCommand]
         public void SelDspUpdate()
         {
-            if (SelectedProduct == null) return;
-            //SearchOpt.YearTbCor = 0;
-            //SearchOpt.WeekNoTbCor = 0;
+            if (FindProduct == null) return;
 
             var v_para = new BizArray();
-            v_para[0] = SelectedProduct.ProductCD != null ? SelectedProduct.ProductCD.Trim() : "";
-            v_para[1] = SelectedProduct.ColorCD != null ? SelectedProduct.ColorCD.Trim() : "";
-            v_para[2] = SelectedProduct.SizeCD != null ? SelectedProduct.SizeCD.Trim() : "";
-            v_para[3] = SelectedProduct.JanCode1 != null ? SelectedProduct.JanCode1.Trim() : "";
-            v_para[4] = SelectedProduct.JanCode2 != null ? SelectedProduct.JanCode2.Trim() : "";
-            v_para[5] = SelectedProduct.JanCode2 != null ? SelectedProduct.JanCode2.Trim() : "";
+            v_para[0] = FindProduct.ProductCD != null ? FindProduct.ProductCD.Trim() : "";
+            v_para[1] = FindProduct.ColorCD != null ? FindProduct.ColorCD.Trim() : "";
+            v_para[2] = FindProduct.SizeCD != null ? FindProduct.SizeCD.Trim() : "";
+            v_para[3] = FindProduct.JanCode1 != null ? FindProduct.JanCode1.Trim() : "";
+            v_para[4] = FindProduct.JanCode2 != null ? FindProduct.JanCode2.Trim() : "";
+            v_para[5] = FindProduct.JanCode2 != null ? FindProduct.JanCode2.Trim() : "";
 
-            var v_para2 = new BizArray();
-
-            var wrk_csv2 = OnQuery(v_para.ToArray(), v_para2.ToArray());
+            var wrk_csv2 = OnQuery(v_para.ToArray(), v_para2.ToArray(), 0);
 
             var list = (from DataRow dr in wrk_csv2.Rows
                         select new MasterShohinJan
@@ -139,8 +125,25 @@ namespace CvnetClient.ViewModels
                             ProductCD = dr["商品CD"].ToString() ?? string.Empty,
                             ColorCD = dr["色CD"].ToString() ?? string.Empty,
                             SizeCD = dr["サイズCD"].ToString() ?? string.Empty,
+                            JanCode1 = dr["JANコード1"].ToString() ?? string.Empty,
+                            JanCode2 = dr["JANコード2"].ToString() ?? string.Empty,
+                            JanCode3 = dr["JANコード3"].ToString() ?? string.Empty,
+                            Memo = dr["メモ"].ToString() ?? string.Empty,
+                            UseFlag = Convert.ToInt32(dr["使用FLG"]),
+                            ScheduledProductionQuantity = Convert.ToDecimal(dr["生産予定数"]),
+                            CuttingQuantity = Convert.ToDecimal(dr["裁断数"]),
+                            TagNumber = Convert.ToDecimal(dr["下札枚数"]),
+                            AutoAllocationFlag = Convert.ToInt32(dr["自動配分FLG"]),
+                            RetailPrice = Convert.ToDecimal(dr["上代"]),
+                            SupplierPrice = Convert.ToInt32(dr["仕入価格"]),
+                            ForeignCurrencyPrice = Convert.ToInt32(dr["外貨仕入価格"]),
                             ProductName = dr["商品名"].ToString() ?? string.Empty,
-                        });
+                            ColorName = dr["色名"].ToString() ?? string.Empty,
+                            SizeName = dr["サイズ名"].ToString() ?? string.Empty,
+                            CostPrice = Convert.ToDecimal(dr["原価1"]),
+                        }).ToList();
+
+            pageCnt = list.Count();
 
             if (list.Count() > AppData.maxQueryCnt)
             {
@@ -154,6 +157,85 @@ namespace CvnetClient.ViewModels
                 CanNext = false;
             }
 
+            Common.ConvertDotStringDel(list);
+            ListShohinJan = new ObservableCollection<MasterShohinJan>(list);
+            if(ListShohinJan.Count > 0)
+            {
+                SelectedProduct = ListShohinJan[0];
+            }
+        }
+
+        [RelayCommand]
+        public void SelDspUpdate2(int para)
+        {
+            if (FindProduct == null) return;
+
+            var v_para = new BizArray();
+            v_para[0] = FindProduct.ProductCD != null ? FindProduct.ProductCD.Trim() : "";
+            v_para[1] = FindProduct.ColorCD != null ? FindProduct.ColorCD.Trim() : "";
+            v_para[2] = FindProduct.SizeCD != null ? FindProduct.SizeCD.Trim() : "";
+            v_para[3] = FindProduct.JanCode1 != null ? FindProduct.JanCode1.Trim() : "";
+            v_para[4] = FindProduct.JanCode2 != null ? FindProduct.JanCode2.Trim() : "";
+            v_para[5] = FindProduct.JanCode2 != null ? FindProduct.JanCode2.Trim() : "";
+
+            var wrk_csv2 = OnQuery(v_para.ToArray(), v_para2.ToArray(), para);
+
+            var list = (from DataRow dr in wrk_csv2.Rows
+                        select new MasterShohinJan
+                        {
+                            SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
+                            VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
+                            VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"]),
+                            ProductCD = dr["商品CD"].ToString() ?? string.Empty,
+                            ColorCD = dr["色CD"].ToString() ?? string.Empty,
+                            SizeCD = dr["サイズCD"].ToString() ?? string.Empty,
+                            JanCode1 = dr["JANコード1"].ToString() ?? string.Empty,
+                            JanCode2 = dr["JANコード2"].ToString() ?? string.Empty,
+                            JanCode3 = dr["JANコード3"].ToString() ?? string.Empty,
+                            Memo = dr["メモ"].ToString() ?? string.Empty,
+                            UseFlag = Convert.ToInt32(dr["使用FLG"]),
+                            ScheduledProductionQuantity = Convert.ToDecimal(dr["生産予定数"]),
+                            CuttingQuantity = Convert.ToDecimal(dr["裁断数"]),
+                            TagNumber = Convert.ToDecimal(dr["下札枚数"]),
+                            AutoAllocationFlag = Convert.ToInt32(dr["自動配分FLG"]),
+                            RetailPrice = Convert.ToDecimal(dr["上代"]),
+                            SupplierPrice = Convert.ToInt32(dr["仕入価格"]),
+                            ForeignCurrencyPrice = Convert.ToInt32(dr["外貨仕入価格"]),
+                            ProductName = dr["商品名"].ToString() ?? string.Empty,
+                            ColorName = dr["色名"].ToString() ?? string.Empty,
+                            SizeName = dr["サイズ名"].ToString() ?? string.Empty,
+                            CostPrice = Convert.ToDecimal(dr["原価1"]),
+                        }).ToList();
+
+            //            pageCnt = list.Count();
+
+            if (list.Count() > AppData.maxQueryCnt)
+            {
+                // There is more data → enable Next
+                list = list.Take(AppData.maxQueryCnt).ToList();
+                CanNext = true;
+            }
+            else
+            {
+                // End reached
+                CanNext = false;
+            }
+
+            Common.ConvertDotStringDel(list);
+            ListShohinJan = new ObservableCollection<MasterShohinJan>(list);
+            if (ListShohinJan.Count > 0)
+            {
+                SelectedProduct = ListShohinJan[0];
+            }
+        }
+
+        // On.......Changed 
+        partial void OnSelectedProductChanged(MasterShohinJan? value)
+        {
+            if (value != null)
+                EditProduct = Common.CloneObject(value);
+            else
+                EditProduct = null;
         }
 
         [RelayCommand]
@@ -174,7 +256,7 @@ namespace CvnetClient.ViewModels
             if (get_sel00 != null)
             {
                 // Put the selected color string into the bindable property
-                EditProduct.ColorCD = get_sel00.Name;
+                EditProduct.ColorCD = get_sel00.Code;
             }
         }
 
@@ -185,14 +267,50 @@ namespace CvnetClient.ViewModels
             if (get_sel00 != null)
             {
                 // Put the selected color string into the bindable property
-                EditProduct.SizeCD = get_sel00.Name;
+                EditProduct.SizeCD = get_sel00.Code;
             }
         }
 
         [RelayCommand]
-        public void SelJan(object value)
+        void BackList()
         {
-            
+            //if (!ClientLib.MessageBox(this, "前のページ戻る？")) return;
+            v_para2[0] = "1";
+            pageCnt = pageCnt - 39;
+            SelDspUpdate2(pageCnt);
+
+
+            //if (ListShohinJan != null && ListShohinJan.Count > 0)
+            //{
+            //    StartCode = ListShohinJan.Min(c => c.WorkerCD);
+            //}
+            //else
+            //{
+            //    DoList();
+            //}
+            //OnQuery(null, null, "<=");
+            //if (ListWorker == null || ListWorker.Count == 0)
+            //    ClientLib.MessageBoxOk(this, "データがありません");
+        }
+
+        [RelayCommand]
+        void NextList()
+        {
+            //if (!ClientLib.MessageBox(this, "次のページに行く？")) return;
+            v_para2[0] = "2";
+            SelDspUpdate2(pageCnt);
+            pageCnt = pageCnt + 39;
+            //if (ListWorker != null && ListWorker.Count > 0)
+            //{
+            //    StartCode = ListWorker.Max(c => c.WorkerCD);
+            //}
+            //else
+            //{
+            //    DoList();
+            //}
+            //OnQuery(null, null, null);
+            //if (ListWorker == null || ListWorker.Count == 0)
+            //    ClientLib.MessageBoxOk(this, "データがありません");
         }
 
         // for 更新 button
@@ -200,6 +318,46 @@ namespace CvnetClient.ViewModels
         void DoUpdate()
         {
             if (!ClientLib.MessageBox(this, "修正しますか？")) return;
+            var item = Common.CloneObject(EditProduct);
+            Common.ConvertDotStringDel(item);
+            if (item == null) return;
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_SHOHIN_JAN",
+                item.SeqNo, item.VdateUpdate.ToString(),
+                new string[] { "商品CD", "色CD", "サイズCD", "JANコード1", "JANコード2", "JANコード3",
+                "メモ", "使用FLG", "生産予定数", "裁断数", "下札枚数",
+                "自動配分FLG", "上代", "仕入価格", "外貨仕入価格", "原価"},
+                new string[] { item.ProductCD!, item.ColorCD!, item.SizeCD!, item.JanCode1!, item.JanCode2!,
+                item.JanCode3!, item.Memo!, item.UseFlag.ToString()!, item.ScheduledProductionQuantity.ToString()!, item.CuttingQuantity.ToString()!, item.TagNumber.ToString()!, item.AutoAllocationFlag.ToString()!, item.RetailPrice.ToString()!, item.SupplierPrice.ToString()!, item.ForeignCurrencyPrice.ToString()!, item.CostPrice.ToString()!});
+            if (ret.Code == 0)
+            {
+                Common.ConvertDotStringDel(item);
+                if (SelectedProduct != null)
+                {
+                    SelectedProduct.VdateUpdate = decimal.Parse(ret.VDate);
+                    SelectedProduct.ProductCD = item.ProductCD;
+                    SelectedProduct.ColorCD = item.ColorCD;
+                    SelectedProduct.SizeCD = item.SizeCD;
+                    SelectedProduct.JanCode1 = item.JanCode1;   
+                    SelectedProduct.JanCode2 = item.JanCode2;
+                    SelectedProduct.JanCode3 = item.JanCode3;
+                    SelectedProduct.Memo = item.Memo;
+                    SelectedProduct.UseFlag = item.UseFlag;
+                    SelectedProduct.ScheduledProductionQuantity = item.ScheduledProductionQuantity;
+                    SelectedProduct.CuttingQuantity = item.CuttingQuantity;
+                    SelectedProduct.TagNumber = item.TagNumber;
+                    SelectedProduct.AutoAllocationFlag = item.AutoAllocationFlag;
+                    SelectedProduct.RetailPrice = item.RetailPrice;
+                    SelectedProduct.SupplierCD = item.SupplierCD;
+                    SelectedProduct.ForeignCurrencyPrice = item.ForeignCurrencyPrice;
+                    SelectedProduct.CostPrice = item.CostPrice;
+                    EditProduct = Common.CloneObject(SelectedProduct);
+                    ClientLib.MessageBoxOk(this, "修正しました");
+                }
+            }
+            else
+            {
+                ClientLib.MessageBoxError(this, ret.Code.ToString());
+            }
         }
 
         // for 削除 button
@@ -216,6 +374,34 @@ namespace CvnetClient.ViewModels
         void DoInsert()
         {
             if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
+            var item = Common.CloneObject(EditProduct);
+            Common.ConvertDotStringAdd(item);
+
+            if (item == null) return;
+
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHOHIN_JAN",
+                    0, "0",
+                    new string[] { "商品CD", "色CD", "サイズCD", "JANコード1", "JANコード2", "JANコード3",
+                                "メモ", "使用FLG", "生産予定数", "裁断数", "下札枚数",
+                                "自動配分FLG", "上代", "仕入価格", "外貨仕入価格", "原価"},
+                    new string[] { item.ProductCD!, item.ColorCD!, item.SizeCD!, item.JanCode1!, item.JanCode2!,
+                                item.JanCode3!, item.Memo!, item.UseFlag.ToString()!, item.ScheduledProductionQuantity.ToString()!, item.CuttingQuantity.ToString()!, item.TagNumber.ToString()!, item.AutoAllocationFlag.ToString()!, item.RetailPrice.ToString()!, item.SupplierPrice.ToString()!, item.ForeignCurrencyPrice.ToString()!, item.CostPrice.ToString()!});
+
+            if (ret.Code == 0 )
+            {
+                item.SeqNo = ret.NewSeq;
+                item.VdateUpdate = decimal.Parse(ret.VDate);
+                item.VdateCreate = item.VdateUpdate;
+                Common.ConvertDotStringDel(item);
+                ListShohinJan!.Add(item);
+                SelectedProduct = item;
+                ClientLib.MessageBoxOk(this, "登録しました");
+            }
+            else
+            {
+                ClientLib.MessageBoxError(this, ret.Code.ToString());
+            }
+
         }
 
         // for 印刷 button
@@ -225,47 +411,62 @@ namespace CvnetClient.ViewModels
             if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
         }
 
-        private DataTable OnQuery(string[] v_para, string[] v_para2)
+        private DataTable OnQuery(string[] v_para, string[] v_para2, int para1)
         {
             string sql_query = "SELECT A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE";
-            // Append every column from the list with prefix A.
-            for (int i = 0; i < sql_col_list.Length; i++)
-            {
-                sql_query += ", A." + sql_col_list[i];
-            }
-            sql_query += ",B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1";
-            //sql_query += ",ROW_NUMBER() OVER (ORDER BY A.商品CD,A.色CD,A.サイズCD) 行NO";
-            sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
-            sql_query += " WHERE ";
-            //if (str(v_para[0]) != "" && str(v_para[0]) != ".") sql_query += "A.商品CD='" + str(v_para[0]) + "' and ";
-            if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
-            if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
-            if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
-            if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
-            if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
-            if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
-            sql_query += "A.商品CD=B.商品CD";
 
-            sql_query += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
-            sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
+            if (v_para2[0] ==  "1" || v_para2[0] == "2")
+            {
+                // Append every column from the list with prefix A.
+                for (int i = 0; i < sql_col_list.Length - 1; i++)
+                {
+                    sql_query += ", A." + sql_col_list[i];
+                }
+                sql_query += ",B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1";
+                sql_query += ",ROW_NUMBER() OVER (ORDER BY A.商品CD,A.色CD,A.サイズCD) 行NO";
+                sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
+                sql_query += " WHERE ";
+                if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
+                sql_query += "A.商品CD=B.商品CD";
+                sql_query = "SELECT * FROM (" + sql_query + ") ";
+                if (v_para2[0] == "2")
+                    sql_query += " where 行NO between " + Convert.ToString(para1) + " AND " + Convert.ToString(para1 + 40);
+                else if (v_para2[0] == "1")
+                    sql_query += " where 行NO between " + Convert.ToString(para1 - 39) + " AND " + Convert.ToString(para1);
+                sql_query += " order by 商品CD,色CD,サイズCD";
+
+                v_para2[0] = null;      // Reset 
+            }
+            else
+            {
+                for (int i = 0; i < sql_col_list.Length - 1; i++)
+                {
+                    sql_query += ", A." + sql_col_list[i];
+                }
+                sql_query += ",B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1";
+                sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
+                sql_query += " WHERE ";
+                if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
+                if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
+                sql_query += "A.商品CD=B.商品CD";
+                sql_query += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
+                sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
+            }
+
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_query);
 
-        //    //if (v_para2[0] == "1") // 次へ (Next Page)
-        //    //{
-        //    //    sql_query += $" WHERE 行NO BETWEEN {Form1.sv_end_cnt} " +
-        //    //                 $"AND {Form1.sv_end_cnt + cvnet.MaxCntDisp - 1}";
-        //    //}
-        //    //else // 前へ (Previous Page)
-        //    //{
-        //    //    sql_query += $" WHERE 行NO BETWEEN {Form1.sv_end_cnt - cvnet.MaxCntDisp + 1} " +
-        //    //                 $"AND {Form1.sv_end_cnt}";
-        //    //}
-
-            //    //sql_query += " ORDER BY 商品CD, 色CD, サイズCD";
-
-
-            //    //var ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para);
             return ret_csv;
         }
+
+       
     }
-}
+    }
