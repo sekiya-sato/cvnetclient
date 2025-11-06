@@ -3,26 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Views;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
-using static System.Net.WebRequestMethods;
 
 namespace CvnetClient.ViewModels
 {
@@ -127,8 +112,8 @@ SELECT%20A.*%20FROM%20(select%20A.SEQ_NO,A.VDATE_CREATE
             if (AppData.Http != null)
             {
                 string decoded = System.Web.HttpUtility.UrlDecode(encoded, AppData.Http.DefaultEncode);
-                Debug.WriteLine("***** HTTPのquery文字列のデコード *****");
-                Debug.WriteLine(decoded);
+                //Debug.WriteLine("***** HTTPのquery文字列のデコード *****");
+                //Debug.WriteLine(decoded);
             }
         }
         #endregion
@@ -144,14 +129,7 @@ SELECT%20A.*%20FROM%20(select%20A.SEQ_NO,A.VDATE_CREATE
         /// </summary>
         void debugPostLogin()
         {
-            /*
-			var view = new Views.MeishoSelectView();
-			var vm = view.DataContext as MeishoSelectViewModel;
-			vm.Init(MeishoSelectViewModel.SearchType.Meisho, "1", "COL");
-			if (vm != null) {
-				ClientLib.ShowDialogView(view, this);
-			}
-			*/
+            
         }
 
         [RelayCommand]
@@ -174,7 +152,6 @@ SELECT%20A.*%20FROM%20(select%20A.SEQ_NO,A.VDATE_CREATE
             System.Windows.MessageBox.Show("Logout clicked!");
         }
 
-        // optional: dipanggil oleh view bila navigation berlaku
         public void OnNavigated(NavigationEventArgs e)
         {
             if (e.Content is Page page)

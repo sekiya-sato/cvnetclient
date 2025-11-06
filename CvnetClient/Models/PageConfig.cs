@@ -43,7 +43,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "社員使用メニュー一覧", WindowId="" },
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId="" },
                 new ButtonConfig { Text = "週マスタ", WindowId=typeof(Views.SubDlg01WeekView).FullName },
-                new ButtonConfig { Text = "バーコードブック印刷", WindowId="" },
+                new ButtonConfig { Text = "バーコードブック印刷", WindowId=typeof(Views.SubDlg01bcdView).FullName },
                 new ButtonConfig { Text = "各種マスタ印刷", WindowId="" },
                 new ButtonConfig { Text = "タックシール印刷", WindowId=typeof(Views.SubDlg01StkView).FullName }
             }
@@ -239,7 +239,6 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "販売員別予算実績対比表", WindowId="" },
                 new ButtonConfig { Text = "全社受払表", WindowId="" },
                 new ButtonConfig { Text = "卸・店舗売上実績表", WindowId="" },
-                new ButtonConfig { Text = "", WindowId="" }
             }
         }},
         { "C.P.A", new PageData {
@@ -331,18 +330,18 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "クーポン使用一覧表", WindowId="" }
             }
         }},
-        { "Time", new PageData {
-            Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "勤怠用管理マスタ", WindowId="" },
-                new ButtonConfig { Text = "社員標準シフトメンテ", WindowId="" },
-                new ButtonConfig { Text = "シフト変更データ一括登録", WindowId="" },
-                new ButtonConfig { Text = "シフト一括登録", WindowId="" },
-                new ButtonConfig { Text = "シフト表作成", WindowId="" },
-                new ButtonConfig { Text = "出退勤データ承認", WindowId="" },
-                new ButtonConfig { Text = "承認書印刷", WindowId="" },
-                new ButtonConfig { Text = "出退勤データ出力", WindowId="" }
-            }
-        }},
+        //{ "Time", new PageData {
+        //    Buttons = new List<ButtonConfig> {
+        //        new ButtonConfig { Text = "勤怠用管理マスタ", WindowId="" },
+        //        new ButtonConfig { Text = "社員標準シフトメンテ", WindowId="" },
+        //        new ButtonConfig { Text = "シフト変更データ一括登録", WindowId="" },
+        //        new ButtonConfig { Text = "シフト一括登録", WindowId="" },
+        //        new ButtonConfig { Text = "シフト表作成", WindowId="" },
+        //        new ButtonConfig { Text = "出退勤データ承認", WindowId="" },
+        //        new ButtonConfig { Text = "承認書印刷", WindowId="" },
+        //        new ButtonConfig { Text = "出退勤データ出力", WindowId="" }
+        //    }
+        //}},
         { "店舗", new PageData {
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "店舗新規売上入力", WindowId="" },
@@ -361,8 +360,8 @@ namespace CvnetClient.Models
         }},
         { "物流", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "マスタデータ作成", WindowId="" },
-                new ButtonConfig { Text = "連携データ手動送信", WindowId="" },
+                new ButtonConfig { Text = "マスタデータ作成", WindowId=typeof(Views.SubDlg71Pos1View).FullName },
+                new ButtonConfig { Text = "連携データ手動送信", WindowId=typeof(Views.SubDlg71SendManualView).FullName },
                 new ButtonConfig { Text = "連携データ手動受信", WindowId="" },
                 new ButtonConfig { Text = "連携エラーデータ照会", WindowId="" }
             }
@@ -397,28 +396,28 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "社員LOGINマスタ(管理者用)SD", WindowId="" }
             }
         }},
-        { "---", new PageData {
-            Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "売上与信確認表", WindowId="" },
-                new ButtonConfig { Text = "顧客離反・ﾎﾟｲﾝﾄ利用・ｸｰﾎﾟﾝ利用照会", WindowId="" },
-                new ButtonConfig { Text = "LTV分析", WindowId="" },
-                new ButtonConfig { Text = "CTB分析", WindowId="" },
-                new ButtonConfig { Text = "上代一覧", WindowId="" },
-                new ButtonConfig { Text = "配分確定", WindowId="" },
-                new ButtonConfig { Text = "アナライザ用取引在庫データ集計", WindowId="" },
-                new ButtonConfig { Text = "T.L", WindowId="" },
-                new ButtonConfig { Text = "C.G", WindowId="" },
-                new ButtonConfig { Text = "顧客対応履歴(テスト中)", WindowId="" },
-                new ButtonConfig { Text = "店舗商品別 在庫積送売上集計", WindowId="" },
-                new ButtonConfig { Text = "出荷指示（店間移動)", WindowId="" },
-                new ButtonConfig { Text = "トレンド分析", WindowId="" },
-                new ButtonConfig { Text = "店別キャッシュフロー年間推移", WindowId="" },
-                new ButtonConfig { Text = "キャッシュフロー入力", WindowId="" },
-                new ButtonConfig { Text = "店別キャッシュフロー表", WindowId="" },
-                new ButtonConfig { Text = "店別キャッシュフロー一覧", WindowId="" },
-                new ButtonConfig { Text = "得意先別配分入力", WindowId="" }
-            }
-        }}
+        //{ "---", new PageData {
+        //    Buttons = new List<ButtonConfig> {
+        //        new ButtonConfig { Text = "売上与信確認表", WindowId="" },
+        //        new ButtonConfig { Text = "顧客離反・ﾎﾟｲﾝﾄ利用・ｸｰﾎﾟﾝ利用照会", WindowId="" },
+        //        new ButtonConfig { Text = "LTV分析", WindowId="" },
+        //        new ButtonConfig { Text = "CTB分析", WindowId="" },
+        //        new ButtonConfig { Text = "上代一覧", WindowId="" },
+        //        new ButtonConfig { Text = "配分確定", WindowId="" },
+        //        new ButtonConfig { Text = "アナライザ用取引在庫データ集計", WindowId="" },
+        //        new ButtonConfig { Text = "T.L", WindowId="" },
+        //        new ButtonConfig { Text = "C.G", WindowId="" },
+        //        new ButtonConfig { Text = "顧客対応履歴(テスト中)", WindowId="" },
+        //        new ButtonConfig { Text = "店舗商品別 在庫積送売上集計", WindowId="" },
+        //        new ButtonConfig { Text = "出荷指示（店間移動)", WindowId="" },
+        //        new ButtonConfig { Text = "トレンド分析", WindowId="" },
+        //        new ButtonConfig { Text = "店別キャッシュフロー年間推移", WindowId="" },
+        //        new ButtonConfig { Text = "キャッシュフロー入力", WindowId="" },
+        //        new ButtonConfig { Text = "店別キャッシュフロー表", WindowId="" },
+        //        new ButtonConfig { Text = "店別キャッシュフロー一覧", WindowId="" },
+        //        new ButtonConfig { Text = "得意先別配分入力", WindowId="" }
+        //    }
+        //}}
     };
         public static PageData GetPage(string id) => pages.ContainsKey(id) ? pages[id] : new PageData();
     }

@@ -70,39 +70,51 @@ namespace CvnetClient.ViewModels
                 var openDialog = new Microsoft.Win32.OpenFileDialog
                 {
                     Title = "CSV読み込み",
-                    Filter = "CSVファイル (*.csv;*.txt)|*.csv;*.txt",
-                    DefaultExt = ".csv"
+                    //Filter = "CSVファイル (*.csv;*.txt)|*.csv;*.txt",
+                    //DefaultExt = ".csv"
                 };
-                openDialog.ShowDialog();
-                string sourceFile = openDialog.FileName;
-                string fileName = Path.GetFileName(sourceFile);
-                
-                string workDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WorkShohin");
-                Directory.CreateDirectory(workDir);
-
-                string copiedPath = Path.Combine(workDir, fileName);
-                File.Copy(sourceFile, copiedPath, true);
-
-                using var fm = new FileStream(copiedPath, FileMode.Open, FileAccess.Read);
-
-                string upname = Path.GetFileNameWithoutExtension(fileName)
-                                + "_" + DateTime.Now.ToString("yyyyMMddHHmmss")
-                                + Path.GetExtension(fileName);
-                var ret = await ClassSatoo.AspxUploadAsync(fileName, fm, "", "/Wrkmst");
-
-                if (ret == 0) {
-                    System.Windows.MessageBox.Show("Upload berjaya!");
-                }
-                else
+                string upname = string.Empty;
+                if (openDialog.ShowDialog() == true)
                 {
-                    System.Windows.MessageBox.Show("Upload gagal!");
-                    return;
+                    string sourceFile = openDialog.FileName;
+                    string fileName = Path.GetFileName(sourceFile);
+
+                    string workDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "WorkShohin");
+                    Directory.CreateDirectory(workDir);
+
+                    string copiedPath = Path.Combine(workDir, fileName);
+                    File.Copy(sourceFile, copiedPath, true);
+
+                    string nameOnly = Path.GetFileNameWithoutExtension(fileName);
+                    string extOnly = Path.GetExtension(fileName).Replace(".", ""); 
+                    upname = $"{nameOnly}_{DateTime.Now:yyyyMMddHHmmss}{extOnly}";
+
+                    // lokasi folder server (boleh kosong kalau tak guna)
+                    string uploadlocation = "img"; 
+
+                    string mess;
+
+                    // panggil method UploadAllFile
+                    bool ret = AppData.Http!.UploadAllFile(copiedPath, upname, uploadlocation, out mess);
+
+                    if (ret)
+                    {
+                        // upload berjaya
+                        ClientLib.MessageBoxOk(this, "アップロード成功しました。", "成功");
+                        
+                    }
+                    else
+                    {
+                        // upload gagal
+                        ClientLib.MessageBoxError(this, $"アップロード失敗: {mess}", "エラー");
+                        return;
+                    }
                 }
-                
+
                 string[] para = new string[1];
                 para[0] = upname;
 
-                var retCsv = AppData.Http!.AspxSqlQuery2("mi_csv2", para, null, 1);
+                var retCsv = AppData.Http!.AspxSqlQuery2("mi_csv2", para, "", 1);
 
                 string message = "";
                 if (retCsv.Split('\n')[0].ToString() != "0")
@@ -142,9 +154,9 @@ namespace CvnetClient.ViewModels
                     ClientLib.MessageBox(this,$"{mes[1]}\n{mes[2]}", "確認");
                 }
 
-                string deletePath = Path.Combine(workDir, fileName);
-                if (File.Exists(deletePath))
-                    File.Delete(deletePath);
+                //string deletePath = Path.Combine(workDir, fileName);
+                //if (File.Exists(deletePath))
+                //    File.Delete(deletePath);
             }
             catch (Exception ex)
             {

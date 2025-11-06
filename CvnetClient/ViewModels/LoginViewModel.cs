@@ -43,9 +43,12 @@ namespace CvnetClient.ViewModels {
 			var ret = http.Login(0, LoginId ?? string.Empty, LoginPassword ?? string.Empty);
 			AppData.Http = http;
 			Debug.WriteLine($"ログインステータス＝{ret}");
-			if(ret == 0) {
-				ClientLib.MessageBoxOk(this, "ログイン成功しました");
-				AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
+			if(ret.Item1 == 0) { 
+                ClientLib.MessageBoxOk(this, "ログイン成功しました");
+                AppData.ClassSatoo.SHAIN_CD = ret.Item2.SHAIN_CD;
+                AppData.ClassSatoo.SHAIN_Name = ret.Item2.SHAIN_Name;
+                AppData.ClassSatoo.SHAIN_Tenpo = ret.Item2.SHAIN_Tenpo;
+                AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
 				AppData.ClassCvnet.AspxSqlQuerySysHHTMst();
 				var win = ClientLib.GetActiveView(this);
@@ -66,11 +69,14 @@ namespace CvnetClient.ViewModels {
 			var http = AppData.Http ?? new ClassHttp(AppData.Url);
 			var ret = http.Login(0, LoginId ?? string.Empty, LoginPassword ?? string.Empty);
 			AppData.Http = http;
-			if(ret == 0) {
-				AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
+			if(ret.Item1 == 0) {
+				AppData.ClassSatoo.SHAIN_CD = ret.Item2.SHAIN_CD;
+                AppData.ClassSatoo.SHAIN_Name = ret.Item2.SHAIN_Name;
+				AppData.ClassSatoo.SHAIN_Tenpo = ret.Item2.SHAIN_Tenpo;
+                AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
 			}
-			return ret;
+			return ret.Item1;
 		}
 	}
 }

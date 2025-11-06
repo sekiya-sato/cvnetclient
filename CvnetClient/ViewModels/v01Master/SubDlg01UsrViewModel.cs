@@ -4,13 +4,23 @@ using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
+using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using static System.Net.WebRequestMethods;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg01UsrViewModel : BaseViewModel
     {
+
         [ObservableProperty]
         ObservableCollection<MasterWorker>? listWorker;
         [ObservableProperty]
@@ -55,8 +65,13 @@ namespace CvnetClient.ViewModels
         public string? shopName;
         [ObservableProperty]
         public string? tenpoFlg;
+        [ObservableProperty]
+        private BitmapImage? sourceImage;
 
-        string sql_list = "SELECT A.*,(SELECT 得意先名 FROM HC$MASTER_TOKUI WHERE 得意先CD=A.店舗CD) 店舗 FROM (SELECT *  FROM HC$MASTER_SHAIN WHERE 社員CD {0}:1 ORDER BY 社員CD {1}) A WHERE ROWNUM <= {2}";
+        private string? _localImagePath;
+
+        private readonly string _baseUrl = AppData.Url;
+        private readonly string _dataPath = AppData.DataAddPath;
 
         public void OnInit() {
             EditWorker = new MasterWorker();
@@ -211,7 +226,11 @@ namespace CvnetClient.ViewModels
         partial void OnSelectedWorkerChanged(MasterWorker? value)
         {
             if (value != null)
+            {
                 EditWorker = CvnetBaseCore.Common.CloneObject(value);
+                LoadWorkerImage(value.TelNo);
+            }
+                
             else
                 EditWorker = null;
         }
@@ -374,11 +393,11 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
             var item = Common.CloneObject(EditWorker);
-            Common.ConvertDotStringAdd(item);
+            Common.ConvertDotStringAdd1(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "MASTER_SHAIN", 0, "0",
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHAIN", 0, "0",
                 new string[] { "社員CD", "名前", "部門", "店舗CD", "営業FLG", "メール", "携帯TEL", "特権FLG", "フリガナ", "役職CD", "就業FLG", "出力FLG", "備考", "入社日", "有給残", "給与区分", "給与支給額", "交通費区分", "交通費支給額", "部課CD", "名称CD01", "名称CD02", "名称CD03", "名称CD04", "名称CD05", "POS区分", "メールFLG", "入力社員CD", "特休残", "退勤日", "退職日", "プロフィール" },
-                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate?.ToString("yyyyMMdd"), item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, item.EmployeeInpCD!, item.SpecHolidayRemain.ToString()!, item.EndDate!, item.RetireDate?.ToString("yyyyMMdd"), item.Profile! });
+                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate?.ToString("yyyyMMdd"), item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, AppData.ClassSatoo.SHAIN_CD ?? ".", item.SpecHolidayRemain.ToString() ?? ".", item.EndDate!, item.RetireDate?.ToString("yyyyMMdd"), item.Profile! });
             if (ret.Code == 0)
             {
                 item.SeqNo = ret.NewSeq;
@@ -389,7 +408,7 @@ namespace CvnetClient.ViewModels
                 SelectedWorker = item;
             }
             else {
-                ClientLib.MessageBoxError(this, ret.Code.ToString());
+                ClientLib.MessageBoxError(this, "データが追加出来ませんでした");
             }
         }
 
@@ -398,11 +417,11 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "修正しますか？")) return;
             var item = Common.CloneObject(EditWorker);
-            Common.ConvertDotStringAdd(item);
+            Common.ConvertDotStringAdd1(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE,"HASTER_SHAIN", item.SeqNo, item.VdateUpdate.ToString(),
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_SHAIN", item.SeqNo, VDateHelper.ToVDate(DateTime.Now).ToString(),
                 new string[] { "社員CD", "名前", "部門", "店舗CD", "営業FLG", "メール", "携帯TEL", "特権FLG", "フリガナ", "役職CD", "就業FLG", "出力FLG", "備考", "入社日", "有給残", "給与区分", "給与支給額", "交通費区分", "交通費支給額", "部課CD", "名称CD01", "名称CD02", "名称CD03", "名称CD04", "名称CD05", "POS区分", "メールFLG", "入力社員CD", "特休残", "退勤日", "退職日", "プロフィール" },
-                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate?.ToString("yyyyMMdd"), item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, item.EmployeeInpCD!, item.SpecHolidayRemain.ToString()!, item.EndDate!, item.RetireDate?.ToString("yyyyMMdd"), item.Profile! });
+                new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate?.ToString("yyyyMMdd"), item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, AppData.ClassSatoo.SHAIN_CD ?? ".", item.SpecHolidayRemain.ToString()!, item.EndDate!, item.RetireDate?.ToString("yyyyMMdd"), item.Profile! });
             if (ret.Code == 0)
             {
                 Common.ConvertDotStringDel(item);
@@ -442,11 +461,10 @@ namespace CvnetClient.ViewModels
                     SelectedWorker.RetireDate = item.RetireDate;
                     SelectedWorker.Profile = item.Profile;
                     EditWorker = Common.CloneObject(SelectedWorker);
-                }
-                
+                }                
             }
             else {
-                ClientLib.MessageBoxError(this, ret.Code.ToString());
+                ClientLib.MessageBoxError(this, "データが修正出来ませんでした");
             }
         }
 
@@ -541,6 +559,104 @@ namespace CvnetClient.ViewModels
             }
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
+        }
+
+        /// <summary>
+        /// User drop image ke dalam area
+        /// </summary>
+        public async void OnImageDropped(string filePath)
+        {
+            if (!System.IO.File.Exists(filePath)) return;
+            
+            _localImagePath = filePath;
+            if (EditWorker != null) { 
+                EditWorker.TelNo = Path.GetFileName(_localImagePath);
+            }
+            
+            SourceImage = CreateSafeBitmapImage(filePath);
+
+            if (EditWorker != null)
+                await UploadToAspxServerAsync();
+        }
+
+        /// <summary>
+        /// Buka file dialog bila tekan butang Upload
+        /// </summary>
+        [RelayCommand]
+        private async Task OpenFileDialogAsync()
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "画像を選択してください",
+                //Filter = "画像ファイル|*.jpg;*.jpeg;*.png;*.bmp;*.gif"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                _localImagePath = dialog.FileName;
+                if (EditWorker != null)
+                {
+                    EditWorker.TelNo = Path.GetFileName(_localImagePath);
+                }
+                SourceImage = CreateSafeBitmapImage(_localImagePath);
+
+                if (EditWorker != null)
+                    await UploadToAspxServerAsync();
+            }
+        }
+       
+        private void LoadWorkerImage(string imageFileName)
+        {
+            if (string.IsNullOrEmpty(imageFileName))
+            {
+                SourceImage = null;
+                return;
+            }
+
+            string fullUrl = $"{_baseUrl}Data/{_dataPath}{imageFileName}?t={DateTime.Now.Ticks}";
+            SourceImage = CreateSafeBitmapImage(fullUrl);
+        }
+
+        private BitmapImage CreateSafeBitmapImage(string path)
+        {
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnLoad;
+            bmp.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+
+            if (path.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+                bmp.UriSource = new Uri(path, UriKind.Absolute);
+            else
+                bmp.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
+
+            bmp.EndInit();
+            return bmp;
+        }
+
+        private async Task UploadToAspxServerAsync()
+        {
+            if (string.IsNullOrEmpty(_localImagePath))
+                return;
+
+            await Task.Run(() =>
+            {
+                string mess;
+                bool ok = AppData.Http!.UploadAllFile(_localImagePath, Path.GetFileName(_localImagePath), "img", out mess);
+                if (!ok)
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ClientLib.MessageBoxError(this,$"アップロード失敗: {mess}", "エラー");
+                    });
+                }
+                else
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ClientLib.MessageBoxOk(this, "アップロード成功！", "完了");
+                    });
+                }
+            });
         }
     }
 }
