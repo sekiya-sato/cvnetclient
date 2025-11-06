@@ -62,7 +62,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "HHT用管理マスタ(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "バッチ更新履歴(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "ラベル名称マスタ(DTP用)", WindowId="" },
-                new ButtonConfig { Text = "帳票管理マスタ(DTP用)", WindowId="" },
+                new ButtonConfig { Text = "帳票管理マスタ(DTP用)", WindowId=typeof(Views.SubDlg01PrintView).FullName },
                 new ButtonConfig { Text = "システムメンテナンス処理", WindowId="" },
                 new ButtonConfig { Text = "汎用SQL問い合わせ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "DB定義書出力", WindowId=typeof(Views.SubDlg00DBTableView).FullName },

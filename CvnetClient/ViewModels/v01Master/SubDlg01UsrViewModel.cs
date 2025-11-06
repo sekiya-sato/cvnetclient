@@ -427,7 +427,7 @@ namespace CvnetClient.ViewModels
                 Common.ConvertDotStringDel(item);
                 if (SelectedWorker != null) 
                 {
-                    SelectedWorker.VdateUpdate = decimal.Parse(ret.VDate);
+                    SelectedWorker.VdateUpdate = VDateHelper.ToVDate(DateTime.Now);
                     SelectedWorker.WorkerCD = item.WorkerCD;
                     SelectedWorker.Name = item.Name;
                     SelectedWorker.Department = item.Department;
