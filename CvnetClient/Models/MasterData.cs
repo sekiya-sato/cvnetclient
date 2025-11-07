@@ -944,8 +944,6 @@ namespace CvnetClient.Models
         int? scheduledPaymentDay3; // 支払予定日3
         [ObservableProperty]
         string? registrationNumber; // 登録番号
-        [ObservableProperty]
-        string? lastModifier; // 最終修正者
     }
 
 	public partial class MasterShohinJan : ObservableObject

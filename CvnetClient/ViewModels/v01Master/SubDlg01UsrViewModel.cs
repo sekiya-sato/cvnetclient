@@ -20,7 +20,7 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg01UsrViewModel : BaseViewModel
     {
-
+        #region Declare
         [ObservableProperty]
         ObservableCollection<MasterWorker>? listWorker;
         [ObservableProperty]
@@ -72,6 +72,7 @@ namespace CvnetClient.ViewModels
 
         private readonly string _baseUrl = AppData.Url;
         private readonly string _dataPath = AppData.DataAddPath;
+        #endregion
 
         public void OnInit() {
             EditWorker = new MasterWorker();
@@ -419,7 +420,7 @@ namespace CvnetClient.ViewModels
             var item = Common.CloneObject(EditWorker);
             Common.ConvertDotStringAdd1(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_SHAIN", item.SeqNo, VDateHelper.ToVDate(DateTime.Now).ToString(),
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_SHAIN", item.SeqNo, item.VdateUpdate.ToString(),
                 new string[] { "社員CD", "名前", "部門", "店舗CD", "営業FLG", "メール", "携帯TEL", "特権FLG", "フリガナ", "役職CD", "就業FLG", "出力FLG", "備考", "入社日", "有給残", "給与区分", "給与支給額", "交通費区分", "交通費支給額", "部課CD", "名称CD01", "名称CD02", "名称CD03", "名称CD04", "名称CD05", "POS区分", "メールFLG", "入力社員CD", "特休残", "退勤日", "退職日", "プロフィール" },
                 new string[] { item.WorkerCD!, item.Name!, item.Department!, item.ShopCD!, item.SalesFlg.ToString()!, item.Mail!, item.TelNo!, item.SpecialFlg!, item.Furigana!, item.PositionCD!, item.EmploymentFLG!, item.OutputFLG.ToString()!, item.Notes!, item.JoiningDate?.ToString("yyyyMMdd"), item.VacationRemaining!, item.SalaryCate!, item.SalaryAmount.ToString()!, item.TransExpCate!, item.TransExpAmount.ToString()!, item.SectionCD!, item.NameCD01!, item.NameCD02!, item.NameCD03!, item.NameCD04!, item.NameCD05!, item.PosCate.ToString()!, item.EmailFLG.ToString()!, AppData.ClassSatoo.SHAIN_CD ?? ".", item.SpecHolidayRemain.ToString()!, item.EndDate!, item.RetireDate?.ToString("yyyyMMdd"), item.Profile! });
             if (ret.Code == 0)
@@ -561,9 +562,6 @@ namespace CvnetClient.ViewModels
             ClientLib.ShowDialogView(win, this);
         }
 
-        /// <summary>
-        /// User drop image ke dalam area
-        /// </summary>
         public async void OnImageDropped(string filePath)
         {
             if (!System.IO.File.Exists(filePath)) return;
@@ -579,9 +577,6 @@ namespace CvnetClient.ViewModels
                 await UploadToAspxServerAsync();
         }
 
-        /// <summary>
-        /// Buka file dialog bila tekan butang Upload
-        /// </summary>
         [RelayCommand]
         private async Task OpenFileDialogAsync()
         {
