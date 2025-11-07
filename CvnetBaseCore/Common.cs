@@ -148,13 +148,21 @@ namespace CvnetBaseCore {
         public static void ConvertDotStringAdd1<T>(T item) where T : new()
         {
             if (item == null) return;
-
-            foreach (var p in typeof(T).GetProperties().Where(p => p.PropertyType == typeof(string)))
-            {
-                var val = p.GetValue(item) as string;
-                var tmp_val = string.IsNullOrWhiteSpace(val) ? "." : val.Trim();
-                p.SetValue(item, tmp_val);
-            }
+            List<PropertyInfo> pinfo = typeof(T).GetProperties().ToList();
+            StringBuilder sb = new StringBuilder();
+            pinfo.ForEach(p => {
+                if (p.PropertyType.ToString() == "System.String")
+                {
+                    var tmp_val = p.GetValue(item, null).ToString();
+                    if (string.IsNullOrEmpty(tmp_val))
+                    {
+                        tmp_val = ".";
+                    }
+                    tmp_val = tmp_val.Trim();
+                    if (string.IsNullOrEmpty(tmp_val)) tmp_val = ".";
+                    p.SetValue(item, tmp_val, null);
+                }
+            });
         }
         /// <summary>
         /// 文字列プロパティの値が"."の場合、空白に変換する

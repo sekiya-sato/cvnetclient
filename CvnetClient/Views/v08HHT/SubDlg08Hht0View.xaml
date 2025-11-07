@@ -1,0 +1,44 @@
+﻿<Window x:Class="CvnetClient.Views.v08HHT.SubDlg08Hht0View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient"
+        mc:Ignorable="d"
+        Title="外部連携 : HHT用PATH設定" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="ハンディシステムのインストールフォルダを指定して、設定ボタンを押して下さい。" Foreground="Red" FontSize="16" FontWeight="Bold"/>
+        <TextBox Grid.Row="2" Grid.Column="1"  Text="C:\\hht\\"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Grid.RowSpan="4" Height="auto" Style="{StaticResource ReadOnlyTextBox}"/>
+        <Grid Grid.Row="8" Grid.Column="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Button  Grid.Column="1" Content="設定" Width="90"/>
+            <Button  Grid.Column="3" Style="{StaticResource BackBtn}"/>
+        </Grid>
+        
+    </Grid>
+</Window>
