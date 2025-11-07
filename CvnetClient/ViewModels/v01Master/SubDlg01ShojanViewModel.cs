@@ -7,6 +7,7 @@ using CvnetClient.Views;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using static CvnetClient.ViewModels.SubDlg09Upkeihi2ViewModel;
 
 namespace CvnetClient.ViewModels
@@ -28,11 +29,19 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         MasterShohinJan? selectedProduct;
         [ObservableProperty]
+        BtListHelper editColorCd = new();
+        [ObservableProperty]
+        BtListHelper editSizeCd = new();
+        [ObservableProperty]
+        BtListHelper editProductCd = new();
+        [ObservableProperty]
         string? selProductCd;
         [ObservableProperty]
         int? pageNow;
         [ObservableProperty]
         int? pageTotal;
+        [ObservableProperty]
+        decimal? timex = 0;
 
         public int pageCnt = 0;
 
@@ -60,6 +69,14 @@ namespace CvnetClient.ViewModels
             SelectedProduct = new MasterShohinJan();
             FindProduct = new MasterShohinJan();
             EditProduct = new MasterShohinJan();
+            EditColorCd = new BtListHelper();
+            EditSizeCd = new BtListHelper();
+            EditProductCd = new BtListHelper();
+            ListShohinJan = new ObservableCollection<MasterShohinJan>();
+
+            EditProduct.ScheduledProductionQuantity = 0;
+//            EditProduct.CuttingQuantity = 0;
+            EditProduct.TagNumber = 0;
 
             CanBack = true;
             CanNext = true;
@@ -80,6 +97,48 @@ namespace CvnetClient.ViewModels
             EditProduct.AutoAllocationFlag = Jidohaibun.FirstOrDefault().Key;
 
             string sql_query = "select nvl((select 値 from hc$master_config where フラグ名 = 'dispColSizKakaku'),0) flg from dual";
+
+            //string sql_query_init = "SELECT A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE, A.商品CD, A.色CD, A.サイズCD, A.JANコード1, A.JANコード2, A.JANコード3, A.メモ, A.使用FLG, A.生産予定数, A.裁断数, A.下札枚数, A.自動配分FLG, A.上代, A.仕入価格, A.外貨仕入価格, A.原価,B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1 FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
+            //sql_query_init = AppData.ClassCvnet.GetSqlDisp(sql_query_init);
+            //var ret_csv_init = AppData.Http?.AspxSqlQuery(sql_query_init);
+
+            //foreach (DataRow row in ret_csv_init!.Rows)
+            //{
+            //    string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
+            //    string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
+            //}
+
+            //var list2 = (from DataRow dr in ret_csv_init.Rows
+            //            select new MasterShohinJan
+            //            {
+            //                SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
+            //                VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
+            //                VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"]),
+            //                ProductCD = dr["商品CD"].ToString() ?? string.Empty,
+            //                ColorCD = dr["色CD"].ToString() ?? string.Empty,
+            //                SizeCD = dr["サイズCD"].ToString() ?? string.Empty,
+            //                JanCode1 = dr["JANコード1"].ToString() ?? string.Empty,
+            //                JanCode2 = dr["JANコード2"].ToString() ?? string.Empty,
+            //                JanCode3 = dr["JANコード3"].ToString() ?? string.Empty,
+            //                Memo = dr["メモ"].ToString() ?? string.Empty,
+            //                UseFlag = Convert.ToInt32(dr["使用FLG"]),
+            //                ScheduledProductionQuantity = Convert.ToDecimal(dr["生産予定数"]),
+            //                CuttingQuantity = Convert.ToDecimal(dr["裁断数"]),
+            //                TagNumber = Convert.ToDecimal(dr["下札枚数"]),
+            //                AutoAllocationFlag = Convert.ToInt32(dr["自動配分FLG"]),
+            //                RetailPrice = Convert.ToDecimal(dr["上代"]),
+            //                SupplierPrice = Convert.ToInt32(dr["仕入価格"]),
+            //                ForeignCurrencyPrice = Convert.ToInt32(dr["外貨仕入価格"]),
+            //                ProductName = dr["商品名"].ToString() ?? string.Empty,
+            //                ColorName = dr["色名"].ToString() ?? string.Empty,
+            //                SizeName = dr["サイズ名"].ToString() ?? string.Empty,
+            //                CostPrice = Convert.ToDecimal(dr["原価1"]),
+            //            }).ToList();
+            //Common.ConvertDotStringDel(list2);
+            //ListShohinJan = new ObservableCollection<MasterShohinJan>(list2);
+
+
+
 
             v_para2[0] = "0";
 
@@ -242,10 +301,11 @@ namespace CvnetClient.ViewModels
         public void SelProduct(object value)
         {
             var get_sel00 = (SelValueModel)value;
-            if (get_sel00 != null && EditProduct != null)
+            if (get_sel00 != null && EditProductCd != null)
             {
-                EditProduct.ProductCD = get_sel00.Code;
-                EditProduct.ProductName = get_sel00.Name;
+                EditProductCd = new BtListHelper(get_sel00.Code, get_sel00.Name);
+                EditProduct.ProductCD = EditProductCd.Code;
+                EditProduct.ProductName = EditProductCd.Name;
             }
         }
 
@@ -253,10 +313,12 @@ namespace CvnetClient.ViewModels
         public void SelColor(object value)
         {
             var get_sel00 = (SelValueModel)value;
-            if (get_sel00 != null)
+            if (get_sel00 != null && EditColorCd != null)
             {
+                EditColorCd = new BtListHelper(get_sel00.Code, get_sel00.Name);
                 // Put the selected color string into the bindable property
-                EditProduct.ColorCD = get_sel00.Code;
+                EditProduct.ColorCD = EditColorCd.Code;
+                EditProduct.ColorName = EditColorCd.Name;
             }
         }
 
@@ -264,10 +326,12 @@ namespace CvnetClient.ViewModels
         public void SelSize(object value)
         {
             var get_sel00 = (SelValueModel)value;
-            if (get_sel00 != null)
+            if (get_sel00 != null && EditSizeCd != null)
             {
+                EditSizeCd = new BtListHelper(get_sel00.Code, get_sel00.Name);
                 // Put the selected color string into the bindable property
-                EditProduct.SizeCD = get_sel00.Code;
+                EditProduct.SizeCD = EditSizeCd.Code;
+                EditProduct.SizeName = EditSizeCd.Name;
             }
         }
 
@@ -365,7 +429,23 @@ namespace CvnetClient.ViewModels
         void DoDelete()
         {
             if (!ClientLib.MessageBox(this, "削除しますか？")) return;
-
+            if (EditProduct == null) return;
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_SHOHIN_JAN", EditProduct.SeqNo, EditProduct.VdateUpdate.ToString(),
+                new string[0], new string[0]);
+            if (ret.Code == 0)
+            {
+                if (SelectedProduct != null)
+                {
+                    ListShohinJan!.Remove(SelectedProduct);
+                    var item = ListShohinJan.Where(c => c.ProductCD == ListShohinJan.Min(c => c.ProductCD)).FirstOrDefault();
+                    SelectedProduct = item;
+                    ClientLib.MessageBoxOk(this, "削除しました");
+                }
+            }
+            else
+            {
+                ClientLib.MessageBoxError(this, ret.Code.ToString());
+            }
 
         }
 
@@ -375,12 +455,11 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
             var item = Common.CloneObject(EditProduct);
-            Common.ConvertDotStringAdd(item);
+            Common.ConvertDotStringAdd1(item);
 
             if (item == null) return;
 
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHOHIN_JAN",
-                    0, "0",
+             var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHOHIN_JAN", 0, "0",
                     new string[] { "商品CD", "色CD", "サイズCD", "JANコード1", "JANコード2", "JANコード3",
                                 "メモ", "使用FLG", "生産予定数", "裁断数", "下札枚数",
                                 "自動配分FLG", "上代", "仕入価格", "外貨仕入価格", "原価"},
@@ -396,11 +475,14 @@ namespace CvnetClient.ViewModels
                 ListShohinJan!.Add(item);
                 SelectedProduct = item;
                 ClientLib.MessageBoxOk(this, "登録しました");
+                timex = EditProduct.VdateUpdate;
             }
             else
             {
                 ClientLib.MessageBoxError(this, ret.Code.ToString());
             }
+
+
 
         }
 
@@ -409,6 +491,10 @@ namespace CvnetClient.ViewModels
         async Task DoPrintAsync()
         {
             if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
+            ClientLib.CursorToWait();
+            if (ListShohinJan == null || ListShohinJan.Count == 0) return;
+
+            //var getCateShhojan = AppData.ClassCvnet.comboItem00.GetCaseStr()
         }
 
         private DataTable OnQuery(string[] v_para, string[] v_para2, int para1)

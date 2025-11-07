@@ -11,6 +11,9 @@
         mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen"
         Title="商品色サイズメンテ" Style="{StaticResource MasterWindowStyle2}">
+	<Window.Resources>
+		<utils:VdateConverter x:Key="VdateConverter" />
+	</Window.Resources>
 	<Window.DataContext> <!-- where to look for those properties -->
 		<vm:SubDlg01ShojanViewModel />
 	</Window.DataContext>
@@ -180,17 +183,17 @@
 											Title="商品CD" 
 											MstName="商品"
 											StyleDesign="1"
-											SelectedValue ="{Binding EditProduct.ProductCD}"
+											SelectedValue ="{Binding EditProductCd}"
 											Command="{Binding SelProductCommand}" />
-									<TextBox Grid.Column="1" Height="26" Text="{Binding EditProduct.ProductCD}" />
-									<!--<TextBox.Text>
-											<MultiBinding StringFormat='{}{0} {1}'>
-												<Binding Path=" />
-												<Binding Path="EditProduct.ProductName" />
+									<!--<TextBox Grid.Column="1" Height="26" Text="{Binding EditProduct.ProductCD}" />-->
+									<TextBox Grid.Column="1" Height="26">
+										<TextBox.Text>
+											<MultiBinding StringFormat="{}{0}  {1}">
+												<Binding Path="EditProduct.ProductCD"/>
+												<Binding Path="EditProduct.ProductName"/>
 											</MultiBinding>
 										</TextBox.Text>
-									</TextBox>-->
-									<!--<Button Grid.Column="2" Content="≪" Height="24"/>-->
+									</TextBox>
 								</Grid>
 								<!-- カラー -->
 								<Grid Margin="0,2,0,2">
@@ -202,9 +205,17 @@
 											Title="カラー" 
 											MstName="カラー"
 											StyleDesign="1"
-											SelectedValue ="{Binding EditProduct.ColorCD}"
+											SelectedValue ="{Binding EditColorCd}"
 											Command="{Binding SelColorCommand}" />
-									<TextBox Grid.Column="1" Height="26" Text="{Binding EditProduct.ColorCD}" />
+									<!--<TextBox Grid.Column="1" Height="26" Text="{Binding EditColorCd.Display}" />-->
+									<TextBox Grid.Column="1" Height="26" >
+										<TextBox.Text>
+											<MultiBinding StringFormat="{}{0}  {1}">
+												<Binding Path="EditProduct.ColorCD"/>
+												<Binding Path="EditProduct.ColorName"/>
+											</MultiBinding>
+										</TextBox.Text>
+									</TextBox>
 								</Grid>
 								<!-- サイズ -->
 								<Grid Margin="0,2,0,2">
@@ -216,9 +227,17 @@
 											Title="サイズ" 
 											MstName="サイズ"
 											StyleDesign="1"
-											SelectedValue ="{Binding EditProduct.SizeCD}"
+											SelectedValue ="{Binding EditSizeCd}"
 											Command="{Binding SelSizeCommand}" />
-									<TextBox Grid.Column="1" Height="26" Text="{Binding EditProduct.SizeCD}" />
+									<!--<TextBox Grid.Column="1" Height="26" Text="{Binding EditProduct.SizeCD}" />-->
+									<TextBox Grid.Column="1" Height="26">
+										<TextBox.Text>
+											<MultiBinding StringFormat="{}{0}  {1}">
+												<Binding Path="EditProduct.SizeCD"/>
+												<Binding Path="EditProduct.SizeName"/>
+											</MultiBinding>
+										</TextBox.Text>
+									</TextBox>
 								</Grid>
 								<!-- JAN -->
 								<Grid Margin="0,2,0,2">
@@ -256,7 +275,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="上代" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.RetailPrice}"/>
 								</Grid>
 								<!-- 中止 & 生産予定数 -->
 								<Grid Margin="0,2,0,2">
@@ -273,8 +292,8 @@
 											  DisplayMemberPath="Value"
 											  SelectedValuePath="Key"
 											  SelectedValue="{Binding EditProduct.UseFlag }" Style="{StaticResource SearchableComboBox1}"/>
-									<Label Grid.Column="3" Content="生産予定数" Margin="-10,0,6,0" VerticalAlignment="Center" Visibility="Hidden" />
-									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
+									<Label Grid.Column="3" Content="生産予定数" Margin="-10,0,6,0" VerticalAlignment="Center" Visibility="Hidden"/>
+									<TextBox Grid.Column="4" Height="26" Visibility="Hidden" Text="{Binding EditProduct.ScheduledProductionQuantity}" />
 								</Grid>
 								<!-- 自動配分 & メモ -->
 								<Grid Margin="0,2,0,2">
@@ -296,7 +315,7 @@
 									<Label Grid.Column="3" Content="メモ" 
 										   Margin="-10,0,8,0" VerticalAlignment="Center" 
 										   Visibility="Hidden"/>
-									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
+									<TextBox Grid.Column="4" Height="26" Visibility="Hidden" Text="{Binding EditProduct.Memo}"/>
 								</Grid>
 								<!-- 仕入価格 & 下札枚数 -->
 								<Grid Margin="0,2,0,2">
@@ -308,9 +327,9 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="仕入価格" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.SupplierPrice}"/>
 									<Label Grid.Column="3" Content="下札枚数" Margin="-10,0,8,0" VerticalAlignment="Center" Visibility="Hidden"/>
-									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
+									<TextBox Grid.Column="4" Height="26" Visibility="Hidden" Text="{Binding EditProduct.TagNumber}"/>
 								</Grid>
 								<!-- 原価 -->
 								<Grid Margin="0,2,0,2">
@@ -322,7 +341,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="原価" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.CostPrice}"/>
 								</Grid>
 								<!-- 外貨単価 -->
 								<Grid Margin="0,2,0,2">
@@ -334,7 +353,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="外貨単価" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.ForeignCurrencyPrice}"/>
 								</Grid>
 								<!-- 裁断数 -->
 								<Grid Margin="0,2,0,2">
@@ -346,7 +365,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="裁断数" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.CuttingQuantity}"/>
 								</Grid>
 								<!-- 作成日 -->
 								<Grid Margin="0,2,0,2">
@@ -358,7 +377,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="作成日" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Style="{StaticResource ReadOnlyTextBox}" Text="{Binding EditProduct.VdateCreate, Converter={StaticResource VdateConverter}}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								<!-- 修正日 -->
 								<Grid Margin="0,2,0,2">
@@ -370,7 +389,8 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="修正日" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Style="{StaticResource ReadOnlyTextBox}" Text="{Binding EditProduct.VdateUpdate, Converter={StaticResource VdateConverter}, TargetNullValue='',
+                        FallbackValue='', Mode=OneWay}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								
 								<!-- Button (追加、修正、削除、印刷) -->
@@ -381,8 +401,8 @@
 									<Button Style="{DynamicResource PrintIconBtn}" Margin="20,5,20,5" Command="{Binding DoPrintCommand}"/>
 								</StackPanel>-->
 
+								<!-- Button (追加、修正、削除、印刷) -->
 								<Grid Margin="8,8,15,8" HorizontalAlignment="Center">
-
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="90"/>
 										<ColumnDefinition Width="12"/>
@@ -392,14 +412,11 @@
 										<ColumnDefinition Width="12"/>
 										<ColumnDefinition Width="90"/>
 									</Grid.ColumnDefinitions>
-
 									<Button Style="{DynamicResource AddIconBtn}" BorderThickness="10" Command="{Binding DoInsertCommand}"/>
 									<Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
 									<Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
 									<Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
-
 								</Grid>
-
 							</StackPanel>
 						</ScrollViewer>
 					</GroupBox>
