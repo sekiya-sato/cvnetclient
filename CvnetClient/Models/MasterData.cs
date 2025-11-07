@@ -26,6 +26,7 @@ namespace CvnetClient.Models
 	internal class MasterData
 	{
 	}
+	//HC$MASTER_MEISHO
 	public partial class MasterMeisho : ObservableObject
 	{
 		[ObservableProperty]
@@ -53,7 +54,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? saishuuShuuseiSha;
 	}
-	
+	//HC$MASTER_SHOHIN
 	public partial class MasterShohin : ObservableObject
 	{
 		[ObservableProperty]
@@ -725,7 +726,7 @@ namespace CvnetClient.Models
 		int? dispOrder;		//表示順
 
     }
-
+	//HC$MASTER_SHKIJI
     public partial class MasterSHKiji : ObservableObject
     {
         [ObservableProperty]
@@ -757,7 +758,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? inpStaffCD; //入力社員CD 
     }
-
+	//HC$MASTER_WEEK
 	public partial class MasterWeek : ObservableObject
 	{
         [ObservableProperty] 
@@ -777,7 +778,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? memo; //メモ
     }
-
+	//HC$MASTER_SIIRE
 	public partial class MasterSupplier : ObservableObject
 	{
         [ObservableProperty]
@@ -1081,7 +1082,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		int? foreignCurrencyPrice;			// 外貨仕入価格
     }
-
+	//HC$MASTER_PRT_KANRI
 	public partial class MasterManagePrt : ObservableObject 
 	{
         [ObservableProperty]

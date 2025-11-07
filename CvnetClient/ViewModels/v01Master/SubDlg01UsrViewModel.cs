@@ -394,7 +394,7 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
             var item = Common.CloneObject(EditWorker);
-            Common.ConvertDotStringAdd1(item);
+            Common.ConvertDotStringAdd(item);
             if (item == null) return;
             var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHAIN", 0, "0",
                 new string[] { "社員CD", "名前", "部門", "店舗CD", "営業FLG", "メール", "携帯TEL", "特権FLG", "フリガナ", "役職CD", "就業FLG", "出力FLG", "備考", "入社日", "有給残", "給与区分", "給与支給額", "交通費区分", "交通費支給額", "部課CD", "名称CD01", "名称CD02", "名称CD03", "名称CD04", "名称CD05", "POS区分", "メールFLG", "入力社員CD", "特休残", "退勤日", "退職日", "プロフィール" },
@@ -418,7 +418,7 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "修正しますか？")) return;
             var item = Common.CloneObject(EditWorker);
-            Common.ConvertDotStringAdd1(item);
+            Common.ConvertDotStringAdd(item);
             if (item == null) return;
             var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_SHAIN", item.SeqNo, item.VdateUpdate.ToString(),
                 new string[] { "社員CD", "名前", "部門", "店舗CD", "営業FLG", "メール", "携帯TEL", "特権FLG", "フリガナ", "役職CD", "就業FLG", "出力FLG", "備考", "入社日", "有給残", "給与区分", "給与支給額", "交通費区分", "交通費支給額", "部課CD", "名称CD01", "名称CD02", "名称CD03", "名称CD04", "名称CD05", "POS区分", "メールFLG", "入力社員CD", "特休残", "退勤日", "退職日", "プロフィール" },

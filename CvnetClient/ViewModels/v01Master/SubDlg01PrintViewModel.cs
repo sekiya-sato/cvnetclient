@@ -17,6 +17,7 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg01PrintViewModel : BaseViewModel
     {
+        #region Declare
         [ObservableProperty]
         ObservableCollection<MasterManagePrt>? listPrt;
         [ObservableProperty]
@@ -27,10 +28,26 @@ namespace CvnetClient.ViewModels
         private string? prtCD;
         [ObservableProperty]
         private string? startCode;
+        string sql_collist = ",A.帳票CD,A.QFM名,A.メニュー名,A.帳票名" +
+                             ",A.項目01,A.項目02,A.項目03,A.項目04,A.項目05,A.項目06,A.項目07,A.項目08,A.項目09,A.項目10" +
+                             ",A.項目11,A.項目12,A.項目13,A.項目14,A.項目15,A.項目16,A.項目17,A.項目18,A.項目19,A.項目20" +
+                             ",A.項目21,A.項目22,A.項目23,A.項目24,A.項目25,A.項目26,A.項目27,A.項目28,A.項目29,A.項目30" +
+                             ",A.項目31,A.項目32,A.項目33,A.項目34,A.項目35,A.項目36,A.項目37,A.項目38,A.項目39,A.項目40" +
+                             ",A.項目41,A.項目42,A.項目43,A.項目44,A.項目45,A.項目46,A.項目47,A.項目48,A.項目49,A.項目50" +
+                             ",A.項目51,A.項目52,A.項目53,A.項目54,A.項目55,A.項目56,A.項目57,A.項目58,A.項目59,A.項目60" +
+                             ",A.項目61,A.項目62,A.項目63,A.項目64,A.項目65,A.項目66,A.項目67,A.項目68,A.項目69,A.項目70" +
+                             ",A.項目71,A.項目72,A.項目73,A.項目74,A.項目75,A.項目76,A.項目77,A.項目78,A.項目79,A.項目80" +
+                             ",A.項目81,A.項目82,A.項目83,A.項目84,A.項目85,A.項目86,A.項目87,A.項目88,A.項目89,A.項目90";
+        #endregion
+
+        #region Initialize
         public void OnInit() 
         {
         }
 
+        #endregion
+
+        #region Function
         [RelayCommand]
         void DoList() 
         {
@@ -72,18 +89,7 @@ namespace CvnetClient.ViewModels
             OnQuery("DESC");
             if (ListPrt == null || ListPrt.Count == 0)
                 ClientLib.MessageBoxOk(this, "データがありません");
-        }
-
-        string sql_collist = ",A.帳票CD,A.QFM名,A.メニュー名,A.帳票名"+
-                             ",A.項目01,A.項目02,A.項目03,A.項目04,A.項目05,A.項目06,A.項目07,A.項目08,A.項目09,A.項目10"+
-                             ",A.項目11,A.項目12,A.項目13,A.項目14,A.項目15,A.項目16,A.項目17,A.項目18,A.項目19,A.項目20"+
-                             ",A.項目21,A.項目22,A.項目23,A.項目24,A.項目25,A.項目26,A.項目27,A.項目28,A.項目29,A.項目30"+
-                             ",A.項目31,A.項目32,A.項目33,A.項目34,A.項目35,A.項目36,A.項目37,A.項目38,A.項目39,A.項目40"+
-                             ",A.項目41,A.項目42,A.項目43,A.項目44,A.項目45,A.項目46,A.項目47,A.項目48,A.項目49,A.項目50"+
-                             ",A.項目51,A.項目52,A.項目53,A.項目54,A.項目55,A.項目56,A.項目57,A.項目58,A.項目59,A.項目60"+
-                             ",A.項目61,A.項目62,A.項目63,A.項目64,A.項目65,A.項目66,A.項目67,A.項目68,A.項目69,A.項目70"+
-                             ",A.項目71,A.項目72,A.項目73,A.項目74,A.項目75,A.項目76,A.項目77,A.項目78,A.項目79,A.項目80"+
-                             ",A.項目81,A.項目82,A.項目83,A.項目84,A.項目85,A.項目86,A.項目87,A.項目88,A.項目89,A.項目90";
+        }      
         void OnQuery(string? p_sort) 
         {           
             var v_sort = "ASC";
@@ -447,5 +453,7 @@ namespace CvnetClient.ViewModels
             else
                 EditPrt = null;
         }
+
+        #endregion
     }
 }
