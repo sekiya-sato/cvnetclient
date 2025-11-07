@@ -124,7 +124,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "仕入実績表", WindowId="" },
                 new ButtonConfig { Text = "ブランド別仕入金額表", WindowId="" },
                 new ButtonConfig { Text = "消化仕入リスト", WindowId="" },
-                new ButtonConfig { Text = "仕入伝票印刷", WindowId="" },
+                new ButtonConfig { Text = "仕入伝票印刷", WindowId=typeof(Views.SubDlg02SirHenpinView).FullName  },
                 new ButtonConfig { Text = "仕入先一括返品", WindowId="" }
             }
         }},
