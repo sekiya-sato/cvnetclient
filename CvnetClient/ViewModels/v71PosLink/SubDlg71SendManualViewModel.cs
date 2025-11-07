@@ -1,128 +1,88 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CvnetBaseCore;
 using CvnetClient.Models;
 using System;
-using System.Buffers.Text;
-using System.Net;
-using System.Net.Http;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
-    public partial class SubDlg71Pos1ViewModel : BaseViewModel
+    public partial class SubDlg71SendManualViewModel : BaseViewModel
     {
-        public enum MasterType { POSマスタ,WMSマスタ,両方}
+        public enum WMSType { WMSOUT , WMSIN }
         [ObservableProperty]
-        private MasterType selectedMaster;
+        private WMSType selectedWMS;
         [ObservableProperty]
-        private DateTime? dateFrom;
-        [ObservableProperty]
-        private double? dayBefore;
+        private int dayAfter;
         [ObservableProperty]
         private string? result;
         [ObservableProperty]
-        private FlowDocument logDocument;
+        private FlowDocument? logDocument;
         [ObservableProperty]
-        private string resultText;
+        private string? resultText;
+        [ObservableProperty]
+        private string? subject;
+
         public void OnInit() 
-        { 
-            SelectedMaster = MasterType.WMSマスタ;
-            DateFrom = DateTime.Now.AddDays(-1);
+        {
+            SelectedWMS = WMSType.WMSOUT;
+            if (AppData.ClassCvnet.config.UserFlg == 23)
+            {
+                SelectedWMS = WMSType.WMSIN;
+            }
             LogDocument = new FlowDocument();
+            DayAfter = 1;            
             Result = string.Empty;
             ResultText = string.Empty;
-        }
-        partial void OnDateFromChanged(DateTime? value) 
-        {
-            DayBefore = Math.Round((DateTime.Now - value.Value).TotalDays, 3);
-        }
-        [RelayCommand]
-        public void DoExecute() 
-        {
             
+        }
+
+        partial void OnDayAfterChanged(int value)
+        {
+            Subject = "送信対象：～" + DateTime.Now.AddDays(value).ToString("yyyy/MM/dd");
+        }
+
+        [RelayCommand]
+        public void DoExecute()
+        {
+            if (!ClientLib.MessageBox(this, "送信データを作成してよろしいですか？")) return;
+
             var start0 = DateTime.Now;
 
             var wrk2 = AppData.Url;
-            var baseUrl = wrk2.Substring(0, wrk2.IndexOf("/", 7));
-
+            var wrk3 = wrk2.Substring(0, wrk2.IndexOf("/", 7));
 
             var v_para = new string[2];
-            DayBefore = Math.Round((DateTime.Now - DateFrom.Value).TotalDays, 3);
-            v_para[0] = DayBefore.ToString();
-            if (SelectedMaster == MasterType.POSマスタ) {
-                v_para[1] = "0";
-            } else if (SelectedMaster == MasterType.WMSマスタ)
+            v_para[0] = SelectedWMS.ToString();
+            v_para[1] = DayAfter.ToString();
+            var wrk_csv = AppData.Http!.AspxSqlQuery2("Send_Manual", v_para, "", 39);
+            var splited_csv = wrk_csv.Split(",");
+            if (int.Parse(splited_csv[0].ToString()!.Split("=")[1]) < 0)
             {
-                v_para[1] = "1";
+                ClientLib.MessageBoxError(this, "CV-71001 送信データ作成エラー");
+                return;
             }
-            else {
-                v_para[1] = "2";
-            }
-
-            var flg = new int[1];
-            if (SelectedMaster == MasterType.両方)
-            {
-                flg = new int[2];
-                flg[0] = 0;
-                flg[1] = 1;
-            }
-            else
-            {
-                flg[0] = int.Parse(v_para[1]) ;
-            }
-
-            for (var j = 0; j < flg.Length; j++)
-            {
-                v_para[1] = flg[j].ToString();
-                var v_syori = "posout";
-                if (AppData.ClassCvnet.config.UserFlg == 56) v_syori = "posout56";
-
-                var wrk_csv = AppData.Http!.AspxSqlQuery2(v_syori, v_para, "", 39);
-                var lines = wrk_csv.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                ResultText += "*********処理開始************\n";
-
-                List<string> urlList = new();
-                List<string> resultList = new();
-
-                foreach (var line in lines)
-                {
-                    var trimmed = line.Trim('"', ' ', '\r', '\n');
-
-                    if (trimmed.Contains("/Data/ExtCoop/"))
-                        urlList.Add(trimmed);
-                    else if (trimmed.Contains("件"))       
-                        resultList.Add(trimmed);
-                }
-
-                foreach (var (url, index) in urlList.Select((v, i) => (v, i)))
-                {
-                    ResultText += $"{baseUrl}{url}";
-                    ResultText += "\n";
-                }
-
-                for (int i = 0; i < resultList.Count; i++)
-                {
-                    ResultText += resultList[i];
-                    if ((i + 1) % 5 == 0 || i == resultList.Count - 1)
-                        ResultText += "\n";
-                    else
-                        ResultText += " / ";
-                }
-
-                ResultText += "\n*********処理終了************\n";
-            }
+            ResultText += "*****処理開始*****************************\n";
+            ResultText += splited_csv[0] + "\n";
+            ResultText += wrk3 + splited_csv[1] + "\n";
+            ResultText += "*****処理終了*****************************\n";
+            AppendCR(ResultText);
             UpdateLogDocument();
             var end0 = DateTime.Now;
-
+            
             var wrk_mess = "データ作成しました \n終了時刻:" + DateTime.Now.ToString("HH:mm:ss");
             var elapsed = end0 - start0;
             wrk_mess += "\n経過時間：" + elapsed.ToString(@"hh\:mm\:ss");
 
-            Result = wrk_mess;                 
+            Result = wrk_mess;
         }
 
         public void UpdateLogDocument()
@@ -190,6 +150,16 @@ namespace CvnetClient.ViewModels
 
             LogDocument = doc;
         }
+
+        private string AppendCR(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return string.Empty;
+
+            // Normalize all newline to LF, then convert LF → CR+LF
+            return input
+                .Replace("\r\n", "\n")
+                .Replace("\r", "\n")
+                .Replace("\n", "\r\n");
+        }
     }
 }
-

@@ -5,6 +5,7 @@ using System.Data;
 using CvnetClient.Models;
 using CvnetClient.Views;
 using System.Collections.ObjectModel;
+using CvnetClient.Utils;
 
 namespace CvnetClient.ViewModels
 {
@@ -27,7 +28,7 @@ namespace CvnetClient.ViewModels
         string? findFabricCd;
 
         [ObservableProperty]
-        MasterSupplier? findSupplierCd = new();
+        BtListHelper? findSupplierCd = new();
 
         [ObservableProperty]
         ObservableCollection<MasterSHKiji>? listKiji;
@@ -51,7 +52,7 @@ namespace CvnetClient.ViewModels
         public void OnInit()
         {
             EditKiji = new MasterSHKiji();
-            FindSupplierCd = new MasterSupplier();
+            FindSupplierCd = new BtListHelper();
 
             var kubunCdList = new Dictionary<string, string>();
             string sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='KFK' order by a.名称CD";
@@ -85,10 +86,10 @@ namespace CvnetClient.ViewModels
                 conditions.Add("A.商品CD{0}:1");
                 parameters.Add(FindFabricCd);
             }
-            if (!string.IsNullOrEmpty(FindSupplierCd.SupplierCD))
+            if (!string.IsNullOrEmpty(FindSupplierCd?.Code))
             {
                 conditions.Add("A.仕入先CD=:2");
-                parameters.Add(FindSupplierCd);
+                parameters.Add(FindSupplierCd?.Code);
             }
 
             string whereClause = string.Join(" AND ", conditions);
@@ -119,7 +120,7 @@ namespace CvnetClient.ViewModels
         void subList(string sql_onExec, string fugo, string sort, List<object> parameters)
         {
 
-            var supplierCd = string.IsNullOrWhiteSpace(FindSupplierCd.SupplierCD) ? "." : FindSupplierCd.SupplierCD;
+            var supplierCd = string.IsNullOrWhiteSpace(FindSupplierCd?.Code) ? "." : FindSupplierCd?.Code;
             var sql = string.Format(sql_onExec, fugo, sort);
             var retData = AppData.Http?.AspxSqlQuery(sql, parameters.Select(p => p.ToString()).ToArray());
             if (retData == null || retData.Rows.Count == 0)
@@ -385,10 +386,9 @@ WHERE ROWNUM <= {AppData.maxQueryCnt + 1}";
         public void SelectSupplier(object value)
         {
             var get_sel00 = (SelValueModel)value;
-            if (get_sel00 != null && FindSupplierCd!=null)
-            {
-                FindSupplierCd.SupplierCD = get_sel00.Code;
-                FindSupplierCd.SupplierName = get_sel00.Name;
+            if (get_sel00 != null && FindSupplierCd != null)
+            { 
+                FindSupplierCd = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
 

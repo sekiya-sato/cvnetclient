@@ -26,6 +26,7 @@ namespace CvnetClient.Models
 	internal class MasterData
 	{
 	}
+	//HC$MASTER_MEISHO
 	public partial class MasterMeisho : ObservableObject
 	{
 		[ObservableProperty]
@@ -53,7 +54,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? saishuuShuuseiSha;
 	}
-	
+	//HC$MASTER_SHOHIN
 	public partial class MasterShohin : ObservableObject
 	{
 		[ObservableProperty]
@@ -324,7 +325,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? reserveName20; //予備20名
 	}
-
+	//HC$MASTER_SHAIN
     public partial class MasterWorker : ObservableObject
 	{
         [ObservableProperty]
@@ -402,7 +403,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? profile;	//プロフィール
     }
-
+	//HC$MASTER_TOKUI
 	public partial class MasterShop : ObservableObject
 	{
         [ObservableProperty]
@@ -725,7 +726,7 @@ namespace CvnetClient.Models
 		int? dispOrder;		//表示順
 
     }
-
+	//HC$MASTER_SHKIJI
     public partial class MasterSHKiji : ObservableObject
     {
         [ObservableProperty]
@@ -757,7 +758,7 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? inpStaffCD; //入力社員CD 
     }
-
+	//HC$MASTER_WEEK
 	public partial class MasterWeek : ObservableObject
 	{
         [ObservableProperty] 
@@ -777,7 +778,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? memo; //メモ
     }
-
+	//HC$MASTER_SIIRE
 	public partial class MasterSupplier : ObservableObject
 	{
         [ObservableProperty]
@@ -911,6 +912,8 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? linkedCorporationCd; // 連携先法人CD
         [ObservableProperty]
+		string? lastModifier;
+        [ObservableProperty]
         string? supplierMail; // 仕入先MAIL
         [ObservableProperty]
         int? dueDate; // 期日
@@ -942,8 +945,6 @@ namespace CvnetClient.Models
         int? scheduledPaymentDay3; // 支払予定日3
         [ObservableProperty]
         string? registrationNumber; // 登録番号
-        [ObservableProperty]
-        string? lastModifier; // 最終修正者
     }
 
 	public partial class MasterShohinJan : ObservableObject
@@ -1080,7 +1081,205 @@ namespace CvnetClient.Models
         int? ecReservation;                 // EC予約
 		[ObservableProperty]
 		int? foreignCurrencyPrice;			// 外貨仕入価格
-
     }
-
+	//HC$MASTER_PRT_KANRI
+	public partial class MasterManagePrt : ObservableObject 
+	{
+        [ObservableProperty]
+        long seqNo;
+        [ObservableProperty]
+        decimal vdateCreate;
+        [ObservableProperty]
+        decimal vdateUpdate;
+        [ObservableProperty]
+        string? formCD; //帳票CD
+		[ObservableProperty]
+		string? qfmName;    //QFM名
+		[ObservableProperty]
+		string? menuName;   //メニュー名
+		[ObservableProperty]
+		string? formName;   //帳票名
+        [ObservableProperty]
+        string? item01; //項目01
+        [ObservableProperty]
+        string? item02; //項目02
+        [ObservableProperty]
+        string? item03; //項目03
+        [ObservableProperty]
+        string? item04; //項目04
+        [ObservableProperty]
+        string? item05; //項目05
+        [ObservableProperty]
+        string? item06; //項目06
+        [ObservableProperty]
+        string? item07; //項目07
+        [ObservableProperty]
+        string? item08; //項目08
+        [ObservableProperty]
+        string? item09; //項目09
+        [ObservableProperty]
+        string? item10; //項目10
+        [ObservableProperty]
+        string? item11; //項目11
+        [ObservableProperty]
+        string? item12; //項目12
+        [ObservableProperty]
+        string? item13; //項目13
+        [ObservableProperty]
+        string? item14; //項目14
+        [ObservableProperty]
+        string? item15; //項目15
+        [ObservableProperty]
+        string? item16; //項目16
+        [ObservableProperty]
+        string? item17; //項目17
+        [ObservableProperty]
+        string? item18; //項目18
+        [ObservableProperty]
+        string? item19; //項目19
+        [ObservableProperty]
+        string? item20; //項目20
+        [ObservableProperty]
+        string? item21; //項目21
+        [ObservableProperty]
+        string? item22; //項目22
+        [ObservableProperty]
+        string? item23; //項目23
+        [ObservableProperty]
+        string? item24; //項目24
+        [ObservableProperty]
+        string? item25; //項目25
+        [ObservableProperty]
+        string? item26; //項目26
+        [ObservableProperty]
+        string? item27; //項目27
+        [ObservableProperty]
+        string? item28; //項目28
+        [ObservableProperty]
+        string? item29; //項目29
+        [ObservableProperty]
+        string? item30; //項目30
+        [ObservableProperty]
+        string? item31; //項目31
+        [ObservableProperty]
+        string? item32; //項目32
+        [ObservableProperty]
+        string? item33; //項目33
+        [ObservableProperty]
+        string? item34; //項目34
+        [ObservableProperty]
+        string? item35; //項目35
+        [ObservableProperty]
+        string? item36; //項目36
+        [ObservableProperty]
+        string? item37; //項目37
+        [ObservableProperty]
+        string? item38; //項目38
+        [ObservableProperty]
+        string? item39; //項目39
+        [ObservableProperty]
+        string? item40; //項目40
+        [ObservableProperty]
+        string? item41; //項目41
+        [ObservableProperty]
+        string? item42; //項目42
+        [ObservableProperty]
+        string? item43; //項目43
+        [ObservableProperty]
+        string? item44;	//項目44
+		[ObservableProperty]
+        string? item45; //項目45
+        [ObservableProperty]
+        string? item46; //項目46
+        [ObservableProperty]
+        string? item47; //項目47
+        [ObservableProperty]
+        string? item48; //項目48
+        [ObservableProperty]
+        string? item49; //項目49
+        [ObservableProperty]
+        string? item50; //項目50
+        [ObservableProperty]
+        string? item51; //項目51
+        [ObservableProperty]
+        string? item52; //項目52
+        [ObservableProperty]
+        string? item53; //項目53
+        [ObservableProperty]
+        string? item54; //項目54
+        [ObservableProperty]
+        string? item55; //項目55
+        [ObservableProperty]
+        string? item56; //項目56
+        [ObservableProperty]
+        string? item57; //項目57
+        [ObservableProperty]
+        string? item58; //項目58
+        [ObservableProperty]
+        string? item59; //項目59
+        [ObservableProperty]
+        string? item60; //項目60
+        [ObservableProperty]
+        string? item61; //項目61
+        [ObservableProperty]
+        string? item62;	//項目62
+		[ObservableProperty]
+        string? item63; //項目63
+        [ObservableProperty]
+        string? item64; //項目64
+        [ObservableProperty]
+        string? item65; //項目65
+        [ObservableProperty]
+        string? item66; //項目66
+        [ObservableProperty]
+        string? item67; //項目67
+        [ObservableProperty]
+        string? item68; //項目68
+        [ObservableProperty]
+        string? item69; //項目69
+        [ObservableProperty]
+        string? item70; //v項目70
+        [ObservableProperty]
+        string? item71; //項目71
+        [ObservableProperty]
+        string? item72; //項目72
+        [ObservableProperty]
+        string? item73; //項目73
+        [ObservableProperty]
+        string? item74; //項目74
+        [ObservableProperty]
+        string? item75; //項目75
+        [ObservableProperty]
+        string? item76; //項目76
+        [ObservableProperty]
+        string? item77; //項目77
+        [ObservableProperty]
+        string? item78; //項目78
+        [ObservableProperty]
+        string? item79; //項目79
+        [ObservableProperty]
+        string? item80; //項目80
+        [ObservableProperty]
+        string? item81; //項目81
+        [ObservableProperty]
+        string? item82; //項目82
+        [ObservableProperty]
+        string? item83; //項目83
+        [ObservableProperty]
+        string? item84; //項目84
+        [ObservableProperty]
+        string? item85; //項目85
+        [ObservableProperty]
+        string? item86; //項目86
+        [ObservableProperty]
+        string? item87; //項目87
+        [ObservableProperty]
+        string? item88; //項目88
+        [ObservableProperty]
+        string? item89; //項目89
+        [ObservableProperty]
+        string? item90; //項目90
+        [ObservableProperty]
+        string? inpEmployeeCD;	//入力社員CD
+    }
 }
