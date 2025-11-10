@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 		xmlns:uc="clr-namespace:CvnetClient.Views"
+		xmlns:util="clr-namespace:CvnetClient.Utils"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="SubDlg70Tag3View" 
@@ -12,6 +13,9 @@
 	<Window.DataContext>
 		<vm:SubDlg70Tag3ViewModel />
 	</Window.DataContext>
+	<Window.Resources>
+		<util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
+	</Window.Resources>
 	<Grid Margin="5">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -40,8 +44,10 @@
 			<ComboBox Grid.Row="0" Grid.Column="1"
 					  VerticalAlignment="Top"
 					  VerticalContentAlignment="Center"
-					  DisplayMemberPath="Value"
-					  SelectedValuePath="Key"
+					  ItemsSource="{Binding BillList}"
+					  DisplayMemberPath="Key"
+					  SelectedValuePath="Value"
+					  SelectedValue="{Binding TagSearchOpt.SelBill}"
 					  Style="{StaticResource SearchableComboBox1}"/>
 			<Label Grid.Row="0" Grid.Column="2"   
 				   VerticalContentAlignment="Center"
@@ -49,8 +55,10 @@
 			<ComboBox Grid.Row="0" Grid.Column="3"
 					  VerticalAlignment="Top"
 					  VerticalContentAlignment="Center"
-					  DisplayMemberPath="Value"
-					  SelectedValuePath="Key"
+					  ItemsSource="{Binding SlipCatList}"
+					  DisplayMemberPath="Key"
+					  SelectedValuePath="Value"
+					  SelectedValue="{Binding TagSearchOpt.SelSlipCat}"
 					  Style="{StaticResource SearchableComboBox1}"/>
 		</Grid>
 
@@ -71,47 +79,73 @@
 			<Label Grid.Row="0" Grid.Column="0"   
 				   VerticalContentAlignment="Center"
 				   Content="商品CD" />
-			<TextBox Grid.Row="0" Grid.Column="1" />
-			<uc:CvnetBtListView Grid.Row="0" Grid.Column="2" 
-								MstName="商品"
-								StyleDesign="2"/>
+			<TextBox Grid.Row="0" Grid.Column="1" 
+					 HorizontalContentAlignment="Left"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding TagSearchOpt.SelProdStart.Display}"/>
+			<Button Grid.Row="0" Grid.Column="2" 
+					Command="{Binding SelProd01Command}"
+					Style="{StaticResource ComboButton}" />
 			<TextBlock Grid.Row="0" Grid.Column="3" 
 					   Text="～"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="0" Grid.Column="4" />
-			<uc:CvnetBtListView Grid.Row="0" Grid.Column="5" 
-								MstName="商品"
-								StyleDesign="2"/>
+			<TextBox Grid.Row="0" Grid.Column="4" 
+					 HorizontalContentAlignment="Left"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding TagSearchOpt.SelProdEnd.Display}"/>
+			<Button Grid.Row="0" Grid.Column="5"
+					Command="{Binding SelProd02Command}"
+					Style="{StaticResource ComboButton}"/>
 
 			<Label Grid.Row="1" Grid.Column="0"   
 				   VerticalContentAlignment="Center"
 				   Content="得意先" />
-			<TextBox Grid.Row="1" Grid.Column="1" />
+			<TextBox Grid.Row="1" Grid.Column="1" 
+					 HorizontalContentAlignment="Left"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding TagSearchOpt.SelCustStart.Display}"/>
 			<uc:CvnetBtListView Grid.Row="1" Grid.Column="2" 
-								MstName="店舗"
-								StyleDesign="2"/>
+								MstName="{Binding TagSearchOpt.SelMstCust}"
+								StyleDesign="2"
+								SelectedValue="{Binding TagSearchOpt.SelCustStart.Code}"
+								Command="{Binding SelCust01Command}"/>
 			<TextBlock Grid.Row="1" Grid.Column="3" 
 					   Text="～"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="1" Grid.Column="4" />
+			<TextBox Grid.Row="1" Grid.Column="4" 
+					 HorizontalContentAlignment="Left"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding TagSearchOpt.SelCustEnd.Display}"/>
 			<uc:CvnetBtListView Grid.Row="1" Grid.Column="5" 
-								MstName="店舗"
-								StyleDesign="2"/>
+								MstName="{Binding TagSearchOpt.SelMstCust}"
+								StyleDesign="2"
+								SelectedValue="{Binding TagSearchOpt.SelCustEnd.Code}"
+								Command="{Binding SelCust02Command}"/>
 
 			<Label Grid.Row="2" Grid.Column="0"   
 				   VerticalContentAlignment="Center"
 				   Content="倉庫" />
-			<TextBox Grid.Row="2" Grid.Column="1" />
+			<TextBox Grid.Row="2" Grid.Column="1" 
+					 HorizontalContentAlignment="Left"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding TagSearchOpt.SelStoreStart.Display}"/>
 			<uc:CvnetBtListView Grid.Row="2" Grid.Column="2" 
-								MstName="店舗"
-								StyleDesign="2"/>
+								MstName="{Binding TagSearchOpt.SelMstStore}"
+								StyleDesign="2"
+								SelectedValue="{Binding TagSearchOpt.SelStoreStart.Code}"
+								Command="{Binding SelStore01Command}"/>
 			<TextBlock Grid.Row="2" Grid.Column="3" 
 					   Text="～"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="2" Grid.Column="4" />
+			<TextBox Grid.Row="2" Grid.Column="4" 					 
+					 HorizontalContentAlignment="Left"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding TagSearchOpt.SelStoreEnd.Display}"/>
 			<uc:CvnetBtListView Grid.Row="2" Grid.Column="5" 
-								MstName="店舗"
-								StyleDesign="2"/>
+								MstName="{Binding TagSearchOpt.SelMstStore}"
+								StyleDesign="2"
+								SelectedValue="{Binding TagSearchOpt.SelStoreEnd.Code}"
+								Command="{Binding SelStore02Command}"/>
 		</Grid>
 
 		<Grid Grid.Row="2">
@@ -146,12 +180,14 @@
 				   VerticalContentAlignment="Center"
 				   Content="在庫計上日" />
 			<xctk:DateTimePicker Grid.Row="0" Grid.Column="5"
+								 Value="{Binding TagSearchOpt.SelInvStartDate, Mode=TwoWay}"
 								 Format="Custom"
 								 FormatString="yyyy/MM/dd" />
 			<TextBlock Grid.Row="0" Grid.Column="6" 
 					   Text="～"
 					   VerticalAlignment="Center"/>
 			<xctk:DateTimePicker Grid.Row="0" Grid.Column="7"
+								 Value="{Binding TagSearchOpt.SelInvEndDate, Mode=TwoWay}"
 								 Format="Custom"
 								 FormatString="yyyy/MM/dd" />
 			<Label Grid.Row="0" Grid.Column="8"   
@@ -159,14 +195,17 @@
 				   Content="行" />
 			<RadioButton Grid.Row="0" Grid.Column="9"
 						 GroupName="LineOption"
+						 IsChecked="{Binding TagSearchOpt.SelLineCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}"
 						 Margin="0,0,5,0"
 						 Content="追加" />
 			<RadioButton Grid.Row="0" Grid.Column="10"
 						 GroupName="LineOption"
+						 IsChecked="{Binding TagSearchOpt.SelLineCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"
 						 Margin="0,0,5,0"
 						 Content="新規" />
 			<Button Grid.Row="0" Grid.Column="11" 
 					Content="品番検索実行(F5)"
+					Command="{Binding DoSearchCommand}"
 					Style="{DynamicResource ExecButton}" />
 		</Grid>
 
@@ -194,32 +233,39 @@
 					   VerticalContentAlignment="Center"
 					   Content="変更タイトル" />
 				<TextBox Grid.Row="0" Grid.Column="1"  
-						 TextWrapping="Wrap" />
+						 TextWrapping="Wrap" 
+						 Text="{Binding TagSearchOpt.ChgTitle}"/>
 				<Label Grid.Row="0" Grid.Column="2"   
 					   VerticalContentAlignment="Center"
 					   Content="変更内容(文字列用)" />
 				<TextBox Grid.Row="0" Grid.Column="3"  
-						 TextWrapping="Wrap" />
+						 TextWrapping="Wrap" 
+						 Text="{Binding TagSearchOpt.ChgWordCnt}"/>
 				<Label Grid.Row="0" Grid.Column="4"   
 					   VerticalContentAlignment="Center"
 					   Content="変更内容(数値用)" />
 				<TextBox Grid.Row="0" Grid.Column="5"  
-						 TextWrapping="Wrap" />
+						 TextWrapping="Wrap" 
+						 Text="{Binding TagSearchOpt.ChgNumCnt}"/>
 				<Button Grid.Row="0" Grid.Column="6"  
 						Content="割合加算"
+						Command="{Binding DoPercentAddCommand}"
 						Style="{DynamicResource BackBtn}"/>
 				<TextBox Grid.Row="0" Grid.Column="7"  
-						 TextWrapping="Wrap" />
+						 TextWrapping="Wrap" 
+						 Text="{Binding TagSearchOpt.PercentAdd}"/>
 				<Button Grid.Row="0" Grid.Column="8"  
 						Content="枚数加算"
+						Command="{Binding DoSheetNumCommand}"
 						Style="{DynamicResource BackBtn}"/>
 				<TextBox Grid.Row="0" Grid.Column="9"  
-						 TextWrapping="Wrap" />
+						 TextWrapping="Wrap"
+						 Text="{Binding TagSearchOpt.SheetAdd}"/>
 			</Grid>
 		</GroupBox>
 
 		<uc:CvnetFlexView Grid.Row="4">
-			<uc:CvnetFlexView.Columns> 
+			<uc:CvnetFlexView.Columns>
 			</uc:CvnetFlexView.Columns>
 		</uc:CvnetFlexView>
 
@@ -236,21 +282,25 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<Label Grid.Row="0" Grid.Column="0"   
+			<Label Grid.Row="0" Grid.Column="0"
 				   VerticalContentAlignment="Center"
 				   Content="出力先" />
-			<TextBox Grid.Column="1"  
+			<TextBox Grid.Column="1"
 					 Margin="0,0,5,0"
-					 TextWrapping="Wrap" />
+					 TextWrapping="Wrap"
+					 Text="{Binding TagSearchOpt.OutputDest}"/>
 			<TextBlock Grid.Column="2"  
 					   Margin="0,0,5,0"
-					   VerticalAlignment="Center"/>
+					   VerticalAlignment="Center"
+					   Text="{Binding TagSearchOpt.OutputMess}"/>
 			<Button Grid.Column="3"  
 					Margin="0,0,5,0"
-					Content="データ作成(Enter)" />
+					Content="データ作成(Enter)"
+					Command="{Binding DoExecuteCommand}"/>
 			<Button Grid.Column="4"
 					Margin="0,0,5,0"
-					Content="戻る(ESC)" />
+					Content="戻る(ESC)"
+					Command="{Binding DoCancelCommand}"/>
 		</Grid>
 	</Grid>
 </Window>
