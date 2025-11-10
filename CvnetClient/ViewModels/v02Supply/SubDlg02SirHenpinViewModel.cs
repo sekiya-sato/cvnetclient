@@ -152,12 +152,6 @@ namespace CvnetClient.ViewModels
             var ret_csv = AppData.Http!.AspxSqlQueryCsv("_p_sirhenpin01", wrk_para, qfm_file, 00);
             var lines = ret_csv.Split('\n');
 
-            if (lines.Length < 2 || int.Parse(lines[1]) < 0)
-            {
-                ClientLib.MessageBoxError(this, "PDFデータがありません");
-                return;
-            }
-
             if (lines.Length < 2 || lines[1] == "0")
             {
                 ClientLib.MessageBoxError(this, "PDFデータがありません");

@@ -64,7 +64,7 @@ VerticalAlignment="Center">
                     <RadioButton Grid.Column="2" Content="再発行" GroupName="PrintType"
                          IsChecked="{Binding Condition.SelectedPrint, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=NW7, Mode=TwoWay}"/>
+                                             ConverterParameter=再発行, Mode=TwoWay}"/>
                 </Grid>
 
                 <StackPanel Grid.Row="1">
