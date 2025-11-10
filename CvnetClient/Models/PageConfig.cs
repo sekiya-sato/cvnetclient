@@ -62,7 +62,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "HHT用管理マスタ(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "バッチ更新履歴(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "ラベル名称マスタ(DTP用)", WindowId="" },
-                new ButtonConfig { Text = "帳票管理マスタ(DTP用)", WindowId="" },
+                new ButtonConfig { Text = "帳票管理マスタ(DTP用)", WindowId=typeof(Views.SubDlg01PrintView).FullName },
                 new ButtonConfig { Text = "システムメンテナンス処理", WindowId="" },
                 new ButtonConfig { Text = "汎用SQL問い合わせ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "DB定義書出力", WindowId=typeof(Views.SubDlg00DBTableView).FullName },
@@ -124,7 +124,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "仕入実績表", WindowId="" },
                 new ButtonConfig { Text = "ブランド別仕入金額表", WindowId="" },
                 new ButtonConfig { Text = "消化仕入リスト", WindowId="" },
-                new ButtonConfig { Text = "仕入伝票印刷", WindowId="" },
+                new ButtonConfig { Text = "仕入伝票印刷", WindowId=typeof(Views.SubDlg02SirHenpinView).FullName  },
                 new ButtonConfig { Text = "仕入先一括返品", WindowId="" }
             }
         }},
