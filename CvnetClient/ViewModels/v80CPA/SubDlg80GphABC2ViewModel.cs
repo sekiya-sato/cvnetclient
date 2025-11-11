@@ -24,8 +24,8 @@ namespace CvnetClient.ViewModels
         private TenpoType selectedTenpo = TenpoType.全店;
         public bool IsTenpoEnabled => SelectedTenpo == TenpoType.店別;
 
-        [RelayCommand]
-        void OnInit()
+        
+        public void OnInit()
         {
             List<CsvItem> def = null;
 

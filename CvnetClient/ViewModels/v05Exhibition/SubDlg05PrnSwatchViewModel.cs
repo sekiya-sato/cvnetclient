@@ -158,7 +158,7 @@ namespace CvnetClient.ViewModels
                 + " FROM HC$TRAN_TENSWT t"
                 + " WHERE t.展示会CD BETWEEN :1 AND :2 AND "
                     + "t.名称CD1 BETWEEN :3 AND :4 AND "
-                    + "t.名称CD2 BETWEEN '" + ((Condition.MaterialFrom?.Code != "") ? Condition.MaterialTo?.Code : ".") + "' AND '" + ((Condition.MaterialFrom?.Code != "") ? Condition.MaterialFrom?.Code : ".") + "'"
+                    + "t.名称CD2 BETWEEN '" + ((Condition.MaterialFrom?.Code != null) ? Condition.MaterialTo?.Code : ".") + "' AND '" + ((Condition.MaterialFrom?.Code != null) ? Condition.MaterialFrom?.Code : ".") + "'"
                     + ((Condition.SelectedOutPut == OutPutType.正規商品) ? " and exists (select 'X' from HC$MASTER_SHOHIN_JAN j where j.商品CD=t.商品CD and j.使用FLG=0)" : "")
                 + " GROUP BY t.展開数,t.レイアウトNO";
 
@@ -178,7 +178,7 @@ namespace CvnetClient.ViewModels
             v_para[3] = Condition.BrandTo?.Code ?? string.Empty;
             v_para[4] = Condition.MaterialFrom?.Code ?? string.Empty;
             if (Condition.MaterialFrom?.Code == "") v_para[5] = "zzzzzzzz";
-            else v_para[5] = Condition.MaterialTo?.Code ?? string.Empty;
+            else v_para[5] = Condition.MaterialTo.Code;
             if (Condition.SelectedDay == DayType.日付表示)
             {
                 v_para[6] = "0";
@@ -191,7 +191,7 @@ namespace CvnetClient.ViewModels
             ret_csv = AppData.Http!.AspxSqlQuery(sql_query, wrk_para2);
             var tenkai_su = 0;
             var layout_no = 0;
-            if (int.Parse(ret_csv.Rows[0][0].ToString()) > 0)
+            if (ret_csv.Rows.Count > 0)
             {
                 tenkai_su = int.Parse(ret_csv.Rows[0][0].ToString());
                 layout_no = int.Parse(ret_csv.Rows[0][1].ToString());
@@ -213,27 +213,36 @@ namespace CvnetClient.ViewModels
             if (SelectedShop == ShopType.全て)
             {
                 wrk_para[10] = "0";
+                wrk_para[11] = "";
             }
             else
             {
                 wrk_para[10] = "1";
+                wrk_para[11] = Condition.SelectedShop1?.Code;
             }
-            wrk_para[11] = Condition.SelectedShop1?.Code;
+            
 
-            var v_sql = "";
+            wrk_para[12] = "";
             if (SelectedOrder == OrderType.する)
             {
                 if (Condition.SelectedSendi == SendiType.AND)
                 {
-                    v_sql = ListFlexData.GetQueryStr2(Para, 1, 0, "t.");
+                    wrk_para[12] = ListFlexData.GetQueryStr2(Para, 1, 0, "t.");
                 }
                 else
                 {
-                    v_sql = ListFlexData.GetQueryStr2(Para, 1, 1, "t.");
+                    wrk_para[12] = ListFlexData.GetQueryStr2(Para, 1, 1, "t.");
                 }
             }
-            wrk_para[12] = v_sql;
 
+            if (Condition.SelectedOutPut == OutPutType.全て) 
+            {
+                wrk_para[13] = "0";
+            }
+            else
+            {
+                wrk_para[13] = "1";
+            }
             var ten = string.Empty;
             if (tenkai_su != 6 && tenkai_su != 0) ten = tenkai_su.ToString();
             var lo = string.Empty;

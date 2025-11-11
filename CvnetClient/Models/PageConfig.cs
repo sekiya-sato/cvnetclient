@@ -388,7 +388,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "商品分析アラート設定", WindowId="" },
                 new ButtonConfig { Text = "商品分析メッセージ送信", WindowId="" },
                 new ButtonConfig { Text = "展示会SD入力初期設定", WindowId="" },
-                new ButtonConfig { Text = "展示会SD入力結果出力", WindowId="" },
+                new ButtonConfig { Text = "展示会SD入力結果出力", WindowId=typeof(Views.SubDlg05PrnSwatchsdView).FullName },
                 new ButtonConfig { Text = "原価変更登録(SKU)", WindowId="" },
                 new ButtonConfig { Text = "総平均原価更新(SKU)", WindowId="" },
                 new ButtonConfig { Text = "評価替更新(元上代版:SKU)", WindowId="" },
