@@ -12,7 +12,7 @@ namespace CvnetClient.Interface
 
         SubDlg80gphSelViewModel Get80gphSel(string[] wrk_para = null);
 
-        SubDlgSelShoViewModel GetSelSho(string v_mst = "", string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0);
+        SubDlgSelShoViewModel GetSelSho(string v_mst = "", string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0, SelValueModel sel_value = null);
 
         SubDlgSel2ViewModel GetSel2(string[] init_para = null, string[] init_para2 = null, string qs = "", string[] init_para3 = null);
 

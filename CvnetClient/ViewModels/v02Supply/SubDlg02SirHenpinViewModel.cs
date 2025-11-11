@@ -141,13 +141,13 @@ namespace CvnetClient.ViewModels
                 wrk_para[10] = "1";
             }
 
-                wrk_para[11] = Condition.ManualInpFrom.ToString();
+            wrk_para[11] = Condition.ManualInpFrom.ToString();
             wrk_para[12] = Condition.ManualInpFrom.ToString();
             wrk_para[13] = Insatsu_flg;
 
 
             var qfm_file = "cvnet02prn_sirhenpin.qfm";
-            /* 原価FLG非表示 21.10.14 */
+            
             if (AppData.ClassCvnet.config.usegenka == 0) qfm_file = "cvnet02prn_sirhenpin_g.qfm";
             var ret_csv = AppData.Http!.AspxSqlQueryCsv("_p_sirhenpin01", wrk_para, qfm_file, 00);
             var lines = ret_csv.Split('\n');

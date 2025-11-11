@@ -12,10 +12,14 @@ namespace CvnetClient.ViewModels {
 	/// メンテ画面を想定したViewModelの基底クラス
 	/// </summary>
 	public partial class BaseViewModel : ObservableObject {
-		/// <summary>
-		/// 終了
-		/// </summary>
-		[RelayCommand]
+        #region Variable
+        public BizArray para;
+        #endregion
+
+        /// <summary>
+        /// 終了
+        /// </summary>
+        [RelayCommand]
 		void Exit() {
 			//
 			ClientLib.Exit(this);
@@ -33,5 +37,23 @@ namespace CvnetClient.ViewModels {
         // Command to DragMove the window
         [RelayCommand]
         public void DragMove() => ClientLib.DragMove(this);
+
+        #region Additional Method
+        public void OnInitBase(object? init_para = null)
+        {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+        }
+        #endregion
     }
 }

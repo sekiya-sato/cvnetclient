@@ -136,7 +136,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "受注残管理表", WindowId="" },
                 new ButtonConfig { Text = "スワッチデータ一括作成", WindowId="" },
                 new ButtonConfig { Text = "スワッチデータメンテ", WindowId="" },
-                new ButtonConfig { Text = "スワッチ印刷", WindowId="" },
+                new ButtonConfig { Text = "スワッチ印刷", WindowId=typeof(Views.SubDlg05PrnSwatchView).FullName },
                 new ButtonConfig { Text = "バーコードブック発行", WindowId=typeof(Views.SubDlg05PrnBcbookView).FullName },
                 new ButtonConfig { Text = "絵型一覧表", WindowId="" },
                 new ButtonConfig { Text = "得意先別売上予定表", WindowId="" },
