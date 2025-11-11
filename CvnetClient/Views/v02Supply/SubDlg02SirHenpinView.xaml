@@ -1,0 +1,226 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg02SirHenpinView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="仕入伝票印刷" Style="{StaticResource PrintWindowStyle1}">
+    <Window.Resources>
+        <utils:VdateConverter x:Key="VdateConverter" />
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg02SirHenpinViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Esc" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0"
+Background="White"
+CornerRadius="12"
+Padding="30"
+BorderBrush="#dcdde1"
+BorderThickness="1"
+HorizontalAlignment="Center"
+VerticalAlignment="Center">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="印刷区分:" 
+               VerticalAlignment="Center" 
+               Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="1" Content="通常発行" 
+                 GroupName="PrintType"
+                         IsChecked="{Binding Condition.SelectedPrint, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=通常発行, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="再発行" GroupName="PrintType"
+                         IsChecked="{Binding Condition.SelectedPrint, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=再発行, Mode=TwoWay}"/>
+                </Grid>
+
+                <StackPanel Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="伝票処理区分" VerticalAlignment="Center" Margin="0,8"/>
+                        <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboList1}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding Condition.SelectedCombo1}"/>
+                    </Grid>
+                </StackPanel>
+
+                <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="計上日" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <xctk:DateTimePicker 
+ Format="Custom"
+ FormatString="yyyy/MM/dd" 
+ Width="180" 
+ ShowButtonSpinner="True" 
+ TimePickerVisibility="Collapsed" 
+ AllowTextInput="False"
+ Value="{Binding Condition.DateFrom}" 
+ Height="34"></xctk:DateTimePicker>
+                    </StackPanel>
+
+
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
+                        <xctk:DateTimePicker 
+ Format="Custom"
+ FormatString="yyyy/MM/dd" 
+ Width="180" 
+ ShowButtonSpinner="True" 
+ TimePickerVisibility="Collapsed" 
+ AllowTextInput="False"
+ Value="{Binding Condition.DateTo}" 
+ Height="34"></xctk:DateTimePicker>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="仕入先" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.SupplyFrom.Display}"/>
+                        <uc:CvnetBtListView MstName="仕入先" StyleDesign="2" 
+                            SelectedValue ="{Binding Condition.SupplyFrom.Code}"
+                            Command="{Binding SelSupplier1Command}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150" TextWrapping="Wrap" Text="{Binding Condition.SupplyTo.Display}"/>
+                        <uc:CvnetBtListView MstName="仕入先" StyleDesign="2" 
+        SelectedValue ="{Binding Condition.SupplyTo.Code}"
+        Command="{Binding SelSupplier2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+
+                <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="倉庫" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.WareFrom.Display}"/>
+                        <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
+                    SelectedValue ="{Binding Condition.WareFrom.Code}"
+                    Command="{Binding SelWare1Command}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150" TextWrapping="Wrap" Text="{Binding Condition.WareTo.Display}"/>
+                        <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
+SelectedValue ="{Binding Condition.WareTo.Code}"
+Command="{Binding SelWare2Command}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="伝票NO" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.SlipNoFrom}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150" TextWrapping="Wrap" Text="{Binding Condition.SlipNoTo}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="6" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <TextBlock Grid.Column="0" Text="手入力NO" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.ManualInpFrom}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <TextBox Width="150" TextWrapping="Wrap" Text="{Binding Condition.ManualInpTo}"/>
+                    </StackPanel>
+                </Grid>
+                <StackPanel Grid.Row="7">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="8*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="取引区分" VerticalAlignment="Center" Margin="0,8"/>
+                        <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboList2}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding Condition.SelectedCombo2}"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Margin="0,20,0,0">
+            <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+            <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

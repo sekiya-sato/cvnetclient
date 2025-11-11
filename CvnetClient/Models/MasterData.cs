@@ -911,8 +911,8 @@ namespace CvnetClient.Models
         string? linkCd; // 連携CD
         [ObservableProperty]
         string? linkedCorporationCd; // 連携先法人CD
-        [ObservableProperty]
-		string? lastModifier;
+  //      [ObservableProperty]
+		//string? lastModifier;
         [ObservableProperty]
         string? supplierMail; // 仕入先MAIL
         [ObservableProperty]
@@ -945,7 +945,9 @@ namespace CvnetClient.Models
         int? scheduledPaymentDay3; // 支払予定日3
         [ObservableProperty]
         string? registrationNumber; // 登録番号
-    }
+		[ObservableProperty]
+		string? lastModifier; // 最終修正者
+	}
 
 	public partial class MasterShohinJan : ObservableObject
 	{
@@ -1009,10 +1011,10 @@ namespace CvnetClient.Models
 		string? remarksCD02;                // 備考CD02
 		[ObservableProperty]
 		string? remarks02;                  // 備考02
-        [ObservableProperty]
-        string? remarksCD03;                // 備考CD02
-        [ObservableProperty]
-        string? remarks03;                  // 備考02
+		[ObservableProperty]
+		string? remarksCD03;                // 備考CD02
+		[ObservableProperty]
+		string? remarks03;                  // 備考02
 		[ObservableProperty]
 		decimal? costPrice;                 // 原価
 		[ObservableProperty]
@@ -1059,26 +1061,26 @@ namespace CvnetClient.Models
 		decimal? salesPrice;                // セール金額
 		[ObservableProperty]
 		string? skuCategoryCD01;            // SKU分類CD01
-        [ObservableProperty]
-        string? skuCategoryCD02;            // SKU分類CD02
-        [ObservableProperty]
-        string? skuCategoryCD03;            // SKU分類CD03
-        [ObservableProperty]
-        string? skuCategoryCD04;            // SKU分類CD04
-        [ObservableProperty]
-        string? skuCategoryCD05;            // SKU分類CD05
-        [ObservableProperty]
-        string? skuCategoryCD06;            // SKU分類CD06
-        [ObservableProperty]
-        string? skuCategoryCD07;            // SKU分類CD07
-        [ObservableProperty]
-        string? skuCategoryCD08;            // SKU分類CD08
-        [ObservableProperty]
-        string? skuCategoryCD09;            // SKU分類CD09
-        [ObservableProperty]
-        string? skuCategoryCD10;            // SKU分類CD10
-        [ObservableProperty]
-        int? ecReservation;                 // EC予約
+		[ObservableProperty]
+		string? skuCategoryCD02;            // SKU分類CD02
+		[ObservableProperty]
+		string? skuCategoryCD03;            // SKU分類CD03
+		[ObservableProperty]
+		string? skuCategoryCD04;            // SKU分類CD04
+		[ObservableProperty]
+		string? skuCategoryCD05;            // SKU分類CD05
+		[ObservableProperty]
+		string? skuCategoryCD06;            // SKU分類CD06
+		[ObservableProperty]
+		string? skuCategoryCD07;            // SKU分類CD07
+		[ObservableProperty]
+		string? skuCategoryCD08;            // SKU分類CD08
+		[ObservableProperty]
+		string? skuCategoryCD09;            // SKU分類CD09
+		[ObservableProperty]
+		string? skuCategoryCD10;            // SKU分類CD10
+		[ObservableProperty]
+		int? ecReservation;                 // EC予約
 		[ObservableProperty]
 		int? foreignCurrencyPrice;			// 外貨仕入価格
     }

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!---コメント-->
+<PaturnList>
+  <Paturn id="1" name="自社タグ(伝票)" visible="true" kbn="0">
+	<List name="商品CD" sqlnm="商品CD" col="1" width="90" type="o_txt_gp">A.商品CD</List>
+    <List name="色名" sqlnm="色名" col="2" width="50" type="o_txt_gp">GET_COLORNAME(B.色CD)</List>
+    <List name="ｻｲｽﾞ名" sqlnm="ｻｲｽﾞ名" col="3" width="50" type="o_txt_gp">GET_SIZENAME(A.商品CD,B.サイズCD)</List>
+    <List name="表裏区分01" sqlnm="表裏区分01" col="4" rp="1" width="0" type="o_txt">GET_HINSITSUKBN(A.商品CD,1)</List>
+    <List name="品質表示01" sqlnm="品質表示01" col="5" rp="1" width="0" type="o_txt">GET_HINSITSUM(A.商品CD,1)</List>
+    <List name="品質混率01" sqlnm="品質混率01" col="6" rp="1" width="0" type="o_txt">GET_HINSITSUP(A.商品CD,1)</List>
+    <List name="表裏区分02" sqlnm="表裏区分02" col="7" rp="1" width="0" type="o_txt">GET_HINSITSUKBN(A.商品CD,2)</List>
+    <List name="品質表示02" sqlnm="品質表示02" col="8" rp="1" width="0" type="o_txt">GET_HINSITSUM(A.商品CD,2)</List>
+    <List name="品質混率02" sqlnm="品質混率02" col="9" rp="1" width="0" type="o_txt">GET_HINSITSUP(A.商品CD,2)</List>
+    <List name="表裏区分03" sqlnm="表裏区分03" col="10" rp="1" width="0" type="o_txt">GET_HINSITSUKBN(A.商品CD,3)</List>
+    <List name="品質表示03" sqlnm="品質表示03" col="11" rp="1" width="0" type="o_txt">GET_HINSITSUM(A.商品CD,3)</List>
+    <List name="品質混率03" sqlnm="品質混率03" col="12" rp="1" width="0" type="o_txt">GET_HINSITSUP(A.商品CD,3)</List>
+	<List name="原産国" sqlnm="原産国" col="13" width="150" type="o_txt">nvl((select 名称 from hc$master_meisho where 名称CD=A.原産国CD and 名称区分='GEN'),'')</List>]
+    <List name="上代(税込)" sqlnm="上代税込" col="14" width="70" type="o_num">get_tax(get_jodai(A.商品CD,B.色CD,B.サイズCD),get_taxrate(),2)+get_jodai(A.商品CD,B.色CD,B.サイズCD)</List>
+    <List name="上代(税抜)" sqlnm="上代税抜" col="15" width="70" type="o_num">get_jodai(A.商品CD,B.色CD,B.サイズCD)</List>
+    <List name="JANコード1" sqlnm="JANコード1" col="16" width="100" type="o_txt">B.JANコード1</List>
+    <List name="枚数" sqlnm="枚数" col="17" width="40" type="i_num">0</List>
+  </Paturn>
+  <Paturn id="2" name="自社タグ(マスタ)" visible="true" kbn="2">
+	<List name="商品CD" sqlnm="商品CD" col="1" width="90" type="o_txt_gp">A.商品CD</List>
+    <List name="色名" sqlnm="色名" col="2" width="50" type="o_txt_gp">GET_COLORNAME(B.色CD)</List>
+    <List name="ｻｲｽﾞ名" sqlnm="ｻｲｽﾞ名" col="3" width="50" type="o_txt_gp">GET_SIZENAME(A.商品CD,B.サイズCD)</List>
+    <List name="表裏区分01" sqlnm="表裏区分01" col="4" rp="1" width="0" type="o_txt">GET_HINSITSUKBN(A.商品CD,1)</List>
+    <List name="品質表示01" sqlnm="品質表示01" col="5" rp="1" width="0" type="o_txt">GET_HINSITSUM(A.商品CD,1)</List>
+    <List name="品質混率01" sqlnm="品質混率01" col="6" rp="1" width="0" type="o_txt">GET_HINSITSUP(A.商品CD,1)</List>
+    <List name="表裏区分02" sqlnm="表裏区分02" col="7" rp="1" width="0" type="o_txt">GET_HINSITSUKBN(A.商品CD,2)</List>
+    <List name="品質表示02" sqlnm="品質表示02" col="8" rp="1" width="0" type="o_txt">GET_HINSITSUM(A.商品CD,2)</List>
+    <List name="品質混率02" sqlnm="品質混率02" col="9" rp="1" width="0" type="o_txt">GET_HINSITSUP(A.商品CD,2)</List>
+    <List name="表裏区分03" sqlnm="表裏区分03" col="10" rp="1" width="0" type="o_txt">GET_HINSITSUKBN(A.商品CD,3)</List>
+    <List name="品質表示03" sqlnm="品質表示03" col="11" rp="1" width="0" type="o_txt">GET_HINSITSUM(A.商品CD,3)</List>
+    <List name="品質混率03" sqlnm="品質混率03" col="12" rp="1" width="0" type="o_txt">GET_HINSITSUP(A.商品CD,3)</List>
+	<List name="原産国" sqlnm="原産国" col="13" width="150" type="o_txt">nvl((select 名称 from hc$master_meisho where 名称CD=A.原産国CD and 名称区分='GEN'),'')</List>]
+    <List name="上代(税込)" sqlnm="上代税込" col="14" width="70" type="o_num">get_tax(get_jodai(A.商品CD,B.色CD,B.サイズCD,'ひづけ1','そうここーど'),get_taxrate(),2)+get_jodai(A.商品CD,B.色CD,B.サイズCD,'ひづけ1','そうここーど')</List>
+    <List name="上代(税抜)" sqlnm="上代税抜" col="15" width="70" type="o_num">get_jodai(A.商品CD,B.色CD,B.サイズCD,'ひづけ1','そうここーど')</List>
+    <List name="JANコード1" sqlnm="JANコード1" col="16" width="100" type="o_txt">B.JANコード1</List>
+    <List name="枚数" sqlnm="枚数" col="17" width="40" type="i_num">0</List>
+  </Paturn>
+</PaturnList>

@@ -124,7 +124,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "仕入実績表", WindowId="" },
                 new ButtonConfig { Text = "ブランド別仕入金額表", WindowId="" },
                 new ButtonConfig { Text = "消化仕入リスト", WindowId="" },
-                new ButtonConfig { Text = "仕入伝票印刷", WindowId="" },
+                new ButtonConfig { Text = "仕入伝票印刷", WindowId=typeof(Views.SubDlg02SirHenpinView).FullName  },
                 new ButtonConfig { Text = "仕入先一括返品", WindowId="" }
             }
         }},
@@ -136,7 +136,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "受注残管理表", WindowId="" },
                 new ButtonConfig { Text = "スワッチデータ一括作成", WindowId="" },
                 new ButtonConfig { Text = "スワッチデータメンテ", WindowId="" },
-                new ButtonConfig { Text = "スワッチ印刷", WindowId="" },
+                new ButtonConfig { Text = "スワッチ印刷", WindowId=typeof(Views.SubDlg05PrnSwatchView).FullName },
                 new ButtonConfig { Text = "バーコードブック発行", WindowId=typeof(Views.SubDlg05PrnBcbookView).FullName },
                 new ButtonConfig { Text = "絵型一覧表", WindowId="" },
                 new ButtonConfig { Text = "得意先別売上予定表", WindowId="" },
