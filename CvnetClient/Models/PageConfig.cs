@@ -50,7 +50,7 @@ namespace CvnetClient.Models
         }},
         { "管理メニュー", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId="" },
+                new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId=typeof(Views.SubDlg00UsrView).FullName },
                 new ButtonConfig { Text = "社員LOGINマスタ一覧", WindowId="" },
                 new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId= typeof(Views.MasterSystemKanriView1).FullName },
                 new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter = "1" },

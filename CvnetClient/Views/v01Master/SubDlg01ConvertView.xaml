@@ -3,10 +3,160 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CvnetClient.Views.v01Master"
+        xmlns:local="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         Title="SubDlg01ConvertView" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="パターン"/>
+            <ComboBox Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource SearchableComboBox1}"/>
+            <Button  Grid.Column="3" Content="パターン決定" Margin="5,0"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+
+            <TabControl BorderThickness="1" Grid.Row="0">
+                <TabItem Header="展開元">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" Content="第一キー"/>
+                        <Label Grid.Column="1" Content="第二キー"/>
+                        <Label Grid.Column="2" Content="第三キー"/>
+                        <Label Grid.Column="3" Content="第四キー"/>
+                        <Label Grid.Column="4" Content="第五キー"/>
+
+                        <TextBox Grid.Row="1" Grid.Column="0" Margin="5,0" Style="{StaticResource ReadOnlyTextBox}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="5,0" Style="{StaticResource ReadOnlyTextBox}"/>
+                        <TextBox Grid.Row="1" Grid.Column="2" Margin="5,0" Style="{StaticResource ReadOnlyTextBox}"/>
+                        <TextBox Grid.Row="1" Grid.Column="3" Margin="5,0" Style="{StaticResource ReadOnlyTextBox}"/>
+                        <TextBox Grid.Row="1" Grid.Column="4" Margin="5,0" Style="{StaticResource ReadOnlyTextBox}"/>
+
+                        <ListBox Margin="5" Grid.Row="2">
+                            <ListBoxItem>りんご</ListBoxItem>
+                            <ListBoxItem>みかん</ListBoxItem>
+                            <ListBoxItem>バナナ</ListBoxItem>
+                        </ListBox>
+                    </Grid>
+                    
+                </TabItem>
+                <TabItem Header="展開修正">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="確認">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="汎用確認・修正">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Header="範囲指定印刷">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+
+                </TabItem>
+            </TabControl>
+            
+
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+                <Button  Grid.Column="4" Style="{StaticResource BackBtn}" Margin="5,0"/>
+
+            </Grid>
+
     </Grid>
+
+    
 </Window>

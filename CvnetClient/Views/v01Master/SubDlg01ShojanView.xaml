@@ -113,7 +113,7 @@
 				</Grid>
 
 				<Grid Grid.Row="2">
-					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding SelDspUpdateCommand}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
+					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding SelDspUpdateCommand}" CommandParameter="0" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 				</Grid>
 			</Grid>
 		</Border>
