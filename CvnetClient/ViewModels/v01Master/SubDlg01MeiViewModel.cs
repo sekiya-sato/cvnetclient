@@ -131,8 +131,6 @@ namespace CvnetClient.ViewModels
         /// </summary>
         [ObservableProperty]
         MasterMeisho? editMeisho;
-        private BizArray para;
-        private BizArray v_flg;
         [ObservableProperty]
         string labelRyakusho = "略称"; // ラベルの初期値
         [ObservableProperty]
@@ -147,33 +145,9 @@ namespace CvnetClient.ViewModels
 				from HC$Master_MEISHO A where A.名称区分=:1 and A.名称CD{0}:2 order by A.名称CD {1}) where rownum<={2}
 			""";
 
-        public void OnInit(object? init_para = null, object? init_flg = null)
+        public void OnInit(object? init_para = null, string? init_flg = null)
         {
-            if (init_para != null)
-            {
-                if (init_para is string s)
-                {
-                    var v_para = new string[] { s };
-                    para = new BizArray(v_para);
-                }
-                else if (init_para is string[] arr)
-                    para = new BizArray(arr);
-                else para = new BizArray();
-            }
-            else para = new BizArray();
-
-            if (init_flg != null)
-            {
-                if (init_flg is string s)
-                {
-                    var v_para = new string[] { s };
-                    v_flg = new BizArray(v_para);
-                }
-                else if (init_flg is string[] arr)
-                    v_flg = new BizArray(arr);
-                else v_flg = new BizArray();
-            }
-            else v_flg = new BizArray();
+            OnInitBase(init_para, init_flg);
 
             if (para[0].ToString() == "0")
             {

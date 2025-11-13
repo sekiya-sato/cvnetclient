@@ -28,8 +28,6 @@ namespace CvnetClient.ViewModels
         private string? prtCD;
         [ObservableProperty]
         private string? startCode;
-        private BizArray para;
-        private BizArray v_flg;
         string sql_collist = ",A.帳票CD,A.QFM名,A.メニュー名,A.帳票名" +
                              ",A.項目01,A.項目02,A.項目03,A.項目04,A.項目05,A.項目06,A.項目07,A.項目08,A.項目09,A.項目10" +
                              ",A.項目11,A.項目12,A.項目13,A.項目14,A.項目15,A.項目16,A.項目17,A.項目18,A.項目19,A.項目20" +
@@ -43,33 +41,9 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Initialize
-        public void OnInit(object? init_para = null, object? init_flg = null) 
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
-            if (init_para != null)
-            {
-                if (init_para is string s)
-                {
-                    var v_para = new string[] { s };
-                    para = new BizArray(v_para);
-                }
-                else if (init_para is string[] arr)
-                    para = new BizArray(arr);
-                else para = new BizArray();
-            }
-            else para = new BizArray();
-
-            if (init_flg != null)
-            {
-                if (init_flg is string s)
-                {
-                    var v_para = new string[] { s };
-                    v_flg = new BizArray(v_para);
-                }
-                else if (init_flg is string[] arr)
-                    v_flg = new BizArray(arr);
-                else v_flg = new BizArray();
-            }
-            else v_flg = new BizArray();
+            OnInitBase(init_para, init_flg);
         }
 
         #endregion

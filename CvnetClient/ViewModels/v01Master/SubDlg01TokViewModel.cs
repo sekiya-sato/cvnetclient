@@ -51,8 +51,6 @@ namespace CvnetClient.ViewModels
         private BizArray col_list;
         [ObservableProperty]
         string? startCode;
-        private BizArray para;
-        private BizArray v_flg;
         #region ComboBox
         [ObservableProperty]
         public Dictionary<string, string> comboListBumon;
@@ -152,33 +150,9 @@ namespace CvnetClient.ViewModels
         #endregion
 
 
-        public void OnInit(object? init_para = null, object? init_flg = null) 
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
-            if (init_para != null)
-            {
-                if (init_para is string s)
-                {
-                    var v_para = new string[] { s };
-                    para = new BizArray(v_para);
-                }
-                else if (init_para is string[] arr)
-                    para = new BizArray(arr);
-                else para = new BizArray();
-            }
-            else para = new BizArray();
-
-            if (init_flg != null)
-            {
-                if (init_flg is string s)
-                {
-                    var v_para = new string[] { s };
-                    v_flg = new BizArray(v_para);
-                }
-                else if (init_flg is string[] arr)
-                    v_flg = new BizArray(arr);
-                else v_flg = new BizArray();
-            }
-            else v_flg = new BizArray();
+            OnInitBase(init_para, init_flg);
             EditShop = new MasterShop();
             #region ComboList Init
             ComboListDay = new Dictionary<string, string>

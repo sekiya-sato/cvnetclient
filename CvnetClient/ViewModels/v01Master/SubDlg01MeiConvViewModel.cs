@@ -25,39 +25,13 @@ namespace CvnetClient.ViewModels
         Templ? selectedCopyFrom;
         [ObservableProperty]
         Templ? selectedCopyTo;
-        private BizArray para;
-        private BizArray v_flg;
 
         string sql = """"
             select 名称CD,名称CD||' '||名称,'HC$MASTER_MEISHO' マスタ名,'名称区分='''||名称CD||'''' aaa from hc$master_meisho where 名称区分='IDX' order by 名称CD
             """";
-        public void OnInit(object? init_para = null, object? init_flg = null) 
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
-            if (init_para != null)
-            {
-                if (init_para is string s)
-                {
-                    var v_para = new string[] { s };
-                    para = new BizArray(v_para);
-                }
-                else if (init_para is string[] arr)
-                    para = new BizArray(arr);
-                else para = new BizArray();
-            }
-            else para = new BizArray();
-
-            if (init_flg != null)
-            {
-                if (init_flg is string s)
-                {
-                    var v_para = new string[] { s };
-                    v_flg = new BizArray(v_para);
-                }
-                else if (init_flg is string[] arr)
-                    v_flg = new BizArray(arr);
-                else v_flg = new BizArray();
-            }
-            else v_flg = new BizArray();
+            OnInitBase(init_para, init_flg);
 
             var retData = AppData.Http?.AspxSqlQuery(sql, new string[] {});
             if (retData == null || retData.Rows.Count == 0) return;

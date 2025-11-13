@@ -1,28 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
-using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using Microsoft.VisualBasic.ApplicationServices;
+using CvnetClient.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using static MaterialDesignThemes.Wpf.Theme;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlgInp13ViewModel : BaseViewModel
     {
+        #region Declare
         [ObservableProperty]
         SearchModel? editSearch;
         [ObservableProperty]
@@ -34,7 +25,13 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public Dictionary<int, string>? comboListRenkei;
         [ObservableProperty]
+        public Dictionary<string, string>? comboListKanryo;
+        [ObservableProperty]
         ObservableCollection<OrderList>? listOrder;
+        [ObservableProperty]
+        private int selectedTabIndex;
+        [ObservableProperty]
+        OrderList? selectedOrder;
         [ObservableProperty]
         OrderHeader? selectedOrderHeader;
         [ObservableProperty]
@@ -45,51 +42,49 @@ namespace CvnetClient.ViewModels
         public string? startCode;
         [ObservableProperty]
         public string? menuFlg;
-        private BizArray para;
-        private BizArray v_flg;
+        [ObservableProperty]
+        public int sum;
+        [ObservableProperty]
+        public int totalJodai;
+        [ObservableProperty]
+        public int totalGedai;
         private string shoriKaishibi;
         private string tori_kbn = "商品発注区分";
         private int v_denkbn = 13;
         [ObservableProperty]
         public string? dateName;
-        public bool renkeishow;
+        [ObservableProperty]
+        public bool renkeishow = false;
         public bool sokoshow;
+        [ObservableProperty]
+        private BtListHelper? product;
+        [ObservableProperty]
         public string csvname;
+        private string[] param1 = new string[18];
+        private string[] param2 = new string[2];
+        string sql_collist = "A.手入力伝票NO,A.在庫計上日,A.納品日,A.取引区分,A.入力社員CD,A.取引先CD2," +
+                            "A.取引先CD1,A.掛率1,A.外税対象金額,A.数量合計,A.明細金額合計," +
+                            "A.内税消費税,A.外税消費税,A.上代合計,A.下代合計,A.メモ,A.掛計上FLG,A.伝票処理区分,A.MOD_SEQ,A.倉庫CD,A.関連伝票NO" +
+                            ",A.掛計上日" +
+                            ",A.SYSFLG2" +
+                            ",A.関連伝票NO2";
 
-        public void OnInit(object? init_para = null,object? init_flg = null) 
+
+        string sql_collist1 = "A.明細取引区分,A.商品CD,A.色CD,A.サイズCD,A.明細名称,A.数量,A.単価,A.金額,A.内税消費税,A.外税消費税," +
+                                "A.上代単価,A.上代金額,A.下代単価,A.下代金額,A.明細メモ,A.消費税計算方法" +
+                                ",A.商品シリアル,A.関連伝票NO,A.関連伝票行NO,A.JANCODE,A.原価FLG,A.完了FLG";
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null,string? init_flg = null) 
         {
-            if (init_para != null)
-            {
-                if (init_para is string s)
-                {
-                    var v_para = new string[] { s };
-                    para = new BizArray(v_para);
-                }
-                else if (init_para is string[] arr)
-                    para = new BizArray(arr);
-                else para = new BizArray();
-            }
-            else para = new BizArray();
-
-            if (init_flg != null)
-            {
-                if (init_flg is string s)
-                {
-                    var v_para = new string[] { s };
-                    v_flg = new BizArray(v_para);
-                }
-                else if (init_flg is string[] arr)
-                    v_flg = new BizArray(arr);
-                else v_flg = new BizArray();
-            }
-            else v_flg = new BizArray();
+            OnInitBase(init_para, init_flg);
 
             FlgSho = 0;
             EditSearch = new SearchModel();
             EditSearch.DenpyoNo1 = "0";
             EditSearch.DenpyoNo2 = "9999999999";
             EditSearch.NohinbiFrom = DateTime.Now;
-            EditSearch.NohinbiTo = new DateTime(2099/12/31);            
+            EditSearch.NohinbiTo = DateTime.MaxValue;      
             EditSearch.Kanren1From = "0";
             EditSearch.Kanren1To = "9999999999999";
             EditSearch.Kanren2From = "0";
@@ -99,28 +94,33 @@ namespace CvnetClient.ViewModels
             EditSearch.ProductTo = new BtListHelper("zzzzzzzzzzzzzzzzzzzz", "");
             EditSearch.UserTo = new BtListHelper("99999999", "");
             DateName = "納品日";
-            csvname = "CSV出力";
-            renkeishow = false;
-            //ComboListToriHikiFrom = new Dictionary<string, string>
-            //{
-            //    {  "00", "00" },
-            //    {  "10", "10 発注" },
-            //    {  "11", "11 追加発注" },
-            //    {  "15", "15 自動発注" }
-            //};
-            //EditSearch.ToriKubunFrom = ComboListToriHikiFrom.FirstOrDefault().Key;
-            
-            //ComboListToriHikiTo = new Dictionary<string, string>
-            //{
-            //    {  "99", "99" },
-            //    {  "10", "10 発注" },
-            //    {  "11", "11 追加発注" },
-            //    {  "15", "15 自動発注" }
-            //};
-            //EditSearch.ToriKubunTo = ComboListToriHikiTo.FirstOrDefault().Key;
+            Csvname = "CSV出力";
+            Renkeishow = false;
+            ComboListKanryo = new Dictionary<string, string> 
+            {
+                {"0","0 未完" },
+                {"1","1 完了" }
+            };
+            ComboListToriHikiFrom = new Dictionary<int, string>
+            {
+                {  00, "00" },
+                {  10, "10 発注" },
+                {  11, "11 追加発注" },
+                {  15, "15 自動発注" }
+            };
+            EditSearch.ToriKubunFrom = ComboListToriHikiFrom.FirstOrDefault().Key;
+
+            ComboListToriHikiTo = new Dictionary<int, string>
+            {
+                {  99, "99" },
+                {  10, "10 発注" },
+                {  11, "11 追加発注" },
+                {  15, "15 自動発注" }
+            };
+            EditSearch.ToriKubunTo = ComboListToriHikiTo.FirstOrDefault().Key;
             SelectedOrderHeader = new OrderHeader();
             
-            if (v_flg[0] != null) MenuFlg = v_flg[0];
+            if (v_flg != null) MenuFlg = v_flg;
             var comboItem = AppData.ClassCvnet.comboItem00;
             ComboListRenkei = comboItem.ComboItem_00<int>("する");
             
@@ -135,7 +135,7 @@ namespace CvnetClient.ViewModels
                 v_denkbn = 33;                
             }
           
-            SelectedOrderHeader.Hachubi = DateTime.Now.ToString("yyyy/MM/dd");
+            SelectedOrderHeader.Hachubi = DateTime.Now;
             SelectedOrderHeader.Nohinbi = DateTime.Now;
             SelectedOrderHeader.ToriKubun = 10;
             SelectedOrderHeader.User = new BtListHelper(AppData.ClassSatoo.SHAIN_CD,AppData.ClassSatoo.SHAIN_Name);
@@ -185,7 +185,7 @@ namespace CvnetClient.ViewModels
 
             if (AppData.ClassCvnet.config.MultiCoop == 0)
             {
-                renkeishow = false;
+                Renkeishow = false;
 
                 //Form1.TabFrame1.TabForm2.Label9.Visible =$false;
                 //Form1.TabFrame1.TabForm2.Text25.Active =$false;
@@ -194,21 +194,15 @@ namespace CvnetClient.ViewModels
             GetShoriKaishibi();
             if (AppData.ClassCvnet.config.ExcelOutFlg == 1)
             {
-                csvname = "EXCEL出力";
+                Csvname = "EXCEL出力";
             }
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
-        public void ClickProd(string value) 
+        public void ClickProd()
         {
-            if (FlgSho == 0) 
-            { 
-                FlgSho = 1;
-            }
-            else
-            {
-                FlgSho = 0;
-            }
+            FlgSho = FlgSho == 0 ? 1 : 0;
         }
 
         [RelayCommand]
@@ -229,55 +223,53 @@ namespace CvnetClient.ViewModels
             var ret_data = AppData.Http!.AspxSqlQuery(sql_query, null);
             if (ret_data.Rows.Count > 0) shoriKaishibi = ret_data.Rows[0][0].ToString();
         }
-
+        
         [RelayCommand]
         void DoList() 
         {
-            var param1 = new string[18];
-            var param2 = new string[2];
-            param1[0] = EditSearch.DenpyoNo1;
-            param1[1] = EditSearch.DenpyoNo2;
-
-            var date_Str = EditSearch.NohinbiFrom?.ToString("yyyyMMdd");
-            if (EditSearch.NohinbiFrom < DateTime.Parse(shoriKaishibi.Substring(0,4) + "/" + shoriKaishibi.Substring(4, 2) + "/" + shoriKaishibi.Substring(6, 2))) date_Str = shoriKaishibi;
-            param1[2] = date_Str;
-            
-            param1[3] = EditSearch.NohinbiTo?.ToString("yyyyMMdd");
-            param1[4] = EditSearch.ToriKubunFrom?.ToString() ?? string.Empty;
-            param1[5] = EditSearch.ToriKubunTo?.ToString() ?? string.Empty;
-            param1[6] = EditSearch.Kanren1From?.ToString() ?? string.Empty;
-            param1[7] = EditSearch.Kanren1To?.ToString() ?? string.Empty;
-            param1[8] = EditSearch.Kanren2From?.ToString() ?? string.Empty;
-            param1[9] = EditSearch.Kanren2To?.ToString() ?? string.Empty;
-            param1[10] = EditSearch.Tenyuryoku1?.ToString() ?? string.Empty;
-            param1[11] = EditSearch.Tenyuryoku2?.ToString() ?? string.Empty;
-            param1[12] = EditSearch.SupplierFrom?.Code ?? string.Empty;
-            param1[13] = EditSearch.SupplierTo?.Code ?? string.Empty;
-            param1[14] = EditSearch.WareFrom?.Code ?? string.Empty;
-            param1[15] = EditSearch.WareTo?.Code ?? string.Empty;
-            param1[16] = EditSearch.UserFrom?.Code ?? string.Empty;
-            param1[17] = EditSearch.UserTo?.Code ?? string.Empty;
-            if (FlgSho == 1)
-            {
-                param2[0] = EditSearch.ProductFrom?.Code ?? string.Empty;
-                param2[1] = EditSearch.ProductTo?.Code ?? string.Empty;
-            }
-            OnQuery(param1, "all", param2);
-            
+            CreatePara();
+            OnQuery(param1, "all", param2,null);
         }
-        string sql_collist  = "A.手入力伝票NO,A.在庫計上日,A.納品日,A.取引区分,A.入力社員CD,A.取引先CD2,"+
-	                        "A.取引先CD1,A.掛率1,A.外税対象金額,A.数量合計,A.明細金額合計,"+
-	                        "A.内税消費税,A.外税消費税,A.上代合計,A.下代合計,A.メモ,A.掛計上FLG,A.伝票処理区分,A.MOD_SEQ,A.倉庫CD,A.関連伝票NO"+
-	                        ",A.掛計上日"+
-	                        ",A.SYSFLG2"+
-	                        ",A.関連伝票NO2";
-
-
-        string sql_collist1  = "明細取引区分,商品CD,色CD,サイズCD,明細名称,数量,単価,金額,内税消費税,外税消費税,"+
-	                            "上代単価,上代金額,下代単価,下代金額,明細メモ,消費税計算方法"+
-	                            ",商品シリアル,関連伝票NO,関連伝票行NO,JANCODE,原価FLG,完了FLG";
-        void OnQuery(string[] param, string flg, string[] param2) 
+        [RelayCommand]
+        void BackList()
         {
+            if (ListOrder != null && ListOrder.Count > 0)
+            {
+                StartCode = ListOrder.Max(c => c.DenpyoNo);
+            }
+            else
+            {
+                DoList();
+            }
+            CreatePara();
+            OnQuery(param1, StartCode, param2,null);
+            if (ListOrder == null || ListOrder.Count == 0)
+                ClientLib.MessageBoxOk(this, "データがありません");
+        }
+
+        [RelayCommand]
+        void NextList()
+        {
+            if (ListOrder != null && ListOrder.Count > 0)
+            {
+                StartCode = ListOrder.Min(c => c.DenpyoNo);
+            }
+            else
+            {
+                DoList();
+                return;
+            }
+            CreatePara();
+            OnQuery(param1, StartCode, param2,"<=");
+            if (ListOrder == null || ListOrder.Count == 0)
+                ClientLib.MessageBoxOk(this, "データがありません");
+        }
+        void OnQuery(string[] param, string flg, string[] param2,string p_sort = null) 
+        {
+            var v_hugo = ">=";
+            if (p_sort != null) {
+                v_hugo = "<=";
+            }
             var parameter = new string[18];
             if (FlgSho == 1) {
                 parameter = new string[20];
@@ -305,7 +297,7 @@ namespace CvnetClient.ViewModels
 
             if (flg != "all")
             {
-                sql_query += " and A.SEQ_NO <= '" + flg + "'";
+                sql_query += " and A.SEQ_NO " + v_hugo + " '" + flg + "'";
             }
             if (FlgSho == 1)
             {
@@ -314,73 +306,241 @@ namespace CvnetClient.ViewModels
                 sql_query = "SELECT A.* FROM (" + sql_query
                     + ") A WHERE EXISTS (SELECT /*+ INDEX(E 	HC$_NK_TORI23) */ 'X' FROM HC$TRAN_TORI1 E WHERE A.SEQ_NO=E.ヘッダNO AND E.商品CD BETWEEN :" + (parameter.Length - 1).ToString() + " AND :" + (parameter.Length).ToString() + ")";
             }
+            
             sql_query += " ORDER BY A.SEQ_NO DESC";
-
-            if (flg != "all")
-            {
-                sql_query = "SELECT * FROM (" + sql_query + ") where rownum <= " + AppData.maxQueryCnt;
-            }
+            
+            sql_query = "SELECT * FROM (" + sql_query + ") where rownum <= " + AppData.maxQueryCnt;
+            
 
             var ret_csv = AppData.Http!.AspxSqlQuery(sql_query, parameter);
-            if (ret_csv == null || ret_csv.Rows.Count == 0) return;
+            if (ret_csv == null || ret_csv.Rows.Count == 0) 
+            {
+                ClientLib.MessageBox(this, "データがありません!");
+                return; 
+            }
             var list = (from DataRow dr in ret_csv.Rows
                         select new OrderList
                         {
                             DenpyoNo = dr["SEQ_NO"].ToString() ?? string.Empty,
-                            Nohinbi = DateTime.ParseExact(dr["納品日"]?.ToString(), "yyyyMMdd", null),
+                            Nohinbi = (dr["納品日"].ToString().Substring(0,4)+"/"+ dr["納品日"].ToString().Substring(4, 2) + "/" + dr["納品日"].ToString().Substring(6, 2)).ToString() ?? string.Empty,
                             Supplier = dr["取引先CD1"].ToString() ?? string.Empty,
                             SupplierName = dr["仕入先名"].ToString() ?? string.Empty,
                             Ware = dr["取引先CD2"].ToString() ?? string.Empty,
                             WareName = dr["得意先名"].ToString() ?? string.Empty,
                             Torihiki = dr["取引区分"].ToString() ?? string.Empty,
                             WeightSum = dr["数量合計"].ToString() ?? string.Empty,
-                            PriceSum = dr["明細金額合計"].ToString() ?? string.Empty
+                            PriceSum = dr["明細金額合計"].ToString() ?? string.Empty,
+                            Tanto = dr["入力社員CD"].ToString() ?? string.Empty,
+                            TantoName = dr["担当名"].ToString() ?? string.Empty,
+                            Kanren1 = dr["関連伝票NO"].ToString() ?? string.Empty,
+                            Kanren2 = dr["関連伝票NO2"].ToString() ?? string.Empty,
+                            Tenyuryoku = dr["手入力伝票NO"].ToString() ?? string.Empty,
+                            Hachubi = dr["掛計上日"].ToString() ?? string.Empty,
+                            VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
+                            VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"])
 
-                        }).OrderBy(c => c.DenpyoNo).ToList();
+                        }).OrderByDescending(c => c.DenpyoNo).ToList();
             Common.ConvertDotStringDel(list);
+            ListOrder = new ObservableCollection<OrderList>(list);
+            if (ListOrder.Count > 0)
+            {
+                SelectedOrder = ListOrder[0];
+            }
         }
+        void CreatePara()
+        {
+            param1[0] = EditSearch.DenpyoNo1;
+            param1[1] = EditSearch.DenpyoNo2;
+
+            var date_Str = EditSearch.NohinbiFrom?.ToString("yyyyMMdd");
+            if (EditSearch.NohinbiFrom < DateTime.Parse(shoriKaishibi.Substring(0, 4) + "/" + shoriKaishibi.Substring(4, 2) + "/" + shoriKaishibi.Substring(6, 2))) date_Str = shoriKaishibi;
+            param1[2] = date_Str;
+
+            param1[3] = EditSearch.NohinbiTo?.ToString("yyyyMMdd");
+            param1[4] = EditSearch.ToriKubunFrom?.ToString() ?? string.Empty;
+            param1[5] = EditSearch.ToriKubunTo?.ToString() ?? string.Empty;
+            param1[6] = EditSearch.Kanren1From?.ToString() ?? string.Empty;
+            param1[7] = EditSearch.Kanren1To?.ToString() ?? string.Empty;
+            param1[8] = EditSearch.Kanren2From?.ToString() ?? string.Empty;
+            param1[9] = EditSearch.Kanren2To?.ToString() ?? string.Empty;
+            param1[10] = EditSearch.Tenyuryoku1?.ToString() ?? string.Empty;
+            param1[11] = EditSearch.Tenyuryoku2?.ToString() ?? string.Empty;
+            param1[12] = EditSearch.SupplierFrom?.Code ?? string.Empty;
+            param1[13] = EditSearch.SupplierTo?.Code ?? string.Empty;
+            param1[14] = EditSearch.WareFrom?.Code ?? string.Empty;
+            param1[15] = EditSearch.WareTo?.Code ?? string.Empty;
+            param1[16] = EditSearch.UserFrom?.Code ?? string.Empty;
+            param1[17] = EditSearch.UserTo?.Code ?? string.Empty;
+            if (FlgSho == 1)
+            {
+                param2[0] = EditSearch.ProductFrom?.Code ?? string.Empty;
+                param2[1] = EditSearch.ProductTo?.Code ?? string.Empty;
+            }
+        }
+        [RelayCommand]
+        private void RowDoubleClick(OrderList item)
+        {
+            if (item != null)
+            {
+                SelectedOrderHeader.Supplier =new BtListHelper(item.Supplier, item.SupplierName);
+                SelectedOrderHeader.Nohinbi = DateTime.Parse(item.Nohinbi);
+                SelectedOrderHeader.Ware = new BtListHelper(item.Ware, item.WareName);
+                SelectedOrderHeader.ToriKubun = int.Parse(item.Torihiki);
+                SelectedOrderHeader.DenpyoNo = item.DenpyoNo;
+                selectedOrderHeader.Hachubi = DateTime.Parse(item.Hachubi.Substring(0,4) + "/" + item.Hachubi.Substring(4, 2) + "/" + item.Hachubi.Substring(6, 2));
+                SelectedOrderHeader.Tenyuryoku = item.Tenyuryoku;
+                SelectedOrderHeader.Kanren1 = item.Kanren1;
+                SelectedOrderHeader.Kanren2 = item.Kanren2;
+                SelectedOrderHeader.User = new BtListHelper(item.Tanto,item.TantoName);
+
+                var wrk_para = new string[2];
+                wrk_para[0] = item.DenpyoNo;
+                wrk_para[1] = item.Torihiki;
+                OnQueryDetail(wrk_para);
+                SelectedTabIndex = 1;
+            } else return;
+        }
+        void OnQueryDetail(string[] param)
+        {
+            var sql_sub = "";
+
+            sql_sub = ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='COL' and H.名称CD=A.色CD),'.') COL名"
+            + ",GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名";
+
+            if (AppData.ClassCvnet.config.ColSizMei == 1) sql_sub = ",J.色名 COL名,J.サイズ名 サイズ名";
+
+            var sql_query = "select A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE,";
+
+            sql_query += sql_collist1;
+
+            sql_query += sql_sub;
+            sql_query += ",NVL((select H.メーカー品番 from HC$master_shohin H where H.商品CD=A.商品CD),'.') MKR品番";
+            sql_query += ",NVL((select H.仕入区分||' '||decode(H.仕入区分,1,'買取',2,'委託',3,'消化','') from HC$master_shohin H where H.商品CD=A.商品CD),'.') 仕入区分";
+
+            sql_query += " from HC$MASTER_SHOHIN_JAN J,HC$tran_tori1 A";
+            sql_query += " where A.商品CD=J.商品CD(+) AND A.色CD=J.色CD(+) AND A.サイズCD=J.サイズCD(+) AND A.ヘッダNO=:1 and A.明細取引区分=:2 order by A.ヘッダNO,A.行NO";
+
+            var ret_data = AppData.Http!.AspxSqlQuery(sql_query, param);
+            if (ret_data == null || ret_data.Rows.Count == 0)
+            {
+                ClientLib.MessageBox(this, "データがありません!");
+                return;
+            }
+            var list = (from DataRow dr in ret_data.Rows
+                        select new OrderDetail
+                        {
+                            ProductCD = dr["商品CD"].ToString() ?? string.Empty,
+                            ProductName = dr["明細名称"].ToString() ?? string.Empty,
+                            Maker = dr["MKR品番"].ToString() ?? string.Empty,
+                            Size = dr["サイズCD"].ToString() ?? string.Empty,
+                            SizeName = dr["サイズ名"].ToString() ?? string.Empty,
+                            Color = dr["色CD"].ToString() ?? string.Empty,
+                            ColorName = dr["COL名"].ToString() ?? string.Empty,
+                            JodaiKingaku = Convert.ToInt32(dr["上代金額"]),
+                            JodaiTanka = Convert.ToInt32(dr["上代単価"]),
+                            GedaiKingaku = Convert.ToInt32(dr["下代金額"]),
+                            GedaiTanka = Convert.ToInt32(dr["下代単価"]),
+                            Weight = Convert.ToInt32(dr["数量"]),
+                            Kubun = dr["仕入区分"].ToString() ?? string.Empty,
+                            Kanryo = dr["完了FLG"].ToString() ?? string.Empty,
+                            Abstracts = dr["明細メモ"].ToString() ?? string.Empty
+
+                        }).OrderBy(c => c.ProductCD).ToList();
+            Common.ConvertDotStringDel(list);
+            SelectedOrderDetail = new ObservableCollection<OrderDetail>(list);
+            int kei = 0;
+            int koukei = 0;
+            int koukei1 = 0;
+            for (var i = 0; i < SelectedOrderDetail.Count; i++) {
+                kei += SelectedOrderDetail[i].Weight;
+                koukei += SelectedOrderDetail[i].JodaiKingaku;
+                koukei1 += SelectedOrderDetail[i].GedaiKingaku;
+            }
+            Sum = kei;
+            TotalJodai = koukei;
+            TotalGedai = koukei1;
+        }
+        [RelayCommand]
+        public void ProductExpand() 
+        {
+            if (SelectedOrderHeader.Supplier.Code == null || SelectedOrderHeader.Supplier.Code == "") 
+            { ClientLib.MessageBoxError(this, "先に仕入先を入力してください"); 
+                return; 
+            }
+            if (Product.Code == null || Product.Code == "") return;
+            if(OnCheckMst() < 0) return;
+
+            if (AppData.ClassCvnet.config.MakerOnly == 0)
+            {
+                var v_skbn = "";
+                var v_sqlstr1 = "";
+                var v_sqlstr = "select 商品CD,\"メーカーCD\" from HC$master_shohin where 商品CD = '" + Product.Code + "'";
+                var wrk_csv = AppData.Http!.AspxSqlQuery(v_sqlstr);
+                if (wrk_csv.Rows.Count > 0)
+                {
+                    for (var i = 0; i < wrk_csv.Rows.Count; i++)
+                    {
+                        if (wrk_csv.Rows[i][1].ToString() != SelectedOrderHeader.Supplier.Code)
+                        {
+                            ClientLib.MessageBoxError(this, "仕入先の商品CD以外が存在します！");
+                            return;
+                        }
+                    }
+                }
+                var vm = new SubDlgSKU01ViewModel(Product.Code);
+                var window = new SubDlgSKU01View { DataContext = vm };
+                window.ShowDialog();
+            }
+        }
+
+        [RelayCommand]
+        private static int OnCheckMst() 
+        {
+            return 0;
+        }
+        #endregion
         public partial class SearchModel :ObservableObject 
         {
             [ObservableProperty]
             public string? denpyoNo1;
             [ObservableProperty]
-            public string? denpyoNo2;
+            private string? denpyoNo2;
             [ObservableProperty]
-            public DateTime? nohinbiFrom;
+            private DateTime? nohinbiFrom;
             [ObservableProperty]
-            public DateTime? nohinbiTo;
+            private DateTime? nohinbiTo;
             [ObservableProperty]
-            public int? toriKubunFrom;
+            private int? toriKubunFrom;
             [ObservableProperty]
-            public int? toriKubunTo;
+            private int? toriKubunTo;
             [ObservableProperty]
-            public string? kanren1From;
+            private string? kanren1From;
             [ObservableProperty]
-            public string? kanren1To;
+            private string? kanren1To;
             [ObservableProperty]
-            public string? kanren2From;
+            private string? kanren2From;
             [ObservableProperty]
-            public string? kanren2To;
+            private string? kanren2To;
             [ObservableProperty]
-            public string? tenyuryoku1;
+            private string? tenyuryoku1;
             [ObservableProperty]
-            public string? tenyuryoku2;
+            private string? tenyuryoku2;
             [ObservableProperty]
-            public BtListHelper? supplierFrom;
+            private BtListHelper? supplierFrom;
             [ObservableProperty]
-            public BtListHelper? supplierTo;
+            private BtListHelper? supplierTo;
             [ObservableProperty]
-            public BtListHelper? wareFrom;
+            private BtListHelper? wareFrom;
             [ObservableProperty]
-            public BtListHelper? wareTo;
+            private BtListHelper? wareTo;
             [ObservableProperty]
-            public BtListHelper? productFrom;
+            private BtListHelper? productFrom;
             [ObservableProperty]
-            public BtListHelper? productTo;
+            private BtListHelper? productTo;
             [ObservableProperty]
-            public BtListHelper? userFrom;
+            private BtListHelper? userFrom;
             [ObservableProperty]
-            public BtListHelper? userTo;
+            private BtListHelper? userTo;
             [ObservableProperty]
             private int? renkei;
         }
@@ -388,91 +548,103 @@ namespace CvnetClient.ViewModels
         public partial class OrderList : ObservableObject 
         {
             [ObservableProperty]
-            public string? denpyoNo;
+            private string? denpyoNo;
             [ObservableProperty]
-            public DateTime? nohinbi;
+            private string? nohinbi;
             [ObservableProperty]
-            public string? supplier;
+            private string? supplier;
             [ObservableProperty]
-            public string? supplierName;
+            private string? supplierName;
             [ObservableProperty]
-            public string? ware;
+            private string? ware;
             [ObservableProperty]
-            public string? wareName;
+            private string? wareName;
             [ObservableProperty]
-            public string? torihiki;
+            private string? torihiki;
             [ObservableProperty]
-            public string? weightSum;
+            private string? weightSum;
             [ObservableProperty]
-            public string? priceSum;
+            private string? priceSum;
             [ObservableProperty]
-            public string? kanren;
+            private string? tanto;
             [ObservableProperty]
-            private long? seq_no;
+            private string? tantoName;
+            [ObservableProperty]
+            private string? kanren1;
+            [ObservableProperty]
+            private string? kanren2;
+            [ObservableProperty]
+            private string? tenyuryoku;
+            [ObservableProperty]
+            private decimal vdateCreate;
+            [ObservableProperty]
+            private decimal vdateUpdate;
+            [ObservableProperty]
+            private string? hachubi;
         }
 
         public partial class OrderHeader : ObservableObject
         {
             [ObservableProperty]
-            public string? denpyoNo;
+            private string? denpyoNo;
             [ObservableProperty]
-            public string? hachubi;
+            private DateTime? hachubi;
             [ObservableProperty]
-            public DateTime? nohinbi;
+            private DateTime? nohinbi;
             [ObservableProperty]
-            public int? toriKubun;
+            private int? toriKubun;
             [ObservableProperty]
-            public string? kanren1;
+            private string? kanren1;
             [ObservableProperty]
-            public string? kanren2;
+            private string? kanren2;
             [ObservableProperty]
-            public string? tenyuryoku;
+            private string? tenyuryoku;
             [ObservableProperty]
-            public BtListHelper? supplier;
+            private BtListHelper? supplier;
             [ObservableProperty]
-            public BtListHelper? ware;
+            private BtListHelper? ware;
             [ObservableProperty]
-            public BtListHelper? user;
+            private BtListHelper? user;
             [ObservableProperty]
-            public string? biko;
+            private string? biko;
             [ObservableProperty]
-            public string? createDate;
+            private string? createDate;
             [ObservableProperty]
-            public string? updateDate;
+            private string? updateDate;
         }
 
         public partial class OrderDetail : ObservableObject
         {
             [ObservableProperty]
-            public string? productCD;
+            private string? productCD;
             [ObservableProperty]
-            public string? productName;
+            private string? productName;
             [ObservableProperty]
-            public string? color;
+            private string? color;
             [ObservableProperty]
-            public string? colorName;
+            private string? colorName;
             [ObservableProperty]
-            public string? size;
+            private string? size;
             [ObservableProperty]
-            public string? sizeName;
+            private string? sizeName;
             [ObservableProperty]
-            public string? weight;
+            private int weight;
             [ObservableProperty]
-            public string? jodaiTanka;
+            private int jodaiTanka;
             [ObservableProperty]
-            public string? jodaiKingaku;
+            private int jodaiKingaku;
             [ObservableProperty]
-            public string? gedaiTanka;
+            private int gedaiTanka;
             [ObservableProperty]
-            public string? gedaiKingaku;
+            private int gedaiKingaku;
             [ObservableProperty]
-            public string? abstracts;
+            private string? abstracts;
             [ObservableProperty]
-            public string? kanryo;
+            private string? kanryo;
             [ObservableProperty]
-            public string? maker;
+            private string? maker;
             [ObservableProperty]
-            public string? kubun;
+            private string? kubun;
         }
     }
 }

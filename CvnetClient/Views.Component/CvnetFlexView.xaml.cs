@@ -40,11 +40,13 @@ namespace CvnetClient.Views
         private void AddIndexColumn()
         {
             // Check if "行" column already exists (regardless of column type)
-            foreach (var col in Columns)
-            {
-                if (col.Header?.ToString() == "行")
-                    return;
-            }
+            if (ColumnExists("行"))
+                return;
+            //foreach (var col in Columns)
+            //{
+            //    if (col.Header?.ToString() == "行")
+            //        return;
+            //}
 
             var textFactory = new FrameworkElementFactory(typeof(TextBlock));
             textFactory.SetBinding(TextBlock.TextProperty, new System.Windows.Data.Binding
@@ -82,12 +84,14 @@ namespace CvnetClient.Views
         private void AddDeleteColumn()
         {
             // already added?
-            foreach (var col in Columns)
-            {
-                if (col is DataGridTemplateColumn templateCol && templateCol.Header?.ToString() == "削除")
-                    return;
-            }
-            
+            if (ColumnExists("削除"))
+                return;
+            //foreach (var col in Columns)
+            //{
+            //    if (col is DataGridTemplateColumn templateCol && templateCol.Header?.ToString() == "削除")
+            //        return;
+            //}
+
             var deleteTemplate = new DataTemplate();
             var factory = new FrameworkElementFactory(typeof(Button));
             factory.SetResourceReference(Button.StyleProperty, "DeleteFlexBtn");
@@ -131,7 +135,18 @@ namespace CvnetClient.Views
                 }
             }
         }
+        private bool ColumnExists(string headerText)
+        {
+            foreach (var col in Columns)
+            {
+                if (col.Header is TextBlock tb && tb.Text == headerText)
+                    return true;
 
+                if (col.Header is string s && s == headerText)
+                    return true;
+            }
+            return false;
+        }
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.CommandParameter is object item)
