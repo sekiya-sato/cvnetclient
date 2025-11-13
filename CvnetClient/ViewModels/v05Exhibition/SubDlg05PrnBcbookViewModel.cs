@@ -16,14 +16,42 @@ namespace CvnetClient.ViewModels
     
     public partial class SubDlg05PrnBcbookViewModel : BaseViewModel
     {
-        public enum OutPutType { 正規商品, 中止商品CD, 全て }
+        #region Declare
+        public enum OutPutType { Product, Discontinued, All }
         public enum BarcodeType { JAN, CODE39, NW7 }
-
+        private BizArray para;
+        private BizArray v_flg;
         [ObservableProperty]
-        Condition? conditions;        
-
-        public void OnInit() 
+        Condition? conditions;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
         {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             Conditions = new Condition();
             Conditions.ExhibitionFrom = ".";
             Conditions.ExhibitionTo = "ZZZZZZZZ";
@@ -32,6 +60,8 @@ namespace CvnetClient.ViewModels
             Conditions.ProductFrom = ".";
             Conditions.ProductTo = "ZZZZZZZZ"; 
         }
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelExhibition1(object value)
         {
@@ -72,7 +102,6 @@ namespace CvnetClient.ViewModels
                 Conditions.BrdToName = get_sel00.Name;
             }
         }
-
         [RelayCommand]
         public void SelProd1(object value)
         {
@@ -92,8 +121,7 @@ namespace CvnetClient.ViewModels
                 Conditions.ProductTo = get_sel00.Code;
                 Conditions.ProductToName = get_sel00.Name;
             }
-        }
-        
+        }       
         [RelayCommand]
         async Task DoPrintAsync()
         {
@@ -186,7 +214,7 @@ namespace CvnetClient.ViewModels
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
-
+        #endregion
         public partial class Condition : ObservableObject
         {
             [ObservableProperty]
@@ -214,7 +242,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? productToName;
             [ObservableProperty]
-            private OutPutType selectedOutPut = OutPutType.正規商品;
+            private OutPutType selectedOutPut = OutPutType.Product;
             [ObservableProperty]
             private BarcodeType selectedBarcode = BarcodeType.JAN;
         }

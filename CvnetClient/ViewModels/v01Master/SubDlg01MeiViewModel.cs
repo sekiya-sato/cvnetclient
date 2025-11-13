@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
+using CvnetClient.Utils;
 using CvnetClient.Views;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -13,8 +14,6 @@ namespace CvnetClient.ViewModels
         List<string>? listKubun;
         [ObservableProperty]
         string? selectKubun;
-        private string _mode = "0";
-        public string Mode => _mode;
         partial void OnSelectKubunChanged(string? value)
         {
             // 区分が変わったらStartCodeを初期化
@@ -132,7 +131,8 @@ namespace CvnetClient.ViewModels
         /// </summary>
         [ObservableProperty]
         MasterMeisho? editMeisho;
-
+        private BizArray para;
+        private BizArray v_flg;
         [ObservableProperty]
         string labelRyakusho = "略称"; // ラベルの初期値
         [ObservableProperty]
@@ -141,52 +141,70 @@ namespace CvnetClient.ViewModels
         string labelRenban = "連番";
         [ObservableProperty]
         string labelKana = "カナ";
-
-
         string sql_p3 = """
 				select * from(select A.SEQ_NO, A.VDATE_CREATE, A.VDATE_UPDATE, A.名称CD, A.名称, A.略称, A.ランク, A.連番, A.カナ, A.POS区分,
 				(A.入力社員CD || ' ' || (select B.名前 from HC$MASTER_SHAIN B where B.社員CD = A.入力社員CD)) 最終修正者
 				from HC$Master_MEISHO A where A.名称区分=:1 and A.名称CD{0}:2 order by A.名称CD {1}) where rownum<={2}
 			""";
-        // 前検索： {0} は <= {1}は desc {2}はAppData.maxQueryCnt
-        // 後検索および通常： {0} は >= {1}は asc {2}はAppData.maxQueryCnt
-        /// <summary>
-        /// 初期化
-        /// </summary>
-        public void OnInit(object? param)
-        {
-            if (param is string mode) { 
-                _mode = mode;
 
-                if (mode == "0") {
-                    var kubun = AppData.Http?.AspxSqlQuery("""
+        public void OnInit(object? init_para = null, object? init_flg = null)
+        {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
+
+            if (para[0].ToString() == "0")
+            {
+                var kubun = AppData.Http?.AspxSqlQuery("""
 				select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='IDX'  and a.ランク>= '1' order by a.名称CD
 				""", new string[0]);
-                    if (kubun != null)
-                    {
-                        ListKubun = (from DataRow dr in kubun.Rows
-                                     select string.Format($"{dr["名称CD"]} {dr["名称"]}")
-                                     ).ToList();
-                        SelectKubun = ListKubun[0];
-                    }
-                } else if (mode == "1") { 
+                if (kubun != null)
+                {
+                    ListKubun = (from DataRow dr in kubun.Rows
+                                 select string.Format($"{dr["名称CD"]} {dr["名称"]}")
+                                 ).ToList();
+                    SelectKubun = ListKubun[0];
+                }
+            }
+            else if (para[0].ToString() == "1")
+            {
                 var kubun = AppData.Http?.AspxSqlQuery("""
 				                select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='IDX'  and a.ランク>= '1' order by a.名称CD
 				                """, new string[0]);
-                    if (kubun != null)
-                    {
-                        ListKubun = new List<string>();
-                        ListKubun.Add("IDX 名称区分インデックス");
+                if (kubun != null)
+                {
+                    ListKubun = new List<string>();
+                    ListKubun.Add("IDX 名称区分インデックス");
 
-                        ListKubun.AddRange(
-                            from DataRow dr in kubun.Rows
-                            select $"{dr["名称CD"]} {dr["名称"]}"
-                        );
-                        SelectKubun = ListKubun[0];
-                    }
+                    ListKubun.AddRange(
+                        from DataRow dr in kubun.Rows
+                        select $"{dr["名称CD"]} {dr["名称"]}"
+                    );
+                    SelectKubun = ListKubun[0];
                 }
-            }
-            
+            }           
         }
         /// <summary>
         /// 一覧表示

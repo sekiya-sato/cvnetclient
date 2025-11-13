@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
+using CvnetClient.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,43 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg09Upkeihi2ViewModel : BaseViewModel
     {
-        public enum PriceType { しない, する }
+        #region Declare
+        public enum PriceType { Not, Do }
         [ObservableProperty]
         SearchCondition? condition;
         [ObservableProperty]
         public Dictionary<string, string>? comboListHow;
-        public void OnInit() 
-        { 
+        private BizArray para;
+        private BizArray v_flg;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
+        {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             Condition = new SearchCondition();
 
             ComboListHow = new Dictionary<string, string>
@@ -36,6 +67,8 @@ namespace CvnetClient.ViewModels
             Condition.DateFrom = new DateTime(Condition.Date.Value.Year, Condition.Date.Value.Month, 1);
             Condition.DateTo = Condition.DateFrom?.AddMonths(1).AddDays(-1);
         }
+        #endregion
+        #region Function
         [RelayCommand]
         public void DoExecute()
         {
@@ -52,7 +85,7 @@ namespace CvnetClient.ViewModels
             var wrk_para = new string[6];
             wrk_para[0] = Condition.ComboBox.ToString() ?? string.Empty;
             wrk_para[1] = Condition.Date?.ToString("yyyyMMdd") ?? string.Empty;
-            if (Condition.SelectedPrice == PriceType.しない) {
+            if (Condition.SelectedPrice == PriceType.Not) {
                 wrk_para[2] = "0";
             }
             else {
@@ -77,11 +110,11 @@ namespace CvnetClient.ViewModels
             }
 
         }
-
+        #endregion
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
-            private PriceType selectedPrice = PriceType.しない;
+            private PriceType selectedPrice = PriceType.Not;
             [ObservableProperty]
             private string? comboBox;
             [ObservableProperty]

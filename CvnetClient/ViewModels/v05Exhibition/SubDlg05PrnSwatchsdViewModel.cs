@@ -8,17 +8,48 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg05PrnSwatchsdViewModel : BaseViewModel
     {
+        #region Declare
         [ObservableProperty]
         SearchCondition? condition;
-        public void OnInit() 
+        private BizArray para;
+        private BizArray v_flg;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
         {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             Condition = new SearchCondition();
             var sql_str = "select m.名称||nvl((select (' '||t.名称) from HC$MASTER_MEISHO t where t.名称区分='TNJ' and t.名称CD=m.名称),'') 展示会"
                 + " from HC$MASTER_MEISHO m where m.名称区分='CDS' and m.名称CD='01'";
             var ret_csv = AppData.Http!.AspxSqlQuery(sql_str);
             if (ret_csv.Rows.Count > 0) Condition.Exhibition = ret_csv.Rows[0][0].ToString();
         }
-
+        #endregion
+        #region Function
         [RelayCommand]        
         public void SelCust(object value)
         {
@@ -114,7 +145,7 @@ namespace CvnetClient.ViewModels
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
-
+        #endregion
         public partial class SearchCondition : ObservableObject {
             [ObservableProperty]
             private string? exhibition;

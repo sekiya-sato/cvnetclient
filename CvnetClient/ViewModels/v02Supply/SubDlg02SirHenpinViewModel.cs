@@ -1,22 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg02SirHenpinViewModel : BaseViewModel
     {
-        public enum PrintType { 通常発行,再発行}
+        public enum PrintType { Regular,Reissue}
         [ObservableProperty]
         SearchCondition? condition;
         [ObservableProperty]
@@ -25,8 +17,35 @@ namespace CvnetClient.ViewModels
         public Dictionary<string,string>? comboList2;
         [ObservableProperty]
         public string? insatsu_flg = "0";
-        public void OnInit() 
-        { 
+        private BizArray para;
+        private BizArray v_flg;
+        public void OnInit(object? init_para = null, object? init_flg = null) 
+        {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             Condition = new SearchCondition();
 
             ComboList1 = new Dictionary<string, string>
@@ -179,7 +198,7 @@ namespace CvnetClient.ViewModels
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.通常発行;
+            private PrintType selectedPrint = PrintType.Regular;
             [ObservableProperty]
             private string? selectedCombo1;
             [ObservableProperty]
@@ -203,7 +222,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private long? manualInpTo;
             [ObservableProperty]
-            private string? selectedCombo2;
+            private string? selectedCombo2;           
         }
     }
 }

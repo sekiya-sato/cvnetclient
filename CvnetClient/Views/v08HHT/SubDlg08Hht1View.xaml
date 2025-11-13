@@ -45,13 +45,13 @@ Margin="0,0,20,0"/>
                  GroupName="OutPutType"
                  IsChecked="{Binding Condition.SelectedOutPut, 
                              Converter={StaticResource StringToBoolConverter}, 
-                             ConverterParameter=ローカル, Mode=TwoWay}"
+                             ConverterParameter=Local, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
             <RadioButton Grid.Column="2" Content="ハンディサーバ" 
                  GroupName="OutPutType"
                  IsChecked="{Binding Condition.SelectedOutPut, 
                               Converter={StaticResource StringToBoolConverter}, 
-                              ConverterParameter=ハンディサーバ, Mode=TwoWay}"
+                              ConverterParameter=HandyServer, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
         </Grid>
 
@@ -70,13 +70,13 @@ Margin="0,0,20,0"/>
                  GroupName="OutPutHowType"
                  IsChecked="{Binding Condition.SelectedOutPutHow, 
                              Converter={StaticResource StringToBoolConverter}, 
-                             ConverterParameter=全件, Mode=TwoWay}"
+                             ConverterParameter=All, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
             <RadioButton Grid.Column="2" Content="法人縛り" Visibility="{Binding Condition.ShowOrNot}"
                  GroupName="OutPutHowType"
                  IsChecked="{Binding Condition.SelectedOutPutHow, 
                               Converter={StaticResource StringToBoolConverter}, 
-                              ConverterParameter=法人縛り, Mode=TwoWay}"
+                              ConverterParameter=Corporate, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
         </Grid>
 

@@ -8,12 +8,41 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg08PrnHhtlist06ViewModel : BaseViewModel
     {
-        public enum PrintType { 通常発行, 再発行}
-
+        #region Declare
+        public enum PrintType { Regular, Reissue}
         [ObservableProperty]
-        SearchCondition? condition;        
-        public void OnInit() 
+        SearchCondition? condition;
+        private BizArray para;
+        private BizArray v_flg;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
         {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             Condition = new SearchCondition();
             Condition.ReceiptTo = new BtListHelper("99999999", "");
             Condition.DateFrom = DateTime.Now;
@@ -21,7 +50,8 @@ namespace CvnetClient.ViewModels
             Condition.NumberFrom = 0;
             Condition.NumberTo = 9999999999;
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelShipment1(object value)
         {
@@ -58,7 +88,6 @@ namespace CvnetClient.ViewModels
                 Condition.ReceiptTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         async Task DoPrintAsync() 
         {
@@ -117,10 +146,11 @@ namespace CvnetClient.ViewModels
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
+        #endregion
         public partial class SearchCondition : ObservableObject
         {
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.通常発行;
+            private PrintType selectedPrint = PrintType.Regular;
             [ObservableProperty]
             private BtListHelper? shipmentFrom;
             [ObservableProperty]

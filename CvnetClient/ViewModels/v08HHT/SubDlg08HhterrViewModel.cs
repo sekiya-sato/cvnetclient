@@ -1,27 +1,50 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg08HhterrViewModel : BaseViewModel
     {
-        public enum PrintType {スプール,CSV }
+        #region Declare
+        public enum PrintType {Spool,CSV }
         [ObservableProperty]
         SearchCondtion? condition;
         [ObservableProperty]
         public Dictionary<string, string> comboListProcess;
-        public void OnInit() 
+        private BizArray para;
+        private BizArray v_flg;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
         {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             Condition = new SearchCondtion();
 
             ComboListProcess = new Dictionary<string, string>
@@ -42,6 +65,8 @@ namespace CvnetClient.ViewModels
             Condition.WareFrom = "0";
             Condition.WareTo = "99999999";
         }
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelShop1(object value)
         {
@@ -159,6 +184,7 @@ namespace CvnetClient.ViewModels
                 catch (Exception ex) { }
             }
         }
+        #endregion
         public partial class SearchCondtion : ObservableObject 
         {
             [ObservableProperty]
@@ -176,7 +202,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? wareToName;
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.スプール;
+            private PrintType selectedPrint = PrintType.Spool;
         }
     }
 }

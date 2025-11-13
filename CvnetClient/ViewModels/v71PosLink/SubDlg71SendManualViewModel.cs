@@ -1,22 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using CvnetClient.Utils;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg71SendManualViewModel : BaseViewModel
     {
+        #region Declare
         public enum WMSType { WMSOUT , WMSIN }
         [ObservableProperty]
         private WMSType selectedWMS;
@@ -30,9 +25,37 @@ namespace CvnetClient.ViewModels
         private string? resultText;
         [ObservableProperty]
         private string? subject;
-
-        public void OnInit() 
+        private BizArray para;
+        private BizArray v_flg;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
         {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             SelectedWMS = WMSType.WMSOUT;
             if (AppData.ClassCvnet.config.UserFlg == 23)
             {
@@ -44,12 +67,12 @@ namespace CvnetClient.ViewModels
             ResultText = string.Empty;
             
         }
-
+        #endregion
+        #region Function
         partial void OnDayAfterChanged(int value)
         {
             Subject = "送信対象：～" + DateTime.Now.AddDays(value).ToString("yyyy/MM/dd");
         }
-
         [RelayCommand]
         public void DoExecute()
         {
@@ -84,7 +107,6 @@ namespace CvnetClient.ViewModels
 
             Result = wrk_mess;
         }
-
         public void UpdateLogDocument()
         {
             var doc = new FlowDocument
@@ -150,7 +172,6 @@ namespace CvnetClient.ViewModels
 
             LogDocument = doc;
         }
-
         private string AppendCR(string input)
         {
             if (string.IsNullOrEmpty(input)) return string.Empty;
@@ -161,5 +182,6 @@ namespace CvnetClient.ViewModels
                 .Replace("\r", "\n")
                 .Replace("\n", "\r\n");
         }
+        #endregion
     }
 }

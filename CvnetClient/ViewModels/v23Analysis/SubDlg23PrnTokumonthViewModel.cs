@@ -1,31 +1,55 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg23PrnTokumonthViewModel : BaseViewModel
     {
-        public enum PrintType { スプール, CSV }
-        public enum ProcessType { 出荷売上, 店頭売上, 全て }
-        public enum TantoType { 売上伝票, 営業担当別予算マスタ }
+        #region Declare
+        public enum PrintType { Spool, CSV }
+        public enum ProcessType { Shipment, Store, All }
+        public enum TantoType { Sales, Budget }
         [ObservableProperty]
         SearchCondition? condition;
         [ObservableProperty]
         public int flg;
         [ObservableProperty]
         public int flg2;
-        public void OnInit() 
-        { 
+        private BizArray para;
+        private BizArray v_flg;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
+        {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
+
             Condition = new SearchCondition();
             Condition.Tokuiname = "得意先";
             Condition.Date = DateTime.Now;
@@ -41,6 +65,8 @@ namespace CvnetClient.ViewModels
             Flg = 0;
             Flg2 = 0;
         }
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelTanto1(object value)
         {
@@ -101,7 +127,6 @@ namespace CvnetClient.ViewModels
                 Condition.ShopToName = get_sel00.Name;
             }
         }
-
         [RelayCommand]
         public void ActiveOrNot()
         {
@@ -118,7 +143,6 @@ namespace CvnetClient.ViewModels
                 Flg = 0;
             }
         }
-
         [RelayCommand]
         public void ChangeTokui() 
         {
@@ -129,10 +153,7 @@ namespace CvnetClient.ViewModels
                 Condition.Tokuiname = "得意先";
                 Flg2 = 0;
             }
-        }
-
-        
-
+        }        
         [RelayCommand]
         async Task DoPrintAsync()
         {
@@ -358,6 +379,7 @@ namespace CvnetClient.ViewModels
                 catch (Exception ex) { }
             }
         }
+        #endregion
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
@@ -385,11 +407,11 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? tantoToName;
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.スプール;
+            private PrintType selectedPrint = PrintType.Spool;
             [ObservableProperty]
-            private ProcessType selectedProcess = ProcessType.出荷売上;
+            private ProcessType selectedProcess = ProcessType.Shipment;
             [ObservableProperty]
-            private TantoType selectedTanto = TantoType.売上伝票;
+            private TantoType selectedTanto = TantoType.Sales;
             [ObservableProperty]
             private DateTime? dateFrom;
             [ObservableProperty]

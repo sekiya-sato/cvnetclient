@@ -138,12 +138,12 @@
 GroupName="DayType"
         IsChecked="{Binding Condition.SelectedDay, 
                             Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=日付表示, Mode=TwoWay}"
+                            ConverterParameter=DateDisp, Mode=TwoWay}"
 Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="旬表示" GroupName="DayType"
         IsChecked="{Binding Condition.SelectedDay, 
                             Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=旬表示, Mode=TwoWay}"/>
+                            ConverterParameter=SeasonDisp, Mode=TwoWay}"/>
                 </Grid>
 
                 <TextBlock Grid.Column="1" Text="商品マスタの納品日を出力" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
@@ -163,12 +163,12 @@ Margin="0,0,20,0"/>
   GroupName="OutPutType"
           IsChecked="{Binding Condition.SelectedOutPut, 
                               Converter={StaticResource StringToBoolConverter}, 
-                              ConverterParameter=全て, Mode=TwoWay}"
+                              ConverterParameter=All, Mode=TwoWay}"
   Margin="0,0,20,0"/>
                 <RadioButton Grid.Column="2" Content="正規商品" GroupName="OutPutType"
           IsChecked="{Binding Condition.SelectedOutPut, 
                               Converter={StaticResource StringToBoolConverter}, 
-                              ConverterParameter=正規商品, Mode=TwoWay}"/>
+                              ConverterParameter=Product, Mode=TwoWay}"/>
             </Grid>
 
             <Grid Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
@@ -190,12 +190,12 @@ Margin="0,0,20,0"/>
   GroupName="OrderType"
           IsChecked="{Binding SelectedOrder, 
                               Converter={StaticResource StringToBoolConverter}, 
-                              ConverterParameter=しない, Mode=TwoWay}"
+                              ConverterParameter=Not, Mode=TwoWay}"
   Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="する" GroupName="OrderType" VerticalAlignment="Center"
           IsChecked="{Binding SelectedOrder, 
                               Converter={StaticResource StringToBoolConverter}, 
-                              ConverterParameter=する, Mode=TwoWay}"/>
+                              ConverterParameter=Do, Mode=TwoWay}"/>
 
                 </Grid>
                 <TextBlock Grid.Column="1" Text="「する」の場合のみ、得意先、得意先分類の設定が可能です" VerticalAlignment="Center"></TextBlock>
@@ -221,12 +221,12 @@ Margin="0,0,20,0"/>
                 GroupName="ShopType"
                 IsChecked="{Binding SelectedShop, 
               Converter={StaticResource StringToBoolConverter}, 
-              ConverterParameter=全て, Mode=TwoWay}"
+              ConverterParameter=All, Mode=TwoWay}"
                 Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="得意先別" GroupName="ShopType"
                 IsChecked="{Binding SelectedShop, 
               Converter={StaticResource StringToBoolConverter}, 
-              ConverterParameter=得意先別, Mode=TwoWay}"/>
+              ConverterParameter=ByCust, Mode=TwoWay}"/>
 
                 </Grid>
 

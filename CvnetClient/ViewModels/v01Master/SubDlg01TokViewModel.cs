@@ -11,6 +11,7 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg01TokViewModel : BaseViewModel
     {
+        #region Declare
         [ObservableProperty]
         ObservableCollection<MasterShop>? listShop;
         [ObservableProperty]
@@ -50,6 +51,8 @@ namespace CvnetClient.ViewModels
         private BizArray col_list;
         [ObservableProperty]
         string? startCode;
+        private BizArray para;
+        private BizArray v_flg;
         #region ComboBox
         [ObservableProperty]
         public Dictionary<string, string> comboListBumon;
@@ -132,7 +135,6 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public Dictionary<string, string> comboListBunrui20;
         #endregion 
-
         string sql_collist = """
                得意先CD,得意先名,カナ,旧コード,略称,郵便番号,住所1,住所2,住所3,TEL,FAX,
         宛名FLG1,宛名FLG2,宛名FLG3,宛名名称1,宛名名称2,営業担当CD,店種区分,坪数,在庫管理FLG,
@@ -147,10 +149,36 @@ namespace CvnetClient.ViewModels
         ,名称CD11,名称CD12,名称CD13,名称CD14,名称CD15,名称CD16,名称CD17,名称CD18,名称CD19,名称CD20
         ,得意先MAIL,登録番号
         """;
+        #endregion
 
-        
-        public void OnInit() 
-        { 
+
+        public void OnInit(object? init_para = null, object? init_flg = null) 
+        {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             EditShop = new MasterShop();
             #region ComboList Init
             ComboListDay = new Dictionary<string, string>

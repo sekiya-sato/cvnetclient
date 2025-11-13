@@ -7,10 +7,40 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg09UpsimeViewModel : BaseViewModel
     {
+        #region Declare
         [ObservableProperty]
         SearchCondition? condition;
-        public void OnInit() 
-        { 
+        private BizArray para;
+        private BizArray v_flg;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, object? init_flg = null) 
+        {
+            if (init_para != null)
+            {
+                if (init_para is string s)
+                {
+                    var v_para = new string[] { s };
+                    para = new BizArray(v_para);
+                }
+                else if (init_para is string[] arr)
+                    para = new BizArray(arr);
+                else para = new BizArray();
+            }
+            else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para = new string[] { s };
+                    v_flg = new BizArray(v_para);
+                }
+                else if (init_flg is string[] arr)
+                    v_flg = new BizArray(arr);
+                else v_flg = new BizArray();
+            }
+            else v_flg = new BizArray();
             Condition = new SearchCondition();
 
             var ret_para = AppData.ClassCvnet.GetSime();
@@ -26,7 +56,8 @@ namespace CvnetClient.ViewModels
                 Condition.Person = "最終更新者:" + wrk_csv.Rows[0][1].ToString();
             }
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void DoExecute() 
         {
@@ -63,6 +94,7 @@ namespace CvnetClient.ViewModels
             wrk_mess += "\n経過時間：" + elapsed.ToString(@"hh\:mm\:ss");
             ClientLib.MessageBoxOk(this, "更新終了しました\n" + wrk_mess, "メッセージ");
         }
+        #endregion
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
