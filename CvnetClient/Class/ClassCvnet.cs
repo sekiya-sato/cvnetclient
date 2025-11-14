@@ -2590,13 +2590,16 @@ namespace CvnetBaseCore
         /// <returns>CSVデータ(1列目=0,倉庫CD,倉庫名, 2列目=1,店舗CD,店舗名,在管FLG,店種)</returns>
         public DataTable AspxSqlQueryImp()
         {
-            if (AppData.ClassCvnet.SysImp.Rows.Count > 0) return AppData.ClassCvnet.SysImp;
+            if (AppData.ClassCvnet.SysImp != null && AppData.ClassCvnet.SysImp.Rows.Count > 0) return AppData.ClassCvnet.SysImp;
             string sql_str0 = "select '0' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD=:1";
             sql_str0 += " union ";
             sql_str0 += "select '1' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD=:2";
             sql_str0 += " union ";
             sql_str0 += "select '2' 区分,得意先CD,得意先名,在庫管理FLG,店種区分,名称CD01,NVL((SELECT 名称 FROM HC$MASTER_MEISHO WHERE 名称区分='C01' AND 名称CD=名称CD01),'') 名称01 from HC$master_tokui where 得意先CD='00000001'";
             var para0 = new BizArray();
+            if (AppData.ClassCvnet.SysMst == null) {
+                AspxSqlQuerySysMst();
+            }
             para0.Set(0, AppData.ClassCvnet.SysMst._data.Rows[0][21].ToString() ?? string.Empty);
             para0.Set(1, AppData.ClassSatoo.SHAIN_Tenpo);
             var ret_csv0 = AppData.Http?.AspxSqlQuery(sql_str0, para0.ToArray());

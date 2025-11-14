@@ -1,32 +1,30 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg23PrnDayreportViewModel : BaseViewModel
     {
-        public enum PrintType { スプール, CSV}
+        #region Declare
+        public enum PrintType { Spool, CSV}
         [ObservableProperty]
         SearchCondition? condition;
-        public void OnInit() 
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
             Condition = new SearchCondition();
             Condition.ShopFrom = "0";
             Condition.ShopTo = "99999999";
             Condition.DateFrom = DateTime.Now;
             Condition.DateTo = DateTime.Now;
         }
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelShop1(object value)
         {
@@ -202,6 +200,7 @@ namespace CvnetClient.ViewModels
                 catch(Exception ex) { }
             }
         }
+        #endregion
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
@@ -213,13 +212,11 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? shopToName;
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.スプール;
+            private PrintType selectedPrint = PrintType.Spool;
             [ObservableProperty]
             private DateTime? dateFrom;
             [ObservableProperty]
             private DateTime? dateTo;
         }
     }
-
-
 }

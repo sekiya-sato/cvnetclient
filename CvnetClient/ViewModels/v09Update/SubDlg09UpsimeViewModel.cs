@@ -7,10 +7,14 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg09UpsimeViewModel : BaseViewModel
     {
+        #region Declare
         [ObservableProperty]
         SearchCondition? condition;
-        public void OnInit() 
-        { 
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
+        {
+            OnInitBase(init_para, init_flg);
             Condition = new SearchCondition();
 
             var ret_para = AppData.ClassCvnet.GetSime();
@@ -26,7 +30,8 @@ namespace CvnetClient.ViewModels
                 Condition.Person = "最終更新者:" + wrk_csv.Rows[0][1].ToString();
             }
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void DoExecute() 
         {
@@ -63,6 +68,7 @@ namespace CvnetClient.ViewModels
             wrk_mess += "\n経過時間：" + elapsed.ToString(@"hh\:mm\:ss");
             ClientLib.MessageBoxOk(this, "更新終了しました\n" + wrk_mess, "メッセージ");
         }
+        #endregion
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]

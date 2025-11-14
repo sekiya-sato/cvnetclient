@@ -5,16 +5,10 @@ using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
 using Microsoft.Win32;
-using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media.Imaging;
-using static System.Net.WebRequestMethods;
 
 namespace CvnetClient.ViewModels
 {
@@ -74,7 +68,10 @@ namespace CvnetClient.ViewModels
         private readonly string _dataPath = AppData.DataAddPath;
         #endregion
 
-        public void OnInit() {
+        public void OnInit(object? init_para = null, string? init_flg = null) {
+
+            OnInitBase(init_para, init_flg);
+
             EditWorker = new MasterWorker();
             #region ComboBox
             var comboList = new Dictionary<string, string>();

@@ -10,21 +10,26 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg30InpMbiViewModel : BaseViewModel
     {
+        #region Declare
         [ObservableProperty]
         ObservableCollection<Budget>? budgetList;
         [ObservableProperty]
         public int? sum;
         [ObservableProperty]
         Search? searchCond;
-        
-
-        public void OnInit() {
-            SearchCond = new Search();
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) {
+            if (init_para != null)
+            {
+                OnInitBase(init_para, init_flg);
+                SearchCond = new Search();
             SearchCond.Date = DateTime.Now;
             SearchCond.ItemTo = "zzzzzzzzzzzzzz";
             //SearchCond.Date = DateOnly.TryParse(DateTime.Now.ToString(), out null);
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         void DoSearch() {
             int strFLG = 0;
@@ -110,12 +115,10 @@ namespace CvnetClient.ViewModels
 
             UpdateSum();
         }
-
         private void UpdateSum()
         {
             Sum = BudgetList?.Sum(x => x.BudgetPrice ?? 0) ?? 0;
         }
-
         [RelayCommand]
         void DoSum() 
         {
@@ -156,7 +159,6 @@ namespace CvnetClient.ViewModels
                 ClientLib.MessageBoxOk(this, "登録しました。");
             }
         }
-
         [RelayCommand]
         public void SelItem1(object value)
         {
@@ -167,7 +169,6 @@ namespace CvnetClient.ViewModels
                 SearchCond.ItemFromName = get_sel00.Name;
             }
         }
-
         [RelayCommand]
         public void SelItem2(object value)
         {
@@ -188,43 +189,42 @@ namespace CvnetClient.ViewModels
                 SearchCond.BrdName = get_sel00.Name;
             }
         }
-    }
-
-    public partial class Budget : ObservableObject 
-    {
-        [ObservableProperty]
-        public string? shopCD;
-        [ObservableProperty]
-        public string? brdCD;        
-        [ObservableProperty]
-        public string? itemCD;        
-        [ObservableProperty]
-        public string? itemName;
-        [ObservableProperty]       
-        public string? date;
-        [ObservableProperty]
-        public int? quantity;
-        [ObservableProperty]
-        public int? budgetPrice;
-        [ObservableProperty]
-        public string? inpName;        
-    }
-
-    public partial class Search : ObservableObject 
-    {
-        [ObservableProperty]
-        public DateTime? date;
-        [ObservableProperty]
-        public string? brd;
-        [ObservableProperty] 
-        public string? brdName;
-        [ObservableProperty]
-        public string? itemFrom;
-        [ObservableProperty]
-        public string? itemTo;
-        [ObservableProperty]
-        public string? itemFromName;
-        [ObservableProperty]
-        public string? itemToName;
+        #endregion
+        public partial class Budget : ObservableObject
+        {
+            [ObservableProperty]
+            public string? shopCD;
+            [ObservableProperty]
+            public string? brdCD;
+            [ObservableProperty]
+            public string? itemCD;
+            [ObservableProperty]
+            public string? itemName;
+            [ObservableProperty]
+            public string? date;
+            [ObservableProperty]
+            public int? quantity;
+            [ObservableProperty]
+            public int? budgetPrice;
+            [ObservableProperty]
+            public string? inpName;
+        }
+        public partial class Search : ObservableObject
+        {
+            [ObservableProperty]
+            public DateTime? date;
+            [ObservableProperty]
+            public string? brd;
+            [ObservableProperty]
+            public string? brdName;
+            [ObservableProperty]
+            public string? itemFrom;
+            [ObservableProperty]
+            public string? itemTo;
+            [ObservableProperty]
+            public string? itemFromName;
+            [ObservableProperty]
+            public string? itemToName;
+        }
     }   
 }

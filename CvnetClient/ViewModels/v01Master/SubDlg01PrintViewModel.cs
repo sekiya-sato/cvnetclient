@@ -41,8 +41,9 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Initialize
-        public void OnInit() 
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
         }
 
         #endregion

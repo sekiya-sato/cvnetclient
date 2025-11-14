@@ -8,12 +8,15 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg08PrnHhtlist06ViewModel : BaseViewModel
     {
-        public enum PrintType { 通常発行, 再発行}
-
+        #region Declare
+        public enum PrintType { Regular, Reissue}
         [ObservableProperty]
-        SearchCondition? condition;        
-        public void OnInit() 
+        SearchCondition? condition;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
             Condition = new SearchCondition();
             Condition.ReceiptTo = new BtListHelper("99999999", "");
             Condition.DateFrom = DateTime.Now;
@@ -21,7 +24,8 @@ namespace CvnetClient.ViewModels
             Condition.NumberFrom = 0;
             Condition.NumberTo = 9999999999;
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelShipment1(object value)
         {
@@ -58,7 +62,6 @@ namespace CvnetClient.ViewModels
                 Condition.ReceiptTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         async Task DoPrintAsync() 
         {
@@ -117,10 +120,11 @@ namespace CvnetClient.ViewModels
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
+        #endregion
         public partial class SearchCondition : ObservableObject
         {
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.通常発行;
+            private PrintType selectedPrint = PrintType.Regular;
             [ObservableProperty]
             private BtListHelper? shipmentFrom;
             [ObservableProperty]

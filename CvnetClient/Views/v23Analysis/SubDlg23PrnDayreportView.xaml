@@ -70,7 +70,7 @@
                                 GroupName="PrintType"
                                 IsChecked="{Binding Condition.SelectedPrint, 
                                             Converter={StaticResource StringToBoolConverter}, 
-                                            ConverterParameter=スプール, Mode=TwoWay}"
+                                            ConverterParameter=Spool, Mode=TwoWay}"
                                 Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="CSV" 
                                 GroupName="PrintType"

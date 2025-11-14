@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
+using CvnetClient.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,7 +29,10 @@ namespace CvnetClient.ViewModels
         string sql = """"
             select 名称CD,名称CD||' '||名称,'HC$MASTER_MEISHO' マスタ名,'名称区分='''||名称CD||'''' aaa from hc$master_meisho where 名称区分='IDX' order by 名称CD
             """";
-        public void OnInit() {
+        public void OnInit(object? init_para = null, string? init_flg = null) 
+        {
+            OnInitBase(init_para, init_flg);
+
             var retData = AppData.Http?.AspxSqlQuery(sql, new string[] {});
             if (retData == null || retData.Rows.Count == 0) return;
             var list = (from DataRow dr in retData.Rows

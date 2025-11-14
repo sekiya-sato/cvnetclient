@@ -22,8 +22,9 @@ namespace CvnetClient.ViewModels
         private ItemInfo? selectedItem;
         [ObservableProperty]
         private ItemInfo? selectedItem2;
-        public void OnInit() 
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
             Wrk_csv = new DataTable();
 
             if (AppData.ClassCvnet.SysCnt == null)

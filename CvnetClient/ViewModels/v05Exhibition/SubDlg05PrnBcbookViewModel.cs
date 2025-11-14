@@ -16,14 +16,16 @@ namespace CvnetClient.ViewModels
     
     public partial class SubDlg05PrnBcbookViewModel : BaseViewModel
     {
-        public enum OutPutType { 正規商品, 中止商品CD, 全て }
+        #region Declare
+        public enum OutPutType { Product, Discontinued, All }
         public enum BarcodeType { JAN, CODE39, NW7 }
-
         [ObservableProperty]
-        Condition? conditions;        
-
-        public void OnInit() 
+        Condition? conditions;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
             Conditions = new Condition();
             Conditions.ExhibitionFrom = ".";
             Conditions.ExhibitionTo = "ZZZZZZZZ";
@@ -32,6 +34,8 @@ namespace CvnetClient.ViewModels
             Conditions.ProductFrom = ".";
             Conditions.ProductTo = "ZZZZZZZZ"; 
         }
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelExhibition1(object value)
         {
@@ -72,7 +76,6 @@ namespace CvnetClient.ViewModels
                 Conditions.BrdToName = get_sel00.Name;
             }
         }
-
         [RelayCommand]
         public void SelProd1(object value)
         {
@@ -92,8 +95,7 @@ namespace CvnetClient.ViewModels
                 Conditions.ProductTo = get_sel00.Code;
                 Conditions.ProductToName = get_sel00.Name;
             }
-        }
-        
+        }       
         [RelayCommand]
         async Task DoPrintAsync()
         {
@@ -186,7 +188,7 @@ namespace CvnetClient.ViewModels
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
-
+        #endregion
         public partial class Condition : ObservableObject
         {
             [ObservableProperty]
@@ -214,7 +216,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? productToName;
             [ObservableProperty]
-            private OutPutType selectedOutPut = OutPutType.正規商品;
+            private OutPutType selectedOutPut = OutPutType.Product;
             [ObservableProperty]
             private BarcodeType selectedBarcode = BarcodeType.JAN;
         }
