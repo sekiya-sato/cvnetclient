@@ -1,12 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CvnetClient.Models;
-using System;
-using System.Buffers.Text;
-using System.Net;
-using System.Net.Http;
+using CvnetClient.Utils;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -15,7 +11,8 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg71Pos1ViewModel : BaseViewModel
     {
-        public enum MasterType { POSマスタ,WMSマスタ,両方}
+        #region Declare
+        public enum MasterType { POS,WMS,Both}
         [ObservableProperty]
         private MasterType selectedMaster;
         [ObservableProperty]
@@ -28,14 +25,19 @@ namespace CvnetClient.ViewModels
         private FlowDocument logDocument;
         [ObservableProperty]
         private string resultText;
-        public void OnInit() 
-        { 
-            SelectedMaster = MasterType.WMSマスタ;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
+        {
+            OnInitBase(init_para, init_flg);
+            SelectedMaster = MasterType.WMS;
             DateFrom = DateTime.Now.AddDays(-1);
             LogDocument = new FlowDocument();
             Result = string.Empty;
             ResultText = string.Empty;
         }
+        #endregion
+        #region Function
         partial void OnDateFromChanged(DateTime? value) 
         {
             DayBefore = Math.Round((DateTime.Now - value.Value).TotalDays, 3);
@@ -53,9 +55,9 @@ namespace CvnetClient.ViewModels
             var v_para = new string[2];
             DayBefore = Math.Round((DateTime.Now - DateFrom.Value).TotalDays, 3);
             v_para[0] = DayBefore.ToString();
-            if (SelectedMaster == MasterType.POSマスタ) {
+            if (SelectedMaster == MasterType.POS) {
                 v_para[1] = "0";
-            } else if (SelectedMaster == MasterType.WMSマスタ)
+            } else if (SelectedMaster == MasterType.WMS)
             {
                 v_para[1] = "1";
             }
@@ -64,7 +66,7 @@ namespace CvnetClient.ViewModels
             }
 
             var flg = new int[1];
-            if (SelectedMaster == MasterType.両方)
+            if (SelectedMaster == MasterType.Both)
             {
                 flg = new int[2];
                 flg[0] = 0;
@@ -124,7 +126,6 @@ namespace CvnetClient.ViewModels
 
             Result = wrk_mess;                 
         }
-
         public void UpdateLogDocument()
         {
             var doc = new FlowDocument
@@ -190,6 +191,7 @@ namespace CvnetClient.ViewModels
 
             LogDocument = doc;
         }
+        #endregion
     }
 }
 

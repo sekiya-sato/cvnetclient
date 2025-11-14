@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         Title="SubDlg09UpsimeView" Style="{StaticResource SmallWindow}">
@@ -39,7 +40,16 @@
                 <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
             <Label Content="締日" Grid.Column="0"></Label>
-            <DatePicker Grid.Column="1" SelectedDate="{Binding Condition.Date}"></DatePicker>
+            <xctk:DateTimePicker 
+                Grid.Column="1"
+         Format="Custom"
+         FormatString="yyyy/MM/dd" 
+         Width="180" 
+         ShowButtonSpinner="True" 
+         TimePickerVisibility="Collapsed" 
+         AllowTextInput="False"
+         Value="{Binding Condition.Date}" 
+         Height="34"></xctk:DateTimePicker>
         </Grid>
 
         <Grid Grid.Row="2" HorizontalAlignment="Center">

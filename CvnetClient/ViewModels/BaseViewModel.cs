@@ -14,6 +14,7 @@ namespace CvnetClient.ViewModels {
 	public partial class BaseViewModel : ObservableObject {
         #region Variable
         public BizArray para;
+        public string v_flg;
         #endregion
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace CvnetClient.ViewModels {
         public void DragMove() => ClientLib.DragMove(this);
 
         #region Additional Method
-        public void OnInitBase(object? init_para = null)
+        public void OnInitBase(object? init_para = null, string? init_flg = null)
         {
             if (init_para != null)
             {
@@ -53,6 +54,19 @@ namespace CvnetClient.ViewModels {
                 else para = new BizArray();
             }
             else para = new BizArray();
+
+            if (init_flg != null)
+            {
+                if (init_flg is string s)
+                {
+                    var v_para =  s ;
+                    v_flg = v_para;
+                }
+                else if (init_flg is string arr)
+                    v_flg = arr;
+                else v_flg = string.Empty;
+            }
+            else v_flg = string.Empty;
         }
         #endregion
     }

@@ -44,7 +44,7 @@
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
                 <xctk:DateTimePicker 
                          Format="Custom"
-                         FormatString="yyyy-MM" 
+                         FormatString="yyyy/MM" 
                          Width="180" 
                          ShowButtonSpinner="True" 
                          TimePickerVisibility="Collapsed" 
@@ -75,13 +75,13 @@
         GroupName="CalcType"
         IsChecked="{Binding Condition.SelectedCalc, 
                             Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=再計算, Mode=TwoWay}"
+                            ConverterParameter=Recalculation, Mode=TwoWay}"
 Margin="0,0,20,0"/>
             <RadioButton Grid.Column="1" Content="指定月数以前在庫0除外" 
                  GroupName="CalcType"
                          IsChecked="{Binding Condition.SelectedCalc, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=指定月数以前在庫0除外, Mode=TwoWay}"
+                                             ConverterParameter=Exclude, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
         </Grid>
 

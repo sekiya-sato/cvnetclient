@@ -9,17 +9,18 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg05PrnSwatchViewModel : BaseViewModel
     {
-        public enum DayType { 日付表示, 旬表示 }
-        public enum OutPutType { 全て, 正規商品 }
-        public enum OrderType { しない, する }
-        public enum ShopType { 全て, 得意先別 }
+        #region Declare
+        public enum DayType { DateDisp, SeasonDisp }
+        public enum OutPutType { All, Product }
+        public enum OrderType { Not, Do }
+        public enum ShopType { All, ByCust }
         public enum SendiType { AND, OR }
         [ObservableProperty]
         ListFlexData listFlexData = new ListFlexData();
         [ObservableProperty]
         SearchCondition? condition;
         [ObservableProperty]
-        BizArray? para;
+        BizArray? vpara;
         [ObservableProperty]
         public int? menu_para;
         [ObservableProperty]
@@ -27,11 +28,15 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public bool flagCond1;
         [ObservableProperty]
-        private OrderType selectedOrder = OrderType.しない;
+        private OrderType selectedOrder = OrderType.Not;
         [ObservableProperty]
-        private ShopType selectedShop = ShopType.全て;
-        public void OnInit() 
+        private ShopType selectedShop = ShopType.All;
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
+
             Menu_para = 0;
             List<CsvItem> def = null;
             Condition = new SearchCondition();
@@ -45,7 +50,8 @@ namespace CvnetClient.ViewModels
                 flag = 1
             };
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelBrd1(object value)
         {
@@ -55,7 +61,6 @@ namespace CvnetClient.ViewModels
                 Condition.BrandFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         public void SelBrd2(object value)
         {
@@ -65,7 +70,6 @@ namespace CvnetClient.ViewModels
                 Condition.BrandTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         public void SelExhb1(object value)
         {
@@ -75,7 +79,6 @@ namespace CvnetClient.ViewModels
                 Condition.ExhbFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         public void SelExhb2(object value)
         {
@@ -85,7 +88,6 @@ namespace CvnetClient.ViewModels
                 Condition.ExhbTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         public void SelSoz1(object value)
         {
@@ -95,7 +97,6 @@ namespace CvnetClient.ViewModels
                 Condition.MaterialFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         public void SelSoz2(object value)
         {
@@ -105,7 +106,6 @@ namespace CvnetClient.ViewModels
                 Condition.MaterialTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         public void SelShop(object value)
         {
@@ -115,7 +115,6 @@ namespace CvnetClient.ViewModels
                 Condition.SelectedShop1 = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
-
         [RelayCommand]
         async Task DoPrintAsync()
         {
@@ -158,8 +157,8 @@ namespace CvnetClient.ViewModels
                 + " FROM HC$TRAN_TENSWT t"
                 + " WHERE t.展示会CD BETWEEN :1 AND :2 AND "
                     + "t.名称CD1 BETWEEN :3 AND :4 AND "
-                    + "t.名称CD2 BETWEEN '" + ((Condition.MaterialFrom?.Code != "") ? Condition.MaterialTo?.Code : ".") + "' AND '" + ((Condition.MaterialFrom?.Code != "") ? Condition.MaterialFrom?.Code : ".") + "'"
-                    + ((Condition.SelectedOutPut == OutPutType.正規商品) ? " and exists (select 'X' from HC$MASTER_SHOHIN_JAN j where j.商品CD=t.商品CD and j.使用FLG=0)" : "")
+                    + "t.名称CD2 BETWEEN '" + ((Condition.MaterialFrom?.Code != null) ? Condition.MaterialTo?.Code : ".") + "' AND '" + ((Condition.MaterialFrom?.Code != null) ? Condition.MaterialFrom?.Code : ".") + "'"
+                    + ((Condition.SelectedOutPut == OutPutType.Product) ? " and exists (select 'X' from HC$MASTER_SHOHIN_JAN j where j.商品CD=t.商品CD and j.使用FLG=0)" : "")
                 + " GROUP BY t.展開数,t.レイアウトNO";
 
             var sql_query2 = "SELECT count(*) FROM (" + sql_query + ")";
@@ -178,8 +177,8 @@ namespace CvnetClient.ViewModels
             v_para[3] = Condition.BrandTo?.Code ?? string.Empty;
             v_para[4] = Condition.MaterialFrom?.Code ?? string.Empty;
             if (Condition.MaterialFrom?.Code == "") v_para[5] = "zzzzzzzz";
-            else v_para[5] = Condition.MaterialTo?.Code ?? string.Empty;
-            if (Condition.SelectedDay == DayType.日付表示)
+            else v_para[5] = Condition.MaterialTo.Code;
+            if (Condition.SelectedDay == DayType.DateDisp)
             {
                 v_para[6] = "0";
             }
@@ -191,7 +190,7 @@ namespace CvnetClient.ViewModels
             ret_csv = AppData.Http!.AspxSqlQuery(sql_query, wrk_para2);
             var tenkai_su = 0;
             var layout_no = 0;
-            if (int.Parse(ret_csv.Rows[0][0].ToString()) > 0)
+            if (ret_csv.Rows.Count > 0)
             {
                 tenkai_su = int.Parse(ret_csv.Rows[0][0].ToString());
                 layout_no = int.Parse(ret_csv.Rows[0][1].ToString());
@@ -202,7 +201,7 @@ namespace CvnetClient.ViewModels
             wrk_para[7] = tenkai_su.ToString();
             wrk_para[8] = layout_no.ToString();
 
-            if (SelectedOrder == OrderType.しない)
+            if (SelectedOrder == OrderType.Not)
             {
                 wrk_para[9] = "0";
             }
@@ -210,30 +209,39 @@ namespace CvnetClient.ViewModels
             {
                 wrk_para[9] = "1";
             }
-            if (SelectedShop == ShopType.全て)
+            if (SelectedShop == ShopType.All)
             {
                 wrk_para[10] = "0";
+                wrk_para[11] = "";
             }
             else
             {
                 wrk_para[10] = "1";
+                wrk_para[11] = Condition.SelectedShop1?.Code;
             }
-            wrk_para[11] = Condition.SelectedShop1?.Code;
+            
 
-            var v_sql = "";
-            if (SelectedOrder == OrderType.する)
+            wrk_para[12] = "";
+            if (SelectedOrder == OrderType.Do)
             {
                 if (Condition.SelectedSendi == SendiType.AND)
                 {
-                    v_sql = ListFlexData.GetQueryStr2(Para, 1, 0, "t.");
+                    wrk_para[12] = ListFlexData.GetQueryStr2(Vpara, 1, 0, "t.");
                 }
                 else
                 {
-                    v_sql = ListFlexData.GetQueryStr2(Para, 1, 1, "t.");
+                    wrk_para[12] = ListFlexData.GetQueryStr2(Vpara, 1, 1, "t.");
                 }
             }
-            wrk_para[12] = v_sql;
 
+            if (Condition.SelectedOutPut == OutPutType.All) 
+            {
+                wrk_para[13] = "0";
+            }
+            else
+            {
+                wrk_para[13] = "1";
+            }
             var ten = string.Empty;
             if (tenkai_su != 6 && tenkai_su != 0) ten = tenkai_su.ToString();
             var lo = string.Empty;
@@ -272,10 +280,9 @@ namespace CvnetClient.ViewModels
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
-
         partial void OnSelectedShopChanged(ShopType value)
         {
-            if (value == ShopType.全て)
+            if (value == ShopType.All)
             {
                 FlagCond = false;
             }
@@ -286,7 +293,7 @@ namespace CvnetClient.ViewModels
         }
         partial void OnSelectedOrderChanged(OrderType value)
         {
-            if (value == OrderType.しない)
+            if (value == OrderType.Not)
             {
                 FlagCond1 = false;
             }
@@ -295,13 +302,13 @@ namespace CvnetClient.ViewModels
                 FlagCond1 = true;
             }
         }
-
+        #endregion
         public partial class SearchCondition : ObservableObject
         {
             [ObservableProperty]
-            private DayType selectedDay = DayType.日付表示;
+            private DayType selectedDay = DayType.DateDisp;
             [ObservableProperty]
-            private OutPutType selectedOutPut = OutPutType.全て;            
+            private OutPutType selectedOutPut = OutPutType.All;            
             [ObservableProperty]
             private SendiType selectedSendi = SendiType.AND;
             [ObservableProperty]

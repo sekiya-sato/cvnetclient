@@ -59,12 +59,12 @@ VerticalAlignment="Center">
                  GroupName="PrintType"
                          IsChecked="{Binding Condition.SelectedPrint, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=通常発行, Mode=TwoWay}"
+                                             ConverterParameter=Regular, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="再発行" GroupName="PrintType"
                          IsChecked="{Binding Condition.SelectedPrint, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=再発行, Mode=TwoWay}"/>
+                                             ConverterParameter=Reissue, Mode=TwoWay}"/>
                 </Grid>
 
                 <StackPanel Grid.Row="1">

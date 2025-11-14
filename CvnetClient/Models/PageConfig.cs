@@ -13,29 +13,29 @@ namespace CvnetClient.Models
         { "マスタ", new PageData {
             Buttons = new List<ButtonConfig> {
 
-                new ButtonConfig { Text = "名称マスタ", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter = "0" },
-                new ButtonConfig { Text = "得意先マスタ", WindowId=typeof(Views.SubDlg01TokView).FullName},
+                new ButtonConfig { Text = "名称マスタ", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "得意先マスタ", WindowId=typeof(Views.SubDlg01TokView).FullName,Parameter="0",Flag="0"},
                 new ButtonConfig { Text = "仕入マスタ", WindowId=typeof(Views.SubDlg01SirView).FullName },
 
                 new ButtonConfig { Text = "商品マスタ(新規登録)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
                 new ButtonConfig { Text = "商品マスタ(修正)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
                 new ButtonConfig { Text = "商品マスタ(照会)", WindowId=typeof(Views.SubDlg01Sho2View).FullName },
                 new ButtonConfig { Text = "商品マスタ絵型更新", WindowId="" },
-                new ButtonConfig { Text = "社員マスタ", WindowId=typeof(Views.SubDlg01UsrView).FullName },
+                new ButtonConfig { Text = "社員マスタ", WindowId=typeof(Views.SubDlg01UsrView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "上代一括変更", WindowId="" },
                 new ButtonConfig { Text = "上代一括変更取込", WindowId="" },
                 new ButtonConfig { Text = "売価一覧印刷", WindowId="" },
                 new ButtonConfig { Text = "原価変更登録", WindowId="" },
                 new ButtonConfig { Text = "生地付属マスタ", WindowId=typeof(Views.SubDlg01KijiView).FullName },
                 new ButtonConfig { Text = "コンバートマスタ", WindowId="" },
-                new ButtonConfig { Text = "社員証印刷", WindowId= typeof(Views.SubDlg00UsrlistView).FullName },
+                new ButtonConfig { Text = "社員証印刷", WindowId= typeof(Views.SubDlg00UsrlistView).FullName,Parameter="0",Flag="0" },
             }
         }},
         { "マスタ補助", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "名称マスタコピー作成", WindowId=typeof(Views.SubDlg01MeiConvView).FullName },
+                new ButtonConfig { Text = "名称マスタコピー作成", WindowId=typeof(Views.SubDlg01MeiConvView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "取込レイアウト作成", WindowId=typeof(Views.SubDlg00InputCsvView).FullName },
-                new ButtonConfig { Text = "外部CSVデータ取込", WindowId=typeof(Views.SubDlg01Csvshov2View).FullName },
+                new ButtonConfig { Text = "外部CSVデータ取込", WindowId=typeof(Views.SubDlg01Csvshov2View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId="" },
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
                 new ButtonConfig { Text = "商品色サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
@@ -53,7 +53,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId=typeof(Views.SubDlg00UsrView).FullName },
                 new ButtonConfig { Text = "社員LOGINマスタ一覧", WindowId="" },
                 new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId= typeof(Views.MasterSystemKanriView1).FullName },
-                new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter = "1" },
+                new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter="1",Flag="0" },
                 new ButtonConfig { Text = "LOGIN履歴情報(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "処理履歴情報(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "手動・自動実行履歴(管理者用)", WindowId="" },
@@ -62,10 +62,10 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "HHT用管理マスタ(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "バッチ更新履歴(DTP用)", WindowId="" },
                 new ButtonConfig { Text = "ラベル名称マスタ(DTP用)", WindowId="" },
-                new ButtonConfig { Text = "帳票管理マスタ(DTP用)", WindowId=typeof(Views.SubDlg01PrintView).FullName },
+                new ButtonConfig {Text = "帳票管理マスタ(DTP用)", WindowId = typeof(Views.SubDlg01PrintView).FullName, Parameter = "0", Flag = "0"},
                 new ButtonConfig { Text = "システムメンテナンス処理", WindowId="" },
                 new ButtonConfig { Text = "汎用SQL問い合わせ(管理者用)", WindowId="" },
-                new ButtonConfig { Text = "DB定義書出力", WindowId=typeof(Views.SubDlg00DBTableView).FullName },
+                new ButtonConfig { Text = "DB定義書出力", WindowId=typeof(Views.SubDlg00DBTableView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "自動実行管理マスタ", WindowId="" },
                 new ButtonConfig { Text = "自動実行スケジュール設定", WindowId="" }
             }
@@ -77,7 +77,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "店別ブランド別予算マスタ", WindowId="" },
                 new ButtonConfig { Text = "販売員別予算マスタ", WindowId="" },
                 new ButtonConfig { Text = "営業担当別予算マスタ", WindowId="" },
-                new ButtonConfig { Text = "月別ﾌﾞﾗﾝﾄﾞｱｲﾃﾑ仕入予算マスタ", WindowId=typeof(Views.SubDlg30InpMbiView).FullName },
+                new ButtonConfig { Text = "月別ﾌﾞﾗﾝﾄﾞｱｲﾃﾑ仕入予算マスタ", WindowId=typeof(Views.SubDlg30InpMbiView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "店舗予算表", WindowId="" },
                 new ButtonConfig { Text = "店舗別予算実績対比", WindowId="" },
                 new ButtonConfig { Text = "販売員予算表", WindowId="" },
@@ -104,7 +104,7 @@ namespace CvnetClient.Models
         }},
         { "発注", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "発注入力", WindowId=typeof(Views.SubDlg13HbnhtykNewView).FullName },
+                new ButtonConfig { Text = "発注入力", WindowId=typeof(Views.SubDlg13HbnhtykNewView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "発注配分入力", WindowId="" },
                 new ButtonConfig { Text = "発注実績表", WindowId="" },
                 new ButtonConfig { Text = "発注残完了設定", WindowId="" },
@@ -124,7 +124,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "仕入実績表", WindowId="" },
                 new ButtonConfig { Text = "ブランド別仕入金額表", WindowId="" },
                 new ButtonConfig { Text = "消化仕入リスト", WindowId="" },
-                new ButtonConfig { Text = "仕入伝票印刷", WindowId=typeof(Views.SubDlg02SirHenpinView).FullName  },
+                new ButtonConfig { Text = "仕入伝票印刷", WindowId=typeof(Views.SubDlg02SirHenpinView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "仕入先一括返品", WindowId="" }
             }
         }},
@@ -136,8 +136,8 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "受注残管理表", WindowId="" },
                 new ButtonConfig { Text = "スワッチデータ一括作成", WindowId="" },
                 new ButtonConfig { Text = "スワッチデータメンテ", WindowId="" },
-                new ButtonConfig { Text = "スワッチ印刷", WindowId=typeof(Views.SubDlg05PrnSwatchView).FullName },
-                new ButtonConfig { Text = "バーコードブック発行", WindowId=typeof(Views.SubDlg05PrnBcbookView).FullName },
+                new ButtonConfig { Text = "スワッチ印刷", WindowId=typeof(Views.SubDlg05PrnSwatchView).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "バーコードブック発行", WindowId=typeof(Views.SubDlg05PrnBcbookView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "絵型一覧表", WindowId="" },
                 new ButtonConfig { Text = "得意先別売上予定表", WindowId="" },
                 new ButtonConfig { Text = "担当別展示会受注合計表", WindowId="" },
@@ -192,7 +192,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "商品履歴問合せ", WindowId="" },
                 new ButtonConfig { Text = "取引データ閲覧", WindowId="" },
                 new ButtonConfig { Text = "即時移動明細書印刷", WindowId="" },
-                new ButtonConfig { Text = "移動明細書印刷", WindowId=typeof(Views.SubDlg08PrnHhtlist06View).FullName },
+                new ButtonConfig { Text = "移動明細書印刷", WindowId=typeof(Views.SubDlg08PrnHhtlist06View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "倉庫別受払表", WindowId="" },
                 new ButtonConfig { Text = "商品別受払表", WindowId="" },
                 new ButtonConfig { Text = "倉庫別在庫集計表", WindowId="" },
@@ -232,8 +232,8 @@ namespace CvnetClient.Models
         }},
         { "売上分析2", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "得意先別売上日報", WindowId=typeof(Views.SubDlg23PrnDayreportView).FullName },
-                new ButtonConfig { Text = "得意先別売上月報", WindowId=typeof(Views.SubDlg23PrnTokumonthView).FullName },
+                new ButtonConfig { Text = "得意先別売上日報", WindowId=typeof(Views.SubDlg23PrnDayreportView).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "得意先別売上月報", WindowId=typeof(Views.SubDlg23PrnTokumonthView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "担当得意先別予算実績対比表", WindowId="" },
                 new ButtonConfig { Text = "個人売上ランキング表", WindowId="" },
                 new ButtonConfig { Text = "販売員別予算実績対比表", WindowId="" },
@@ -257,8 +257,8 @@ namespace CvnetClient.Models
         }},
         { "HHT", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "HHT用マスタデータ作成(cvnetcom)", WindowId=typeof(Views.SubDlg08Hht1View).FullName,Parameter="0" },
-                new ButtonConfig { Text = "HHT未更新データ印刷", WindowId=typeof(Views.SubDlg08HhterrView).FullName },
+                new ButtonConfig { Text = "HHT用マスタデータ作成(cvnetcom)", WindowId=typeof(Views.SubDlg08Hht1View).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "HHT未更新データ印刷", WindowId=typeof(Views.SubDlg08HhterrView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "HHT未更新データ一括削除", WindowId="" },
                 new ButtonConfig { Text = "HHT用PATH設定", WindowId="" },
                 new ButtonConfig { Text = "HHT手動データ受信(店舗固定)", WindowId="" },
@@ -295,8 +295,8 @@ namespace CvnetClient.Models
         }},
         { "月次", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "締日更新", WindowId=typeof(Views.SubDlg09UpsimeView).FullName  },
-                new ButtonConfig { Text = "諸掛更新", WindowId=typeof(Views.SubDlg09Upkeihi2View).FullName  },
+                new ButtonConfig { Text = "締日更新", WindowId=typeof(Views.SubDlg09UpsimeView).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "諸掛更新", WindowId=typeof(Views.SubDlg09Upkeihi2View).FullName,Parameter="0",Flag="0"  },
                 new ButtonConfig { Text = "総平均原価更新", WindowId="" },
                 new ButtonConfig { Text = "最終仕入原価更新", WindowId="" },
                 new ButtonConfig { Text = "消化仕入更新", WindowId="" },
@@ -305,8 +305,8 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "評価替一覧印刷", WindowId="" },
                 new ButtonConfig { Text = "積送中クリア更新", WindowId="" },
                 new ButtonConfig { Text = "残高登録処理", WindowId="" },
-                new ButtonConfig { Text = "在庫・掛再更新(管理者用)", WindowId=typeof(Views.SubDlg09UpallView).FullName },
-                new ButtonConfig { Text = "在庫累計更新(管理者用)", WindowId=typeof(Views.SubDlg09UpzairkNewView).FullName },
+                new ButtonConfig { Text = "在庫・掛再更新(管理者用)", WindowId=typeof(Views.SubDlg09UpallView).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "在庫累計更新(管理者用)", WindowId=typeof(Views.SubDlg09UpzairkNewView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "消費税再計算更新(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "価格保存", WindowId="" },
                 new ButtonConfig { Text = "商品分析集計", WindowId="" },
@@ -360,8 +360,8 @@ namespace CvnetClient.Models
         }},
         { "物流", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "マスタデータ作成", WindowId=typeof(Views.SubDlg71Pos1View).FullName },
-                new ButtonConfig { Text = "連携データ手動送信", WindowId=typeof(Views.SubDlg71SendManualView).FullName },
+                new ButtonConfig { Text = "マスタデータ作成", WindowId=typeof(Views.SubDlg71Pos1View).FullName ,Parameter="0",Flag="0"},
+                new ButtonConfig { Text = "連携データ手動送信", WindowId=typeof(Views.SubDlg71SendManualView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "連携データ手動受信", WindowId="" },
                 new ButtonConfig { Text = "連携エラーデータ照会", WindowId="" }
             }
@@ -388,7 +388,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "商品分析アラート設定", WindowId="" },
                 new ButtonConfig { Text = "商品分析メッセージ送信", WindowId="" },
                 new ButtonConfig { Text = "展示会SD入力初期設定", WindowId="" },
-                new ButtonConfig { Text = "展示会SD入力結果出力", WindowId="" },
+                new ButtonConfig { Text = "展示会SD入力結果出力", WindowId=typeof(Views.SubDlg05PrnSwatchsdView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "原価変更登録(SKU)", WindowId="" },
                 new ButtonConfig { Text = "総平均原価更新(SKU)", WindowId="" },
                 new ButtonConfig { Text = "評価替更新(元上代版:SKU)", WindowId="" },

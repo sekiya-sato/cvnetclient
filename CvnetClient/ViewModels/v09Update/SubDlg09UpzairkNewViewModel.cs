@@ -1,24 +1,29 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CvnetClient.Models;
+using CvnetClient.Utils;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg09UpzairkNewViewModel : BaseViewModel
     {
-        public enum CalcType { 再計算,指定月数以前在庫0除外 }
+        #region Declare
+        public enum CalcType { Recalculation, Exclude }
         [ObservableProperty]
         SearchCondition? condition;
-        public void OnInit() 
-        { 
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
+        {
+            OnInitBase(init_para, init_flg);
             Condition = new SearchCondition();
-
             Condition.Date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             Condition.Date2 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
             Condition.Day = "12";
             Condition.Date3 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(int.TryParse(Condition.Day, out var _day) ? _day : 12 * -1);
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void DoExecute() 
         {
@@ -27,7 +32,7 @@ namespace CvnetClient.ViewModels
             wrk_para[0] = Condition.Date1?.ToString("yyyyMMdd");
             wrk_para[1] = Condition.Date2?.ToString("yyyyMMdd");
             wrk_para[2] = Condition.Date3?.ToString("yyyyMMdd");
-            if (Condition.SelectedCalc == CalcType.再計算)
+            if (Condition.SelectedCalc == CalcType.Recalculation)
             {
                 wrk_para[3] = "0";
             }
@@ -43,6 +48,7 @@ namespace CvnetClient.ViewModels
             wrk_mess += "\n経過時間：" + elapsed.ToString(@"hh\:mm\:ss");
             ClientLib.MessageBoxOk(this, "更新終了しました\n" + wrk_mess, "メッセージ");
         }
+        #endregion
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
@@ -54,7 +60,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? day;
             [ObservableProperty]
-            private CalcType selectedCalc = CalcType.指定月数以前在庫0除外;
+            private CalcType selectedCalc = CalcType.Exclude;
 
             partial void OnDate1Changed(DateTime? value)
             {

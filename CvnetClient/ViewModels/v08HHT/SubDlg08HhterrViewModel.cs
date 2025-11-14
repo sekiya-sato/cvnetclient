@@ -1,27 +1,24 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg08HhterrViewModel : BaseViewModel
     {
-        public enum PrintType {スプール,CSV }
+        #region Declare
+        public enum PrintType {Spool,CSV }
         [ObservableProperty]
         SearchCondtion? condition;
         [ObservableProperty]
         public Dictionary<string, string> comboListProcess;
-        public void OnInit() 
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
             Condition = new SearchCondtion();
 
             ComboListProcess = new Dictionary<string, string>
@@ -42,6 +39,8 @@ namespace CvnetClient.ViewModels
             Condition.WareFrom = "0";
             Condition.WareTo = "99999999";
         }
+        #endregion
+        #region Function
         [RelayCommand]
         public void SelShop1(object value)
         {
@@ -159,6 +158,7 @@ namespace CvnetClient.ViewModels
                 catch (Exception ex) { }
             }
         }
+        #endregion
         public partial class SearchCondtion : ObservableObject 
         {
             [ObservableProperty]
@@ -176,7 +176,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? wareToName;
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.スプール;
+            private PrintType selectedPrint = PrintType.Spool;
         }
     }
 }

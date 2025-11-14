@@ -1,22 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg02SirHenpinViewModel : BaseViewModel
     {
-        public enum PrintType { 通常発行,再発行}
+        public enum PrintType { Regular,Reissue}
         [ObservableProperty]
         SearchCondition? condition;
         [ObservableProperty]
@@ -25,8 +17,9 @@ namespace CvnetClient.ViewModels
         public Dictionary<string,string>? comboList2;
         [ObservableProperty]
         public string? insatsu_flg = "0";
-        public void OnInit() 
-        { 
+        public void OnInit(object? init_para = null, string? init_flg = null) 
+        {
+            OnInitBase(init_para, init_flg);
             Condition = new SearchCondition();
 
             ComboList1 = new Dictionary<string, string>
@@ -179,7 +172,7 @@ namespace CvnetClient.ViewModels
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
-            private PrintType selectedPrint = PrintType.通常発行;
+            private PrintType selectedPrint = PrintType.Regular;
             [ObservableProperty]
             private string? selectedCombo1;
             [ObservableProperty]
@@ -203,7 +196,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private long? manualInpTo;
             [ObservableProperty]
-            private string? selectedCombo2;
+            private string? selectedCombo2;           
         }
     }
 }
