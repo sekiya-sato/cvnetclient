@@ -11,7 +11,17 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace CvnetClient.ViewModels
 {
-    class SubDlg00UsrViewModel : BaseViewModel
+    public partial class SubDlg00UsrViewModel : BaseViewModel
     {
+        [ObservableProperty]
+        ObservableCollection<MasterWorker>? searchWorker;
+
+        [ObservableProperty]
+        public Dictionary<int, string>? felicaInitialization;
+
+        public void OnInit()
+        {
+
+        }
     }
 }
