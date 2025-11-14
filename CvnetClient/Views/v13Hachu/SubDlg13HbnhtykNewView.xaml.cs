@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views
+namespace CvnetClient.Views.v13Hachu
 {
     /// <summary>
-    /// Interaction logic for SubDlg08Hht0View.xaml
+    /// Interaction logic for SubDlg13HbnhtykNewView.xaml
     /// </summary>
-    public partial class SubDlg08Hht0View : Window
+    public partial class SubDlg13HbnhtykNewView : Window
     {
-        public SubDlg08Hht0View()
+        public SubDlg13HbnhtykNewView()
         {
             InitializeComponent();
         }

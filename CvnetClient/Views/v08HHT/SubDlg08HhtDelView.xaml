@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:CvnetClient.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="HHT未更新データ一括削除" Height="450" Width="800">
     <Grid>
@@ -46,16 +47,35 @@
             <Label Grid.Row="3" Grid.Column="1" Content="計上日"/>
             <Label Grid.Row="5" Grid.Column="1" Content="倉庫"/>
 
-            <ComboBox Grid.Row="1" Grid.Column="2" Style="{StaticResource SearchableComboBox1}"/>
+            <ComboBox Grid.Row="1" Grid.Column="2" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding SelectKubun}" SelectedValue="{Binding Category}"/>
             <ComboBox Grid.Row="1" Grid.Column="4" Visibility="Hidden"/>
 
-            <DatePicker Grid.Row="3" Grid.Column="2"/>
+            <!--<DatePicker Grid.Row="3" Grid.Column="2" />-->
+            <xctk:DateTimePicker 
+                Grid.Row="3" Grid.Column="2"
+                Format="Custom"
+                FormatString="yyyy/MM/dd" 
+                Width="180" 
+                ShowButtonSpinner="True" 
+                TimePickerVisibility="Collapsed" 
+                AllowTextInput="False"
+                Value="{Binding CreditDate1}" 
+                Height="34"/>
             <Label Grid.Row="3" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <DatePicker Grid.Row="3" Grid.Column="4"/>
+            <!--<DatePicker Grid.Row="3" Grid.Column="4"/>-->
+            <xctk:DateTimePicker 
+                Grid.Row="3" Grid.Column="4"
+                Format="Custom"
+                FormatString="yyyy/MM/dd" 
+                Width="180" 
+                ShowButtonSpinner="True" 
+                TimePickerVisibility="Collapsed" 
+                AllowTextInput="False"
+                Value="{Binding CreditDate2}" 
+                Height="34"/>
 
             <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Horizontal">
-                <TextBox Width="auto"
-        d:Text="社員：Data"  
+                <TextBox Width="auto" 
         TextWrapping="Wrap">
                     <TextBox.Text>
                         <MultiBinding StringFormat='{}{0} {1}'>
@@ -64,14 +84,13 @@
                         </MultiBinding>
                     </TextBox.Text>
                 </TextBox>
-                <uc:CvnetBtListView MstName="担当" StyleDesign="2" 
-SelectedValue ="{Binding WorkerTo.WorkerCD}"
-Command="{Binding SelWorker2Command}"/>
+                <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
+SelectedValue ="{Binding FindWarehouseCd1}"
+Command="{Binding SelectWarehouse1Command}"/>
             </StackPanel>
             <Label Grid.Row="5" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <StackPanel Grid.Row="5" Grid.Column="4" Orientation="Horizontal">
-                <TextBox 
-        d:Text="社員：Data"  
+                <TextBox  
         TextWrapping="Wrap">
                     <TextBox.Text>
                         <MultiBinding StringFormat='{}{0} {1}'>
@@ -80,9 +99,9 @@ Command="{Binding SelWorker2Command}"/>
                         </MultiBinding>
                     </TextBox.Text>
                 </TextBox>
-                <uc:CvnetBtListView MstName="担当" StyleDesign="2" 
-SelectedValue ="{Binding WorkerTo.WorkerCD}"
-Command="{Binding SelWorker2Command}"/>
+                <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
+SelectedValue ="{Binding FindWarehouseCd2}"
+Command="{Binding SelectWarehouse2Command}"/>
             </StackPanel>
 
             <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3">
@@ -102,10 +121,10 @@ Command="{Binding SelWorker2Command}"/>
 
                 <Border Grid.RowSpan="5" Grid.ColumnSpan="4" BorderBrush="LightGray" BorderThickness="1" CornerRadius="8"/>
                 <Label Grid.Row="1" Grid.Column="1" Content="対象件数"/>
-                <TextBox Grid.Row="1" Grid.Column="2" />
-                <Label Grid.Row="2" Grid.Column="1" Content="全件数"/>
-                <TextBox Grid.Row="2" Grid.Column="2" />
-                <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="削除件数確認(F5)"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Amount}"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="全件数" />
+                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding TotalAmount}"/>
+                <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="削除件数確認(F5)" Command="{Binding OnBtnCheckCommand}"/>
 
 
             </Grid>
@@ -117,9 +136,10 @@ Command="{Binding SelWorker2Command}"/>
                 <ColumnDefinition Width="1.5*"/>
                 <ColumnDefinition Width="1.5*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="不正データ削除"/>
-            <Button Grid.Column="2" Content="削除実行(F8)"/>
-            <Button Grid.Column="3" Style="{StaticResource BackBtn}"/>
+            <Button Grid.Column="0" Content="不正データ削除" Command="{Binding DelUncorrectCommand}"/>
+            <Button Grid.Column="2" Content="削除実行(F8)"  Command="{Binding AllDelCommand}" IsEnabled="{Binding CanDelete}"/>
+            <Button Grid.Column="3" Style="{StaticResource BackBtn}" 
+                    Command="{Binding ExitCommand}"/>
         </Grid>
 
     </Grid>
