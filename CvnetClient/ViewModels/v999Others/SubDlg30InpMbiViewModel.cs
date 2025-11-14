@@ -24,8 +24,9 @@ namespace CvnetClient.ViewModels
             {
                 OnInitBase(init_para, init_flg);
                 SearchCond = new Search();
-            SearchCond.Date = DateTime.Now;
-            SearchCond.ItemTo = "zzzzzzzzzzzzzz";
+                SearchCond.Date = DateTime.Now;
+                SearchCond.ItemTo = "zzzzzzzzzzzzzz";
+            }
             //SearchCond.Date = DateOnly.TryParse(DateTime.Now.ToString(), out null);
         }
         #endregion

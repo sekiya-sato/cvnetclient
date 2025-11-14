@@ -14,6 +14,7 @@
         Title="発注入力" Style="{StaticResource MasterWindowStyle2}">
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
         <utils:SubtractHeaderFooterHeightConverter x:Key="SubtractHeaderFooterHeightConverter"/>
     </Window.Resources>
     <Window.DataContext>
@@ -150,7 +151,7 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.WareFrom.Display}" Visibility="{Binding sokoshow}"/>
                                     <uc:CvnetBtListView Grid.Column="1" MstName="Ac移動倉庫" StyleDesign="2" 
-    SelectedValue ="{Binding EditSearch.WareFrom.Code}" Visibility="{Binding sokoshow}"
+    SelectedValue ="{Binding EditSearch.WareFrom.Code}" Visibility="{Binding Sokoshow}"
     Command="{Binding SelWare1Command}"/>
                                 </Grid>
 
@@ -259,8 +260,8 @@
                         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,10,0,0">
                             <Button Margin="1,6" Command="{Binding BackListCommand}" Style="{DynamicResource PrevPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                             <Button Margin="1,1,6,1" Command="{Binding NextListCommand}" Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
-                            <Label Content="連携" Visibility="{Binding renkeishow}"/>
-                            <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,1" ItemsSource="{Binding ComboListRenkei}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.Renkei}" Style="{StaticResource SearchableComboBox1}" Visibility="{Binding renkeishow}"/>
+                            <Label Content="連携" Visibility="{Binding Renkeishow}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,1" ItemsSource="{Binding ComboListRenkei}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.Renkei}" Style="{StaticResource SearchableComboBox1}" Visibility="{Binding Renkeishow}"/>
                         </StackPanel>
 
                         <Button Grid.Column="1" Margin="13,10,13,0" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" Content="一覧登録(F5)" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
@@ -277,13 +278,24 @@
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Stretch"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                               d:DataContext="{d:DesignInstance Type=vm:SubDlgInp13ViewModel, IsDesignTimeCreatable=True}"
                                 MaxHeight="{Binding ActualHeight,
                                       RelativeSource={RelativeSource AncestorType=Window},
                                       Converter={StaticResource SubtractHeaderFooterHeightConverter},
                                       ConverterParameter=430}">
+                        
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Binding="{Binding DenpyoNo }" Header="伝票No" />
-                            <DataGridTextColumn Width="*" Binding="{Binding Nohinbi}" Header="納品日" />
+                            <DataGridTextColumn Width="*" Binding="{Binding DenpyoNo}" Header="伝票No" />
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="{Binding DataContext.DateName, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Nohinbi}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Width="*" Binding="{Binding Supplier}" Header="仕入先" />
                             <DataGridTextColumn Width="*" Binding="{Binding SupplierName}" Header="仕入先名" />
                             <DataGridTextColumn Width="*" Binding="{Binding Ware}" Header="入庫先" />
@@ -295,7 +307,7 @@
                         </DataGrid.Columns>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1}" />
+                                <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </DataGrid>
@@ -309,11 +321,21 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
-                            <RadioButton Grid.Column="0" Content="一覧" Margin="0,0,8,0"/>
-                            <RadioButton Grid.Column="1" Content="明細" Margin="0,0,8,0"/>
+                            <RadioButton Grid.Column="0" Content="一覧" 
+                                         GroupName="OutPutType"
+                                         IsChecked="{Binding SelectedOutPut, 
+                                                     Converter={StaticResource StringToBoolConverter}, 
+                                                     ConverterParameter=List, Mode=TwoWay}"
+                                         Margin="0,0,8,0"/>
+                            <RadioButton Grid.Column="1" Content="明細" 
+                                         GroupName="OutPutType"
+                                         IsChecked="{Binding SelectedOutPut, 
+                                                      Converter={StaticResource StringToBoolConverter}, 
+                                                      ConverterParameter=Detail, Mode=TwoWay}"
+                                         Margin="0,0,8,0"/>
 
-                            <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="0,0,8,0"/>
-                            <Button Grid.Column="3" Content="{Binding csvname}" Width="90" Margin="0,0,8,0"/>
+                            <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+                            <Button Grid.Column="3" Content="{Binding Csvname}" Width="90" Margin="0,0,8,0"/>
                         </Grid>
 
                     </Border>
@@ -518,7 +540,7 @@
                             <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Grid.ColumnSpan="2">
-                            <Button Width="auto" Content="＋最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0"/>
+                            <Button Width="auto" Content="＋最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0" Command="{Binding AddNewRowCommand}"/>
                         </Grid>
 
                         <Label Grid.Column="3" Content="計" HorizontalAlignment="Right"/>
@@ -530,7 +552,7 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Margin="5,0" Content="一括Refresh　"/>
+                            <Button Grid.Column="0" Margin="5,0" Content="一括Refresh" Command="{Binding RefreshCommand}"/>
                             <Button Grid.Column="1" Content="バーコード入力"/>
                         </Grid>
                        
@@ -589,10 +611,10 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Text="{Binding ProductCD}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Text="{Binding ProductCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -623,10 +645,10 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Text="{Binding Color}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Text="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -657,10 +679,10 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Text="{Binding Size}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Text="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding SizeName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding SizeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -688,7 +710,7 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Weight}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
 
                                         </Grid>
                                     </DataTemplate>
@@ -717,9 +739,9 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding JodaiTanka}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding JodaiTanka, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding JodaiKingaku}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding JodaiKingaku, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -750,9 +772,9 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding GedaiTanka}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding GedaiTanka, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding GedaiKingaku}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding GedaiKingaku, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
                                     </DataTemplate>
@@ -788,7 +810,7 @@
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstract}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstracts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
 
                                             <Border Grid.Row="1" Grid.ColumnSpan="4"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
                                             </Border>
@@ -802,10 +824,10 @@
                                                         Style="{DynamicResource SearchableComboBox1}" />
                                             </Border>
                                             <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="DarkGray" BorderThickness="0,0,1,0">
-                                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                             <Border Grid.Row="1" Grid.Column="3"  BorderBrush="DarkGray">
-                                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -837,7 +859,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Grid.RowSpan="2" Margin="1" Padding="2,0" Style="{StaticResource RefreshFlexBtn}"/>
+                                            <Button Grid.Column="0" Grid.RowSpan="2" Margin="1" Padding="2,0" Style="{StaticResource RefreshFlexBtn}" Command="{Binding DataContext.RowRefreshCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
