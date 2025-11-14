@@ -6,121 +6,122 @@ using CvnetClient.Utils;
 using CvnetClient.Views;
 using System;
 using System.Collections.ObjectModel;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Data;
+using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg_prn_kakumstViewModel : BaseViewModel
     {
-        // -------------------------
-        // RangeValue: shared structure for Code + Name
-        // -------------------------
-        public class RangeValue
+        private BizArray para;
+        public enum PrintType { スプール, CSV }
+
+        // ---------------- Tabs & Header ----------------
+        public ObservableCollection<string> ChooseTab { get; } = new()
         {
-            public string Code { get; set; } = "";
-            public string Name { get; set; } = "";
+            "商品マスタ", "得意先マスタ", "仕入先マスタ",
+            "名称マスタ", "生地付属マスタ", "社員マスタ"
+        };
+
+        [ObservableProperty] private string selectedTab = "";
+        [ObservableProperty] private int selectedTabIndex;
+        [ObservableProperty] private int dateFlag = 1; // 1=修正日, 0=作成日
+        [ObservableProperty] private BtListHelper employee = new();
+        [ObservableProperty] SearchCondition? condition;
+        [ObservableProperty] private string? selectedOrder;
+
+        // ---------------- Tab4 (名称マスタ) ----------------
+        [ObservableProperty] private ObservableCollection<KeyValuePair<string, string>> kubunOptions = new();
+        [ObservableProperty] private string selectedKubun = "";   // stores code only (e.g. "B01")
+        [ObservableProperty] private BtListHelper rangeFrom3 = new();
+        [ObservableProperty] private BtListHelper rangeTo3 = new();
+
+        public partial class SearchCondition : ObservableObject
+        {
+            [ObservableProperty] private DateTime? dateFrom;
+            [ObservableProperty] private DateTime? dateTo;
+            [ObservableProperty] private PrintType selectedPrint = PrintType.スプール;
         }
 
-        // -------------------------
-        // RangeRow: now holds TWO range sets (and two labels)
-        // -------------------------
-        public class RangeRow
+        // --------------- Range Row (used by Tab1/2/3/5/6) ---------------
+        public partial class RangeRow : ObservableObject
         {
-            // ---- Labels ----
-            public string Label1 { get; set; } = "";
-            public string Label2 { get; set; } = "";
-            public string Label3 { get; set; } = "";
-            public string Label4 { get; set; } = "";
-            public string Label5 { get; set; } = "";
-            public string Label6 { get; set; } = "";
-            public string Label7 { get; set; } = "";
-            public string Label8 { get; set; } = "";
-            public string Label9 { get; set; } = "";
-            public string Label10 { get; set; } = "";
+            [ObservableProperty] private string label1 = "";
+            [ObservableProperty] private string label2 = "";
+            [ObservableProperty] private string mstname1 = "";
+            [ObservableProperty] private string mstname2 = "";
+            [ObservableProperty] private string parameter1 = "";
+            [ObservableProperty] private string parameter2 = "";
+            [ObservableProperty] private BtListHelper rangeFrom1 = new();
+            [ObservableProperty] private BtListHelper rangeTo1 = new();
+            [ObservableProperty] private BtListHelper rangeFrom2 = new();
+            [ObservableProperty] private BtListHelper rangeTo2 = new();
 
-            // ---- Range Values ----
-            public RangeValue RangeFrom1 { get; set; } = new();
-            public RangeValue RangeTo1 { get; set; } = new();
+            // Helpers to accept either SelValueModel OR (SelValueModel, object)
+            private static SelValueModel? ExtractSel(object value, out string param2Str)
+            {
+                param2Str = "";
+                // tuple?
+                if (value is ValueTuple<object, object> t)
+                {
+                    var s = t.Item1 as SelValueModel;
+                    if (t.Item2 is string s2) param2Str = s2;
+                    return s;
+                }
+                // plain
+                return value as SelValueModel;
+            }
 
-            public RangeValue RangeFrom2 { get; set; } = new();
-            public RangeValue RangeTo2 { get; set; } = new();
+            // ----- Commands used by both Tab1A/Tab2/Tab3/Tab5 and Tab1B/Tab6B (tuple) -----
+            [RelayCommand]
+            private void PickFrom1(object value)
+            {
+                var sel = ExtractSel(value, out var p2);
+                if (sel == null) return;
+                RangeFrom1.Code = sel.Code;
+                RangeFrom1.Name = sel.Name;
+            }
 
-            public RangeValue RangeFrom3 { get; set; } = new();
-            public RangeValue RangeTo3 { get; set; } = new();
+            [RelayCommand]
+            private void PickTo1(object value)
+            {
+                var sel = ExtractSel(value, out var p2);
+                if (sel == null) return;
+                RangeTo1.Code = sel.Code;
+                RangeTo1.Name = sel.Name;
+            }
 
-            public RangeValue RangeFrom4 { get; set; } = new();
-            public RangeValue RangeTo4 { get; set; } = new();
+            [RelayCommand]
+            private void PickFrom2(object value)
+            {
+                var sel = ExtractSel(value, out var p2);
+                if (sel == null) return;
+                RangeFrom2.Code = sel.Code;
+                RangeFrom2.Name = sel.Name;
+            }
 
-            public RangeValue RangeFrom5 { get; set; } = new();
-            public RangeValue RangeTo5 { get; set; } = new();
-
-            public RangeValue RangeFrom6 { get; set; } = new();
-            public RangeValue RangeTo6 { get; set; } = new();
-
-            public RangeValue RangeFrom7 { get; set; } = new();
-            public RangeValue RangeTo7 { get; set; } = new();
-
-            public RangeValue RangeFrom8 { get; set; } = new();
-            public RangeValue RangeTo8 { get; set; } = new();
-
-            public RangeValue RangeFrom9 { get; set; } = new();
-            public RangeValue RangeTo9 { get; set; } = new();
-
-            public RangeValue RangeFrom10 { get; set; } = new();
-            public RangeValue RangeTo10 { get; set; } = new();
-
-            // ---- Commands ----
-            public ICommand SelRangeFrom1Command { get; set; }
-            public ICommand SelRangeTo1Command { get; set; }
-
-            public ICommand SelRangeFrom2Command { get; set; }
-            public ICommand SelRangeTo2Command { get; set; }
-
-            public ICommand SelRangeFrom3Command { get; set; }
-            public ICommand SelRangeTo3Command { get; set; }
-
-            public ICommand SelRangeFrom4Command { get; set; }
-            public ICommand SelRangeTo4Command { get; set; }
-
-            public ICommand SelRangeFrom5Command { get; set; }
-            public ICommand SelRangeTo5Command { get; set; }
-
-            public ICommand SelRangeFrom6Command { get; set; }
-            public ICommand SelRangeTo6Command { get; set; }
-
-            public ICommand SelRangeFrom7Command { get; set; }
-            public ICommand SelRangeTo7Command { get; set; }
-
-            public ICommand SelRangeFrom8Command { get; set; }
-            public ICommand SelRangeTo8Command { get; set; }
-
-            public ICommand SelRangeFrom9Command { get; set; }
-            public ICommand SelRangeTo9Command { get; set; }
-
-            public ICommand SelRangeFrom10Command { get; set; }
-            public ICommand SelRangeTo10Command { get; set; }
+            [RelayCommand]
+            private void PickTo2(object value)
+            {
+                var sel = ExtractSel(value, out var p2);
+                if (sel == null) return;
+                RangeTo2.Code = sel.Code;
+                RangeTo2.Name = sel.Name;
+            }
         }
 
-        // ---- Tab 1 ----
-        [ObservableProperty] private ObservableCollection<RangeRow> tab1Rows_SectionA = new(); // Label1 & Label2
-        [ObservableProperty] private ObservableCollection<RangeRow> tab1Rows_SectionB = new(); // Label3 & Label4
+        // ---------------- Tab Collections ----------------
+        public ObservableCollection<RangeRow> Tab1RowsA { get; } = new();
+        public ObservableCollection<RangeRow> Tab1RowsB { get; } = new();
+        public ObservableCollection<RangeRow> Tab2Rows { get; } = new();
+        public ObservableCollection<RangeRow> Tab3Rows { get; } = new();
+        public ObservableCollection<RangeRow> Tab5Rows { get; } = new();
+        public ObservableCollection<RangeRow> Tab6RowsA { get; } = new();
+        public ObservableCollection<RangeRow> Tab6RowsB { get; } = new();
 
-        // ---- Tab 2 ----
-        [ObservableProperty] private ObservableCollection<RangeRow> tab2Rows_SectionA = new();
-
-        // ---- Tab 3 ---- 
-        [ObservableProperty] private ObservableCollection<RangeRow> tab3Rows_SectionA = new();
-
-        // ---- Tab 5 ---- 
-        [ObservableProperty] private ObservableCollection<RangeRow> tab5Rows_SectionA = new();
-
-        // ---- Tab 6 ----
-        [ObservableProperty] private ObservableCollection<RangeRow> tab6Rows_SectionA = new();
-        [ObservableProperty] private ObservableCollection<RangeRow> tab6Rows_SectionB = new();
-
-        private readonly (string Label1, string Label2)[] _labelTab1 =
+        // ---------------- Templates ----------------
+        private readonly (string, string)[] _labelTab1A =
         {
             ("ﾌﾞﾗﾝﾄ", "ｱｲﾃﾑ"),
             ("ｼｰｽﾞﾝ", "ﾃﾞｻﾞｲﾅｰ"),
@@ -128,224 +129,420 @@ namespace CvnetClient.ViewModels
             ("原産国", "ﾒｰｶｰ"),
         };
 
-        private readonly string[] _labelTab2 =
+        private readonly (string, string)[] _labelTab1B =
         {
-            "得意先CD",
-            "営業担当CD",
-            "請求先CD"
-        };
-        private readonly string[] _labelTab3 =
-        {
-            "仕入先CD",
-            "支払先CD",
+            ("補足 1", "補足 6"),
+            ("補足 2", "補足 7"),
+            ("補足 3", "補足 8"),
+            ("補足 4", "補足 9"),
+            ("補足 5", "補足 10"),
         };
 
-        private readonly string[] _labelTab5 =
+        private readonly string[] _labelTab2 = { "得意先CD", "営業担当CD", "請求先CD" };
+        private readonly string[] _labelTab3 = { "仕入先CD", "支払先CD" };
+        private readonly string[] _labelTab5 = { "生地付属CD", "仕入先CD" };
+        private readonly string[] _labelTab6A = { "社員CD", "所属店舗CD" };
+
+        private readonly (string, string)[] _MstNameTab1A =
         {
-            "生地付属CD",
-            "仕入先CD"
+            ("ブランド", "アイテム"),
+            ("シーズン", "デザイナー"),
+            ("展示会", "素材"),
+            ("原産国", "メーカー"),
         };
-        private readonly string[] _labelTab6 =
+
+        private readonly (string, string)[] _ParameterTab1B =
         {
-            "社員CD",
-            "所属店舗CD"
+            ("B01", "B06"),
+            ("B02", "B07"),
+            ("B03", "B08"),
+            ("B04", "B09"),
+            ("B05", "B10"),
         };
+
+        private readonly string[] _MstNameTab2 = { "得意先MST", "営業担当", "請求" };
+        private readonly string[] _MstNameTab3 = { "仕入先", "支払" };
+        private readonly string[] _MstNameTab5 = { "生地", "仕入先" };
+        private readonly string[] _MstNameTab6 = { "担当", "移動倉庫" };
+        private readonly string[] _ParameterTab6B = { "E01", "E02", "E03", "E04", "E05" };
 
         public SubDlg_prn_kakumstViewModel()
         {
-            for (int i = 0; i < _labelTab1.Length ; i++)
+            Condition = new SearchCondition();
+            OnInit();
+        }
+        // ---------------- Init ----------------
+        private void OnInit(string[] init_para = null)
+        {
+            para = init_para != null ? new BizArray(init_para) : new BizArray();
+
+            Employee = new BtListHelper();
+            SelectedTab = ChooseTab[0];
+            UpdateSelectedTabIndex(SelectedTab);
+
+            InitTab1();
+            InitTab2();
+            InitTab3();
+            InitTab4();
+            InitTab5();
+            InitTab6();
+
+            UpdateLabelsFromDb(); // rename Tab1RowsB labels by DB IDX (B01..B10)
+        }
+
+        private void InitTab1()
+        {
+            Tab1RowsA.Clear();
+            Tab1RowsB.Clear();
+
+            for (int i = 0; i < _labelTab1A.Length; i++)
             {
-                tab1Rows_SectionA.Add(new RangeRow
-                {
-                    Label1 = _labelTab1[i].Label1,
-                    Label2 = _labelTab1[i].Label2,
-
-                    // 1st pair of range buttons
-                    SelRangeFrom1Command = new RelayCommand<object>(_ => OnSelectFrom1(i)),
-                    SelRangeTo1Command = new RelayCommand<object>(_ => OnSelectTo1(i)),
-
-                    // 2nd pair of range buttons
-                    SelRangeFrom2Command = new RelayCommand<object>(_ => OnSelectFrom2(i)),
-                    SelRangeTo2Command = new RelayCommand<object>(_ => OnSelectTo2(i)),
-
-                });
+                var (l1, l2) = _labelTab1A[i];
+                var (m1, m2) = _MstNameTab1A[i];
+                Tab1RowsA.Add(new RangeRow{Label1 = l1,Label2 = l2,Mstname1 = m1,Mstname2 = m2});
             }
-            for (int i = 0; i < 5; i++)
+
+            for (int i = 0; i < _labelTab1B.Length; i++)
             {
-                tab1Rows_SectionB.Add(new RangeRow
-                {
-                    Label3 = $"補足{i + 1}",
-                    Label4 = $"補足{i + 6}",
-
-                    // 3rd pair of range buttons
-                    SelRangeFrom3Command = new RelayCommand<object>(_ => OnSelectFrom3(i)),
-                    SelRangeTo3Command = new RelayCommand<object>(_ => OnSelectTo3(i)),
-
-                    // 4th pair of range buttons
-                    SelRangeFrom4Command = new RelayCommand<object>(_ => OnSelectFrom4(i)),
-                    SelRangeTo4Command = new RelayCommand<object>(_ => OnSelectTo4(i))
-                });
-            }
-            for (int i = 0; i < _labelTab2.Length ; i++)
-            {
-                tab2Rows_SectionA.Add(new RangeRow
-                {
-                    Label5 = _labelTab2[i],
-
-                    // 5th pair of range buttons
-                    SelRangeFrom5Command = new RelayCommand<object>(_ => OnSelectFrom5(i)),
-                    SelRangeTo5Command = new RelayCommand<object>(_ => OnSelectTo5(i)),
-                });
-            }
-            for (int i = 0; i < 2; i++)
-            {
-                tab3Rows_SectionA.Add(new RangeRow
-                {
-                    Label6 = _labelTab3[i],
-
-                    // 6th pair of range buttons
-                    SelRangeFrom6Command = new RelayCommand<object>(_ => OnSelectFrom6(i)),
-                    SelRangeTo6Command = new RelayCommand<object>(_ => OnSelectTo6(i))
-                });
-            }
-            for (int i = 0; i < 2; i++)
-            {
-                tab5Rows_SectionA.Add(new RangeRow
-                {
-                    Label8 = _labelTab5[i],
-
-                    // 8th pair of range buttons
-                    SelRangeFrom8Command = new RelayCommand<object>(_ => OnSelectFrom8(i)),
-                    SelRangeTo8Command = new RelayCommand<object>(_ => OnSelectTo8(i)),
-                });
-            }
-            for (int i = 0; i < 2; i++)
-            {
-                tab6Rows_SectionA.Add(new RangeRow
-                {
-                    Label9 = _labelTab6[i],
-
-                    // 9th pair of range buttons
-                    SelRangeFrom9Command = new RelayCommand<object>(_ => OnSelectFrom9(i)),
-                    SelRangeTo9Command = new RelayCommand<object>(_ => OnSelectTo9(i))
-                });
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                tab6Rows_SectionB.Add(new RangeRow
-                {
-                    Label10 = $"社員分類{i + 1}",
-
-                    // 10th pair of range buttons
-                    SelRangeFrom10Command = new RelayCommand<object>(_ => OnSelectFrom10(i)),
-                    SelRangeTo10Command = new RelayCommand<object>(_ => OnSelectTo10(i)),
-                });
+                var (l1, l2) = _labelTab1B[i];
+                var (p1, p2) = _ParameterTab1B[i];
+                Tab1RowsB.Add(new RangeRow{Label1 = l1,Label2 = l2,Mstname1 = "名称",Mstname2 = "名称",Parameter1 = p1,Parameter2 = p2});
             }
         }
 
-        // --- 1st label set ---
-        private void OnSelectFrom1(int index)
+        private void InitTab2()
         {
-            // handle first label’s "From" selection
+            Tab2Rows.Clear();
+            for (int i = 0; i < _labelTab2.Length; i++)
+            {
+                Tab2Rows.Add(new RangeRow{Label1 = _labelTab2[i],Mstname1 = _MstNameTab2[i]});
+            }
         }
 
-        private void OnSelectTo1(int index)
+        private void InitTab3()
         {
-            // handle first label’s "To" selection
+            Tab3Rows.Clear();
+            for (int i = 0; i < _labelTab3.Length; i++)
+            {
+                Tab3Rows.Add(new RangeRow{Label1 = _labelTab3[i],Mstname1 = _MstNameTab3[i]});
+            }
         }
 
-        // --- 2nd label set ---
-        private void OnSelectFrom2(int index)
+        private void InitTab4()
         {
-            // handle second label’s "From" selection
+            KubunOptions.Clear();
+
+            try
+            {
+                const string sql = @"
+                    SELECT A.名称CD, A.名称
+                    FROM HC$Master_MEISHO A
+                    WHERE A.名称区分='IDX'
+                    ORDER BY A.名称CD";
+
+                var dt = AppData.Http?.AspxSqlQuery(sql, null);
+                if (dt == null || dt.Rows.Count == 0) return;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string code = row["名称CD"]?.ToString()?.Trim() ?? "";
+                    string name = row["名称"]?.ToString()?.Trim() ?? "";
+                    if (!string.IsNullOrEmpty(code))
+                        KubunOptions.Add(new KeyValuePair<string, string>(code, $"{code} {name}"));
+                }
+
+                SelectedKubun = KubunOptions.FirstOrDefault().Key ?? "";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[InitTab4 Error] {ex.Message}");
+            }
         }
 
-        private void OnSelectTo2(int index)
+        private void InitTab5()
         {
-            // handle second label’s "To" selection
-        }
-        // --- 3rd label set ---
-        private void OnSelectFrom3(int index)
-        {
-            // handle first label’s "From" selection
-        }
-
-        private void OnSelectTo3(int index)
-        {
-            // handle first label’s "To" selection
+            Tab5Rows.Clear();
+            for (int i = 0; i < _labelTab5.Length; i++)
+            {
+                Tab5Rows.Add(new RangeRow{Label1 = _labelTab5[i],Mstname1 = _MstNameTab5[i]});
+            }
         }
 
-        // --- 4th label set ---
-        private void OnSelectFrom4(int index)
+        private void InitTab6()
         {
-            // handle second label’s "From" selection
+            Tab6RowsA.Clear();
+            Tab6RowsB.Clear();
+
+            // A-section
+            for (int i = 0; i < _labelTab6A.Length; i++)
+            {
+                Tab6RowsA.Add(new RangeRow{Label1 = _labelTab6A[i],Mstname1 = _MstNameTab6[i]});
+            }
+
+            // B-section (社員分類 E01..E05)
+            for (int i = 0; i < _ParameterTab6B.Length; i++)
+            {
+                Tab6RowsB.Add(new RangeRow{Label1 = $"社員分類{i + 1}",Mstname1 = "名称",Parameter1 = _ParameterTab6B[i]});
+            }
         }
 
-        private void OnSelectTo4(int index)
+        // --------------- DB Label Update (Tab1RowsB labels) ---------------
+        private void UpdateLabelsFromDb()
         {
-            // handle second label’s "To" selection
+            try
+            {
+                const string sql = @"
+                    SELECT 名称CD, 名称
+                    FROM HC$master_meisho
+                    WHERE 名称区分='IDX' AND 名称CD BETWEEN 'B01' AND 'B10'
+                    ORDER BY 名称CD";
+
+                var dt = AppData.Http?.AspxSqlQuery(sql, null);
+                if (dt == null || dt.Rows.Count == 0) return;
+
+                var labelDict = dt.AsEnumerable()
+                    .Where(r => !string.IsNullOrEmpty(r.Field<string>("名称CD")))
+                    .ToDictionary(r => r.Field<string>("名称CD")!.Trim(),
+                                  r => r.Field<string>("名称")?.Trim() ?? "");
+
+                foreach (var row in Tab1RowsB)
+                {
+                    if (!string.IsNullOrEmpty(row.Parameter1) && labelDict.TryGetValue(row.Parameter1, out var v1))
+                        row.Label1 = v1;
+                    if (!string.IsNullOrEmpty(row.Parameter2) && labelDict.TryGetValue(row.Parameter2, out var v2))
+                        row.Label2 = v2;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[UpdateLabelsFromDb] Error: {ex.Message}");
+            }
         }
 
-        // --- 5th label set ---
-        private void OnSelectFrom5(int index)
+        // ---------------- Commands (header + Tab4) ----------------
+        [RelayCommand] private void ToggleDateFlag() => DateFlag = 1 - DateFlag;
+
+        [RelayCommand]
+        private void ChooseEmployee(object value)
         {
-            // handle second label’s "From" selection
+            if (value is SelValueModel sel)
+            {
+                Employee.Code = sel.Code;
+                Employee.Name = sel.Name;
+            }
         }
 
-        private void OnSelectTo5(int index)
+        // Tab4 名称CD From
+        [RelayCommand]
+        private void PickFrom3((object result1, object result2) value)
         {
-            // handle second label’s "To" selection
+            var (result1, result2) = value;
+            var sel = result1 as SelValueModel;
+            // result2 is SelectedKubun (string) if needed:
+            // var kubun = result2 as string ?? "";
+            if (sel == null) return;
+            RangeFrom3.Code = sel.Code;
+            RangeFrom3.Name = sel.Name;
         }
 
-        // --- 6th label set ---
-        private void OnSelectFrom6(int index)
+        // Tab4 名称CD To
+        [RelayCommand]
+        private void PickTo3((object result1, object result2) value)
         {
-            // handle second label’s "From" selection
+            var (result1, result2) = value;
+            var sel = result1 as SelValueModel;
+            if (sel == null) return;
+            RangeTo3.Code = sel.Code;
+            RangeTo3.Name = sel.Name;
         }
 
-        private void OnSelectTo6(int index)
+        // ---------------- Tab switching ----------------
+        partial void OnSelectedTabChanged(string value) => UpdateSelectedTabIndex(value);
+        private void UpdateSelectedTabIndex(string tabName) => SelectedTabIndex = ChooseTab.IndexOf(tabName);
+
+        private BizArray BuildWrkPara_Tab1()
         {
-            // handle second label’s "To" selection
+            var p = new BizArray();
+            int i = 0;
+
+            // 1. Date Range
+            p[i++] = Condition.DateFrom?.ToString("yyyyMMdd") ?? string.Empty;
+            p[i++] = Condition.DateTo?.ToString("yyyyMMdd") ?? string.Empty;
+
+            // 2. Tab1RowsA (4 rows × 4 values)
+            foreach (var row in Tab1RowsA)
+            {
+                p[i++] = row.RangeFrom1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? ".";
+                p[i++] = row.RangeFrom2.Code ?? ".";
+                p[i++] = row.RangeTo2.Code ?? ".";
+            }
+
+            // 3. Tab1RowsB (5 rows × 4 values)
+            foreach (var row in Tab1RowsB)
+            {
+                p[i++] = row.RangeFrom1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? ".";
+                p[i++] = row.RangeFrom2.Code ?? ".";
+                p[i++] = row.RangeTo2.Code ?? ".";
+            }
+
+            // 4. Employee (optional)
+            p[i++] = Employee?.Code ?? ".";
+
+            return p;
         }
-        private void OnSelectFrom7(int index)
+        private BizArray BuildWrkPara2_Tab1(BizArray p)
         {
-            // handle label7's "From" selection
+            var p2 = new BizArray();
+
+            // Blank → "."
+            for (int i = 0; i < p.Count; i++)
+                if (string.IsNullOrEmpty(p[i]))
+                    p[i] = ".";
+
+
+
+            // WHERE clause
+            string dateField = (DateFlag == 0)
+                ? "A.VDATE_CREATE"
+                : "A.VDATE_UPDATE";
+
+            string sql =
+                $"{dateField} between '{p[0]}' and '{p[1]}'" +
+                $" and A.ブランドCD between '{p[2]}' and '{p[3]}'" +
+                $" and A.アイテムCD between '{p[4]}' and '{p[5]}'" +
+                $" and A.シーズンCD between '{p[6]}' and '{p[7]}'" +
+                $" and A.デザイナーCD between '{p[8]}' and '{p[9]}'" +
+                $" and A.展示会CD between '{p[10]}' and '{p[11]}'" +
+                $" and A.素材CD between '{p[12]}' and '{p[13]}'" +
+                $" and A.原産国CD between '{p[14]}' and '{p[15]}'" +
+                $" and A.メーカーCD between '{p[16]}' and '{p[17]}'" +
+                $" and A.名称CD01 between '{p[18]}' and '{p[19]}'" +
+                $" and A.名称CD02 between '{p[20]}' and '{p[21]}'" +
+                $" and A.名称CD03 between '{p[22]}' and '{p[23]}'" +
+                $" and A.名称CD04 between '{p[24]}' and '{p[25]}'" +
+                $" and A.名称CD05 between '{p[26]}' and '{p[27]}'" +
+                $" and A.名称CD06 between '{p[28]}' and '{p[29]}'" +
+                $" and A.名称CD07 between '{p[30]}' and '{p[31]}'" +
+                $" and A.名称CD08 between '{p[32]}' and '{p[33]}'" +
+                $" and A.名称CD09 between '{p[34]}' and '{p[35]}'" +
+                $" and A.名称CD10 between '{p[36]}' and '{p[37]}'";
+
+            // Employee filter
+            if (!string.IsNullOrEmpty(p[38]) && p[38] != ".")
+                sql += $" and A.入力社員CD = '{p[38]}'";
+
+            p2[0] = sql;
+
+            // ORDER BY
+            p2[1] = BuildOrderByClause();
+
+            return p2;
+        }
+        private string BuildOrderByClause()
+        {
+            return SelectedOrder switch
+            {
+                "ブランドCD" => " order by A.ブランドCD,A.商品CD",
+                "アイテムCD" => " order by A.アイテムCD,A.商品CD",
+                "年度" => " order by A.JANコード1,A.商品CD",
+                "シーズンCD" => " order by A.シーズンCD,A.商品CD",
+                "デザイナーCD" => " order by A.デザイナーCD,A.商品CD",
+                "展示会CD" => " order by A.展示会CD,A.商品CD",
+                "素材CD" => " order by A.素材CD,A.商品CD",
+                "メーカーCD" => " order by A.メーカーCD,A.商品CD",
+                "原産国CD" => " order by A.原産国CD,A.商品CD",
+                "作成日" => " order by A.VDATE_CREATE DESC,A.商品CD",
+                "更新日" => " order by A.VDATE_UPDATE DESC,A.商品CD",
+                _ => " order by A.商品CD" // default
+            };
         }
 
-        private void OnSelectTo7(int index)
+
+        [RelayCommand]
+        private async Task DoPrintAsync()
         {
-            // handle label7's "To" selection
+            try
+            {
+                ClientLib.CursorToWait();
+
+                // -----------------------------
+                // 1. Build Search Params
+                // -----------------------------
+                var wrk_para = BuildWrkPara_Tab1();
+                var wrk_para2 = BuildWrkPara2_Tab1(wrk_para);
+
+                // -----------------------------
+                // 2. Execute CVNET Print API
+                // -----------------------------
+                var dt = await Task.Run(() =>
+                    AppData.ClassCvnet.OnQueryPrintShohin(wrk_para2.ToArray(), 1)
+                );
+                string pdfPath = dt.Rows[0][0].ToString(); 
+                // -----------------------------
+                // 3. Handle Spool (PDF)
+                // -----------------------------
+                if (Condition.SelectedPrint.ToString() == "スプール")
+                {
+                    string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+                    bool ready = await GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+                    if (!ready)
+                    {
+                        ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n条件を絞ってください。");
+                        return;
+                    }
+
+                    ClientLib.CursorToNormal();
+
+                    var win = new WebpdfView();
+                    if (win.DataContext is WebpdfViewModel vm)
+                        vm.Pdfdata = url;
+
+                    ClientLib.ShowDialogView(win, this);
+                    return;
+                }
+
+                // -----------------------------
+                // 4. Handle CSV Output
+                // -----------------------------
+                if (Condition.SelectedPrint.ToString() == "CSV")
+                {
+                    string datapath = AppData.Http.URLroot + pdfPath + "/data.txt";
+                    string headpath = AppData.Http.URLroot + pdfPath + "/d_sql.txt";
+
+                    bool ready = await GlobalFunc.WaitForPdfAsync(datapath, TimeSpan.FromSeconds(30));
+                    if (!ready)
+                    {
+                        ClientLib.MessageBoxError(this, "Data生成に時間がかかりすぎています。\n条件を絞ってください。");
+                        return;
+                    }
+
+                    ready = await GlobalFunc.WaitForPdfAsync(headpath, TimeSpan.FromSeconds(30));
+                    if (!ready)
+                    {
+                        ClientLib.MessageBoxError(this, "Header生成に時間がかかりすぎています。\n条件を絞ってください。");
+                        return;
+                    }
+
+                    var csv_para = new BizCsvDocument();
+                    await csv_para.LoadFromUrlAsync(datapath, headpath);
+
+                    csv_para.SaveCsv($"{DateTime.Now:yyyyMMdd}_得意先別売上月報");
+
+                    ClientLib.CursorToNormal();
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                ClientLib.CursorToNormal();
+                ClientLib.MessageBoxError(this, $"印刷中にエラー:\n{ex.Message}");
+            }
         }
 
-        private void OnSelectFrom8(int index)
-        {
-            // handle label8's "From" selection
-        }
-
-        private void OnSelectTo8(int index)
-        {
-            // handle label8's "To" selection
-        }
-
-        private void OnSelectFrom9(int index)
-        {
-            // handle label9's "From" selection
-        }
-
-        private void OnSelectTo9(int index)
-        {
-            // handle label9's "To" selection
-        }
-
-        private void OnSelectFrom10(int index)
-        {
-            // handle label10's "From" selection
-        }
-
-        private void OnSelectTo10(int index)
-        {
-            // handle label10's "To" selection
-        }
 
     }
+
 }
