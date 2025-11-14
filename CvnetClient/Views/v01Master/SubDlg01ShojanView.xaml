@@ -113,7 +113,7 @@
 				</Grid>
 
 				<Grid Grid.Row="2">
-					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding SelDspUpdateCommand}" CommandParameter="0" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
+					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding SelDspUpdateCommand}" CommandParameter="1" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 				</Grid>
 			</Grid>
 		</Border>
@@ -427,7 +427,7 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 							<TextBlock Grid.Row="0" Margin="0,8,0,0" TextWrapping="Wrap" Text="このメニューからの商品マスタは製造対象外です。&#10;※『商品マスタ(新規登録)』からの登録となります"/>
-							<Button Grid.Row="1" Content="戻る(ESC)" Padding="16,4" HorizontalAlignment="Right" Margin="0,0,0,0"/>
+							<Button Grid.Row="1" Content="戻る(ESC)" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" Padding="16,4" HorizontalAlignment="Right" Margin="0,0,0,0"/>
 						</Grid>
 					</StackPanel>
 				</Grid>

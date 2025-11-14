@@ -8,7 +8,8 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
-//using static CvnetClient.ViewModels.SubDlg09Upkeihi2ViewModel;
+using System.Text;
+using System.Windows;
 
 namespace CvnetClient.ViewModels
 {
@@ -43,7 +44,9 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         decimal? timex = 0;
 
-        public int pageCnt = 1;
+        private string? printsql;
+
+        private int pageCnt = 1;
 
         private BizArray col_list;
 
@@ -54,7 +57,6 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(BackListCommand))]
         private bool canBack;
-
 
 
 
@@ -93,12 +95,8 @@ namespace CvnetClient.ViewModels
             };
             EditProduct.AutoAllocationFlag = Jidohaibun.FirstOrDefault().Key;
 
-            string sql_query = "select nvl((select 値 from hc$master_config where フラグ名 = 'dispColSizKakaku'),0) flg from dual";
-
-            //string sql_query_init = "SELECT A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE, A.商品CD, A.色CD, A.サイズCD, A.JANコード1, A.JANコード2, A.JANコード3, A.メモ, A.使用FLG, A.生産予定数, A.裁断数, A.下札枚数, A.自動配分FLG, A.上代, A.仕入価格, A.外貨仕入価格, A.原価,B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1 FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
-            //sql_query_init = AppData.ClassCvnet.GetSqlDisp(sql_query_init);
-            //var ret_csv_init = AppData.Http?.AspxSqlQuery(sql_query_init);
             v_para2[0] = "0";
+            pageCnt = 1;
 
         }
 
@@ -108,15 +106,6 @@ namespace CvnetClient.ViewModels
             "メモ", "使用FLG", "生産予定数", "裁断数", "下札枚数",
             "自動配分FLG", "上代", "仕入価格", "外貨仕入価格", "原価"
         };
-
-
-
-        //[RelayCommand]
-        //void DoList()
-        //{
-        //    if (!ClientLib.MessageBox(this, "本当にしますか？")) return;
-
-        //}
 
         [RelayCommand]
         public void SelDspUpdate(string? para)
@@ -323,15 +312,75 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         async Task DoPrintAsync()
         {
+            // Confirmation
             if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
             ClientLib.CursorToWait();
-            if (ListShohinJan == null || ListShohinJan.Count == 0) return;
 
-            //var getCateShhojan = AppData.ClassCvnet.comboItem00.GetCaseStr()
+            if (ListShohinJan == null || ListShohinJan.Count == 0)
+            {
+                ClientLib.MessageBoxError(this, "印刷データがありません");
+                return;
+            }
+            // Execute with parameters
+            var ret = AppData.Http!.AspxSqlQueryCsv(printsql, null, "cvnet_shojan.qfm");
+            if (ret.Split('\n').Length < 2)
+            {
+                ClientLib.MessageBoxError(this, "PDFデータがありません");
+                return;
+            }
+            var ret1 = ret.Split('\n');
+            var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
+            await Task.Delay(1500); // PDF生成待ち
+            var win = new WebpdfView();
+            var vm = win.DataContext as WebpdfViewModel;
+            if (vm == null) return;
+            vm.Pdfdata = url;
+            ClientLib.CursorToNormal();
+            ClientLib.ShowDialogView(win, this);
+
+
+        }
+
+        private static string BuildFromWhere(string[] v_para)
+        {
+            var sb = new StringBuilder();
+            sb.Append(" FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B");
+            sb.Append(" WHERE ");
+
+            // 商品CD
+            if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".")
+                sb.Append($"A.商品CD = '{v_para[0]}' AND ");
+
+            // 色CD
+            if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".")
+                sb.Append($"A.色CD='{v_para[1]}' AND ");
+
+            // サイズCD
+            if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".")
+                sb.Append($"A.サイズCD='{v_para[2]}' AND ");
+
+            // JAN1
+            if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".")
+                sb.Append($"A.JANコード1='{v_para[3]}' AND ");
+
+            // JAN2
+            if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".")
+                sb.Append($"A.JANコード2='{v_para[4]}' AND ");
+
+            // JAN3
+            if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".")
+                sb.Append($"A.JANコード3='{v_para[5]}' AND ");
+
+            // Join condition (always)
+            sb.Append("A.商品CD=B.商品CD");
+
+            return sb.ToString();
         }
 
         private DataTable OnQuery(string[] v_para, string[] v_para2, int para1)
         {
+            pageCnt = para1;
+            string fromWhere = BuildFromWhere(v_para);
             string sql_query = "SELECT A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE";
 
             if (v_para2[0] == "1" || v_para2[0] == "2")
@@ -343,15 +392,16 @@ namespace CvnetClient.ViewModels
                 }
                 sql_query += ",B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1";
                 sql_query += ",ROW_NUMBER() OVER (ORDER BY A.商品CD,A.色CD,A.サイズCD) 行NO";
-                sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
-                sql_query += " WHERE ";
-                if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
-                sql_query += "A.商品CD=B.商品CD";
+                sql_query += fromWhere;
+                //sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
+                //sql_query += " WHERE ";
+                //if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
+                //sql_query += "A.商品CD=B.商品CD";
                 sql_query = "SELECT * FROM (" + sql_query + ") ";
                 if (v_para2[0] == "2")
                     sql_query += " where 行NO between " + Convert.ToString(para1) + " AND " + Convert.ToString(para1 + 40);
@@ -359,7 +409,7 @@ namespace CvnetClient.ViewModels
                     sql_query += " where 行NO between " + Convert.ToString(para1) + " AND " + Convert.ToString(para1 + 40);
                 sql_query += " order by 商品CD,色CD,サイズCD";
 
-                v_para2[0] = null;      // Reset 
+                v_para2[0] = "0";      // Reset 
             }
             else
             {
@@ -368,23 +418,59 @@ namespace CvnetClient.ViewModels
                     sql_query += ", A." + sql_col_list[i];
                 }
                 sql_query += ",B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1";
-                sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
-                sql_query += " WHERE ";
-                if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
-                if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
-                sql_query += "A.商品CD=B.商品CD";
+                sql_query += fromWhere;
+                //sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
+                //sql_query += " WHERE ";
+                //if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
+                //if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
+                //sql_query += "A.商品CD=B.商品CD";
                 sql_query += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
                 sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
+
             }
+            // query for print
+            printsql =
+                     "SELECT (A.商品CD || ' ' || (Select B.商品名 from HC$Master_shohin B where B.商品CD=A.商品CD)) AS 商品, " +
+
+                    // 色CD + 色名
+                    "(A.色CD || ' ' || GET_COLORNAME(A.色CD)) AS 色, " +
+
+                    // サイズCD + サイズ名
+                    "(A.サイズCD || ' ' || GET_SIZENAME(A.商品CD, A.サイズCD)) AS サイズ, " +
+
+                    "A.JANコード1, A.JANコード2, A.JANコード3, " +
+                    "A.上代, " +
+
+                    // 使用FLG column
+                    "CASE " +
+                        "WHEN A.使用FLG = 0 THEN '0 正規' " +
+                        "WHEN A.使用FLG = 1 THEN '1 中止' " +
+                        "ELSE TO_CHAR(A.使用FLG) " +
+                    "END AS 使用FLG名, " +
+
+                    // 自動配分FLG column
+                    "CASE " +
+                        "WHEN A.自動配分FLG = 0 THEN '0 しない' " +
+                        "WHEN A.自動配分FLG = 1 THEN '1 売上基準' " +
+                        "WHEN A.自動配分FLG = 9 THEN '9 商品マスタ依存' " +
+                        "ELSE TO_CHAR(A.自動配分FLG) " +
+                    "END AS 自動配分FLG名 ";
+
+            printsql += fromWhere;
+            printsql += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
+
+            printsql = AppData.ClassCvnet.GetSqlDisp(printsql);
 
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_query);
 
             return ret_csv;
         }
+
+
 
         /// <summary>
         /// 共通処理: 商品JAN一覧の検索＋ListShohinJan 更新＋CanNext/SelectedProduct 設定
@@ -407,6 +493,10 @@ namespace CvnetClient.ViewModels
                 // There is more data → enable Next
                 list = list.Take(AppData.maxQueryCnt).ToList();
                 CanNext = true;
+            }
+            else if (list.Count == 0)
+            {
+                ClientLib.MessageBoxOk(this, "データがありません");
             }
             else
             {
