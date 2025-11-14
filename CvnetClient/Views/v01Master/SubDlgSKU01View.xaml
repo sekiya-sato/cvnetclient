@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
-        Title="SubDlgSKU01View" Height="450" Width="800">
-    <Grid>
+        Title="SKU入力" Style="{StaticResource SmallWindow}">
+    <Grid Margin="20">
         
     </Grid>
 </Window>
