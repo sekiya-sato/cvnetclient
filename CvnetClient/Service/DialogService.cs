@@ -64,10 +64,17 @@ namespace CvnetClient.Service
             return vm;
         }
 
-        public SubDlgSelShoViewModel GetSelSho(string v_mst = "", string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null, int v_kt = 0)
+        public SubDlgSelShoViewModel GetSelSho(string v_mst = "", 
+                                               string[] init_para = null, 
+                                               string[] wrk_para = null, 
+                                               List<CsvItem> def = null, 
+                                               string[] wrk_para2 = null, 
+                                               int v_kt = 0,
+                                               SelValueModel sel_value = null)
         {
             var view = new SubDlgSelShoView();
             var vm = view.DataContext as SubDlgSelShoViewModel;
+            vm.SelectedValue = sel_value ?? new SelValueModel();
             if (view == null || vm == null) return null;
 
             // Set parameters & init dialog

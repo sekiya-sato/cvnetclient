@@ -4,12 +4,7 @@ using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
 using CvnetClient.Views;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CvnetClient.ViewModels
@@ -29,8 +24,8 @@ namespace CvnetClient.ViewModels
         private TenpoType selectedTenpo = TenpoType.全店;
         public bool IsTenpoEnabled => SelectedTenpo == TenpoType.店別;
 
-        [RelayCommand]
-        void OnInit()
+        
+        public void OnInit()
         {
             List<CsvItem> def = null;
 

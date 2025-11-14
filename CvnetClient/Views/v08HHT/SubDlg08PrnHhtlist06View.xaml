@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         Title="即時移動明細書印刷" Style="{StaticResource PrintWindowStyle}">
@@ -75,13 +76,13 @@
 GroupName="PrintType"
         IsChecked="{Binding Condition.SelectedPrint, 
                             Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=通常発行, Mode=TwoWay}"
+                            ConverterParameter=Regular, Mode=TwoWay}"
 Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="再発行" 
                  GroupName="PrintType"
                          IsChecked="{Binding Condition.SelectedPrint, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=再発行, Mode=TwoWay}"
+                                             ConverterParameter=Reissue, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
                 </Grid>
 
@@ -97,35 +98,17 @@ Margin="0,0,20,0"/>
 
                     <TextBlock Grid.Column="0" Text="出庫元" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                        <TextBox Width="150"
-                                d:Text="出庫元：Data"  
-                                TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="Condition.ShipmentFrom" />
-                                    <Binding Path="Condition.ShipmentFromName" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.ShipmentFrom.Display}"/>
                         <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
-                                            SelectedValue ="{Binding Condition.ShipmentFrom}"
+                                            SelectedValue ="{Binding Condition.ShipmentFrom.Code}"
                                             Command="{Binding SelShipment1Command}"/>
                     </StackPanel>
                     <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="3" Orientation="Horizontal">
-                        <TextBox Width="150"
-                            d:Text="出庫元：Data"  
-                            TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="Condition.ShipmentTo" />
-                                    <Binding Path="Condition.ShipmentToName" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.ShipmentTo.Display}"/>
                         <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
-                    SelectedValue ="{Binding Condition.ShipmentTo}"
-                    Command="{Binding SelShipment2Command}"/>
+                                            SelectedValue ="{Binding Condition.ShipmentTo.Code}"
+                                            Command="{Binding SelShipment2Command}"/>
                     </StackPanel>
                 </Grid>
 
@@ -140,36 +123,18 @@ Margin="0,0,20,0"/>
 
                     <TextBlock Grid.Column="0" Text="入庫先" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                        <TextBox Width="150"
-                                d:Text="入庫先：Data"  
-                                TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="Condition.ReceiptFrom" />
-                                    <Binding Path="Condition.ReceiptFromName" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.ReceiptFrom.Display}"/>
                         <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
-                            SelectedValue ="{Binding Condition.ReceiptFrom}"
-                            Command="{Binding SelReceipt1Command}"/>
+                                            SelectedValue ="{Binding Condition.ReceiptFrom.Code}"
+                                            Command="{Binding SelReceipt1Command}"/>
                     </StackPanel>
 
                     <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="3" Orientation="Horizontal">
-                        <TextBox Width="150"
-                                d:Text="入庫先：Data"  
-                                TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="Condition.ReceiptTo" />
-                                    <Binding Path="Condition.ReceiptToName" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
+                        <TextBox Width="150"  TextWrapping="Wrap" Text="{Binding Condition.ReceiptTo.Display}"/>
                         <uc:CvnetBtListView MstName="移動倉庫" StyleDesign="2" 
-                            SelectedValue ="{Binding Condition.ReceiptTo}"
-                            Command="{Binding SelReceipt2Command}"/>
+                                            SelectedValue ="{Binding Condition.ReceiptTo.Code}"
+                                            Command="{Binding SelReceipt2Command}"/>
                     </StackPanel>
                 </Grid>
 
@@ -184,13 +149,29 @@ Margin="0,0,20,0"/>
 
                     <TextBlock Grid.Column="0" Text="移動日" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                        <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                        <xctk:DateTimePicker Grid.Column="1"
+                                            Format="Custom"
+                                            FormatString="yyyy/MM/dd" 
+                                            Width="180" 
+                                            ShowButtonSpinner="True" 
+                                            TimePickerVisibility="Collapsed" 
+                                            AllowTextInput="False"
+                                            Value="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            Height="34"></xctk:DateTimePicker>
                     </StackPanel>
                     
 
                     <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
                     <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
-                        <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                        <xctk:DateTimePicker Grid.Column="1"
+                                            Format="Custom"
+                                            FormatString="yyyy/MM/dd" 
+                                            Width="180" 
+                                            ShowButtonSpinner="True" 
+                                            TimePickerVisibility="Collapsed" 
+                                            AllowTextInput="False"
+                                            Value="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            Height="34"></xctk:DateTimePicker>
                     </StackPanel>
                 </Grid>
 

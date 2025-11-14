@@ -1,22 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using CvnetClient.Utils;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg71SendManualViewModel : BaseViewModel
     {
+        #region Declare
         public enum WMSType { WMSOUT , WMSIN }
         [ObservableProperty]
         private WMSType selectedWMS;
@@ -30,9 +25,11 @@ namespace CvnetClient.ViewModels
         private string? resultText;
         [ObservableProperty]
         private string? subject;
-
-        public void OnInit() 
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
         {
+            OnInitBase(init_para, init_flg);
             SelectedWMS = WMSType.WMSOUT;
             if (AppData.ClassCvnet.config.UserFlg == 23)
             {
@@ -44,12 +41,12 @@ namespace CvnetClient.ViewModels
             ResultText = string.Empty;
             
         }
-
+        #endregion
+        #region Function
         partial void OnDayAfterChanged(int value)
         {
             Subject = "送信対象：～" + DateTime.Now.AddDays(value).ToString("yyyy/MM/dd");
         }
-
         [RelayCommand]
         public void DoExecute()
         {
@@ -84,7 +81,6 @@ namespace CvnetClient.ViewModels
 
             Result = wrk_mess;
         }
-
         public void UpdateLogDocument()
         {
             var doc = new FlowDocument
@@ -150,7 +146,6 @@ namespace CvnetClient.ViewModels
 
             LogDocument = doc;
         }
-
         private string AppendCR(string input)
         {
             if (string.IsNullOrEmpty(input)) return string.Empty;
@@ -161,5 +156,6 @@ namespace CvnetClient.ViewModels
                 .Replace("\r", "\n")
                 .Replace("\n", "\r\n");
         }
+        #endregion
     }
 }

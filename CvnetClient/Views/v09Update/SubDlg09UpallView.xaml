@@ -88,25 +88,25 @@
         GroupName="ProcessType"
         IsChecked="{Binding Condition.SelectedProcess, 
                             Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=在庫, Mode=TwoWay}"
+                            ConverterParameter=Stock, Mode=TwoWay}"
 Margin="0,0,20,0"/>
             <RadioButton Grid.Column="1" Content="売掛" 
                  GroupName="ProcessType"
                          IsChecked="{Binding Condition.SelectedProcess, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=売掛, Mode=TwoWay}"
+                                             ConverterParameter=Account, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
             <RadioButton Grid.Column="2" Content="買掛" 
      GroupName="ProcessType"
              IsChecked="{Binding Condition.SelectedProcess, 
                                  Converter={StaticResource StringToBoolConverter}, 
-                                 ConverterParameter=買掛, Mode=TwoWay}"
+                                 ConverterParameter=Payable, Mode=TwoWay}"
      Margin="0,0,20,0"/>
             <RadioButton Grid.Column="3" Content="全て" 
      GroupName="ProcessType"
              IsChecked="{Binding Condition.SelectedProcess, 
                                  Converter={StaticResource StringToBoolConverter}, 
-                                 ConverterParameter=全て, Mode=TwoWay}"
+                                 ConverterParameter=All, Mode=TwoWay}"
      Margin="0,0,20,0"/>
         </Grid>
 

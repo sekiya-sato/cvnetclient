@@ -1,30 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg09UpallViewModel : BaseViewModel
     {
-        public enum ProcessType { 在庫, 売掛, 買掛, 全て }
+        #region Declare
+        public enum ProcessType { Stock, Account, Payable, All }
         [ObservableProperty]
         SearchCondition? condition;
-        public void OnInit() 
-        { 
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null) 
+        {
+            OnInitBase(init_para, init_flg);
             Condition = new SearchCondition();
             Condition.DateMonthFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             Condition.DateMonthTo = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void DoExecute()
         {
@@ -45,16 +43,16 @@ namespace CvnetClient.ViewModels
             var wrk_csv = string.Empty;
             switch (Condition.SelectedProcess)
             {
-                case ProcessType.在庫:   /* 在庫 */
+                case ProcessType.Stock:   /* 在庫 */
                     wrk_csv = AppData.Http!.AspxSqlQuery2("tran_zaiko00", wrk_para);
                     break;
-                case ProcessType.売掛:  /* 売掛 */
+                case ProcessType.Account:  /* 売掛 */
                     wrk_csv = AppData.Http!.AspxSqlQuery2("tran_kakeuri00", wrk_para);
                     break;
-                case ProcessType.買掛:  /* 買掛 */
+                case ProcessType.Payable:  /* 買掛 */
                     wrk_csv = AppData.Http!.AspxSqlQuery2("tran_kakekai00", wrk_para);
                     break;
-                case ProcessType.全て:  /* 全て */
+                case ProcessType.All:  /* 全て */
                     wrk_csv = AppData.Http!.AspxSqlQuery2("tran_zaiall00", wrk_para);
                     break;
             }
@@ -64,10 +62,11 @@ namespace CvnetClient.ViewModels
             wrk_mess += "\n経過時間：" + elapsed.ToString(@"hh\:mm\:ss");
             ClientLib.MessageBoxOk(this, "更新終了しました\n" + wrk_mess, "メッセージ");
         }
+        #endregion
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
-            private ProcessType selectedProcess = ProcessType.在庫;
+            private ProcessType selectedProcess = ProcessType.Stock;
             [ObservableProperty]
             private DateTime? dateFrom;
             [ObservableProperty]

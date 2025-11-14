@@ -1,43 +1,25 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using MaterialDesignThemes.Wpf.Converters;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg08Hht1ViewModel : BaseViewModel
     {
-        public enum OutPutType { ローカル, ハンディサーバ }
-        public enum OutPutHowType { 全件 , 法人縛り }
+        #region Declare
+        public enum OutPutType { Local, HandyServer }
+        public enum OutPutHowType { All , Corporate }
         [ObservableProperty]
         SearchCondition? condition;
-        private BizArray para;
-        public void OnInit(object? init_para = null) 
+        #endregion
+        #region Initialize
+        public void OnInit(object? init_para = null, string? init_flg = null)
         {
 
-            if (init_para != null)
-            {
-                if (init_para is string s)
-                {
-                    var v_para = new string[] { s };
-                    para = new BizArray(v_para);
-                }
-                else if (init_para is string[] arr)
-                    para = new BizArray(arr);
-                else para = new BizArray();
-            }
-            else para = new BizArray();
+            OnInitBase(init_para, init_flg);
 
             Condition = new SearchCondition();
 
@@ -68,14 +50,15 @@ namespace CvnetClient.ViewModels
             }
 
             /* BT1000対応 11.04.18 */
-            if (AppData.ClassCvnet.config.hhtkisyu == 1) Condition.SelectedOutPut = OutPutType.ハンディサーバ;
+            if (AppData.ClassCvnet.config.hhtkisyu == 1) Condition.SelectedOutPut = OutPutType.HandyServer;
 
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         public void DoExecute() 
         {
-            if (Condition.SelectedOutPut == OutPutType.ローカル)
+            if (Condition.SelectedOutPut == OutPutType.Local)
             {
 
                 if (AppData.ClassCvnet.HHT_Csv.GetPath("") == "")
@@ -149,7 +132,6 @@ namespace CvnetClient.ViewModels
                 }
             }
         }
-
         private DataTable GetMaster(int? flg) 
         {
             var ret_csv0 = new DataTable();
@@ -159,7 +141,7 @@ namespace CvnetClient.ViewModels
             var v_hjin = "";
             if (AppData.ClassCvnet.config.MultiCoop > 0)
             {
-                if (Condition.SelectedOutPutHow == OutPutHowType.法人縛り)
+                if (Condition.SelectedOutPutHow == OutPutHowType.Corporate)
                 {
                     v_hjin = AppData.ClassCvnet.GetQueryStrHoujin().ToString();
                 }
@@ -226,7 +208,7 @@ namespace CvnetClient.ViewModels
 
             return ret_csv0;
         }
-
+        #endregion
         public class FileSystem
         {
             public const int OPEN_READ = 1;
@@ -279,7 +261,6 @@ namespace CvnetClient.ViewModels
                 return File.Exists(path);
             }
         }
-
         public class CustomException : Exception
         {
             public string Method { get; }
@@ -292,17 +273,16 @@ namespace CvnetClient.ViewModels
                 Code = code;
             }
         }
-
         public partial class SearchCondition : ObservableObject 
         {
             [ObservableProperty]
-            private OutPutType selectedOutPut = OutPutType.ローカル;
+            private OutPutType selectedOutPut = OutPutType.Local;
             [ObservableProperty]
             private string? file;
             [ObservableProperty]
             private string? showOrNot = "Hidden";
             [ObservableProperty]
-            private OutPutHowType selectedOutPutHow = OutPutHowType.法人縛り;
+            private OutPutHowType selectedOutPutHow = OutPutHowType.Corporate;
             [ObservableProperty]
             private string? result;
             [ObservableProperty]

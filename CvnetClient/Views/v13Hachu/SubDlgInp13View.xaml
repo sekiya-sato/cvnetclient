@@ -3,28 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
         xmlns:uc="clr-namespace:CvnetClient.Views"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="発注入力" Style="{StaticResource MasterWindowStyle2}">
     <Window.Resources>
         <utils:VdateConverter x:Key="VdateConverter" />
-        <!--<utils:SubtractHeaderFooterHeightConverter x:Key="SubtractHeaderFooterHeightConverter" Offset="380"/>-->
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
         <utils:SubtractHeaderFooterHeightConverter x:Key="SubtractHeaderFooterHeightConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <vm:SubDlgInp13ViewModel/>
     </Window.DataContext>
-    <behaviors:Interaction.Triggers>
-        <behaviors:EventTrigger EventName="ContentRendered">
-            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-        </behaviors:EventTrigger>
-    </behaviors:Interaction.Triggers>
     <Grid>
-        <TabControl BorderThickness="1" Grid.Row="0">
+        <TabControl BorderThickness="1" Grid.Row="0" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
             <TabItem Header="検索画面(Shift+F1)">
                 <Grid >
                     <Grid.RowDefinitions>
@@ -64,10 +61,26 @@
                                 <Label Grid.Row="0" Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
                                 <TextBox Grid.Row="0" Grid.Column="3"  Margin="0,1" Text="{Binding EditSearch.DenpyoNo2}"/>
 
-                                <Label Grid.Row="0" Grid.Column="4" Content="納品日" VerticalAlignment="Center" Margin="0,1"/>
-                                <DatePicker Grid.Row="0" Grid.Column="5"  Margin="0,1" SelectedDate="{Binding EditSearch.NohinbiFrom}"/>
+                                <Button Grid.Row="0" Grid.Column="4" Content="{Binding DateName}" VerticalAlignment="Center" Margin="0,1" Command="{Binding ClickDateTitleCommand}"/>
+                                <xctk:DateTimePicker 
+                                                    Format="Custom"
+                                                    FormatString="yyyy/MM/dd" Grid.Row="0" Grid.Column="5"
+                                                    Width="180" 
+                                                    ShowButtonSpinner="True" 
+                                                    TimePickerVisibility="Collapsed" 
+                                                    AllowTextInput="False"
+                                                    Value="{Binding EditSearch.NohinbiFrom}" 
+                                                    Height="34"></xctk:DateTimePicker>
                                 <Label Grid.Row="0" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
-                                <DatePicker Grid.Row="0" Grid.Column="7"  Margin="0,1" SelectedDate="{Binding EditSearch.NohinbiTo}"/>
+                                <xctk:DateTimePicker 
+                                                    Format="Custom"
+                                                    FormatString="yyyy/MM/dd" Grid.Row="0" Grid.Column="7"
+                                                    Width="180" 
+                                                    ShowButtonSpinner="True" 
+                                                    TimePickerVisibility="Collapsed" 
+                                                    AllowTextInput="False"
+                                                    Value="{Binding EditSearch.NohinbiTo}" 
+                                                    Height="34"></xctk:DateTimePicker>
 
                                 <Label Grid.Row="1" Grid.Column="0" Content="取引区分" VerticalAlignment="Center" Margin="0,1"/>
                                 <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,1" ItemsSource="{Binding ComboListToriHikiFrom}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.ToriKubunFrom}" Style="{StaticResource SearchableComboBox1}"/>
@@ -111,8 +124,10 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.SupplierFrom}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.SupplierFrom.Display}"/>
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
+                                        SelectedValue ="{Binding EditSearch.SupplierFrom.Code}"
+                                        Command="{Binding SelSupplier1Command}"/>
                                 </Grid>
 
                                 <Label Grid.Row="0" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
@@ -121,40 +136,76 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.SupplierTo}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.SupplierTo.Display}"/>
+                                        <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
+                                            SelectedValue ="{Binding EditSearch.SupplierTo.Code}"
+                                            Command="{Binding SelSupplier2Command}"/>
                                 </Grid>
 
 
-                                <Label Grid.Row="1" Grid.Column="0" Content="入庫先" VerticalAlignment="Center" Margin="0,1"/>
+                                <Label Grid.Row="1" Grid.Column="0" Content="入庫先" VerticalAlignment="Center" Margin="0,1" Visibility="{Binding sokoshow}"/>
                                 <Grid Grid.Row="1" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.WareFrom}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.WareFrom.Display}" Visibility="{Binding sokoshow}"/>
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="Ac移動倉庫" StyleDesign="2" 
+    SelectedValue ="{Binding EditSearch.WareFrom.Code}" Visibility="{Binding Sokoshow}"
+    Command="{Binding SelWare1Command}"/>
                                 </Grid>
 
-                                <Label Grid.Row="1" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+                                <Label Grid.Row="1" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center" Visibility="{Binding sokoshow}"/>
                                 <Grid Grid.Row="1" Grid.Column="3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.WareTo}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.WareTo.Display}" Visibility="{Binding sokoshow}"/>
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="Ac移動倉庫" StyleDesign="2" 
+    SelectedValue ="{Binding EditSearch.WareTo.Code}" Visibility="{Binding sokoshow}"
+    Command="{Binding SelWare2Command}"/>
                                 </Grid>
 
 
-                                <Label Grid.Row="2" Grid.Column="0" Content="商品" VerticalAlignment="Center" Margin="0,1"/>
+                                <Button Grid.Row="2" Grid.Column="0" Content="商品" VerticalAlignment="Center" Margin="0,1" Command="{Binding ClickProdCommand}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <!-- Gaya asal -->
+                                            <Setter Property="Background" Value="LightGray"/>
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Setter Property="Height" Value="28"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                x:Name="border"
+                                                                CornerRadius="8"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <!-- Tukar gaya bila FlgSho = 1 -->
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FlgSho}" Value="1">
+                                                    <Setter Property="Background" Value="LightBlue"/>
+                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                                 <Grid Grid.Row="2" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.ProductFrom}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.ProductFrom.Display}"/>
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="商品" StyleDesign="2" 
+    SelectedValue ="{Binding EditSearch.ProductFrom.Code}"
+    Command="{Binding SelProduct1Command}"/>
                                 </Grid>
 
                                 <Label Grid.Row="2" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
@@ -163,8 +214,10 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.ProductTo}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.ProductTo.Display}"/>
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="商品" StyleDesign="2" 
+                                                        SelectedValue ="{Binding EditSearch.ProductTo.Code}"
+                                                        Command="{Binding SelProduct2Command}"/>
                                 </Grid>
 
 
@@ -174,8 +227,10 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.UserFrom}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.UserFrom.Display}"/>
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="担当" StyleDesign="2" 
+                                                        SelectedValue ="{Binding EditSearch.UserFrom.Code}"
+                                                        Command="{Binding SelUser1Command}"/>
                                 </Grid>
 
                                 <Label Grid.Row="3" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
@@ -184,8 +239,10 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Margin="0" Text="{Binding EditSearch.UserTo}"/>
-                                    <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                    <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.UserTo.Display}"/>
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="担当" StyleDesign="2" 
+                                                        SelectedValue ="{Binding EditSearch.UserTo.Code}"
+                                                        Command="{Binding SelUser2Command}"/>
                                 </Grid>
 
 
@@ -203,30 +260,42 @@
                         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="8,10,0,0">
                             <Button Margin="1,6" Command="{Binding BackListCommand}" Style="{DynamicResource PrevPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                             <Button Margin="1,1,6,1" Command="{Binding NextListCommand}" Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
-                            <TextBox Text="0" MinWidth="30"/>
-                            <Label Content="/0"/>
+                            <Label Content="連携" Visibility="{Binding Renkeishow}"/>
+                            <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,1" ItemsSource="{Binding ComboListRenkei}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.Renkei}" Style="{StaticResource SearchableComboBox1}" Visibility="{Binding Renkeishow}"/>
                         </StackPanel>
 
                         <Button Grid.Column="1" Margin="13,10,13,0" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" Content="一覧登録(F5)" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                     </Grid>
 
-                    <DataGrid  Grid.Row="2" Margin="8,3,8,10" d:ItemsSource="{d:SampleData ItemCount=5}"
+                    <DataGrid  Grid.Row="2" Margin="8,3,8,10" d:ItemsSource="{d:SampleData ItemCount=5}" x:Name="MyDataGrid1"
                                 AutoGenerateColumns="False"
                                 Style="{DynamicResource WinGridData}"
                                 IsReadOnly="True"
                                 ItemsSource="{Binding ListOrder}"
+                                SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
                                 SelectionMode="Single"
                                 ScrollViewer.CanContentScroll="True"
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Stretch"
                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                               d:DataContext="{d:DesignInstance Type=vm:SubDlgInp13ViewModel, IsDesignTimeCreatable=True}"
                                 MaxHeight="{Binding ActualHeight,
                                       RelativeSource={RelativeSource AncestorType=Window},
                                       Converter={StaticResource SubtractHeaderFooterHeightConverter},
                                       ConverterParameter=430}">
+                        
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Binding="{Binding DenpyoNo }" Header="伝票No" />
-                            <DataGridTextColumn Width="*" Binding="{Binding Nohinbi}" Header="納品日" />
+                            <DataGridTextColumn Width="*" Binding="{Binding DenpyoNo}" Header="伝票No" />
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <TextBlock Text="{Binding DataContext.DateName, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Nohinbi}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Width="*" Binding="{Binding Supplier}" Header="仕入先" />
                             <DataGridTextColumn Width="*" Binding="{Binding SupplierName}" Header="仕入先名" />
                             <DataGridTextColumn Width="*" Binding="{Binding Ware}" Header="入庫先" />
@@ -236,7 +305,11 @@
                             <DataGridTextColumn Width="*" Binding="{Binding PriceSum }" Header="金額計" />
                             <DataGridTextColumn Width="*" Binding="{Binding Kanren}" Header="関連伝票NO" />
                         </DataGrid.Columns>
-
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </DataGrid>
 
                     <Border Grid.Row="3" BorderThickness="0" BorderBrush="Black" Margin="8,0,8,0" HorizontalAlignment="Left" >
@@ -248,16 +321,26 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
-                            <RadioButton Grid.Column="0" Content="一覧" Margin="0,0,8,0"/>
-                            <RadioButton Grid.Column="1" Content="明細" Margin="0,0,8,0"/>
+                            <RadioButton Grid.Column="0" Content="一覧" 
+                                         GroupName="OutPutType"
+                                         IsChecked="{Binding SelectedOutPut, 
+                                                     Converter={StaticResource StringToBoolConverter}, 
+                                                     ConverterParameter=List, Mode=TwoWay}"
+                                         Margin="0,0,8,0"/>
+                            <RadioButton Grid.Column="1" Content="明細" 
+                                         GroupName="OutPutType"
+                                         IsChecked="{Binding SelectedOutPut, 
+                                                      Converter={StaticResource StringToBoolConverter}, 
+                                                      ConverterParameter=Detail, Mode=TwoWay}"
+                                         Margin="0,0,8,0"/>
 
-                            <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="0,0,8,0"/>
-                            <Button Grid.Column="3" Content="CSV出力" Width="90" Margin="0,0,8,0"/>
+                            <Button Grid.Column="2" Style="{DynamicResource PrintIconBtn}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}"/>
+                            <Button Grid.Column="3" Content="{Binding Csvname}" Width="90" Margin="0,0,8,0"/>
                         </Grid>
 
                     </Border>
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Style="{DynamicResource UpdateIconBtn}" Margin="0,0,8,0"/>
+                        <Button Style="{DynamicResource UpdateIconBtn}" Margin="0,0,8,0" Content="修正・照会(F6)" Command="{Binding RowDoubleClickCommand}"/>
                         <Button Style="{DynamicResource DeleteIconBtn}" Margin="0,0,8,0"/>
                         <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
                     </StackPanel>
@@ -314,7 +397,14 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="発注日" VerticalAlignment="Center" Margin="0,1"/>
-                            <DatePicker Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Hachubi}"/>
+                            <xctk:DateTimePicker Width="380"
+                                                Format="Custom"
+                                                FormatString="yyyy/MM/dd" Grid.Column="1"
+                                                ShowButtonSpinner="True" 
+                                                TimePickerVisibility="Collapsed" 
+                                                AllowTextInput="False"
+                                                Value="{Binding SelectedOrderHeader.Hachubi}" 
+                                                Height="34"></xctk:DateTimePicker>
                         </Grid>
 
                         <Grid Grid.Row="1" Grid.Column="2">
@@ -323,7 +413,15 @@
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="納品日" VerticalAlignment="Center" Margin="0,1"/>
-                            <DatePicker Grid.Column="1"  Margin="0,1" Text="{Binding SelectedOrderHeader.Nohinbi}"/>
+                            <xctk:DateTimePicker 
+                                                Format="Custom"
+                                                FormatString="yyyy/MM/dd" Grid.Column="1"
+                                                Width="380" 
+                                                ShowButtonSpinner="True" 
+                                                TimePickerVisibility="Collapsed" 
+                                                AllowTextInput="False"
+                                                Value="{Binding SelectedOrderHeader.Nohinbi}" 
+                                                Height="34"></xctk:DateTimePicker>
                         </Grid>
 
                         <Grid Grid.Row="2" Grid.Column="0">
@@ -355,8 +453,10 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" Margin="0" Text="{Binding SelectedOrderHeader.Supplier}"/>
-                                <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding SelectedOrderHeader.Supplier.Display}"/>
+                                <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
+    SelectedValue ="{Binding SelectedOrderHeader.Supplier.Code}"
+    Command="{Binding SelSupplierDetailCommand}"/>
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="3" Grid.Column="2">
@@ -370,8 +470,10 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" Margin="0" Text="{Binding SelectedOrderHeader.Ware}"/>
-                                <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding SelectedOrderHeader.Ware.Display}"/>
+                                <uc:CvnetBtListView Grid.Column="1" MstName="Ac移動倉庫" StyleDesign="2" 
+    SelectedValue ="{Binding SelectedOrderHeader.Ware.Code}"
+    Command="{Binding SelWareDetailCommand}"/>
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="4" Grid.Column="0">
@@ -393,8 +495,10 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" Margin="0" Text="{Binding SelectedOrderHeader.User}"/>
-                                <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding SelectedOrderHeader.User.Display}"/>
+                                <uc:CvnetBtListView Grid.Column="1" MstName="担当" StyleDesign="2" 
+    SelectedValue ="{Binding SelectedOrderHeader.User.Code}"
+    Command="{Binding SelUserDetailCommand}"/>
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="5" Grid.Column="0">
@@ -410,14 +514,16 @@
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="8*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Margin="4" Content="展開商品CD"/>
+                            <Button Grid.Column="0" Margin="4" Content="展開商品CD" Command="{Binding ProductExpandCommand}"/>
                             <Grid Grid.Column="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0"  Margin="0,1" />
-                                <Button Grid.Column="1" Style="{DynamicResource ComboButton}" Margin="2,0,0,0"/>
+                                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Product.Display}"/>
+                                <uc:CvnetBtListView Grid.Column="1" MstName="商品" StyleDesign="2" 
+    SelectedValue ="{Binding Product.Code}"
+    Command="{Binding SelProductDetailCommand}"/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -434,19 +540,19 @@
                             <ColumnDefinition Width="80"/>
                         </Grid.ColumnDefinitions>
                         <Grid Grid.Column="0" Grid.ColumnSpan="2">
-                            <Button Width="auto" Content="＋最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0"/>
+                            <Button Width="auto" Content="＋最終行追加(F11)" Background="#B8C7A8" Foreground="Black" HorizontalAlignment="Left" Padding="10,0" Command="{Binding AddNewRowCommand}"/>
                         </Grid>
 
                         <Label Grid.Column="3" Content="計" HorizontalAlignment="Right"/>
-                        <TextBox Grid.Column="4" Margin="0"/>
-                        <TextBox Grid.Column="5" Margin="0"/>
-                        <TextBox Grid.Column="6" Margin="0"/>
+                        <TextBox Grid.Column="4" Margin="0" Text="{Binding Sum}"/>
+                        <TextBox Grid.Column="5" Margin="0" Text="{Binding TotalJodai}"/>
+                        <TextBox Grid.Column="6" Margin="0" Text="{Binding TotalGedai}"/>
                         <Grid Grid.Column="7" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Margin="5,0" Content="一括Refresh　"/>
+                            <Button Grid.Column="0" Margin="5,0" Content="一括Refresh" Command="{Binding RefreshCommand}"/>
                             <Button Grid.Column="1" Content="バーコード入力"/>
                         </Grid>
                        
@@ -505,10 +611,10 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Text="{Binding ProductCD}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Text="{Binding ProductCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -539,10 +645,10 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Text="{Binding Color}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Text="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -573,10 +679,10 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Text="{Binding Size}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Text="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Button Grid.Column="1" Content="一覧" Margin="0" Padding="6" Style="{StaticResource FlexButton}" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding SizeName}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding SizeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -604,7 +710,7 @@
                                                 <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Weight}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.RowSpan="2" Grid.ColumnSpan="2" Text="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
 
                                         </Grid>
                                     </DataTemplate>
@@ -633,9 +739,9 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding JodaiTanka}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding JodaiTanka, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding JodaiKingaku}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding JodaiKingaku, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
 
@@ -666,9 +772,9 @@
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding GedaiTanka}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding GedaiTanka, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding GedaiKingaku}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding GedaiKingaku, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                         </Grid>
                                     </DataTemplate>
@@ -704,23 +810,25 @@
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstract}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
-                                            
+                                            <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstracts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+
                                             <Border Grid.Row="1" Grid.ColumnSpan="4"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
                                             </Border>
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding Abstract}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             <Border Grid.Row="1"  BorderBrush="DarkGray" BorderThickness="0,0,1,0">
-                                                <TextBox Grid.Row="1" Text="{Binding Kanryo}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <ComboBox
+                                                        ItemsSource="{Binding DataContext.ComboListKanryo, 
+                                                                              RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                        SelectedValue="{Binding Kanryo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        DisplayMemberPath="Value"
+                                                        SelectedValuePath="Key"
+                                                        Style="{DynamicResource SearchableComboBox1}" />
                                             </Border>
                                             <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="DarkGray" BorderThickness="0,0,1,0">
-                                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
                                             <Border Grid.Row="1" Grid.Column="3"  BorderBrush="DarkGray">
-                                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
-                                            <!--<TextBox Grid.Row="1" Text="{Binding Kanryo}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
-                                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"  Text="{Binding Maker}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
-                                            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Kubun}" Margin="0" Style="{StaticResource DataGridTextBox}"/>-->
                                         </Grid>
 
                                     </DataTemplate>
@@ -751,7 +859,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Grid.RowSpan="2" Margin="1" Padding="2,0" Style="{StaticResource RefreshFlexBtn}"/>
+                                            <Button Grid.Column="0" Grid.RowSpan="2" Margin="1" Padding="2,0" Style="{StaticResource RefreshFlexBtn}" Command="{Binding DataContext.RowRefreshCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

@@ -7,6 +7,7 @@
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:utils="clr-namespace:CvnetClient.Utils"
         xmlns:uc="clr-namespace:CvnetClient.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="諸掛更新" Style="{StaticResource SmallWindow}">
     <Window.Resources>
@@ -55,13 +56,31 @@
 
             <TextBlock Grid.Column="0" Text="移動日" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                <xctk:DateTimePicker 
+	Grid.Column="1"
+         Format="Custom"
+         FormatString="yyyy/MM/dd" 
+         Width="180" 
+         ShowButtonSpinner="True" 
+         TimePickerVisibility="Collapsed" 
+         AllowTextInput="False"
+         Value="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+         Height="34"></xctk:DateTimePicker>
             </StackPanel>
 
 
             <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
             <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
-                <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                <xctk:DateTimePicker 
+	Grid.Column="1"
+         Format="Custom"
+         FormatString="yyyy/MM/dd" 
+         Width="180" 
+         ShowButtonSpinner="True" 
+         TimePickerVisibility="Collapsed" 
+         AllowTextInput="False"
+         Value="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+         Height="34"></xctk:DateTimePicker>
             </StackPanel>
         </Grid>
 
@@ -90,13 +109,13 @@
         GroupName="PriceType"
         IsChecked="{Binding Condition.SelectedPrice, 
                             Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=しない, Mode=TwoWay}"
+                            ConverterParameter=Not, Mode=TwoWay}"
 Margin="0,0,20,0"/>
             <RadioButton Grid.Column="2" Content="する" 
                  GroupName="PriceType"
                          IsChecked="{Binding Condition.SelectedPrice, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=する, Mode=TwoWay}"
+                                             ConverterParameter=Do, Mode=TwoWay}"
                  Margin="0,0,20,0"/>
         </Grid>
         

@@ -11,6 +11,9 @@
         mc:Ignorable="d"
 		WindowStartupLocation="CenterScreen"
         Title="商品色サイズメンテ" Style="{StaticResource MasterWindowStyle2}">
+	<Window.Resources>
+		<utils:VdateConverter x:Key="VdateConverter" />
+	</Window.Resources>
 	<Window.DataContext> <!-- where to look for those properties -->
 		<vm:SubDlg01ShojanViewModel />
 	</Window.DataContext>
@@ -55,16 +58,16 @@
 
 					<Label Grid.Column="0" Content="商品CD" VerticalAlignment="Center" Margin="5,0,0,0"/>
 					<TextBox Grid.Column="1" Margin="5,0,0,0"
-							Text="{Binding SelectedProduct.ProductCD}" d:Text="商品CD：Data"/>
+							Text="{Binding FindProduct.ProductCD}" d:Text="商品CD：Data"/>
 
 					<Label Grid.Column="3" Content="カラー" VerticalAlignment="Center"/>
 					<TextBox Grid.Column="4" Margin="5,0,0,0"
-							Text="{Binding SelectedProduct.ColorCD}" d:Text="カラー：Data"/>
+							Text="{Binding FindProduct.ColorCD}" d:Text="カラー：Data"/>
 
 					<Label Grid.Column="6" Content="サイズ" VerticalAlignment="Center"/>
 					<TextBox Grid.Column="7" Margin="5,0,0,0"
 							HorizontalAlignment="Stretch"   
-							Text="{Binding SelectedProduct.SizeCD}" d:Text="サイズ：Data"/>
+							Text="{Binding FindProduct.SizeCD}" d:Text="サイズ：Data"/>
 				</Grid>
 
 				<Grid Grid.Row="1" Margin="0,5,0,0">
@@ -89,28 +92,28 @@
 					<!-- TextBox 1 -->
 					<TextBox Grid.Column="1"
 							 Margin="5,0,0,0"
-							 Text="{Binding SelectedProduct.JanCode1}"
+							 Text="{Binding FindProduct.JanCode1}"
 							 d:Text="JAN-1：Data"
 							 TextWrapping="Wrap"/>
 
 					<!-- TextBox 2 -->
 					<TextBox Grid.Column="2"
 							 Margin="0,0,0,0"
-							 Text="{Binding SelectedProduct.JanCode2}"
+							 Text="{Binding FindProduct.JanCode2}"
 							 d:Text="JAN-2：Data"
 							 TextWrapping="Wrap"/>			
 
 					<!-- TextBox 3 -->
 					<TextBox Grid.Column="3"
 							 Margin="0,0,0,0"
-							 Text="{Binding SelectedProduct.JanCode3}"
+							 Text="{Binding FindProduct.JanCode3}"
 							 HorizontalAlignment="Stretch"
 							 d:Text="JAN-3：Data"
 							 TextWrapping="Wrap"/>
 				</Grid>
 
 				<Grid Grid.Row="2">
-					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding SelDspUpdateCommand}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
+					<Button Margin="10,6"  Style="{DynamicResource ExecButton}" Command="{Binding SelDspUpdateCommand}" CommandParameter="1" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10" />
 				</Grid>
 			</Grid>
 		</Border>
@@ -118,27 +121,44 @@
 		<!-- ======= MAIN AREA (2 columns: table | form) ======== -->
 		<Grid Grid.Row="1">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="4*"/>		<!-- LEFT: table -->
-				<ColumnDefinition Width="5*"/>		<!-- RIGHT: form -->
+				<ColumnDefinition Width="*"/>		<!-- LEFT: table -->
+				<ColumnDefinition Width="*"/>		<!-- RIGHT: form -->
 			</Grid.ColumnDefinitions>
 
 			<!-- LEFT: TABLE -->
-			<Border Margin="4" Background="White" BorderBrush="#888" BorderThickness="1" CornerRadius="3">
-				<DataGrid x:Name="ProductGrid"
-					AutoGenerateColumns="False" HeadersVisibility="Column"
-					CanUserAddRows="False" CanUserDeleteRows="False"
-                    IsReadOnly="True" GridLinesVisibility="All"
-                    RowHeaderWidth="0" RowHeight="24" ColumnHeaderHeight="24"
-                    FontSize="12" ItemsSource="{Binding ListShohinJan}"
-					SelectedItem="{Binding SelectedProduct}"
-					Style="{DynamicResource WinGridData}">
-					<DataGrid.Columns>
-						<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCd}" Width="1*"/>
-						<DataGridTextColumn Header="色"     Binding="{Binding ColorCD}" Width="1*"/>
-						<DataGridTextColumn Header="サイズ" Binding="{Binding SizeCD}" Width="1*"/>
-						<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="1*"/>
-					</DataGrid.Columns>
-				</DataGrid>
+			<Border Margin="4" >
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="6*"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+					<Border Margin="4" Background="White" BorderBrush="#888" BorderThickness="1" CornerRadius="3">
+						<DataGrid Grid.Row="0" x:Name="ProductGrid"
+								AutoGenerateColumns="False" d:ItemsSource="{d:SampleData ItemCount=5}"
+								IsReadOnly="True" GridLinesVisibility="All" 
+								RowHeaderWidth="0" RowHeight="24" ColumnHeaderHeight="24"
+								FontSize="12" ItemsSource="{Binding ListShohinJan}"
+								SelectedItem="{Binding SelectedProduct}"
+								Style="{DynamicResource WinGridData}">
+							<DataGrid.Columns>
+								<DataGridTextColumn Header="商品CD" Binding="{Binding ProductCD}" Width="2*"/>
+								<DataGridTextColumn Header="色"     Binding="{Binding ColorCD}" Width="1*"/>
+								<DataGridTextColumn Header="サイズ" Binding="{Binding SizeCD}" Width="1*"/>
+								<DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="2*"/>
+							</DataGrid.Columns>
+						</DataGrid>
+					</Border>
+					<StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,6,0" VerticalAlignment="Top">
+						<!--<Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
+								HorizontalAlignment="Right" BorderBrush="Black" 
+								BorderThickness="10" Command="{Binding BackListCommand}" IsEnabled="{Binding CanBack}"/>
+						<Button Margin="1,1,6,1"  Style="{DynamicResource NextPageBtn}"
+								HorizontalAlignment="Right" BorderBrush="Black" 
+								BorderThickness="10" Command="{Binding NextListCommand}" IsEnabled="{Binding CanNext}"/>-->
+						<Button Style="{DynamicResource PrevPageBtn}" BorderThickness="10" Command="{Binding BackListCommand}"/>
+						<Button Style="{DynamicResource NextPageBtn}" Grid.Column="2" Command="{Binding NextListCommand}"/>
+					</StackPanel>
+				</Grid>
 			</Border>
 
 			<!-- RIGHT: FORM -->
@@ -163,17 +183,17 @@
 											Title="商品CD" 
 											MstName="商品"
 											StyleDesign="1"
-											SelectedValue ="{Binding EditProduct.ProductCD}"
+											SelectedValue ="{Binding EditProductCd}"
 											Command="{Binding SelProductCommand}" />
+									<!--<TextBox Grid.Column="1" Height="26" Text="{Binding EditProduct.ProductCD}" />-->
 									<TextBox Grid.Column="1" Height="26">
 										<TextBox.Text>
-											<MultiBinding StringFormat='{}{0} {1}'>
-												<Binding Path="EditProduct.ProductCD" />
-												<Binding Path="EditProduct.ProductName" />
+											<MultiBinding StringFormat="{}{0}  {1}">
+												<Binding Path="EditProduct.ProductCD"/>
+												<Binding Path="EditProduct.ProductName"/>
 											</MultiBinding>
 										</TextBox.Text>
 									</TextBox>
-									<!--<Button Grid.Column="2" Content="≪" Height="24"/>-->
 								</Grid>
 								<!-- カラー -->
 								<Grid Margin="0,2,0,2">
@@ -185,11 +205,15 @@
 											Title="カラー" 
 											MstName="カラー"
 											StyleDesign="1"
-											SelectedValue ="{Binding EditProduct.ColorCD}"
+											SelectedValue ="{Binding EditColorCd}"
 											Command="{Binding SelColorCommand}" />
-									<TextBox Grid.Column="1" Height="26">
+									<!--<TextBox Grid.Column="1" Height="26" Text="{Binding EditColorCd.Display}" />-->
+									<TextBox Grid.Column="1" Height="26" >
 										<TextBox.Text>
-											<Binding Path="EditProduct.ColorCD" />
+											<MultiBinding StringFormat="{}{0}  {1}">
+												<Binding Path="EditProduct.ColorCD"/>
+												<Binding Path="EditProduct.ColorName"/>
+											</MultiBinding>
 										</TextBox.Text>
 									</TextBox>
 								</Grid>
@@ -203,11 +227,15 @@
 											Title="サイズ" 
 											MstName="サイズ"
 											StyleDesign="1"
-											SelectedValue ="{Binding EditProduct.SizeCD}"
+											SelectedValue ="{Binding EditSizeCd}"
 											Command="{Binding SelSizeCommand}" />
+									<!--<TextBox Grid.Column="1" Height="26" Text="{Binding EditProduct.SizeCD}" />-->
 									<TextBox Grid.Column="1" Height="26">
 										<TextBox.Text>
-											<Binding Path="EditProduct.SizeCD" />
+											<MultiBinding StringFormat="{}{0}  {1}">
+												<Binding Path="EditProduct.SizeCD"/>
+												<Binding Path="EditProduct.SizeName"/>
+											</MultiBinding>
 										</TextBox.Text>
 									</TextBox>
 								</Grid>
@@ -247,7 +275,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="上代" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.RetailPrice}"/>
 								</Grid>
 								<!-- 中止 & 生産予定数 -->
 								<Grid Margin="0,2,0,2">
@@ -264,8 +292,8 @@
 											  DisplayMemberPath="Value"
 											  SelectedValuePath="Key"
 											  SelectedValue="{Binding EditProduct.UseFlag }" Style="{StaticResource SearchableComboBox1}"/>
-									<Label Grid.Column="3" Content="生産予定数" Margin="-10,0,6,0" VerticalAlignment="Center" Visibility="Hidden" />
-									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
+									<Label Grid.Column="3" Content="生産予定数" Margin="-10,0,6,0" VerticalAlignment="Center" Visibility="Hidden"/>
+									<TextBox Grid.Column="4" Height="26" Visibility="Hidden" Text="{Binding EditProduct.ScheduledProductionQuantity}" />
 								</Grid>
 								<!-- 自動配分 & メモ -->
 								<Grid Margin="0,2,0,2">
@@ -287,7 +315,7 @@
 									<Label Grid.Column="3" Content="メモ" 
 										   Margin="-10,0,8,0" VerticalAlignment="Center" 
 										   Visibility="Hidden"/>
-									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
+									<TextBox Grid.Column="4" Height="26" Visibility="Hidden" Text="{Binding EditProduct.Memo}"/>
 								</Grid>
 								<!-- 仕入価格 & 下札枚数 -->
 								<Grid Margin="0,2,0,2">
@@ -299,9 +327,9 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="仕入価格" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.SupplierPrice}"/>
 									<Label Grid.Column="3" Content="下札枚数" Margin="-10,0,8,0" VerticalAlignment="Center" Visibility="Hidden"/>
-									<TextBox Grid.Column="4" Height="26" Visibility="Hidden"/>
+									<TextBox Grid.Column="4" Height="26" Visibility="Hidden" Text="{Binding EditProduct.TagNumber}"/>
 								</Grid>
 								<!-- 原価 -->
 								<Grid Margin="0,2,0,2">
@@ -313,7 +341,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="原価" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.CostPrice}"/>
 								</Grid>
 								<!-- 外貨単価 -->
 								<Grid Margin="0,2,0,2">
@@ -325,7 +353,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="外貨単価" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.ForeignCurrencyPrice}"/>
 								</Grid>
 								<!-- 裁断数 -->
 								<Grid Margin="0,2,0,2">
@@ -337,7 +365,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="裁断数" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Grid.Column="1" Height="26" Grid.ColumnSpan="2" Text="{Binding EditProduct.CuttingQuantity}"/>
 								</Grid>
 								<!-- 作成日 -->
 								<Grid Margin="0,2,0,2">
@@ -349,7 +377,7 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="作成日" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Style="{StaticResource ReadOnlyTextBox}" Text="{Binding EditProduct.VdateCreate, Converter={StaticResource VdateConverter}}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								<!-- 修正日 -->
 								<Grid Margin="0,2,0,2">
@@ -361,7 +389,8 @@
 										<ColumnDefinition Width="2*" />
 									</Grid.ColumnDefinitions>
 									<Label Content="修正日" Margin="0,0,8,0" VerticalAlignment="Center"/>
-									<TextBox Style="{StaticResource ReadOnlyTextBox}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
+									<TextBox Style="{StaticResource ReadOnlyTextBox}" Text="{Binding EditProduct.VdateUpdate, Converter={StaticResource VdateConverter}, TargetNullValue='',
+                        FallbackValue='', Mode=OneWay}" Grid.Column="1" Height="26" Grid.ColumnSpan="2"/>
 								</Grid>
 								
 								<!-- Button (追加、修正、削除、印刷) -->
@@ -372,8 +401,8 @@
 									<Button Style="{DynamicResource PrintIconBtn}" Margin="20,5,20,5" Command="{Binding DoPrintCommand}"/>
 								</StackPanel>-->
 
+								<!-- Button (追加、修正、削除、印刷) -->
 								<Grid Margin="8,8,15,8" HorizontalAlignment="Center">
-
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="90"/>
 										<ColumnDefinition Width="12"/>
@@ -383,14 +412,11 @@
 										<ColumnDefinition Width="12"/>
 										<ColumnDefinition Width="90"/>
 									</Grid.ColumnDefinitions>
-
 									<Button Style="{DynamicResource AddIconBtn}" BorderThickness="10" Command="{Binding DoInsertCommand}"/>
 									<Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
 									<Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
 									<Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
-
 								</Grid>
-
 							</StackPanel>
 						</ScrollViewer>
 					</GroupBox>
@@ -401,7 +427,7 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 							<TextBlock Grid.Row="0" Margin="0,8,0,0" TextWrapping="Wrap" Text="このメニューからの商品マスタは製造対象外です。&#10;※『商品マスタ(新規登録)』からの登録となります"/>
-							<Button Grid.Row="1" Content="戻る(ESC)" Padding="16,4" HorizontalAlignment="Right" Margin="0,0,0,0"/>
+							<Button Grid.Row="1" Content="戻る(ESC)" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" Padding="16,4" HorizontalAlignment="Right" Margin="0,0,0,0"/>
 						</Grid>
 					</StackPanel>
 				</Grid>

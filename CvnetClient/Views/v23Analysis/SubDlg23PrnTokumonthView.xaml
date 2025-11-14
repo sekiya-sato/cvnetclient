@@ -92,19 +92,19 @@
                                  GroupName="ProcessType"
                                  IsChecked="{Binding Condition.SelectedProcess, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=出荷売上, Mode=TwoWay}"
+                                             ConverterParameter=Shipment, Mode=TwoWay}"
                                  Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="店頭売上" 
                                  GroupName="ProcessType"
                                  IsChecked="{Binding Condition.SelectedProcess, 
                                               Converter={StaticResource StringToBoolConverter}, 
-                                              ConverterParameter=店頭売上, Mode=TwoWay}"
+                                              ConverterParameter=Store, Mode=TwoWay}"
                                  Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="3" Content="全て" 
                                 GroupName="ProcessType"
                                 IsChecked="{Binding Condition.SelectedProcess, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=全て, Mode=TwoWay}"
+                                             ConverterParameter=All, Mode=TwoWay}"
                                 Margin="0,0,20,0"/>
                 </Grid>
                 <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="0,10,0,0">
@@ -123,7 +123,7 @@
                             GroupName="PrintType"
                             IsChecked="{Binding Condition.SelectedPrint, 
                                         Converter={StaticResource StringToBoolConverter}, 
-                                        ConverterParameter=スプール, Mode=TwoWay}"
+                                        ConverterParameter=Spool, Mode=TwoWay}"
                             Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="CSV" 
                             GroupName="PrintType"
@@ -149,14 +149,14 @@
                  GroupName="TantoType"
                  IsChecked="{Binding Condition.SelectedTanto, 
                              Converter={StaticResource StringToBoolConverter}, 
-                             ConverterParameter=売上伝票, Mode=TwoWay}"
+                             ConverterParameter=Sales, Mode=TwoWay}"
                                  Visibility="{Binding Condition.ShowOrNot}"
                  Margin="0,0,20,0"/>
                     <RadioButton Grid.Column="2" Content="営業担当別予算マスタ" 
                  GroupName="TantoType"
                  IsChecked="{Binding Condition.SelectedTanto, 
                               Converter={StaticResource StringToBoolConverter}, 
-                              ConverterParameter=営業担当別予算マスタ, Mode=TwoWay}"
+                              ConverterParameter=Budget, Mode=TwoWay}"
                                  Visibility="{Binding Condition.ShowOrNot}"
                  Margin="0,0,20,0"/>
                 </Grid>

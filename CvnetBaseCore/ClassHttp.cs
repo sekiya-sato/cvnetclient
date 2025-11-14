@@ -660,7 +660,7 @@ namespace CvnetBaseCore {
 			string aspxfile = "isqlqry.aspx";
 			if (p_form != null) {
 				aspxfile = "isqlqfw.aspx";
-				if (AspxUserFlg > 0) {
+				if (AspxUserFlg >= 0) {
 					aspxfile = "user/isqlqfw" + AspxUserFlg.ToString("00") + ".aspx";
 				}
 				vals["fm"] = p_form;
@@ -688,7 +688,7 @@ namespace CvnetBaseCore {
 			string aspxfile = "isqlqry.aspx";
 			if (p_form != null) {
 				aspxfile = "isqlqfw.aspx";
-				if (AspxUserFlg > 0) {
+				if (AspxUserFlg >= 0) {
 					aspxfile = "user/isqlqfw" + AspxUserFlg.ToString("00") + ".aspx";
 				}
 				vals["fm"] = p_form;
