@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views.v08HHT
+namespace CvnetClient.Views
 {
     /// <summary>
     /// Interaction logic for SubDlg08HhtDel.xaml
