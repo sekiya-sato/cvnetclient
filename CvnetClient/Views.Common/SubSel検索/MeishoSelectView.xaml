@@ -5,7 +5,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 	Title="選択してください"
-	Width="500"
+	Width="540"
 	Height="350"
 	FontFamily="Meiryo UI"
 	ResizeMode="NoResize"
@@ -22,6 +22,7 @@
 			Grid.Row="0"
 			Margin="0,0,0,4"
 			AutoGenerateColumns="False"
+            ColumnWidth="*" 
 			HeadersVisibility="Column"
 			IsReadOnly="True"
 			ItemsSource="{Binding List}"
@@ -30,11 +31,9 @@
 			SelectionMode="Single">
 			<DataGrid.Columns>
 				<DataGridTextColumn
-					Width="100"
 					Binding="{Binding MeishoCd}"
 					Header="コード" />
 				<DataGridTextColumn
-					Width="*"
 					Binding="{Binding Meisho}"
 					Header="{Binding TitleName}" />
 			</DataGrid.Columns>

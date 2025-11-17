@@ -7,6 +7,7 @@ using CvnetClient.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Windows;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
@@ -14,6 +15,7 @@ namespace CvnetClient.ViewModels
     public partial class SubDlgInp13ViewModel : BaseViewModel
     {
         #region Declare
+        public enum OutPutType { List, Detail }
         [ObservableProperty]
         SearchModel? editSearch;
         [ObservableProperty]
@@ -31,11 +33,15 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         private int selectedTabIndex;
         [ObservableProperty]
+        private OutPutType selectedOutPut = OutPutType.List;
+        [ObservableProperty]
         OrderList? selectedOrder;
         [ObservableProperty]
         OrderHeader? selectedOrderHeader;
         [ObservableProperty]
         ObservableCollection<OrderDetail>? selectedOrderDetail;
+        [ObservableProperty]
+        ObservableCollection<OrderDetail>? selectedOrderDetailRef;
         [ObservableProperty]
         public int? flgSho;
         [ObservableProperty]
@@ -54,12 +60,13 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public string? dateName;
         [ObservableProperty]
-        public bool renkeishow = false;
-        public bool sokoshow;
+        public Visibility renkeishow;
+        public Visibility sokoshow;
         [ObservableProperty]
         private BtListHelper? product;
         [ObservableProperty]
         public string csvname;
+        private int CSV_flg;
         private string[] param1 = new string[18];
         private string[] param2 = new string[2];
         string sql_collist = "A.手入力伝票NO,A.在庫計上日,A.納品日,A.取引区分,A.入力社員CD,A.取引先CD2," +
@@ -68,11 +75,12 @@ namespace CvnetClient.ViewModels
                             ",A.掛計上日" +
                             ",A.SYSFLG2" +
                             ",A.関連伝票NO2";
-
-
         string sql_collist1 = "A.明細取引区分,A.商品CD,A.色CD,A.サイズCD,A.明細名称,A.数量,A.単価,A.金額,A.内税消費税,A.外税消費税," +
                                 "A.上代単価,A.上代金額,A.下代単価,A.下代金額,A.明細メモ,A.消費税計算方法" +
                                 ",A.商品シリアル,A.関連伝票NO,A.関連伝票行NO,A.JANCODE,A.原価FLG,A.完了FLG";
+        string sql_collist2 = "明細取引区分,商品CD,色CD,サイズCD,明細名称,数量,単価,金額,内税消費税,外税消費税," +
+                                "上代単価,上代金額,下代単価,下代金額,明細メモ,消費税計算方法" +
+                                ",商品シリアル,関連伝票NO,関連伝票行NO,JANCODE,原価FLG,完了FLG";
         #endregion
         #region Initialize
         public void OnInit(object? init_para = null,string? init_flg = null) 
@@ -95,7 +103,7 @@ namespace CvnetClient.ViewModels
             EditSearch.UserTo = new BtListHelper("99999999", "");
             DateName = "納品日";
             Csvname = "CSV出力";
-            Renkeishow = false;
+            Renkeishow = Visibility.Collapsed;
             ComboListKanryo = new Dictionary<string, string> 
             {
                 {"0","0 未完" },
@@ -162,7 +170,7 @@ namespace CvnetClient.ViewModels
                 }
                 if (AppData.ClassCvnet.config.TenpoFix == 1)
                 {
-                    sokoshow = false;
+                    sokoshow = Visibility.Collapsed;
                     //Form1.TabFrame1.TabForm1.CvnetButton8.Active = $FALSE;
                     //Form1.TabFrame1.TabForm1.CvnetButton9.Active = $FALSE;
                     //Form1.TabFrame1.TabForm2.text8.Active = $FALSE;
@@ -185,7 +193,7 @@ namespace CvnetClient.ViewModels
 
             if (AppData.ClassCvnet.config.MultiCoop == 0)
             {
-                Renkeishow = false;
+                Renkeishow = Visibility.Collapsed;
 
                 //Form1.TabFrame1.TabForm2.Label9.Visible =$false;
                 //Form1.TabFrame1.TabForm2.Text25.Active =$false;
@@ -380,8 +388,8 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         private void RowDoubleClick(OrderList item)
         {
-            if (item != null)
-            {
+            if (item == null || item.GetType().Name == "DefaultBindableSampleDataObject") return;
+            
                 SelectedOrderHeader.Supplier =new BtListHelper(item.Supplier, item.SupplierName);
                 SelectedOrderHeader.Nohinbi = DateTime.Parse(item.Nohinbi);
                 SelectedOrderHeader.Ware = new BtListHelper(item.Ware, item.WareName);
@@ -398,7 +406,7 @@ namespace CvnetClient.ViewModels
                 wrk_para[1] = item.Torihiki;
                 OnQueryDetail(wrk_para);
                 SelectedTabIndex = 1;
-            } else return;
+            
         }
         void OnQueryDetail(string[] param)
         {
@@ -448,13 +456,38 @@ namespace CvnetClient.ViewModels
                         }).OrderBy(c => c.ProductCD).ToList();
             Common.ConvertDotStringDel(list);
             SelectedOrderDetail = new ObservableCollection<OrderDetail>(list);
+            SelectedOrderDetailRef = new ObservableCollection<OrderDetail>(
+                                                                            list.Select(x => new OrderDetail
+                                                                            {
+                                                                                ProductCD = x.ProductCD,
+                                                                                ProductName = x.ProductName,
+                                                                                Maker = x.Maker,
+                                                                                Size = x.Size,
+                                                                                SizeName = x.SizeName,
+                                                                                Color = x.Color,
+                                                                                ColorName = x.ColorName,
+                                                                                JodaiKingaku = x.JodaiKingaku,
+                                                                                JodaiTanka = x.JodaiTanka,
+                                                                                GedaiKingaku = x.GedaiKingaku,
+                                                                                GedaiTanka = x.GedaiTanka,
+                                                                                Weight = x.Weight,
+                                                                                Kubun = x.Kubun,
+                                                                                Kanryo = x.Kanryo,
+                                                                                Abstracts = x.Abstracts
+                                                                            })
+            );
+            UpdateSum(SelectedOrderDetail);
+        }
+        void UpdateSum(ObservableCollection<OrderDetail> list)
+        {
             int kei = 0;
             int koukei = 0;
             int koukei1 = 0;
-            for (var i = 0; i < SelectedOrderDetail.Count; i++) {
-                kei += SelectedOrderDetail[i].Weight;
-                koukei += SelectedOrderDetail[i].JodaiKingaku;
-                koukei1 += SelectedOrderDetail[i].GedaiKingaku;
+            for (var i = 0; i < list.Count; i++)
+            {
+                kei += list[i].Weight;
+                koukei += list[i].JodaiKingaku;
+                koukei1 += list[i].GedaiKingaku;
             }
             Sum = kei;
             TotalJodai = koukei;
@@ -468,7 +501,8 @@ namespace CvnetClient.ViewModels
                 return; 
             }
             if (Product.Code == null || Product.Code == "") return;
-            if(OnCheckMst() < 0) return;
+            OnCheckMst();
+            
 
             if (AppData.ClassCvnet.config.MakerOnly == 0)
             {
@@ -492,11 +526,654 @@ namespace CvnetClient.ViewModels
                 window.ShowDialog();
             }
         }
+        [RelayCommand]
+        private void AddNewRow()
+        {
+            if (SelectedOrderDetail == null)
+                SelectedOrderDetail = new ObservableCollection<OrderDetail>();
+
+            var newRow = new OrderDetail
+            {
+                ProductCD = "",
+                ProductName = "",
+                Maker = "",
+                Size = "",
+                SizeName = "",
+                Color = "",
+                ColorName = "",
+                JodaiKingaku = 0,
+                JodaiTanka = 0,
+                GedaiKingaku = 0,
+                GedaiTanka = 0,
+                Weight = 0,
+                Kubun = "",
+                Kanryo = "",
+                Abstracts = ""
+            };
+
+            SelectedOrderDetail.Add(newRow);
+        }
+        [RelayCommand]
+        private void Refresh() 
+        {
+            if (SelectedOrderDetailRef == null) return;
+            SelectedOrderDetail = new ObservableCollection<OrderDetail>(SelectedOrderDetailRef);
+            UpdateSum(SelectedOrderDetail);
+        }
+        [RelayCommand]
+        private void RowRefresh(OrderDetail rowItem) 
+        {
+            if (SelectedOrderDetailRef == null) return;
+
+            int index = SelectedOrderDetail.IndexOf(rowItem);
+            if (index < 0 || index >= SelectedOrderDetailRef.Count) return;
+
+            var source = SelectedOrderDetailRef[index];
+            var target = SelectedOrderDetail[index];    
+
+            target.ProductCD = source.ProductCD;
+            target.ProductName = source.ProductName;
+            target.Kubun = source.Kubun;
+            target.JodaiKingaku = source.JodaiKingaku;
+            target.GedaiKingaku = source.GedaiKingaku;
+            target.JodaiTanka = source.JodaiTanka;
+            target.GedaiTanka = source.GedaiTanka;
+            target.Abstracts = source.Abstracts;
+            target.Color = source.Color;
+            target.ColorName = source.ColorName;
+            target.Size = source.Size;
+            target.SizeName = source.SizeName;
+            target.Weight = source.Weight;
+        }
+        [RelayCommand]
+        private void OnCheckMst() 
+        {
+            return;
+        }
 
         [RelayCommand]
-        private static int OnCheckMst() 
+        public void SelSupplier1(object value)
         {
-            return 0;
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.SupplierFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelSupplier2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.SupplierTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
+        [RelayCommand]
+        public void SelWare1(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.WareFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelWare2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.WareTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
+        [RelayCommand]
+        public void SelProduct1(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.ProductFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelProduct2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.ProductFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
+        [RelayCommand]
+        public void SelUser1(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.UserFrom = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelUser2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditSearch != null)
+            {
+                EditSearch.UserTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
+
+        [RelayCommand]
+        public void SelSupplierDetail(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && SelectedOrderHeader != null)
+            {
+                SelectedOrderHeader.Supplier = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelWareDetail(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && SelectedOrderHeader != null)
+            {
+                SelectedOrderHeader.Ware = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
+        [RelayCommand]
+        public void SelUserDetail(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && SelectedOrderHeader != null)
+            {
+                SelectedOrderHeader.User = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelProductDetail(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            Product = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            
+        }
+        [RelayCommand]
+        async Task DoPrintAsync()
+        {
+            if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
+
+            CSV_flg = 0;
+
+            CreatePara();
+            var ret_csv = "";
+            if (SelectedOutPut == OutPutType.List)
+            {
+                /* 一覧 */
+                ret_csv = OnQueryPrint(param1, param2);
+            }
+            else
+            {
+                /* 明細 */
+                ret_csv = OnQueryDetailPrint(param1, "1", param2);
+            }
+            var lines = ret_csv.Split('\n');
+
+            if (lines.Length < 2 || lines[1] == "0")
+            {
+                ClientLib.MessageBoxError(this, "PDFデータがありません");
+                return;
+            }
+
+            string pdfPath = lines[0];
+            string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
+            var win = new WebpdfView();
+            if (win.DataContext is WebpdfViewModel vm)
+            {
+                vm.Pdfdata = url;
+            }
+            ClientLib.CursorToNormal();
+            ClientLib.ShowDialogView(win, this);
+        }
+
+        [RelayCommand]
+        public void DOCSV() 
+        {
+
+            /* 2016.09.27 #30512 */
+            CSV_flg = 1;
+
+            /* パラメータ生成 */
+            CreatePara();
+
+
+
+            //var f_name = ^.OptionButton1.OptionItem1[^.OptionButton1.Value].Title;
+            //var ret_csv = new SatooCSVDocument;
+            //if (SelectedOutPut == OutPutType.List)
+            //{
+                
+            //    OnQueryPrint(param1, param2);
+            //}
+            //else
+            //{
+                
+            //    OnQueryDetailPrint(param1, "1", param2);
+            //}
+
+            //var total_cnt = ret_csv.GetCell(1, 0);
+            //if (total_cnt <= 0)
+            //{
+            //    Form1.OnMess2("出力データがありませんでした");
+            //    pp.popupClose();
+            //    return;
+            //}
+
+            ///* 2021.04.27 商品名称CDのラベル付け */
+            //var ret_name = ClassSatoo.AspxSqlQuery("select m.名称 from HC$MASTER_MEISHO m where m.名称区分='IDX' and m.名称CD between 'B01' and 'B10' order by m.名称CD");
+            //var name_cnt = 0;
+            //var name_flg = 0;
+
+            //var get_csv = new SatooCSVDocument;
+            //get_csv.get(ClassSatoo.AspxPath + ret_csv.getcell(0, 0) + "/data.txt");
+            //var get_hedder = new SatooCSVDocument;
+            //get_hedder.get(ClassSatoo.AspxPath + ret_csv.getcell(0, 0) + "/d_sql.txt");
+            //if (get_csv.getcell(0, 0) == "H") get_csv.deleteRow(0);
+            //get_csv.insertrow(0);
+            //for (var i = 0; i < get_csv.columns; i++)
+            //{
+            //    /* 2021.04.27 商品名称CDのラベル付け */
+            //    if (^.OptionButton1.Value == 1 && mid(get_hedder.getcell(0, i), 0, 4) == "名称CD" && ret_name.rows == 10)
+            //    {
+            //        if (name_flg == 0)
+            //        {
+            //            get_csv.setcell(0, i, str(ret_name.getcell(name_cnt, 0)) + "CD");
+            //            name_flg = 1;
+            //        }
+            //        else
+            //        {
+            //            get_csv.setcell(0, i, str(ret_name.getcell(name_cnt, 0)) + "名");
+            //            name_cnt++;
+            //            name_flg = 0;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        get_csv.setcell(0, i, get_hedder.getcell(0, i));
+            //    }
+            //}
+
+            ///* 2021.02.18 #56430対応修正  */
+            //if (cvnet.Config.ExcelOutFlg == 1)
+            //{
+
+            //    var dtCSVFlNm = "";
+            //    var ExcelFlNm = "";
+
+            //    try
+            //    {
+
+            //        if (str(f_name) == "一覧")
+            //        {
+            //            print("一覧");
+            //            dtCSVFlNm = "DataHatchuIchiran.csv";
+            //            ExcelFlNm = "HatchuIchiran_macro.xlsm";
+            //        }
+            //        else if (str(f_name) == "明細")
+            //        {
+            //            print("明細");
+            //            dtCSVFlNm = "DataHatchuMeisai.csv";
+            //            ExcelFlNm = "HatchuMeisai_macro.xlsm";
+            //        }
+
+            //        /* マクロファイル保存 */
+            //        var ExcelDrNm = "/Data/Excel";
+            //        var ses = ClassSatoo.AspxFindHTTPSession();
+            //        var res = ses.get(ClassSatoo.AspxPath + ExcelDrNm + "/" + ExcelFlNm);
+            //        DebugMessage("ClassSatoo.AspxPath + ExcelDrNm + / + ExcelFlNm = ", ClassSatoo.AspxPath + ExcelDrNm + "/" + ExcelFlNm, "\n");
+            //        try
+            //        {
+            //            var fs = new FileSystem(FileSystem.PUBLIC_ROOT);
+            //            var f = fs.open("/" + ExcelFlNm, FileSystem.OPEN_WRITE);
+            //            f.write(res);
+            //            f.close();
+            //        }
+            //        catch (ex)
+            //        {
+            //            pp.popupClose();
+            //            DebugMessage(ex.message);
+            //        }
+
+            //        var fs = new FileSystem(FileSystem.PUBLIC_ROOT);
+            //        var f = fs.open("/" + dtCSVFlNm, FileSystem.OPEN_WRITE);
+            //        get_csv.save(f);
+            //        f.close();
+
+            //        try
+            //        {
+            //            var rt = new Runtime;
+            //            rt.ShellOpen(str(ExcelFlNm));
+            //        }
+            //        catch (ex)
+            //        {
+            //            pp.popupClose();
+            //            DebugMessage(ex.message);
+            //        }
+
+            //        Form1.OnMess2("データを保存しました");
+            //    }
+            //    catch (e)
+            //    {
+            //        Form1.OnMess2("保存を中止しました");
+            //    }
+
+            //}
+            //else
+            //{
+
+            //    var v_title = "発注伝票";
+            //    if (MenuFlg == "1") v_title = "入荷予定伝票";
+            //    try
+            //    {
+            //        var fs = new FileSystem;
+            //        var f = fs.SaveDialog("CSVデータ保存", "CSVファイル(*.CSV)=*.CSV", "csv", v_title + str(f_name) + ".csv");
+            //        get_csv.save(f);
+            //        f.close();
+            //        Form1.OnMess2("データを保存しました");
+            //    }
+            //    catch (e)
+            //    {
+            //        Form1.OnMess2("保存を中止しました");
+            //    }
+
+            //}
+        }
+        public string OnQueryPrint(string[] wrk_para1, string[] para1) 
+        {
+            string[] wrk_para;
+            if (FlgSho == 0)
+            {
+                wrk_para = new string[18];
+            }
+            else 
+            {
+                wrk_para = new string[20];
+            }
+            for (var i = 0; i < wrk_para1.Length; i++)
+            {
+                    wrk_para[i] = wrk_para1[i];
+            }
+
+            var v_title = "発注";
+            if (MenuFlg == "1") v_title = "入荷予定";
+
+            var sql_query = "select A.SEQ_NO";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_CREATE),10,6) 作成日時";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時,";
+            sql_query += "'" + v_title + "伝票一覧',";          
+            sql_query += sql_collist;           
+            sql_query += " B.名前 担当名, C.仕入先名 仕入先名, D.得意先名 得意先名, C.消費税CD, C.消費税計算方法, C.消費税端数 ";
+            sql_query += ", A.SYSFLG, A.送信FLG ";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr(tori_kbn, "A.取引区分") + " 取引区分名";
+            sql_query += ",decode( A.伝票処理区分, 33, '仕入返品指示', '" + v_title + "' ) タイトル";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("する", "A.SYSFLG2") + " 連携";
+            sql_query += " from HC$Tran_TORI0 A, HC$MASTER_SHAIN B, HC$Master_SIIRE C, HC$MASTER_TOKUI D ";
+            sql_query += " where (A.入力社員CD=B.社員CD(+)) and (A.取引先CD1=C.仕入先CD(+)) and (A.取引先CD2=D.得意先CD(+)) ";
+            sql_query += "and A.SEQ_NO between :1 and :2 and A." + DateName + " between :3 and :4 and A.取引区分 between :5 and :6 ";
+            sql_query += "and A.関連伝票NO between :7 and :8 and A.関連伝票NO2 between :9 and :10 and A.手入力伝票NO between :11 and :12 and A.取引先CD1 between :13 and :14 and A.取引先CD2 between :15 and :16";
+            sql_query += "and A.入力社員CD between :17 and :18";
+            sql_query += " and A.伝票処理区分=" + v_denkbn;
+            if (FlgSho == 1)
+            {
+                wrk_para[18] = EditSearch.ProductFrom.Code ?? string.Empty;
+                wrk_para[19] = EditSearch.ProductTo.Code ?? string.Empty;
+                sql_query = "SELECT A.* FROM (" + sql_query
+                    + ") A WHERE EXISTS (SELECT /*+ INDEX(E 	HC$_NK_TORI23) */ 'X' FROM HC$TRAN_TORI1 E WHERE A.SEQ_NO=E.ヘッダNO AND E.商品CD BETWEEN :" + (wrk_para.Length - 1).ToString() + " AND :" + (wrk_para.Length).ToString() + ")";
+            }
+            sql_query += " order by A.SEQ_NO";
+            if (CSV_flg == 1)
+            {
+                sql_query = ""
+                    + "select "
+                    + " a.SEQ_NO 伝票No , "
+                    + " a.在庫計上日 発注日 , "
+                    + " a.納品日 , "
+                    + " DECODE(a.掛計上日, 19010101, '', a.掛計上日) 掛計上日 , "
+                    + " a.伝票処理区分 伝票区分 , "
+                    + " substrb(a.取引区分名, 1, instr(a.取引区分名, ' ')-1) 取引区分CD , "
+                    + " substrb(a.取引区分名, instr(a.取引区分名, ' ')+1) 取引区分名 , "
+                    + " a.掛率1 掛率 , "
+                    + " a.SYSFLG , "
+                    + " a.送信FLG , "
+                    + " substrb(a.連携, 1, instr(a.連携, ' ')-1) 連携FLG , "
+                    + " substrb(a.連携, instr(a.連携, ' ')+1) 連携 , "
+                    + " a.数量合計 数量計 , "
+                    + " a.明細金額合計 金額計 , "
+                    + " a.上代合計 , "
+                    + " a.取引先CD1 仕入先CD , "
+                    + " a.仕入先名 , "
+                    + " a.取引先CD2 入庫先CD , "
+                    + " a.得意先名 入庫先名 , "
+                    + " a.入力社員CD 入力者CD , "
+                    + " a.担当名 入力者名 , "
+                    + " a.外税消費税 消費税計 , "
+                    + " a.下代合計 , "
+                    + " a.手入力伝票NO 手入力No , "
+                    + " a.関連伝票NO 関連No1 , "
+                    + " a.関連伝票NO2 関連No2 , "
+                    + " a.メモ "
+                    + "  from "
+                    + "(" + sql_query + ") a";
+            }
+            return AppData.Http!.AspxSqlQueryCsv(sql_query, wrk_para, "cvnet13prn_header.qfm");
+        }
+        public string OnQueryDetailPrint(string[] wrk_para1, string hdFlg, string[] v_sho) 
+        {
+            string[] wrk_para;
+            if (FlgSho == 0)
+            {
+                wrk_para = new string[18];
+            }
+            else {
+                wrk_para = new string[20];
+            }
+            for (var i = 0; i < wrk_para1.Length; i++)
+            {
+                 wrk_para[i] = wrk_para1[i];
+            }
+            var sql_sub = "";
+            sql_sub = ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='COL' and H.名称CD=T1.色CD),'.') COL名"
+            + ",GET_SIZENAME(T1.商品CD,T1.サイズCD) サイズ名";
+            if (AppData.ClassCvnet.config.ColSizMei == 1) sql_sub = ",J.色名 COL名,J.サイズ名";
+            var sql_query = "select A.SEQ_NO";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_CREATE),10,6) 作成日時";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時";
+            if (MenuFlg == "1")
+            {
+                sql_query += ",'入荷予定伝票明細'";
+            }
+            else
+            {
+                sql_query += ",'発注伝票明細'";
+            }
+
+            sql_query += sql_collist;
+            
+            sql_query += ",B.名前 担当名, C.仕入先名 仕入先名, D.得意先名 得意先名, C.消費税CD, C.消費税計算方法, C.消費税端数 ";
+            sql_query += ",A.SYSFLG, A.送信FLG";
+            string[] col_list2 = sql_collist2.Split(',');
+            for (int i = 0; i < col_list2.Length; i++)
+            {
+                sql_query += ",T1." + col_list2[i] + " tt" + col_list2[i];
+            }
+            sql_query += ",A.関連伝票NO2 関連伝票NO2b" + sql_sub + "," + AppData.ClassCvnet.comboItem00.GetCaseStr(tori_kbn, "A.取引区分") + " 取引区分名";
+            sql_query += ",T1.行NO";
+            sql_query += ",decode(T1.完了FLG,1,'完了','未完') 完了FLG名";
+            sql_query += ",NVL((select H.メーカー品番 from HC$master_shohin H where H.商品CD=t1.商品CD),'.') MKR品番";
+            sql_query += ",NVL((select H.仕入区分||' '||decode(H.仕入区分,1,'買取',2,'委託',3,'消化','') from HC$master_shohin H where H.商品CD=t1.商品CD),'.') 仕入区分";
+
+
+            if (MenuFlg == "1")
+            {
+                sql_query += ",decode( A.伝票処理区分, 33, '仕入返品指示', '入荷予定' ) タイトル";
+            }
+            else
+            {
+                sql_query += ",decode( A.伝票処理区分, 33, '仕入返品指示', '発注' ) タイトル";
+            }
+
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("する", "A.SYSFLG2") + " 連携";
+
+            sql_query += " from HC$MASTER_SHOHIN_JAN J,HC$Tran_TORI0 A, HC$MASTER_SHAIN B, HC$Master_SIIRE C, HC$MASTER_TOKUI D ";
+            sql_query += " ,HC$tran_TORI1 T1";
+            sql_query += " where J.商品CD(+)=T1.商品CD AND J.色CD(+)=T1.色CD AND J.サイズCD(+)=T1.サイズCD AND (A.入力社員CD=B.社員CD(+)) and (A.取引先CD1=C.仕入先CD(+)) and (A.取引先CD2=D.得意先CD(+))";
+            sql_query += "and (A.SEQ_NO=T1.ヘッダNO) ";
+            sql_query += " and A.伝票処理区分=" + v_denkbn;
+            if (hdFlg == "1")
+            {
+                sql_query += " and A.SEQ_NO between :1 and :2 and A." + DateName + " between :3 and :4 and A.取引区分 between :5 and :6 ";
+                sql_query += " and A.関連伝票NO between :7 and :8 and A.関連伝票NO2 between :9 and :10 and A.手入力伝票NO between :11 and :12 and A.取引先CD1 between :13 and :14 and A.取引先CD2 between :15 and :16";
+                sql_query += " and A.入力社員CD between :17 and :18";
+                if (FlgSho == 1)
+                {
+                    wrk_para[18] = EditSearch.ProductFrom.Code ?? string.Empty;
+                    wrk_para[19] = EditSearch.ProductTo.Code ?? string.Empty;
+                    sql_query += " AND EXISTS (SELECT /*+ INDEX(E 	HC$_NK_TORI23) */ 'X' FROM HC$TRAN_TORI1 E WHERE A.SEQ_NO=E.ヘッダNO AND E.商品CD BETWEEN :" + (wrk_para.Length - 1).ToString() + " AND :" + (wrk_para.Length).ToString() + ")";
+                }
+            }
+            else
+            {
+                sql_query += " and T1.ヘッダNO=:1 and T1.明細取引区分=:2";
+            }
+            sql_query += " order by T1.ヘッダNO, T1.行NO";
+
+            if (CSV_flg == 1)
+            {
+                sql_query = ""
+                    + "select "
+                        + " a.SEQ_NO 伝票No , "
+                        + " a.在庫計上日 発注日 , "
+                        + " a.納品日 , "
+                        + " DECODE(a.掛計上日, 19010101, '', a.掛計上日) 掛計上日 , "
+                        + " a.伝票処理区分 伝票区分 , "
+                        + " substrb(a.取引区分名, 1, instr(a.取引区分名, ' ')-1) 取引区分CD , "
+                        + " substrb(a.取引区分名, instr(a.取引区分名, ' ')+1) 取引区分名 , "
+                        + " a.掛率1 掛率 , "
+                        + " a.SYSFLG ,"
+                        + " a.送信FLG , "
+                        + " substrb(a.連携, 1, instr(a.連携, ' ')-1) 連携FLG , "
+                        + " substrb(a.連携, instr(a.連携, ' ')+1) 連携 , "
+                        + " a.数量合計 数量計 , "
+                        + " a.明細金額合計 金額計 , "
+                        + " a.上代合計 , "
+                        + " a.下代合計 , "
+                        + " a.取引先CD1 仕入先CD , "
+                        + " a.仕入先名 , "
+                        + " a.取引先CD2 入庫先CD , "
+                        + " a.得意先名 入庫先名 , "
+                        + " a.入力社員CD 入力者CD , "
+                        + " a.担当名 入力者名 , "
+                        + " a.外税消費税 消費税計 , "
+                        + " a.手入力伝票NO 手入力No , "
+                        + " a.関連伝票NO 関連No1 , "
+                        + " a.関連伝票NO2 関連No2 ,"
+                        + " a.メモ , "
+                        + " a.行NO 行No , "
+                        + " a.tt商品CD 商品CD , "
+                        + " a.tt明細名称 商品名 , "
+                        + " a.tt色CD 色CD , "
+                        + " a.COL名 色名 , "
+                        + " a.ttサイズCD サイズCD , "
+                        + " a.サイズ名  , "
+                        + " a.tt完了FLG 完了FLG , "
+                        + " a.完了FLG名 完了 , "
+                        + " a.tt数量 数量 , "
+                        + " a.tt単価 単価 , "
+                        + " a.tt上代単価 上代単価 , "
+                        + " a.tt下代単価 下代単価 , "
+                        + " a.tt原価FLG 原価FLG , "
+                        + " a.tt明細メモ 摘要 , "
+                        + " a.MKR品番 メーカー品番 , "
+                        + " substrb(a.仕入区分, 1, instr(a.仕入区分, ' ')-1) 仕入区分CD , "
+                        + " substrb(a.仕入区分, instr(a.仕入区分, ' ')+1) 仕入区分名 , "
+                        + " a.tt外税消費税 消費税 , "
+                        + " a.tt金額 金額 , "
+                        + " a.tt上代金額 上代金額 , "
+                        + " a.tt下代金額 下代金額 , "
+                        + " nvl(s.上代,0) マスタ上代 , "
+                        + " nvl(s.元上代,0) 元上代 , "
+                        + " nvl(s.仕入価格,0) 仕入価格 , "
+                        + " GET_GENKA(a.tt商品CD,0,a.在庫計上日) マスタ原価 , "
+                        + " nvl(s.営業原価,0) 営業原価 , "
+                        + " nvl(s.旧コード,'') 旧コード , "
+                        + " nvl(s.略称,'') 略称 , "
+                        + " nvl(s.展示会CD,'') 展示会CD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='TNJ' and m.名称CD=s.展示会CD),'') 展示会名 , "
+                        + " nvl(s.ブランドCD,'') ブランドCD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='BRD' and m.名称CD=s.ブランドCD),'') ブランド名 , "
+                        + " nvl(s.アイテムCD,'') アイテムCD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='ITM' and m.名称CD=s.アイテムCD),'') アイテム名 , "
+                        + " nvl(s.シーズンCD,'') シーズンCD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='SZN' and m.名称CD=s.シーズンCD),'') シーズン名 , "
+                        + " nvl(s.素材CD,'') 素材CD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='SZI' and m.名称CD=s.素材CD),'') 素材名 , "
+                        + " nvl(s.デザイナーCD,'') デザイナーCD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='DZN' and m.名称CD=s.デザイナーCD),'') デザイナー名 , "
+                        + " nvl(s.メーカーCD,'') メーカーCD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='MKR' and m.名称CD=s.メーカーCD),'') メーカー名 , "
+                        + " nvl(s.原産国CD,'') 原産国CD , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='GEN' and m.名称CD=s.原産国CD),'') 原産国名 , "
+                        + " nvl(s.名称CD01,'') 名称CD01 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B01' and m.名称CD=s.名称CD01),'') 名称CD01名 , "
+                        + " nvl(s.名称CD02,'') 名称CD02 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B02' and m.名称CD=s.名称CD02),'') 名称CD02名 , "
+                        + " nvl(s.名称CD03,'') 名称CD03 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B03' and m.名称CD=s.名称CD03),'') 名称CD03名 , "
+                        + " nvl(s.名称CD04,'') 名称CD04 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B04' and m.名称CD=s.名称CD04),'') 名称CD04名 , "
+                        + " nvl(s.名称CD05,'') 名称CD05 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B05' and m.名称CD=s.名称CD05),'') 名称CD05名 , "
+                        + " nvl(s.名称CD06,'') 名称CD06 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B06' and m.名称CD=s.名称CD06),'') 名称CD06名 , "
+                        + " nvl(s.名称CD07,'') 名称CD07 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B07' and m.名称CD=s.名称CD07),'') 名称CD07名 , "
+                        + " nvl(s.名称CD08,'') 名称CD08 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B08' and m.名称CD=s.名称CD08),'') 名称CD08名 , "
+                        + " nvl(s.名称CD09,'') 名称CD09 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B09' and m.名称CD=s.名称CD09),'') 名称CD09名 , "
+                        + " nvl(s.名称CD10,'') 名称CD10 , "
+                        + " nvl((select m.名称 from HC$MASTER_MEISHO m where m.名称区分='B10' and m.名称CD=s.名称CD10),'') 名称CD10名 , "
+                        + " nvl(j.JANコード1,'') JANコード1 , "
+                        + " nvl(j.JANコード2,'') JANコード2 , "
+                        + " nvl(j.JANコード3,'') JANコード3 "
+                    + " from "
+                        + " (" + sql_query + ") a , "
+                        + " HC$MASTER_SHOHIN s , "
+                        + " HC$MASTER_SHOHIN_JAN j "
+                    + " where "
+                        + " a.tt商品CD=s.商品CD(+) "
+                        + " and a.tt商品CD=j.商品CD(+) "
+                        + " and a.tt色CD=j.色CD(+) "
+                        + " and a.ttサイズCD=j.サイズCD(+) "
+                    + " order by "
+                        + " a.SEQ_NO , "
+                        + " a.行NO "
+                    + "";
+            }
+            return AppData.Http!.AspxSqlQueryCsv(sql_query, wrk_para, "cvnet13prn_detail.qfm");
         }
         #endregion
         public partial class SearchModel :ObservableObject 

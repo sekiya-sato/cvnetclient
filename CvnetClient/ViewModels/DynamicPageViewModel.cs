@@ -67,7 +67,8 @@ namespace CvnetClient.ViewModels
                             }
                             else
                             {
-                                method.Invoke(vm, new object?[] { cfg.Parameter,cfg.Flag });
+                                var args = cfg.Flag == null ? new object?[] { cfg.Parameter } : new object?[] { cfg.Parameter, cfg.Flag };
+                                method.Invoke(vm, args);
                             }
                         }
                     }
