@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlg08HhtDel.xaml
+    /// Interaction logic for SubDlg01Sho3View.xaml
     /// </summary>
-    public partial class SubDlg08HhtDelView : Window
+    public partial class SubDlg01Sho3View : Window
     {
-        public SubDlg08HhtDelView()
+        public SubDlg01Sho3View()
         {
             InitializeComponent();
         }
