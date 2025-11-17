@@ -18,17 +18,17 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         ObservableCollection<MasterShohin>? listProduct;
         [ObservableProperty]
-        MasterShohinJan? editProduct;
+        private MasterShohinJanSmall? editProduct;
         [ObservableProperty]
-        MasterShohinJan? findProduct;
+        MasterShohinJanSmall findProduct;
         [ObservableProperty]
         public Dictionary<int, string>? chushi;
         [ObservableProperty]
         public Dictionary<int, string>? jidohaibun;
         [ObservableProperty]
-        ObservableCollection<MasterShohinJan>? listShohinJan;
+        ObservableCollection<MasterShohinJanSmall>? listShohinJan;
         [ObservableProperty]
-        MasterShohinJan? selectedProduct;
+        MasterShohinJanSmall? selectedProduct;
         [ObservableProperty]
         BtListHelper editColorCd = new();
         [ObservableProperty]
@@ -65,20 +65,15 @@ namespace CvnetClient.ViewModels
 
         public void OnInit()
         {
-            SelectedProduct = new MasterShohinJan();
-            FindProduct = new MasterShohinJan();
-            EditProduct = new MasterShohinJan();
+            SelectedProduct = new MasterShohinJanSmall();
+            FindProduct = new MasterShohinJanSmall();
             EditColorCd = new BtListHelper();
             EditSizeCd = new BtListHelper();
             EditProductCd = new BtListHelper();
-            ListShohinJan = new ObservableCollection<MasterShohinJan>();
+            ListShohinJan = new ObservableCollection<MasterShohinJanSmall>();
 
             EditProduct.ScheduledProductionQuantity = 0;
-            //            EditProduct.CuttingQuantity = 0;
             EditProduct.TagNumber = 0;
-
- //           CanBack = true;
- //           CanNext = true;
 
             Chushi = new Dictionary<int, string>
             {
@@ -114,8 +109,8 @@ namespace CvnetClient.ViewModels
             ExecuteShohinJanSearch(p);
         }
 
-        // On.......Changed 
-        partial void OnSelectedProductChanged(MasterShohinJan? value)
+        //On.......Changed
+        partial void OnSelectedProductChanged(MasterShohinJanSmall? value)
         {
             if (value != null)
                 EditProduct = Common.CloneObject(value);
@@ -233,7 +228,7 @@ namespace CvnetClient.ViewModels
                     SelectedProduct.TagNumber = item.TagNumber;
                     SelectedProduct.AutoAllocationFlag = item.AutoAllocationFlag;
                     SelectedProduct.RetailPrice = item.RetailPrice;
-                    SelectedProduct.SupplierCD = item.SupplierCD;
+                    SelectedProduct.SupplierPrice = item.SupplierPrice;
                     SelectedProduct.ForeignCurrencyPrice = item.ForeignCurrencyPrice;
                     SelectedProduct.CostPrice = item.CostPrice;
                     EditProduct = Common.CloneObject(SelectedProduct);
@@ -297,7 +292,6 @@ namespace CvnetClient.ViewModels
                 ListShohinJan!.Add(item);
                 SelectedProduct = item;
                 ClientLib.MessageBoxOk(this, "登録しました");
-                timex = EditProduct.VdateUpdate;
             }
             else
             {
@@ -393,15 +387,6 @@ namespace CvnetClient.ViewModels
                 sql_query += ",B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1";
                 sql_query += ",ROW_NUMBER() OVER (ORDER BY A.商品CD,A.色CD,A.サイズCD) 行NO";
                 sql_query += fromWhere;
-                //sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
-                //sql_query += " WHERE ";
-                //if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
-                //sql_query += "A.商品CD=B.商品CD";
                 sql_query = "SELECT * FROM (" + sql_query + ") ";
                 if (v_para2[0] == "2")
                     sql_query += " where 行NO between " + Convert.ToString(para1) + " AND " + Convert.ToString(para1 + 40);
@@ -410,6 +395,43 @@ namespace CvnetClient.ViewModels
                 sql_query += " order by 商品CD,色CD,サイズCD";
 
                 v_para2[0] = "0";      // Reset 
+
+                // query for print
+                printsql =
+                         "SELECT (A.商品CD || ' ' || (Select B.商品名 from HC$Master_shohin B where B.商品CD=A.商品CD)) AS 商品, " +
+
+                        // 色CD + 色名
+                        "(A.色CD || ' ' || GET_COLORNAME(A.色CD)) AS 色, " +
+
+                        // サイズCD + サイズ名
+                        "(A.サイズCD || ' ' || GET_SIZENAME(A.商品CD, A.サイズCD)) AS サイズ, " +
+
+                        "A.JANコード1, A.JANコード2, A.JANコード3, " +
+                        "A.上代, " +
+
+                        // 使用FLG column
+                        "CASE " +
+                            "WHEN A.使用FLG = 0 THEN '0 正規' " +
+                            "WHEN A.使用FLG = 1 THEN '1 中止' " +
+                            "ELSE TO_CHAR(A.使用FLG) " +
+                        "END AS 使用FLG名, " +
+
+                        // 自動配分FLG column
+                        "CASE " +
+                            "WHEN A.自動配分FLG = 0 THEN '0 しない' " +
+                            "WHEN A.自動配分FLG = 1 THEN '1 売上基準' " +
+                            "WHEN A.自動配分FLG = 9 THEN '9 商品マスタ依存' " +
+                            "ELSE TO_CHAR(A.自動配分FLG) " +
+                        "END AS 自動配分FLG名 ";
+
+                //printsql += fromWhere;
+                //printsql += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
+
+                printsql += ",ROW_NUMBER() OVER (ORDER BY A.商品CD,A.色CD,A.サイズCD) 行NO";
+                printsql += fromWhere;
+                printsql = "SELECT * FROM (" + printsql + ") ";
+                printsql += " where 行NO between " + Convert.ToString(para1) + " AND " + Convert.ToString(para1 + 40);
+//                printsql += " ORDER BY 商品CD,色CD,サイズCD";
             }
             else
             {
@@ -419,50 +441,39 @@ namespace CvnetClient.ViewModels
                 }
                 sql_query += ",B.商品名,GET_COLORNAME(A.色CD) 色名,GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名,GET_GENKA(B.商品CD,0,'20991231',A.色CD,A.サイズCD) 原価1";
                 sql_query += fromWhere;
-                //sql_query += " FROM HC$MASTER_SHOHIN_JAN A, HC$MASTER_SHOHIN B";
-                //sql_query += " WHERE ";
-                //if (!string.IsNullOrEmpty(v_para[0]) && v_para[0] != ".") sql_query += $"A.商品CD = '{v_para[0]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[1]) && v_para[1] != ".") sql_query += $"A.色CD='{v_para[1]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[2]) && v_para[2] != ".") sql_query += $"A.サイズCD='{v_para[2]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[3]) && v_para[3] != ".") sql_query += $"A.JANコード1='{v_para[3]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[4]) && v_para[4] != ".") sql_query += $"A.JANコード2='{v_para[4]}' AND ";
-                //if (!string.IsNullOrEmpty(v_para[5]) && v_para[5] != ".") sql_query += $"A.JANコード3='{v_para[5]}' AND ";
-                //sql_query += "A.商品CD=B.商品CD";
                 sql_query += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
                 sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
+                // query for print
+                printsql =
+                         "SELECT (A.商品CD || ' ' || (Select B.商品名 from HC$Master_shohin B where B.商品CD=A.商品CD)) AS 商品, " +
 
+                        // 色CD + 色名
+                        "(A.色CD || ' ' || GET_COLORNAME(A.色CD)) AS 色, " +
+
+                        // サイズCD + サイズ名
+                        "(A.サイズCD || ' ' || GET_SIZENAME(A.商品CD, A.サイズCD)) AS サイズ, " +
+
+                        "A.JANコード1, A.JANコード2, A.JANコード3, " +
+                        "A.上代, " +
+
+                        // 使用FLG column
+                        "CASE " +
+                            "WHEN A.使用FLG = 0 THEN '0 正規' " +
+                            "WHEN A.使用FLG = 1 THEN '1 中止' " +
+                            "ELSE TO_CHAR(A.使用FLG) " +
+                        "END AS 使用FLG名, " +
+
+                        // 自動配分FLG column
+                        "CASE " +
+                            "WHEN A.自動配分FLG = 0 THEN '0 しない' " +
+                            "WHEN A.自動配分FLG = 1 THEN '1 売上基準' " +
+                            "WHEN A.自動配分FLG = 9 THEN '9 商品マスタ依存' " +
+                            "ELSE TO_CHAR(A.自動配分FLG) " +
+                        "END AS 自動配分FLG名 ";
+
+                printsql += fromWhere;
+                printsql += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
             }
-            // query for print
-            printsql =
-                     "SELECT (A.商品CD || ' ' || (Select B.商品名 from HC$Master_shohin B where B.商品CD=A.商品CD)) AS 商品, " +
-
-                    // 色CD + 色名
-                    "(A.色CD || ' ' || GET_COLORNAME(A.色CD)) AS 色, " +
-
-                    // サイズCD + サイズ名
-                    "(A.サイズCD || ' ' || GET_SIZENAME(A.商品CD, A.サイズCD)) AS サイズ, " +
-
-                    "A.JANコード1, A.JANコード2, A.JANコード3, " +
-                    "A.上代, " +
-
-                    // 使用FLG column
-                    "CASE " +
-                        "WHEN A.使用FLG = 0 THEN '0 正規' " +
-                        "WHEN A.使用FLG = 1 THEN '1 中止' " +
-                        "ELSE TO_CHAR(A.使用FLG) " +
-                    "END AS 使用FLG名, " +
-
-                    // 自動配分FLG column
-                    "CASE " +
-                        "WHEN A.自動配分FLG = 0 THEN '0 しない' " +
-                        "WHEN A.自動配分FLG = 1 THEN '1 売上基準' " +
-                        "WHEN A.自動配分FLG = 9 THEN '9 商品マスタ依存' " +
-                        "ELSE TO_CHAR(A.自動配分FLG) " +
-                    "END AS 自動配分FLG名 ";
-
-            printsql += fromWhere;
-            printsql += " ORDER BY A.商品CD,A.色CD,A.サイズCD";
-
             printsql = AppData.ClassCvnet.GetSqlDisp(printsql);
 
             var ret_csv = AppData.Http?.AspxSqlQuery(sql_query);
@@ -508,7 +519,7 @@ namespace CvnetClient.ViewModels
             // 小数点などのフォーマット調整
             Common.ConvertDotStringDel(list);
 
-            ListShohinJan = new ObservableCollection<MasterShohinJan>(list);
+            ListShohinJan = new ObservableCollection<MasterShohinJanSmall>(list);
 
             if (ListShohinJan.Count > 0)
             {
@@ -519,9 +530,9 @@ namespace CvnetClient.ViewModels
 
 
         /// Converts a DataTable to a list of MasterShohinJan objects.
-        private static List<MasterShohinJan> ConvertToMasterShohinJanList(DataTable wrk_csv2)
+        private static List<MasterShohinJanSmall> ConvertToMasterShohinJanList(DataTable wrk_csv2)
         {
-            var list = new List<MasterShohinJan>();
+            var list = new List<MasterShohinJanSmall>();
 
             if (wrk_csv2 == null || wrk_csv2.Rows.Count == 0)
                 return list;
@@ -530,7 +541,7 @@ namespace CvnetClient.ViewModels
             {
                 try
                 {
-                    var item = new MasterShohinJan
+                    var item = new MasterShohinJanSmall
                     {
                         SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
                         VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
@@ -569,7 +580,7 @@ namespace CvnetClient.ViewModels
         }
 
 
-        private static BizArray BuildVpara(MasterShohinJan? findProduct)
+        private static BizArray BuildVpara(MasterShohinJanSmall? findProduct)
         {
             var v_para = new BizArray();
 
@@ -590,5 +601,57 @@ namespace CvnetClient.ViewModels
 
             return v_para;
         }
+
+        public partial class MasterShohinJanSmall : ObservableObject
+        {
+            [ObservableProperty]
+            private long seqNo;
+            [ObservableProperty]
+            private decimal vdateCreate;
+            [ObservableProperty]
+            private decimal vdateUpdate;
+            [ObservableProperty] 
+            private string? productCD;
+            [ObservableProperty] 
+            private string? colorCD;
+            [ObservableProperty] 
+            private string? sizeCD;
+            [ObservableProperty] 
+            private string? janCode1;
+            [ObservableProperty] 
+            private string? janCode2;
+            [ObservableProperty] 
+            private string? janCode3;
+            [ObservableProperty] 
+            private string? memo;
+            [ObservableProperty] 
+            private int? useFlag;
+            [ObservableProperty] 
+            private decimal? scheduledProductionQuantity;
+            [ObservableProperty] 
+            private decimal? cuttingQuantity;
+            [ObservableProperty] 
+            private decimal? tagNumber;
+            [ObservableProperty] 
+            private int? autoAllocationFlag;
+            [ObservableProperty] 
+            private decimal? retailPrice;
+            [ObservableProperty] 
+            private int? supplierPrice;
+            [ObservableProperty] 
+            private int? foreignCurrencyPrice;
+            [ObservableProperty] 
+            private decimal? costPrice;
+            [ObservableProperty]
+            private string? colorName;                  // 色名
+            [ObservableProperty]
+            private string? sizeName;                   // ｻｲｽﾞ名
+            [ObservableProperty]
+            private string? productName;
+
+        }
+
+
     }
+
 }
