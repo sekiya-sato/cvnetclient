@@ -40,7 +40,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
                 new ButtonConfig { Text = "商品色サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
                 new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId="" },
-                new ButtonConfig { Text = "社員使用メニュー一覧", WindowId="" },
+                new ButtonConfig { Text = "社員使用メニュー一覧", WindowId=typeof(Views.SubDlg00PrnMenu01View).FullName,Parameter="0",Flag="0"  },
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId="" },
                 new ButtonConfig { Text = "週マスタ", WindowId=typeof(Views.SubDlg01WeekView).FullName },
                 new ButtonConfig { Text = "バーコードブック印刷", WindowId=typeof(Views.SubDlg01bcdView).FullName },
@@ -50,7 +50,7 @@ namespace CvnetClient.Models
         }},
         { "管理メニュー", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId=typeof(Views.SubDlg00UsrView).FullName },
+                new ButtonConfig { Text = "社員LOGINマスタ(管理者用)", WindowId=typeof(Views.SubDlg00UsrView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "社員LOGINマスタ一覧", WindowId="" },
                 new ButtonConfig { Text = "システム管理マスタ(管理者用)", WindowId= typeof(Views.MasterSystemKanriView1).FullName },
                 new ButtonConfig { Text = "名称マスタ(管理者用)", WindowId= typeof(Views.SubDlg01MeiView).FullName,Parameter="1",Flag="0" },
