@@ -98,7 +98,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Grid Grid.Row="2" Margin="0,5,5,0" HorizontalAlignment="Right">
+            <Grid Grid.Row="2" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -121,112 +121,73 @@
 
         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="9.5*" />
+                <RowDefinition Height="0.5*" />
             </Grid.RowDefinitions>
 
-            <TabControl Grid.Row="0" Grid.Column="0" Margin="0">
+            <TabControl Grid.Row="0" Grid.Column="0" Margin="0,5,0,0">
                 <TabItem Header="基本情報 (Shift+F1)">
                     <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Vertical" Grid.ColumnSpan="2">
-                            <StackPanel Orientation="Horizontal" 
-									Margin="0,5,0,0">
-                                <Label Width="85"
-								   Margin="5,0,0,0"
-								   VerticalContentAlignment="Center"
-								   Content="商品CD" />
-                                <TextBox  Width="200"
-									 Margin="5,0,0,0" 
-									 HorizontalAlignment="Left"
-									 VerticalAlignment="Top"
-									 d:Text="商品CD：Data"    
-									 Text="{Binding EditProduct.ProductCD}"
-									   
-									 TextWrapping="Wrap" />
-                                <Label Width="85"
-								   Margin="5,0,0,0" 
-								   VerticalContentAlignment="Center"
-								   Content="ﾒｰｶｰ品番" />
-                                <TextBox  Width="200"
-									 Margin="5,0,0,0" 
-									 HorizontalAlignment="Left"
-									 VerticalAlignment="Top"
-									 d:Text="ﾒｰｶｰ品番：Data"   
-									 Text="{Binding EditProduct.MakerNo}" 
-									 TextWrapping="Wrap" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" 
-										Margin="0,5,0,0">
-                                <Label  Width="85"
-								   Margin="5,0,0,0"
-								   VerticalContentAlignment="Center"
-								   Content="商品名" />
-                                <TextBox Width="495"
-										 Margin="5,0,0,0" 
-										 HorizontalAlignment="Left"
-										 VerticalAlignment="Top"
-										 d:Text="商品名：Data"   
-										 Text="{Binding EditProduct.ProductName}" 
-										 TextWrapping="Wrap" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" 
-									Margin="0,5,0,0">
-                                <Label Width="85"
-								   Margin="5,0,0,0"
-								   VerticalContentAlignment="Center"
-								   Content="略称" />
-                                <TextBox Width="200"
-									 Margin="5,0,0,0" 
-									 HorizontalAlignment="Left"
-									 VerticalAlignment="Top"
-									 d:Text="略称：Data"   
-									 Text="{Binding EditProduct.Abbreviation}"
-									 TextWrapping="Wrap" />
-                                <Button Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-                                    Style="{StaticResource FileUploadBtn}"
-									Content="絵型名1" />
-                                <TextBox Width="200"
-									 Margin="5,0,0,0" 
-									 HorizontalAlignment="Left"
-									 VerticalAlignment="Top"
-									 d:Text="絵型名1：Data"   
-									 Text="{Binding EditProduct.ImgName}"   
-									 TextWrapping="Wrap" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" 
-									Margin="0,5,0,0">
-                                <Label Width="85"
-								   Margin="5,0,0,0"
-								   VerticalContentAlignment="Center"
-								   Content="旧コード" />
-                                <TextBox Width="200"
-									 Margin="5,0,0,0" 
-									 HorizontalAlignment="Left"
-									 VerticalAlignment="Top"
-									 d:Text="旧コード：Data"
-									 Text="{Binding EditProduct.OldCode}"
-									 TextWrapping="Wrap" />
-                                <Button  Width="85"
-									Margin="5,0,0,0"
-									VerticalAlignment="Top"
-                                      Style="{StaticResource FileUploadBtn}"
-									Content="絵型名2" />
-                                <TextBox  Width="200"
-									 Margin="5,0,0,0" 
-									 IsEnabled="False"
-									 HorizontalAlignment="Left"
-									 VerticalAlignment="Top"
-									 d:Text="絵型名2：Data"   
-									 Text="{Binding EditProduct.ImgName2}"
-									 Style="{StaticResource ReadOnlyTextBox}"  
-									 TextWrapping="Wrap" />
-                            </StackPanel>
+
+                        <Label   Grid.Row="0" Grid.Column="0" Content="商品CD" />
+                        <TextBox Grid.Row="0" Grid.Column="1" d:Text="商品CD：Data" Text="{Binding EditProduct.ProductCD}" TextWrapping="Wrap"/>
+                        <Label   Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Center" Content="ﾒｰｶｰ品番" />
+                        <TextBox Grid.Row="0" Grid.Column="3" d:Text="ﾒｰｶｰ品番：Data" Text="{Binding EditProduct.MakerNo}" TextWrapping="Wrap" />
+                        
+                        <Label   Grid.Row="1" Grid.Column="0" Content="商品名" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" d:Text="商品名：Data" Text="{Binding EditProduct.ProductName}" TextWrapping="Wrap" />
+
+                        <Label   Grid.Row="2" Grid.Column="0" Content="略称" />
+                        <TextBox Grid.Row="2" Grid.Column="1" d:Text="略称：Data" Text="{Binding EditProduct.Abbreviation}" TextWrapping="Wrap" />
+                        <Button  Grid.Row="2" Grid.Column="2" Style="{StaticResource FileUploadBtn}" Content="絵型名1" />
+                        <TextBox Grid.Row="2" Grid.Column="3" d:Text="絵型名1：Data"    Text="{Binding EditProduct.ImgName}" TextWrapping="Wrap" />
+
+                        <Label   Grid.Row="3" Grid.Column="0" Content="旧コード" />
+                        <TextBox Grid.Row="3" Grid.Column="1" d:Text="旧コード：Data" Text="{Binding EditProduct.OldCode}" TextWrapping="Wrap" />
+                        <Button  Grid.Row="3" Grid.Column="2" Style="{StaticResource FileUploadBtn}" Content="絵型名2" />
+                        <TextBox Grid.Row="3" Grid.Column="3" IsEnabled="False" d:Text="絵型名2：Data" Text="{Binding EditProduct.ImgName2}" Style="{StaticResource ReadOnlyTextBox}" TextWrapping="Wrap" />
+
+
+                        <StackPanel Grid.Row="25" Grid.Column="8"  Orientation="Vertical" Grid.ColumnSpan="2">
+
+                        
                             <StackPanel Orientation="Horizontal" 
 									Margin="0,5,0,0">
                                 <Label  Width="85"

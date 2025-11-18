@@ -18,7 +18,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "仕入マスタ", WindowId=typeof(Views.SubDlg01SirView).FullName },
 
                 new ButtonConfig { Text = "商品マスタ(新規登録)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
-                new ButtonConfig { Text = "商品マスタ(修正)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
+                new ButtonConfig { Text = "商品マスタ(修正)", WindowId= typeof(Views.SubDlg01Sho3View).FullName },
                 new ButtonConfig { Text = "商品マスタ(照会)", WindowId=typeof(Views.SubDlg01Sho2View).FullName },
                 new ButtonConfig { Text = "商品マスタ絵型更新", WindowId="" },
                 new ButtonConfig { Text = "社員マスタ", WindowId=typeof(Views.SubDlg01UsrView).FullName,Parameter="0",Flag="0" },
