@@ -18,7 +18,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "仕入マスタ", WindowId=typeof(Views.SubDlg01SirView).FullName },
 
                 new ButtonConfig { Text = "商品マスタ(新規登録)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
-                new ButtonConfig { Text = "商品マスタ(修正)", WindowId= typeof(Views.SubDlg01Sho2View).FullName },
+                new ButtonConfig { Text = "商品マスタ(修正)", WindowId= typeof(Views.SubDlg01Sho3View).FullName },
                 new ButtonConfig { Text = "商品マスタ(照会)", WindowId=typeof(Views.SubDlg01Sho2View).FullName },
                 new ButtonConfig { Text = "商品マスタ絵型更新", WindowId="" },
                 new ButtonConfig { Text = "社員マスタ", WindowId=typeof(Views.SubDlg01UsrView).FullName,Parameter="0",Flag="0" },
@@ -44,7 +44,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId="" },
                 new ButtonConfig { Text = "週マスタ", WindowId=typeof(Views.SubDlg01WeekView).FullName },
                 new ButtonConfig { Text = "バーコードブック印刷", WindowId=typeof(Views.SubDlg01bcdView).FullName },
-                new ButtonConfig { Text = "各種マスタ印刷", WindowId="" },
+                new ButtonConfig { Text = "各種マスタ印刷", WindowId=typeof(Views.SubDlg_prn_kakumstView).FullName },
                 new ButtonConfig { Text = "タックシール印刷", WindowId=typeof(Views.SubDlg01StkView).FullName }
             }
         }},
