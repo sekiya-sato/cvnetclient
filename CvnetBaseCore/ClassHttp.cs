@@ -458,13 +458,29 @@ namespace CvnetBaseCore {
                             // Replace <...>.</...> or <... /> with empty string safely
                             string xml = sr.ReadToEnd();
                             xml = xml.Replace(">.<", "><");
-                            using (var stringReader = new StringReader(xml))
-                            {
-                                retTable.ReadXml(stringReader);
-                            }
 
+                            // --- XML validation ---
+                            string trimmed = xml.TrimStart();
+                            // If not valid XML, return raw text as table
+                            if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith("<") == false)
+                            {
+                                // Create a simple table with raw text
+                                retTable = new DataTable();
+                                retTable.Columns.Add("RawData", typeof(string));
+                                var row = retTable.NewRow();
+                                row["RawData"] = xml;
+                                retTable.Rows.Add(row);
+                            }
+                            else
+                            {
+                                // Try to read as XML
+                                using (var stringReader = new StringReader(xml))
+                                {
+                                    retTable.ReadXml(stringReader);
+                                }
+                            }
                             //retTable.ReadXml(sr);
-						}
+                        }
 					}
 				}
 				// System.Diagnostics.Debug.WriteLine("HttpPostのヘッダ情報(UTF-8)==" + req.RequestUri.ToString());
