@@ -61,12 +61,15 @@
                             Margin="5"
                             VerticalAlignment="Center"
                             Command="{Binding ToggleDateFlagCommand}">
+
                             <Button.Style>
                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                                    <!--  Default text  -->
+
+                                    <!--  Default state  -->
                                     <Setter Property="Content" Value="修正日" />
 
                                     <Style.Triggers>
+
                                         <!--  When flag = 0  -->
                                         <DataTrigger Binding="{Binding DateFlag}" Value="0">
                                             <Setter Property="Content" Value="作成日" />
@@ -78,16 +81,18 @@
                                             <Setter Property="Content" Value="修正日" />
                                             <Setter Property="Background" Value="#FFF3F7EB" />
                                         </DataTrigger>
+
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
+
                         </Button>
 
                         <xctk:DateTimePicker
                             Width="180"
                             Height="30"
                             Margin="5,0,5,0"
-                            AllowTextInput="False"
+                            AllowTextInput="True"
                             Format="Custom"
                             FormatString="yyyy/MM/dd"
                             ShowButtonSpinner="True"
@@ -103,7 +108,7 @@
                         <xctk:DateTimePicker
                             Width="180"
                             Height="30"
-                            AllowTextInput="False"
+                            AllowTextInput="True"
                             Format="Custom"
                             FormatString="yyyy/MM/dd"
                             ShowButtonSpinner="True"
@@ -128,21 +133,12 @@
                 </Border>
 
                 <!--  ==================== MAIN BODY ====================  -->
-                <Border
-                    Grid.Row="1"
-                    Padding="5"
-                    Background="White"
-                    CornerRadius="10">
+                <Border Grid.Row="1" Padding="5" Background="White" CornerRadius="10">
                     <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
                         <!--  商品マスタ  -->
                         <TabItem Header="商品マスタ(Shift+F1)">
                             <StackPanel>
-                                <Border
-                                    Margin="10"
-                                    Background="#FFEBF7F7"
-                                    BorderBrush="#FFF3F4F6"
-                                    BorderThickness="1"
-                                    CornerRadius="10">
+                                <Border Margin="10" Background="#FFEBF7F7" BorderBrush="#FFF3F4F6" BorderThickness="1" CornerRadius="10">
                                     <ItemsControl Margin="0,10" ItemsSource="{Binding Tab1RowsA}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
@@ -219,12 +215,7 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </Border>
-                                <Border
-                                    Margin="10"
-                                    Background="#FFEBF7F7"
-                                    BorderBrush="#FFF3F4F6"
-                                    BorderThickness="1"
-                                    CornerRadius="10">
+                                <Border Margin="10" Background="#FFEBF7F7" BorderBrush="#FFF3F4F6" BorderThickness="1" CornerRadius="10">
                                     <ItemsControl Margin="0,10" ItemsSource="{Binding Tab1RowsB}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
@@ -640,34 +631,20 @@
                     </Grid.ColumnDefinitions>
 
                     <!--  Sort Order  -->
-                    <StackPanel
-                        Grid.Column="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" Orientation="Horizontal">
                         <Label Content="並び順" />
-                        <ComboBox
-                            Width="200"
-                            ItemsSource="{Binding CurrentSortOptions}"
-                            SelectedItem="{Binding SelectedSort, Mode=TwoWay}"
-                            Style="{StaticResource SearchableComboBox1}" />
+                        <ComboBox Width="200" ItemsSource="{Binding SortOptions}"
+                                  SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
+                                  Style="{StaticResource SearchableComboBox1}" />
                     </StackPanel>
 
                     <!--  Print / CSV  -->
-                    <StackPanel
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
                         <Label Margin="0,0,10,0" Content="出力区分" />
-                        <RadioButton
-                            Margin="0,0,10,0"
-                            Content="スプール"
-                            GroupName="PrintType"
-                            IsChecked="{Binding SelectedPrintType, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=スプール, Mode=TwoWay}" />
-                        <RadioButton
-                            Content="CSV"
-                            GroupName="PrintType"
-                            IsChecked="{Binding SelectedPrintType, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=CSV, Mode=TwoWay}" />
+                        <RadioButton Margin="0,0,10,0" Content="スプール" GroupName="PrintType"
+                                     IsChecked="{Binding Condition.SelectedPrint, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=スプール}" />
+                        <RadioButton Content="CSV" GroupName="PrintType"
+                                     IsChecked="{Binding Condition.SelectedPrint, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=CSV}" />
                     </StackPanel>
                 </Grid>
 

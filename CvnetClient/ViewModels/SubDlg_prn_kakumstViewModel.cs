@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CvnetBaseCore;
 using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
@@ -7,6 +8,7 @@ using CvnetClient.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.DirectoryServices;
 using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -14,6 +16,7 @@ namespace CvnetClient.ViewModels
 {
     public partial class SubDlg_prn_kakumstViewModel : BaseViewModel
     {
+        public ComboItem00 comboItem00 = new ComboItem00();
         private BizArray para;
         public enum PrintType { スプール, CSV }
 
@@ -29,7 +32,7 @@ namespace CvnetClient.ViewModels
         [ObservableProperty] private int dateFlag = 1; // 1=修正日, 0=作成日
         [ObservableProperty] private BtListHelper employee = new();
         [ObservableProperty] SearchCondition? condition;
-        [ObservableProperty] private string? selectedOrder;
+        [ObservableProperty] private string selectedOrder = "";
 
         // ---------------- Tab4 (名称マスタ) ----------------
         [ObservableProperty] private ObservableCollection<KeyValuePair<string, string>> kubunOptions = new();
@@ -120,6 +123,8 @@ namespace CvnetClient.ViewModels
         public ObservableCollection<RangeRow> Tab6RowsA { get; } = new();
         public ObservableCollection<RangeRow> Tab6RowsB { get; } = new();
 
+        [ObservableProperty] private ObservableCollection<string> sortOptions = new();
+
         // ---------------- Templates ----------------
         private readonly (string, string)[] _labelTab1A =
         {
@@ -172,13 +177,14 @@ namespace CvnetClient.ViewModels
             OnInit();
         }
         // ---------------- Init ----------------
-        private void OnInit(string[] init_para = null)
+        private void OnInit(object? init_para = null, string? init_flg = null)
         {
-            para = init_para != null ? new BizArray(init_para) : new BizArray();
+            OnInitBase(init_para, init_flg);
 
             Employee = new BtListHelper();
             SelectedTab = ChooseTab[0];
-            UpdateSelectedTabIndex(SelectedTab);
+            Condition.DateFrom = DateTime.Now;
+            Condition.DateTo = DateTime.Now;
 
             InitTab1();
             InitTab2();
@@ -319,7 +325,6 @@ namespace CvnetClient.ViewModels
             }
         }
 
-        // ---------------- Commands (header + Tab4) ----------------
         [RelayCommand] private void ToggleDateFlag() => DateFlag = 1 - DateFlag;
 
         [RelayCommand]
@@ -332,20 +337,16 @@ namespace CvnetClient.ViewModels
             }
         }
 
-        // Tab4 名称CD From
         [RelayCommand]
         private void PickFrom3((object result1, object result2) value)
         {
             var (result1, result2) = value;
             var sel = result1 as SelValueModel;
-            // result2 is SelectedKubun (string) if needed:
-            // var kubun = result2 as string ?? "";
             if (sel == null) return;
             RangeFrom3.Code = sel.Code;
             RangeFrom3.Name = sel.Name;
         }
 
-        // Tab4 名称CD To
         [RelayCommand]
         private void PickTo3((object result1, object result2) value)
         {
@@ -356,38 +357,94 @@ namespace CvnetClient.ViewModels
             RangeTo3.Name = sel.Name;
         }
 
-        // ---------------- Tab switching ----------------
-        partial void OnSelectedTabChanged(string value) => UpdateSelectedTabIndex(value);
-        private void UpdateSelectedTabIndex(string tabName) => SelectedTabIndex = ChooseTab.IndexOf(tabName);
+        partial void OnSelectedTabChanged(string value)
+        {
 
+            SelectedTabIndex = ChooseTab.IndexOf(value);
+
+            SortOptions.Clear();
+
+            var newSortItems = value switch
+            {
+                "商品マスタ" => new[]
+                {
+                    "", "ブランドCD", "アイテムCD", "年度", "シーズンCD",
+                    "デザイナーCD", "展示会CD", "素材CD", "メーカーCD",
+                    "原産国CD", "作成日", "更新日"
+                },
+
+                "得意先マスタ" => new[]
+                {
+                    "", "得意先CD", "営業担当CD", "請求先CD", "作成日", "更新日"
+                },
+
+                "仕入先マスタ" => new[]
+                {
+                    "", "仕入先CD", "支払先CD", "作成日", "更新日"
+                },
+
+                "名称マスタ" => new[]
+                {
+                    "", "名称CD", "作成日", "更新日"
+                },
+
+                "生地付属マスタ" => new[]
+                {
+                    "", "生地付属CD", "仕入先CD", "作成日", "更新日"
+                },
+
+                "社員マスタ" => new[]
+                {
+                    "", "社員CD", "所属店舗CD", "作成日", "更新日"
+                },
+
+                _ => new[] { "" }
+            };
+
+            foreach (var item in newSortItems)
+            {
+                SortOptions.Add(item);
+            }
+
+            SelectedOrder = "";
+
+            OnPropertyChanged(nameof(SelectedOrder));
+        }
+        private string GetDateField()
+        {
+            return DateFlag == 0 ? "A.VDATE_CREATE" : "A.VDATE_UPDATE";
+        }
+
+        private static string Between(string field, string from, string to)
+        {
+            return $" and {field} between '{from}' and '{to}'";
+        }
         private BizArray BuildWrkPara_Tab1()
         {
             var p = new BizArray();
             int i = 0;
 
-            // 1. Date Range
-            p[i++] = Condition.DateFrom?.ToString("yyyyMMdd") ?? string.Empty;
-            p[i++] = Condition.DateTo?.ToString("yyyyMMdd") ?? string.Empty;
+            double datefrom = ClassSatoo.DateToValue(Condition.DateFrom ?? DateTime.MinValue);
+            double dateto = ClassSatoo.DateToValue(Condition.DateTo ?? DateTime.MaxValue);
+            p[i++] = datefrom.ToString();   // VDATE numeric
+            p[i++] = dateto.ToString();     // VDATE numeric
 
-            // 2. Tab1RowsA (4 rows × 4 values)
             foreach (var row in Tab1RowsA)
             {
                 p[i++] = row.RangeFrom1.Code ?? ".";
-                p[i++] = row.RangeTo1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? "ZZZZZZZZ";
                 p[i++] = row.RangeFrom2.Code ?? ".";
-                p[i++] = row.RangeTo2.Code ?? ".";
+                p[i++] = row.RangeTo2.Code ?? "ZZZZZZZZ";
             }
 
-            // 3. Tab1RowsB (5 rows × 4 values)
             foreach (var row in Tab1RowsB)
             {
                 p[i++] = row.RangeFrom1.Code ?? ".";
-                p[i++] = row.RangeTo1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? "ZZZZZZZZ";
                 p[i++] = row.RangeFrom2.Code ?? ".";
-                p[i++] = row.RangeTo2.Code ?? ".";
+                p[i++] = row.RangeTo2.Code ?? "ZZZZZZZZ";
             }
 
-            // 4. Employee (optional)
             p[i++] = Employee?.Code ?? ".";
 
             return p;
@@ -396,54 +453,70 @@ namespace CvnetClient.ViewModels
         {
             var p2 = new BizArray();
 
-            // Blank → "."
-            for (int i = 0; i < p.Count; i++)
-                if (string.IsNullOrEmpty(p[i]))
-                    p[i] = ".";
+            string dateField = GetDateField();
+            int idx = 0;
 
+            // Date range
+            string dateFrom = p[idx++];
+            string dateTo = p[idx++];
 
+            string sql = $"{dateField} between '{dateFrom}' and '{dateTo}'";
 
-            // WHERE clause
-            string dateField = (DateFlag == 0)
-                ? "A.VDATE_CREATE"
-                : "A.VDATE_UPDATE";
+            var fieldPairsTab1A = new (string Field1, string Field2)[]
+            {
+                ("A.ブランドCD",  "A.アイテムCD"),
+                ("A.シーズンCD",  "A.デザイナーCD"),
+                ("A.展示会CD",    "A.素材CD"),
+                ("A.原産国CD",    "A.メーカーCD"),
+            };
 
-            string sql =
-                $"{dateField} between '{p[0]}' and '{p[1]}'" +
-                $" and A.ブランドCD between '{p[2]}' and '{p[3]}'" +
-                $" and A.アイテムCD between '{p[4]}' and '{p[5]}'" +
-                $" and A.シーズンCD between '{p[6]}' and '{p[7]}'" +
-                $" and A.デザイナーCD between '{p[8]}' and '{p[9]}'" +
-                $" and A.展示会CD between '{p[10]}' and '{p[11]}'" +
-                $" and A.素材CD between '{p[12]}' and '{p[13]}'" +
-                $" and A.原産国CD between '{p[14]}' and '{p[15]}'" +
-                $" and A.メーカーCD between '{p[16]}' and '{p[17]}'" +
-                $" and A.名称CD01 between '{p[18]}' and '{p[19]}'" +
-                $" and A.名称CD02 between '{p[20]}' and '{p[21]}'" +
-                $" and A.名称CD03 between '{p[22]}' and '{p[23]}'" +
-                $" and A.名称CD04 between '{p[24]}' and '{p[25]}'" +
-                $" and A.名称CD05 between '{p[26]}' and '{p[27]}'" +
-                $" and A.名称CD06 between '{p[28]}' and '{p[29]}'" +
-                $" and A.名称CD07 between '{p[30]}' and '{p[31]}'" +
-                $" and A.名称CD08 between '{p[32]}' and '{p[33]}'" +
-                $" and A.名称CD09 between '{p[34]}' and '{p[35]}'" +
-                $" and A.名称CD10 between '{p[36]}' and '{p[37]}'";
+            foreach (var (field1, field2) in fieldPairsTab1A)
+            {
+                // field1 uses RangeFrom1/To1
+                string from1 = p[idx++];
+                string to1 = p[idx++];
+                sql += Between(field1, from1, to1);
 
-            // Employee filter
-            if (!string.IsNullOrEmpty(p[38]) && p[38] != ".")
-                sql += $" and A.入力社員CD = '{p[38]}'";
+                // field2 uses RangeFrom2/To2
+                string from2 = p[idx++];
+                string to2 = p[idx++];
+                sql += Between(field2, from2, to2);
+            }
+
+            // Tab1RowsB: 補足1〜10 → 名称CD01〜10 (10 fields, 5 rows × 2 ranges)
+            string[] nameFields =
+            {
+                "A.名称CD01", "A.名称CD02",
+                "A.名称CD03", "A.名称CD04",
+                "A.名称CD05", "A.名称CD06",
+                "A.名称CD07", "A.名称CD08",
+                "A.名称CD09", "A.名称CD10",
+            };
+
+            foreach (var field in nameFields)
+            {
+                string from = p[idx++];
+                string to = p[idx++];
+                sql += Between(field, from, to);
+            }
+
+            // Employee filter (最後の 1 つ)
+            string emp = p[idx++];
+            if (!string.IsNullOrEmpty(emp) && emp != ".")
+                sql += $" and A.入力社員CD = '{emp}'";
 
             p2[0] = sql;
-
-            // ORDER BY
-            p2[1] = BuildOrderByClause();
+            p2[1] = BuildOrderByClause();   // your existing method
 
             return p2;
         }
+
         private string BuildOrderByClause()
         {
             return SelectedOrder switch
             {
+                null or "" => " order by A.商品CD",
+
                 "ブランドCD" => " order by A.ブランドCD,A.商品CD",
                 "アイテムCD" => " order by A.アイテムCD,A.商品CD",
                 "年度" => " order by A.JANコード1,A.商品CD",
@@ -455,10 +528,360 @@ namespace CvnetClient.ViewModels
                 "原産国CD" => " order by A.原産国CD,A.商品CD",
                 "作成日" => " order by A.VDATE_CREATE DESC,A.商品CD",
                 "更新日" => " order by A.VDATE_UPDATE DESC,A.商品CD",
-                _ => " order by A.商品CD" // default
+
+                _ => " order by A.商品CD"
             };
         }
+        private BizArray BuildWrkPara_Tab2()
+        {
+            var p = new BizArray();
+            int i = 0;
 
+            // 1. Date Range
+            double datefrom = ClassSatoo.DateToValue(Condition.DateFrom ?? DateTime.MinValue);
+            double dateto = ClassSatoo.DateToValue(Condition.DateTo ?? DateTime.MaxValue);
+            p[i++] = datefrom.ToString();   // VDATE numeric
+            p[i++] = dateto.ToString();     // VDATE numeric
+            // 2. Tab1RowsA (4 rows × 4 values)
+            foreach (var row in Tab2Rows)
+            {
+                p[i++] = row.RangeFrom1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? "ZZZZZZZZ";
+            }
+
+            // 4. Employee (optional)
+            p[i++] = Employee?.Code ?? ".";
+
+            return p;
+        }
+
+        private BizArray BuildWrkPara2_Tab2(BizArray p)
+        {
+            var p2 = new BizArray();
+            string dateField = GetDateField();
+            int idx = 0;
+
+            string dateFrom = p[idx++];
+            string dateTo = p[idx++];
+
+            string sql = $"{dateField} between '{dateFrom}' and '{dateTo}'";
+
+            string[] fields =
+            {
+                "A.得意先CD",
+                "A.営業担当CD",
+                "A.請求先CD"
+            };
+
+            foreach (var field in fields)
+            {
+                string from = p[idx++];
+                string to = p[idx++];
+                sql += Between(field, from, to);
+            }
+
+            // Employee
+            string emp = p[idx++];
+            if (!string.IsNullOrEmpty(emp) && emp != ".")
+                sql += $" and A.入力社員CD = '{emp}'";
+
+            p2[0] = sql;
+            p2[1] = BuildOrderByClause2();
+            return p2;
+        }
+
+        private string BuildOrderByClause2()
+        {
+            return SelectedOrder switch
+            {
+                null or "" => " order by A.得意先CD",
+
+                "得意先CD" => " order by A.得意先CD",
+                "営業担当CD" => " order by A.営業担当CD,A.得意先CD",
+                "請求先CD" => " order by A.請求先CD,A.得意先CD",
+                "作成日" => " order by A.VDATE_CREATE DESC,A.得意先CD",
+                "更新日" => " order by A.VDATE_UPDATE DESC,A.得意先CD",
+
+                _ => " order by A.得意先CD"
+            };
+        }
+        private BizArray BuildWrkPara_Tab3()
+        {
+            var p = new BizArray();
+            int i = 0;
+
+            double datefrom = ClassSatoo.DateToValue(Condition.DateFrom ?? DateTime.MinValue);
+            double dateto = ClassSatoo.DateToValue(Condition.DateTo ?? DateTime.MaxValue);
+            p[i++] = datefrom.ToString();   // VDATE numeric
+            p[i++] = dateto.ToString();     // VDATE numeric
+
+            foreach (var row in Tab3Rows)
+            {
+                p[i++] = row.RangeFrom1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? "ZZZZZZZZ";
+            }
+
+            p[i++] = Employee?.Code ?? ".";
+
+            return p;
+        }
+        private BizArray BuildWrkPara2_Tab3(BizArray p)
+        {
+            var p2 = new BizArray();
+            string dateField = GetDateField();
+            int idx = 0;
+
+            string dateFrom = p[idx++];
+            string dateTo = p[idx++];
+
+            string sql = $"{dateField} between '{dateFrom}' and '{dateTo}'";
+
+            string[] fields =
+            {
+                "A.仕入先CD",
+                "A.支払先CD"
+            };
+
+            foreach (var field in fields)
+            {
+                string from = p[idx++];
+                string to = p[idx++];
+                sql += Between(field, from, to);
+            }
+
+            // Employee
+            string emp = p[idx++];
+            if (!string.IsNullOrEmpty(emp) && emp != ".")
+                sql += $" and A.入力社員CD = '{emp}'";
+
+            p2[0] = sql;
+            p2[1] = BuildOrderByClause3();
+            return p2;
+        }
+
+        private string BuildOrderByClause3()
+        {
+            return SelectedOrder switch
+            {
+                null or "" => "order by A.仕入先CD",
+
+                "仕入先CD" => " order by A.仕入先CD",
+                "支払先CD" => " order by A.支払先CD,A.仕入先CD",
+                "作成日" => " order by A.VDATE_CREATE DESC,A.仕入先CD",
+                "更新日" => " order by A.VDATE_UPDATE DESC,A.仕入先CD",
+
+                _ => " order by A.仕入先CD"
+            };
+        }
+        private BizArray BuildWrkPara_Tab4()
+        {
+            var p = new BizArray();
+            int i = 0;
+
+            // 1. Date Range
+            double datefrom = ClassSatoo.DateToValue(Condition.DateFrom ?? DateTime.MinValue);
+            double dateto = ClassSatoo.DateToValue(Condition.DateTo ?? DateTime.MaxValue);
+            p[i++] = datefrom.ToString();   // VDATE numeric
+            p[i++] = dateto.ToString();     // VDATE numeric
+
+            p[i++] = SelectedKubun ?? ".";
+            p[i++] = RangeFrom3.Code ?? ".";
+            p[i++] = RangeTo3.Code ?? "ZZZZZZZZ";
+            // 4. Employee (optional)
+            p[i++] = Employee?.Code ?? ".";
+
+            return p;
+        }
+        private BizArray BuildWrkPara2_Tab4(BizArray p)
+        {
+            var p2 = new BizArray();
+
+            string dateField = GetDateField();
+            int idx = 0;
+
+            string dateFrom = p[idx++];
+            string dateTo = p[idx++];
+            string kubun = p[idx++]; // 名称区分
+            string cdFrom = p[idx++];
+            string cdTo = p[idx++];
+            string emp = p[idx++];
+
+            string sql =
+                $"{dateField} between '{dateFrom}' and '{dateTo}'" +
+                $" and A.名称区分 = '{kubun}'" +
+                Between("A.名称CD", cdFrom, cdTo).Replace("and A.名称CD between", " and A.名称CD between");
+
+            if (!string.IsNullOrEmpty(emp) && emp != ".")
+                sql += $" and A.入力社員CD = '{emp}'";
+
+            p2[0] = sql;
+            p2[1] = BuildOrderByClause4();
+            return p2;
+        }
+
+        private string BuildOrderByClause4()
+        {
+            return SelectedOrder switch
+            {
+                null or "" => " order by A.名称CD",
+
+                "名称CD" => " order by A.名称CD",
+                "作成日" => " order by A.VDATE_CREATE DESC,A.名称CD",
+                "更新日" => " order by A.VDATE_UPDATE DESC,A.名称CD",
+
+                _ => " order by A.名称CD"
+            };
+        }
+        private BizArray BuildWrkPara_Tab5()
+        {
+            var p = new BizArray();
+            int i = 0;
+
+            // 1. Date Range
+            double datefrom = ClassSatoo.DateToValue(Condition.DateFrom ?? DateTime.MinValue);
+            double dateto = ClassSatoo.DateToValue(Condition.DateTo ?? DateTime.MaxValue);
+            p[i++] = datefrom.ToString();   // VDATE numeric
+            p[i++] = dateto.ToString();     // VDATE numeric
+            // 2. Tab1RowsA (4 rows × 4 values)
+            foreach (var row in Tab5Rows)
+            {
+                p[i++] = row.RangeFrom1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? "ZZZZZZZZ";
+            }
+
+            // 4. Employee (optional)
+            p[i++] = Employee?.Code ?? ".";
+
+            return p;
+        }
+        private BizArray BuildWrkPara2_Tab5(BizArray p)
+        {
+            var p2 = new BizArray();
+            string dateField = GetDateField();
+            int idx = 0;
+
+            string dateFrom = p[idx++];
+            string dateTo = p[idx++];
+
+            string sql = $"{dateField} between '{dateFrom}' and '{dateTo}'";
+
+            string[] fields =
+            {
+                "A.商品CD",
+                "A.仕入先CD"
+            };
+
+            foreach (var field in fields)
+            {
+                string from = p[idx++];
+                string to = p[idx++];
+                sql += Between(field, from, to);
+            }
+
+            // Employee
+            string emp = p[idx++];
+            if (!string.IsNullOrEmpty(emp) && emp != ".")
+                sql += $" and A.入力社員CD = '{emp}'";
+
+            p2[0] = sql;
+            p2[1] = BuildOrderByClause5();
+            return p2;
+        }
+
+        private string BuildOrderByClause5()
+        {
+            return SelectedOrder switch
+            {
+                null or "" => " order by A.商品CD,A.仕入先CD",
+
+                "生地付属CD" => " order by A.商品CD",
+                "仕入先CD" => " order by A.仕入先CD,A.商品CD",
+                "作成日" => " order by A.VDATE_CREATE DESC,A.商品CD",
+                "更新日" => " order by A.VDATE_UPDATE DESC,A.商品CD",
+
+                _ => " order by A.商品CD,A.仕入先CD"
+            };
+        }
+        private BizArray BuildWrkPara_Tab6()
+        {
+            var p = new BizArray();
+            int i = 0;
+
+            double datefrom = ClassSatoo.DateToValue(Condition.DateFrom ?? DateTime.MinValue);
+            double dateto = ClassSatoo.DateToValue(Condition.DateTo ?? DateTime.MaxValue);
+            p[i++] = datefrom.ToString();   // VDATE numeric
+            p[i++] = dateto.ToString();     // VDATE numeric
+
+            foreach (var row in Tab6RowsA)
+            {
+                p[i++] = row.RangeFrom1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? "ZZZZZZZZ";
+            }
+
+            foreach (var row in Tab6RowsB)
+            {
+                p[i++] = row.RangeFrom1.Code ?? ".";
+                p[i++] = row.RangeTo1.Code ?? "ZZZZZZZZ";
+            }
+
+            p[i++] = Employee?.Code ?? ".";
+
+            return p;
+        }
+        private BizArray BuildWrkPara2_Tab6(BizArray p)
+        {
+            var p2 = new BizArray();
+            string dateField = GetDateField();
+            int idx = 0;
+
+            string dateFrom = p[idx++];
+            string dateTo = p[idx++];
+
+            string sql = $"{dateField} between '{dateFrom}' and '{dateTo}'";
+
+            // Tab6RowsA (社員CD, 店舗CD) + Tab6RowsB (名称CD01〜05)
+            string[] fields =
+            {
+                "A.社員CD",
+                "A.店舗CD",
+                "A.名称CD01",
+                "A.名称CD02",
+                "A.名称CD03",
+                "A.名称CD04",
+                "A.名称CD05"
+            };
+
+            foreach (var field in fields)
+            {
+                string from = p[idx++];
+                string to = p[idx++];
+                sql += Between(field, from, to);
+            }
+
+            // Employee
+            string emp = p[idx++];
+            if (!string.IsNullOrEmpty(emp) && emp != ".")
+                sql += $" and A.入力社員CD = '{emp}'";
+
+            p2[0] = sql;
+            p2[1] = BuildOrderByClause6();
+            return p2;
+        }
+
+        private string BuildOrderByClause6()
+        {
+            return SelectedOrder switch
+            {
+                null or "" => " order by A.社員CD",
+
+                "社員CD" => " order by A.社員CD",
+                "所属店舗CD" => " order by A.店舗CD,A.社員CD",
+                "作成日" => " order by A.VDATE_CREATE DESC,A.社員CD",
+                "更新日" => " order by A.VDATE_UPDATE DESC,A.社員CD",
+
+                _ => " order by A.社員CD"
+            };
+        }
 
         [RelayCommand]
         private async Task DoPrintAsync()
@@ -467,82 +890,241 @@ namespace CvnetClient.ViewModels
             {
                 ClientLib.CursorToWait();
 
-                // -----------------------------
-                // 1. Build Search Params
-                // -----------------------------
-                var wrk_para = BuildWrkPara_Tab1();
-                var wrk_para2 = BuildWrkPara2_Tab1(wrk_para);
+                var dt = await ExecPrintQueryAsync();
+                if (dt == null || dt.Rows.Count == 0)
+                    throw new Exception("印刷データが取得できませんでした。条件を見直してください。");
 
-                // -----------------------------
-                // 2. Execute CVNET Print API
-                // -----------------------------
-                var dt = await Task.Run(() =>
-                    AppData.ClassCvnet.OnQueryPrintShohin(wrk_para2.ToArray(), 1)
-                );
-                string pdfPath = dt.Rows[0][0].ToString(); 
-                // -----------------------------
-                // 3. Handle Spool (PDF)
-                // -----------------------------
-                if (Condition.SelectedPrint.ToString() == "スプール")
+                // The server returns temp folder path in first cell, possibly with trailing spaces or \r\n
+                string folderPath = (dt.Rows[0][0]?.ToString() ?? "").Split('\n')[0].Trim();
+                if (string.IsNullOrEmpty(folderPath))
+                    throw new Exception("レポート生成に失敗しました。サーバーに接続できない可能性があります。");
+
+                string baseUrl = $"{AppData.Http.URLroot}{folderPath}";
+
+                switch (Condition.SelectedPrint)
                 {
-                    string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+                    case PrintType.スプール:
+                        ClientLib.CursorToNormal();
+                        await ShowPdfAsync($"{baseUrl}/data.pdf");
+                        break;
 
-                    bool ready = await GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
-                    if (!ready)
-                    {
-                        ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n条件を絞ってください。");
-                        return;
-                    }
+                    case PrintType.CSV:
+                        await ProcessCsvAsync(baseUrl);
+                        ClientLib.CursorToNormal();
+                        break;
 
-                    ClientLib.CursorToNormal();
-
-                    var win = new WebpdfView();
-                    if (win.DataContext is WebpdfViewModel vm)
-                        vm.Pdfdata = url;
-
-                    ClientLib.ShowDialogView(win, this);
-                    return;
-                }
-
-                // -----------------------------
-                // 4. Handle CSV Output
-                // -----------------------------
-                if (Condition.SelectedPrint.ToString() == "CSV")
-                {
-                    string datapath = AppData.Http.URLroot + pdfPath + "/data.txt";
-                    string headpath = AppData.Http.URLroot + pdfPath + "/d_sql.txt";
-
-                    bool ready = await GlobalFunc.WaitForPdfAsync(datapath, TimeSpan.FromSeconds(30));
-                    if (!ready)
-                    {
-                        ClientLib.MessageBoxError(this, "Data生成に時間がかかりすぎています。\n条件を絞ってください。");
-                        return;
-                    }
-
-                    ready = await GlobalFunc.WaitForPdfAsync(headpath, TimeSpan.FromSeconds(30));
-                    if (!ready)
-                    {
-                        ClientLib.MessageBoxError(this, "Header生成に時間がかかりすぎています。\n条件を絞ってください。");
-                        return;
-                    }
-
-                    var csv_para = new BizCsvDocument();
-                    await csv_para.LoadFromUrlAsync(datapath, headpath);
-
-                    csv_para.SaveCsv($"{DateTime.Now:yyyyMMdd}_得意先別売上月報");
-
-                    ClientLib.CursorToNormal();
-                    return;
+                    default:
+                        throw new Exception($"不明な印刷形式: {Condition.SelectedPrint}");
                 }
             }
             catch (Exception ex)
             {
                 ClientLib.CursorToNormal();
-                ClientLib.MessageBoxError(this, $"印刷中にエラー:\n{ex.Message}");
+                ClientLib.MessageBoxError(this, $"印刷エラー:\n{ex.Message}");
             }
         }
+        private Task<DataTable> ExecPrintQueryAsync()
+        {
+            return SelectedTab switch
+            {
+                "商品マスタ" => ExecShohinAsync(),
+                "得意先マスタ" => ExecTokuiAsync(),
+                "仕入先マスタ" => ExecSiireAsync(),
+                "名称マスタ" => ExecMeishoAsync(),
+                "生地付属マスタ" => ExecKijiAsync(),
+                "社員マスタ" => ExecShainAsync(),
+                _ => throw new InvalidOperationException("Unknown Tab.")
+            };
+        }
+        private async Task<bool> ShowPdfAsync(string url)
+        {
+            if (!await GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30)))
+            {
+                ClientLib.MessageBoxError(this,
+                    "PDF generation is taking too long.\nPlease narrow your conditions.");
+                return false;
+            }
 
+            var win = new WebpdfView();
+            if (win.DataContext is WebpdfViewModel vm)
+                vm.Pdfdata = url;
 
+            ClientLib.ShowDialogView(win, this);
+            return true;
+        }
+        private async Task ProcessCsvAsync(string baseUrl)
+        {
+            string dataUrl = $"{baseUrl}/data.txt";
+            string headUrl = $"{baseUrl}/d_sql.txt";
+
+            if (!await GlobalFunc.WaitForPdfAsync(dataUrl, TimeSpan.FromSeconds(30)))
+                throw new Exception("CSV data generation is taking too long.");
+
+            if (!await GlobalFunc.WaitForPdfAsync(headUrl, TimeSpan.FromSeconds(30)))
+                throw new Exception("CSV header generation is taking too long.");
+
+            var csvDoc = new BizCsvDocument();
+            await csvDoc.LoadFromUrlAsync(dataUrl, headUrl);
+
+            csvDoc.SaveCsv($"{DateTime.Now:yyyyMMdd}_得意先別売上月報");
+        }
+        private async Task<DataTable> ExecShohinAsync()
+        {
+            // 1. Build parameters
+            var wrkPara = BuildWrkPara_Tab1();
+            var wrkPara2 = BuildWrkPara2_Tab1(wrkPara);
+
+            // 2. Execute CVNET query on a background thread
+            var dt = await Task.Run(() =>
+                AppData.ClassCvnet.OnQueryPrintShohin(wrkPara2.ToArray(), 1)
+            );
+
+            return dt;
+        }
+        private async Task<DataTable> ExecTokuiAsync()
+        {
+            var wrkPara = BuildWrkPara_Tab2();
+            var wrkPara2 = BuildWrkPara2_Tab2(wrkPara);
+
+            var result = await Task.Run(() =>
+                AppData.ClassCvnet.OnQueryPrintTokui(wrkPara2.ToArray(), 1)
+            );
+
+            // Since it returns string (folder path), wrap it into a DataTable manually
+            var dt = new DataTable();
+            dt.Columns.Add("FolderPath");
+            dt.Rows.Add(result);  // result is the folder path string
+
+            return dt;
+        }
+        private async Task<DataTable> ExecSiireAsync()
+        {
+            var wrkPara = BuildWrkPara_Tab3();
+            var wrkPara2 = BuildWrkPara2_Tab3(wrkPara);
+
+            var dt = await Task.Run(() =>
+                AppData.ClassCvnet.OnQueryPrintSiire(wrkPara2.ToArray(), 1)
+            );
+
+            return dt;
+        }
+        private async Task<DataTable> ExecMeishoAsync()
+        {
+            const string qfmFile = "cvnet_meisho.qfm";
+
+            var wrkPara = BuildWrkPara_Tab4();
+            var wrkPara2 = BuildWrkPara2_Tab4(wrkPara);
+
+            string whereClause = (string)wrkPara2[0];
+            string orderBy = (string)wrkPara2[1];
+
+            string sql = $@"
+        SELECT A.SEQ_NO
+              ,SUBSTR(GET_VDATE(A.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(A.VDATE_CREATE),10,6) 作成日時
+              ,SUBSTR(GET_VDATE(A.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(A.VDATE_UPDATE),10,6) 更新日時
+              ,A.名称区分
+              ,A.名称CD
+              ,A.名称
+              ,A.略称
+              ,A.ランク
+              ,A.連番
+              ,A.カナ
+              ,A.POS区分
+              ,(A.入力社員CD ||' '|| (SELECT B.名前 FROM HC$MASTER_SHAIN B WHERE B.社員CD=A.入力社員CD)) 最終修正者
+              ,'【通常印刷】'
+        FROM HC$MASTER_MEISHO A
+        WHERE {whereClause}
+        {orderBy}";
+
+            var dt = await Task.Run(() =>
+                AppData.Http?.AspxSqlQuery(sql, wrkPara2.ToArray(), qfmFile)
+            );
+
+            return dt; // This now returns 1 row with folder path!
+        }
+        private async Task<DataTable> ExecKijiAsync()
+        {
+            const string qfmFile = "cvnet_kiji.qfm";
+
+            var wrkPara = BuildWrkPara_Tab5();
+            var wrkPara2 = BuildWrkPara2_Tab5(wrkPara);
+
+            string whereClause = (string)wrkPara2[0];
+            string orderBy = (string)wrkPara2[1];
+
+            string sql = $@"
+        SELECT A.SEQ_NO
+              ,SUBSTR(GET_VDATE(A.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(A.VDATE_CREATE),10,6) 作成日時
+              ,SUBSTR(GET_VDATE(A.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(A.VDATE_UPDATE),10,6) 更新日時
+              ,A.商品CD,A.旧コード,A.略称,A.商品名,A.区分CD,A.仕入先CD,A.仕入先商品CD,A.単価,A.メモ
+              ,B.仕入先名
+              ,(A.入力社員CD ||' '|| (SELECT S.名前 FROM HC$MASTER_SHAIN S WHERE S.社員CD=A.入力社員CD)) 最終修正者
+              ,{comboItem00.GetCaseStr("生地付属", "A.区分CD")} 区分CD名
+        FROM HC$MASTER_SHKIJI A
+        LEFT JOIN HC$MASTER_SIIRE B ON B.仕入先CD = A.仕入先CD
+        WHERE {whereClause}
+        {orderBy}";
+
+            var dt = await Task.Run(() =>
+                AppData.Http?.AspxSqlQuery(sql, wrkPara2.ToArray(), qfmFile)
+            );
+
+            return dt;
+        }
+        private async Task<DataTable> ExecShainAsync()
+        {
+            const string qfmFile = "cvnet_shain.qfm";
+
+            var wrkPara = BuildWrkPara_Tab6();
+            var wrkPara2 = BuildWrkPara2_Tab6(wrkPara);
+
+            string whereClause = (string)wrkPara2[0];
+            string orderBy = (string)wrkPara2[1];
+
+            string sql = $@"
+        SELECT A.SEQ_NO
+              ,SUBSTR(GET_VDATE(A.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(A.VDATE_CREATE),10,6) 作成日時
+              ,SUBSTR(GET_VDATE(A.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(A.VDATE_UPDATE),10,6) 更新日時
+              ,A.社員CD,A.名前,A.部門,A.店舗CD,A.営業FLG,A.メール,A.携帯TEL,A.備考
+              ,A.役職CD,A.就業FLG,A.入社日,A.有給残,A.給与区分,A.給与支給額,A.交通費区分,A.交通費支給額,A.出力FLG,A.部課CD,A.POS区分
+              ,A.名称CD01,A.名称CD02,A.名称CD03,A.名称CD04,A.名称CD05
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='BMN' AND H.名称CD=A.部門),'.') 部門名
+              ,NVL((SELECT H.得意先名 FROM HC$MASTER_TOKUI H WHERE H.得意先CD=A.店舗CD),'.') 店舗名
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='YAK' AND H.名称CD=A.役職CD),'.') 役職名
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='BKA' AND H.名称CD=A.部課CD),'.') 部課名
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='E01' AND H.名称CD=A.名称CD01),'.') 分類01名
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='E02' AND H.名称CD=A.名称CD02),'.') 分類02名
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='E03' AND H.名称CD=A.名称CD03),'.') 分類03名
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='E04' AND H.名称CD=A.名称CD04),'.') 分類04名
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='E05' AND H.名称CD=A.名称CD05),'.') 分類05名
+              ,(A.入力社員CD ||' '|| (SELECT B.名前 FROM HC$MASTER_SHAIN B WHERE B.社員CD=A.入力社員CD)) 最終修正者
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='IDX' AND H.名称CD='E01'),'.') title1
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='IDX' AND H.名称CD='E02'),'.') title2
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='IDX' AND H.名称CD='E03'),'.') title3
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='IDX' AND H.名称CD='E04'),'.') title4
+              ,NVL((SELECT H.名称 FROM HC$MASTER_MEISHO H WHERE H.名称区分='IDX' AND H.名称CD='E05'),'.') title5
+              ,CASE WHEN A.営業FLG='0' THEN '0 --' WHEN A.営業FLG='1' THEN '1 営業担当' ELSE '.' END 営業FLG名
+              ,CASE WHEN A.出力FLG='0' THEN '0 通常' WHEN A.出力FLG='1' THEN '99 出力しない' ELSE '.' END 出力FLG名
+              ,CASE WHEN A.POS区分='0' THEN '0 通常' WHEN A.POS区分='1' THEN '9 POSﾏｽﾀ削除指示' WHEN A.POS区分='2' THEN '10 出力しない' ELSE '.' END POS区分名
+              ,CASE WHEN A.就業FLG='0' THEN '0 在職' WHEN A.就業FLG='1' THEN '1 休職' WHEN A.就業FLG='2' THEN '9 退職' ELSE '.' END 就業FLG名
+              ,CASE WHEN A.給与区分='0' THEN '1 月次' WHEN A.給与区分='1' THEN '4 時給' ELSE '.' END 給与区分名
+              ,CASE WHEN A.交通費区分='0' THEN '0 定額' WHEN A.交通費区分='1' THEN '1 月払' ELSE '.' END 交通費区分名
+        FROM HC$MASTER_SHAIN A
+        WHERE {whereClause}
+        {orderBy}";
+
+            var dt = await Task.Run(() =>
+                AppData.Http?.AspxSqlQuery(sql, wrkPara2.ToArray(), qfmFile)
+            );
+
+            return dt;
+        }
+
+        partial void OnSelectedTabIndexChanged(int value)
+        {
+            if (value >= 0 && value < ChooseTab.Count)
+                SelectedTab = ChooseTab[value];   // This line makes everything 100% safe
+        }
     }
 
 }
