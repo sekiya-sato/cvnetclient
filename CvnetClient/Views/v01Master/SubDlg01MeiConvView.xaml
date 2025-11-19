@@ -16,19 +16,19 @@
     </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="4.5*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4.5*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="9*"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="9.5*"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="コピー元"></Label>
 
@@ -72,8 +72,8 @@
             
             <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="9*"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="9.5*"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="コピー先"></Label>
 
@@ -98,7 +98,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" BorderThickness="1" BorderBrush="Black" Margin="10">
+            <Border Grid.Column="0" BorderThickness="1" BorderBrush="Transparent" Margin="10,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>

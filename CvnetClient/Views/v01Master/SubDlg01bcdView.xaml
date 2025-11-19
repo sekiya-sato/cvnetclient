@@ -8,9 +8,7 @@
     xmlns:util="clr-namespace:CvnetClient.Utils"
     xmlns:vm="clr-namespace:CvnetClient.ViewModels"
     Title="バーコードブックマスタ"
-    Width="900"
-    Height="500"
-    Style="{StaticResource PrintWindowStyle}"
+    Style="{StaticResource MasterWindowStyle}"
     mc:Ignorable="d">
     <Window.DataContext>
         <vm:SubDlg01bcdViewModel />
@@ -19,7 +17,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
     </Window.Resources>
-    <Grid Margin="20">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -44,7 +42,7 @@
             <Label
                 Background="White"
                 Content="※ 指定範囲商品CD、もしくは16商品CDを印刷します"
-                Foreground="#FFC0C0C0" />
+                Foreground="#FFA2A0A0" />
         </StackPanel>
 
         <!--
@@ -133,31 +131,22 @@
             BorderThickness="1"
             CornerRadius="10">
 
-            <StackPanel Margin="5">
-
-                <StackPanel Margin="0,0" Orientation="Horizontal">
-                    <RadioButton
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Center"
-                        GroupName="SelectProduct"
-                        IsChecked="{Binding SelProductSelect, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}" />
-                    <Label
-                        Width="80"
-                        VerticalAlignment="Center"
-                        Content="商品CD" />
-                </StackPanel>
-
-                <ScrollViewer
-                    Height="190"
-                    Margin="0"
-                    VerticalScrollBarVisibility="Auto">
+            
 
                     <!--  ✅ 商品CD TextBoxes (固定6個)  -->
                     <StackPanel Margin="0,5,0,0" Orientation="Vertical">
                         <!--  商品1  -->
                         <StackPanel Margin="5,2" Orientation="Horizontal">
-                            <Label Width="100" />
-                            <TextBox
+                        <RadioButton
+    Margin="0,0,10,0"
+    VerticalAlignment="Center"
+    GroupName="SelectProduct"
+    IsChecked="{Binding SelProductSelect, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}" />
+                        <Label
+    Width="75"
+    VerticalAlignment="Center"
+    Content="商品CD" />
+                        <TextBox
                                 Width="280"
                                 Margin="5,0,0,0"
                                 HorizontalAlignment="Left"
@@ -654,8 +643,8 @@
                         </StackPanel>
                     </StackPanel>
 
-                </ScrollViewer>
-            </StackPanel>
+                
+            
         </Border>
         <Border
             Grid.Row="3"
@@ -723,7 +712,7 @@
                             GroupName="BarcodeType"
                             IsChecked="{Binding SearchOpt.BarcodeType, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=2}" />
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock
                             Margin="10"
                             VerticalAlignment="Center"

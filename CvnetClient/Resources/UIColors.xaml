@@ -23,6 +23,7 @@
     <SolidColorBrush x:Key="DeleteBtnColor" Color="#701010"/>
     <SolidColorBrush x:Key="PrintBtnColor" Color="#6B6B6B"/>   
     <SolidColorBrush x:Key="ComboBtnColor" Color="#95a5a6"/>
+    <SolidColorBrush x:Key="ComboBtnColor1" Color="#C7CABF"/> <!--usage for label that actually button that can switch title-->
 
     <SolidColorBrush x:Key="RowHoverColor" Color="#E6F2F6"/>
     <SolidColorBrush x:Key="RowSelectedColor" Color="#B3D9E2"/>
