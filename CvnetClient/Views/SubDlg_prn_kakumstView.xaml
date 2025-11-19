@@ -133,12 +133,21 @@
                 </Border>
 
                 <!--  ==================== MAIN BODY ====================  -->
-                <Border Grid.Row="1" Padding="5" Background="White" CornerRadius="10">
+                <Border
+                    Grid.Row="1"
+                    Padding="5"
+                    Background="White"
+                    CornerRadius="10">
                     <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
                         <!--  商品マスタ  -->
                         <TabItem Header="商品マスタ(Shift+F1)">
                             <StackPanel>
-                                <Border Margin="10" Background="#FFEBF7F7" BorderBrush="#FFF3F4F6" BorderThickness="1" CornerRadius="10">
+                                <Border
+                                    Margin="10"
+                                    Background="#FFEBF7F7"
+                                    BorderBrush="#FFF3F4F6"
+                                    BorderThickness="1"
+                                    CornerRadius="10">
                                     <ItemsControl Margin="0,10" ItemsSource="{Binding Tab1RowsA}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
@@ -215,7 +224,12 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </Border>
-                                <Border Margin="10" Background="#FFEBF7F7" BorderBrush="#FFF3F4F6" BorderThickness="1" CornerRadius="10">
+                                <Border
+                                    Margin="10"
+                                    Background="#FFEBF7F7"
+                                    BorderBrush="#FFF3F4F6"
+                                    BorderThickness="1"
+                                    CornerRadius="10">
                                     <ItemsControl Margin="0,10" ItemsSource="{Binding Tab1RowsB}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
@@ -631,20 +645,33 @@
                     </Grid.ColumnDefinitions>
 
                     <!--  Sort Order  -->
-                    <StackPanel Grid.Column="0" HorizontalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
                         <Label Content="並び順" />
-                        <ComboBox Width="200" ItemsSource="{Binding SortOptions}"
-                                  SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
-                                  Style="{StaticResource SearchableComboBox1}" />
+                        <ComboBox
+                            Width="200"
+                            ItemsSource="{Binding SortOptions}"
+                            SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
+                            Style="{StaticResource SearchableComboBox1}" />
                     </StackPanel>
 
                     <!--  Print / CSV  -->
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
                         <Label Margin="0,0,10,0" Content="出力区分" />
-                        <RadioButton Margin="0,0,10,0" Content="スプール" GroupName="PrintType"
-                                     IsChecked="{Binding Condition.SelectedPrint, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=スプール}" />
-                        <RadioButton Content="CSV" GroupName="PrintType"
-                                     IsChecked="{Binding Condition.SelectedPrint, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=CSV}" />
+                        <RadioButton
+                            Margin="0,0,10,0"
+                            Content="スプール"
+                            GroupName="PrintType"
+                            IsChecked="{Binding Condition.SelectedPrint, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=スプール}" />
+                        <RadioButton
+                            Content="CSV"
+                            GroupName="PrintType"
+                            IsChecked="{Binding Condition.SelectedPrint, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=CSV}" />
                     </StackPanel>
                 </Grid>
 

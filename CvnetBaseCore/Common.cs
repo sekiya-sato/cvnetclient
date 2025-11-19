@@ -130,42 +130,8 @@ namespace CvnetBaseCore {
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="item"></param>
-		public static void ConvertDotStringAdd<T>(T item) where T : new() {
-			if (item == null) return;
-			List<PropertyInfo> pinfo = typeof(T).GetProperties().ToList();
-			StringBuilder sb = new StringBuilder();
-			pinfo.ForEach(p => {
-				if (p.PropertyType.ToString() == "System.String") {
-					var tmp_val = p.GetValue(item, null).ToString();
-					if (string.IsNullOrEmpty(tmp_val)) return;
-					tmp_val = tmp_val.Trim();
-					if (string.IsNullOrEmpty(tmp_val)) tmp_val = ".";
-					p.SetValue(item, tmp_val, null);
-				}
-			});
-		}
-
-        public static void ConvertDotStringAdd1<T>(T item) where T : new()
-        {
-            if (item == null) return;
-            List<PropertyInfo> pinfo = typeof(T).GetProperties().ToList();
-            StringBuilder sb = new StringBuilder();
-            pinfo.ForEach(p => {
-                if (p.PropertyType.ToString() == "System.String")
-                {
-                    var tmp_val = p.GetValue(item, null).ToString();
-                    if (string.IsNullOrEmpty(tmp_val))
-                    {
-                        tmp_val = ".";
-                    }
-                    tmp_val = tmp_val.Trim();
-                    if (string.IsNullOrEmpty(tmp_val)) tmp_val = ".";
-                    p.SetValue(item, tmp_val, null);
-                }
-            });
-        }
 		
-		public static void ConvertDotStringAdd2<T>(T item) where T : new()
+		public static void ConvertDotStringAdd<T>(T item) where T : new()
 		{
 			if (item == null) return;
 			List<PropertyInfo> pinfo = typeof(T).GetProperties().ToList();

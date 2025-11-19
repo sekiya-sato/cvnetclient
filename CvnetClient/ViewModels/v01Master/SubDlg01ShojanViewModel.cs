@@ -272,7 +272,7 @@ namespace CvnetClient.ViewModels
         {
             if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
             var item = Common.CloneObject(EditProduct);
-            Common.ConvertDotStringAdd2(item);
+            Common.ConvertDotStringAdd(item);
 
             if (item == null) return;
 
