@@ -4,9 +4,82 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
         mc:Ignorable="d"
         Title="SKU入力" Style="{StaticResource SmallWindow}">
     <Grid Margin="20">
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4.5*"/>
+                    <ColumnDefinition Width="4.5*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="商品CD"/>
+                <TextBox Grid.Column="1" Text="{Binding Shohin}"/>
+                <TextBox Grid.Column="2"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="9*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="商品名"/>
+                <TextBox Grid.Column="1" Text="{Binding ShohinMei}"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Label4}"/>
+                <TextBox Grid.Column="1" Text="{Binding Color}"/>
+                <Label Grid.Column="2" Content="{Binding Label5}"/>
+                <TextBox Grid.Column="3" Text="{Binding Size}"/>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="上代"/>
+                <TextBox Grid.Column="1" Text=""/>
+                <TextBlock Grid.Column="2" Text="X" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBox Grid.Column="3" Text=""/>
+                <TextBlock Grid.Column="4" Text="=" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBox Grid.Column="5" Text=""/>
+                <Label Grid.Column="6" Content="原価枝番" Visibility="{Binding Visible}"/>
+                <TextBox Grid.Column="7" Text="" Visibility="{Binding Visible}"/>
+            </Grid>
+        </Grid>
+        <DataGrid Grid.Row="1" Margin="10" Style="{DynamicResource WinGridData}">
+            <DataGridTextColumn Header="色" Binding="{Binding Color}"/>
+            <DataGridTextColumn Header="サイズ" Binding="{Binding Size}"/>
+            <DataGridTextColumn Header="数量" Binding="{Binding Sum}"/>
+        </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Margin="0,0,8,0" Content="展開" Width="90" Height="28"/>
+            <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
+        </StackPanel>
     </Grid>
 </Window>
