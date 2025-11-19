@@ -629,6 +629,27 @@ public class ClassSatoo
         wrk_id2 = GetHexValue(rand_id.Substring(wrk_id_length,rand_id.Length - wrk_id_length - 1));
         var ret_val = int.Parse((wrk_id2 + wrk_id - seed_value).ToString());
         return ret_val;
+    private static DateTime start_date = new DateTime(1901, 1, 1, 0, 0, 0); // 1901/01/01 00:00:00
+    /// <summary>
+    /// 日付から、日付を表す値を求める
+    /// </summary>
+    /// <param name="date_value">DateTime型</param>
+    /// <returns type="double">日付を表すdouble型</returns>
+    public static double DateToValue(DateTime date_value)
+    {
+        TimeSpan span = date_value - start_date;
+        decimal span_d1 = (decimal)span.TotalDays; // 現在時刻
+        double span_d2 = (double)span_d1;
+        return span_d2;
+    }
+    /// <summary>
+    /// 日付を表すvdate値から日付を求める
+    /// </summary>
+    /// <param name="date_value"></param>
+    /// <returns></returns>
+    public static DateTime DateFromValue(double date_value)
+    {
+        return start_date.AddDays(date_value);
     }
 }
 public class LoginHeader

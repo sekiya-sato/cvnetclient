@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="{Binding Title}"
 		Height="450" 
-        Width="510"
+        Width="540"
         FontFamily="Meiryo UI">
 	<Window.DataContext>
 		<vm:SubDlgSel002ViewModel />
@@ -27,11 +27,12 @@
 
 		<DataGrid Grid.Row="0" Grid.Column="1"
 				  d:ItemsSource="{d:SampleData ItemCount= 5}"
+                  ColumnWidth="*" 
 				  IsReadOnly="True" 
 				  HeadersVisibility="Column"
 				  IsSynchronizedWithCurrentItem="True"
 				  ItemsSource="{Binding ListSel002}"
-				  SelectedItem="{Binding SelectedSel002}"
+                  SelectedItem="{Binding SelectedSel002}"
                   Style="{StaticResource WinGridData}"
 				  SelectionMode="Single"> 
 		</DataGrid>

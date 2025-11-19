@@ -50,6 +50,7 @@
 					VerticalAlignment="Center"
 					HorizontalAlignment="Right"
 					Command="{Binding DoSearchCommand}"
+                    Style="{StaticResource ExecButton}"
 					Content="表示更新(F5)" />
 		</Grid>
 
@@ -92,15 +93,19 @@
 					Margin="0,0,5,0"
 					Width="80"
 					Command="{Binding DoDeleteCommand}"
+                    Style="{StaticResource DeleteIconBtn3}"
 					Content="削除実行" />
 			<Button Grid.Column="2"
 					Margin="0,0,5,0"
 					Width="80"
 					Command="{Binding DoExecuteCommand}"
+                    Style="{StaticResource UpdateIconBtn}"
+                    
 					Content="更新実行" />
 			<Button Grid.Column="3"
 					Margin="0,0,5,0"
 					Width="80"
+                    Style="{StaticResource BackBtn}"
 					Command="{Binding DoExitCommand}"
 					Content="戻る(ESC)" />
 		</Grid>
@@ -112,7 +117,7 @@
 			</Grid.ColumnDefinitions>
 			<Label Grid.Column="1" 
 				   Foreground="Red"
-				   Content="{Binding Mess2}" />
+				   Content="{Binding Mess2}"  />
 		</Grid>
 	</Grid>
 </Window>

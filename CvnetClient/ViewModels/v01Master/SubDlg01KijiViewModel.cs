@@ -254,7 +254,7 @@ WHERE ROWNUM <= {AppData.maxQueryCnt + 1}";
             var item = Common.CloneObject(EditKiji);
             //item.InpStaffCD = AppData.ClassSatoo.SHAIN_CD;
             //item.InpStaffCD = "";
-        Common.ConvertDotStringAdd1(item);
+        Common.ConvertDotStringAdd(item);
             if (item == null) return;
             var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHKIJI", 0, "0",
                 new string[] { "商品CD", "旧コード", "略称", "商品名", "区分CD", "仕入先CD", "仕入先商品CD", "単価", "メモ", "入力社員CD" },

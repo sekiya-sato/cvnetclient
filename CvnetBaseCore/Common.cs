@@ -130,40 +130,31 @@ namespace CvnetBaseCore {
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="item"></param>
-		public static void ConvertDotStringAdd<T>(T item) where T : new() {
+		
+		public static void ConvertDotStringAdd<T>(T item) where T : new()
+		{
 			if (item == null) return;
 			List<PropertyInfo> pinfo = typeof(T).GetProperties().ToList();
 			StringBuilder sb = new StringBuilder();
 			pinfo.ForEach(p => {
-				if (p.PropertyType.ToString() == "System.String") {
-					var tmp_val = p.GetValue(item, null).ToString();
-					if (string.IsNullOrEmpty(tmp_val)) return;
-					tmp_val = tmp_val.Trim();
-					if (string.IsNullOrEmpty(tmp_val)) tmp_val = ".";
+				if (p.PropertyType.ToString() == "System.String")
+				{
+					
+					var tmp_val = p.GetValue(item, null);
+					string tmp_str = ".";
+					if(tmp_val == null)
+					{
+						tmp_str = tmp_str.ToString();
+					}
+					else
+					{
+						tmp_str = tmp_val.ToString();
+					}
+					tmp_val = tmp_str.Trim();
 					p.SetValue(item, tmp_val, null);
 				}
 			});
 		}
-
-        public static void ConvertDotStringAdd1<T>(T item) where T : new()
-        {
-            if (item == null) return;
-            List<PropertyInfo> pinfo = typeof(T).GetProperties().ToList();
-            StringBuilder sb = new StringBuilder();
-            pinfo.ForEach(p => {
-                if (p.PropertyType.ToString() == "System.String")
-                {
-                    var tmp_val = p.GetValue(item, null).ToString();
-                    if (string.IsNullOrEmpty(tmp_val))
-                    {
-                        tmp_val = ".";
-                    }
-                    tmp_val = tmp_val.Trim();
-                    if (string.IsNullOrEmpty(tmp_val)) tmp_val = ".";
-                    p.SetValue(item, tmp_val, null);
-                }
-            });
-        }
         /// <summary>
         /// 文字列プロパティの値が"."の場合、空白に変換する
         /// </summary>

@@ -8,7 +8,7 @@
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels" 
 		Title="選択画面"
 		Height="450" 
-		Width="510"
+		Width="540"
 		FontFamily="Meiryo UI"
 		mc:Ignorable="d" >
 	<Window.DataContext>
@@ -29,6 +29,7 @@
 		<DataGrid Grid.Row="0" Grid.Column="1"
 				  d:ItemsSource="{d:SampleData ItemCount= 5}"
 				  IsReadOnly="True" 
+                  ColumnWidth="*" 
 				  HeadersVisibility="Column"
 				  IsSynchronizedWithCurrentItem="True"
 				  ItemsSource="{Binding ListSel00}"

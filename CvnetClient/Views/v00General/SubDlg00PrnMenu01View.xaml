@@ -1,0 +1,178 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg00PrnMenu01View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:CvnetClient.Views"
+	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+    xmlns:utils="clr-namespace:CvnetClient.Utils"
+    xmlns:uc="clr-namespace:CvnetClient.Views"
+    mc:Ignorable="d"
+	WindowStartupLocation="CenterScreen"
+    Title="社員メニュー印刷" Style="{StaticResource SmallWindow}">
+	<Window.Resources>
+		<utils:VdateConverter x:Key="VdateConverter" />
+	</Window.Resources>
+	<Window.DataContext>
+		<!-- where to look for those properties -->
+		<vm:SubDlg00PrnMenu01ViewModel />
+	</Window.DataContext>
+	<behaviors:Interaction.Triggers>
+		<behaviors:EventTrigger EventName="ContentRendered">
+			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+		</behaviors:EventTrigger>
+	</behaviors:Interaction.Triggers>
+	<Grid Margin="0,8,0,0">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="9*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Border Grid.Row="0" Background="White"
+        CornerRadius="12"
+        Padding="10"
+        BorderBrush="#dcdde1"
+        BorderThickness="1"
+        Margin="10,0,10,10"   
+			HorizontalAlignment="Stretch" >
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="14*" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+
+				<GroupBox Grid.Row="1" Header="印刷範囲指定　(※システム設定にかかわらず対象データ範囲を印刷します)" Margin="20,0,20,0" >
+					<!-- Inner layout of the dialog -->
+					<Grid Margin="20">
+						<Grid.RowDefinitions>
+							<RowDefinition />
+							<RowDefinition Height="20"/>
+							<RowDefinition />
+							<RowDefinition />
+							<RowDefinition Height="20"/>
+							<RowDefinition />
+							<RowDefinition Height="20"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="90"/>
+							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="2*"/>
+						</Grid.ColumnDefinitions>
+
+						<!-- ==== Row 0: 選択条件 ==== -->
+						<TextBlock Grid.Row="0" Grid.Column="0"
+                               Text="選択条件"
+							   VerticalAlignment="Center"
+                               Margin="0,0,8,0"/>
+
+						<ComboBox Grid.Column="1" Grid.ColumnSpan="3"
+									  ItemsSource="{Binding SelectConditionList}"
+								      SelectedItem="{Binding SelectedSelectCondition}"
+									  DisplayMemberPath="Name"
+									  Style="{StaticResource SearchableComboBox1}"/>
+
+						<!-- ==== Row 1: 範囲 From ==== -->
+						<TextBlock Grid.Row="2" Grid.Column="0"
+								   Text="{Binding RangeCdLabel}"
+								   VerticalAlignment="Center"
+								   Margin="0,0,8,0"/>
+
+                        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" >
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<TextBox Grid.Column="0"
+									d:Text="社員：CD"
+									TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="SelectWorkerShop.FromWorkerShopCd"/>
+										<Binding Path="SelectWorkerShop.FromWorkerShopName"/>
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+
+							<uc:CvnetBtListView Grid.Column="1"
+												MstName="{Binding MstName}"
+												StyleDesign="2"
+												SelectedValue="{Binding FindFromWorkerShopCd}"
+												Command="{Binding FindFromWorkerShopCommand}"/>
+						</Grid>
+						<!-- ==== Row 2: 範囲 To ==== -->
+						<TextBlock Grid.Row="3" Grid.Column="2"
+								   Text="~" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Bottom" />
+                        <Grid Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="4" VerticalAlignment="Bottom">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<TextBox Grid.Column="0"
+							d:Text="社員：CD"
+							TextWrapping="Wrap">
+								<TextBox.Text>
+									<MultiBinding StringFormat='{}{0} {1}'>
+										<Binding Path="SelectWorkerShop.FromWorkerShopCd"/>
+										<Binding Path="SelectWorkerShop.FromWorkerShopName"/>
+									</MultiBinding>
+								</TextBox.Text>
+							</TextBox>
+
+							<uc:CvnetBtListView Grid.Column="1"
+												MstName="{Binding MstName}"
+												StyleDesign="2"
+												SelectedValue="{Binding FindToWorkerShopCd}"
+												Command="{Binding FindToWorkerShopCommand}"/>
+						</Grid>
+
+						<!-- ==== Row 3: ソート条件 ==== -->
+						<TextBlock Grid.Row="5" Grid.Column="0"
+					   Text="ソート条件"
+					   VerticalAlignment="Center"
+					   Margin="0,0,8,0"/>
+
+						
+                        <ComboBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3"
+									ItemsSource="{Binding SortConditionList}"
+									SelectedItem="{Binding SelectedSortCondition}"
+									Style="{StaticResource SearchableComboBox1}"/>
+						
+
+						<!-- ==== Row 4: Radio button ==== -->
+						
+                            <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal"
+							            HorizontalAlignment="Left">
+								<RadioButton Content="全社員"
+											 FontStyle="Normal"
+											 GroupName="EmployeeScope"
+											 IsChecked="{Binding IsAllEmployees}"
+											 Margin="0,0,10,0"/>
+								<RadioButton Content="就業者のみ"
+											 FontStyle="Normal"
+							                 GroupName="EmployeeScope"
+											 IsChecked="{Binding IsWorkingOnly}"
+											 Margin="0,0,10,0"/>
+							</StackPanel>
+						
+					</Grid>
+				</GroupBox>
+			</Grid>
+		</Border>
+
+		
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Content="実行(ENTER)" Style="{DynamicResource ExecButton}" Command="{Binding DoPrintCommand}" HorizontalAlignment="Center" Margin="0,0,40,0"/>
+            <Button Content="戻る(ESC)" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" HorizontalAlignment="Center" Margin="0,0,40,0"/>
+		</StackPanel>
+		
+
+	</Grid>
+</Window>
