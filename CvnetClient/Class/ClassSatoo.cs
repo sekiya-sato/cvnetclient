@@ -615,10 +615,10 @@ public class ClassSatoo
         var seed_value = 200000000;
         var rand_id = AspxRandId;
         var wrk_id_length = int.Parse(rand_id.Substring(rand_id.Length - 1, 1));
-        var rand_id_sub = rand_id.Substring(0,wrk_id_length);
+        var rand_id_sub = rand_id.Substring(0, wrk_id_length);
         double wrk_id;
-        double wrk_id2 ;
-        if (rand_id_sub.Substring(0,1) != "-")
+        double wrk_id2;
+        if (rand_id_sub.Substring(0, 1) != "-")
         {
             wrk_id = GetHexValue(rand_id.Substring(0, wrk_id_length).ToString());
         }
@@ -626,9 +626,10 @@ public class ClassSatoo
         {
             wrk_id = GetHexValue(rand_id.Substring(0, wrk_id_length)) * -1;
         }
-        wrk_id2 = GetHexValue(rand_id.Substring(wrk_id_length,rand_id.Length - wrk_id_length - 1));
+        wrk_id2 = GetHexValue(rand_id.Substring(wrk_id_length, rand_id.Length - wrk_id_length - 1));
         var ret_val = int.Parse((wrk_id2 + wrk_id - seed_value).ToString());
         return ret_val;
+    }
     private static DateTime start_date = new DateTime(1901, 1, 1, 0, 0, 0); // 1901/01/01 00:00:00
     /// <summary>
     /// 日付から、日付を表す値を求める

@@ -565,11 +565,8 @@
                         MaxHeight="{Binding ActualHeight,
                             RelativeSource={RelativeSource AncestorType=Window},
                             Converter={StaticResource SubtractHeaderFooterHeightConverter},
-                            ConverterParameter=380}"
-                              
-                       
-                        HeadersVisibility="Column" 
-                        
+                            ConverterParameter=380}"                                                     
+                        HeadersVisibility="Column"                         
                         Grid.ColumnSpan="2" 
                         ColumnWidth="*"
                         Margin="0,2,0,6"
@@ -580,13 +577,21 @@
                         VerticalGridLinesBrush="#B0B0B0"
                         BorderBrush="#707070"
                         BorderThickness="1">
-
                         <uc:CvnetFlexView.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Padding" Value="0"/>
                                 <Setter Property="Margin" Value="0"/>
                             </Style>
                         </uc:CvnetFlexView.CellStyle>
+
+                        <uc:CvnetFlexView.RowStyle>
+                            <Style TargetType="DataGridRow" 
+           BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                <Setter Property="Background" 
+                Value="Red" />
+                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                            </Style>
+                        </uc:CvnetFlexView.RowStyle>
 
                         <uc:CvnetFlexView.Columns>
                             <DataGridTemplateColumn Width="*">
@@ -898,7 +903,7 @@
                         <Label Grid.Column="0" Grid.ColumnSpan="2" Margin="1,1" Content="作成/修正日"/>
                         <TextBox Grid.Column="1" Margin="1,1" Text="{Binding SelectedOrderHeader.CreateDate, Converter={StaticResource VdateConverter}}" Style="{StaticResource ReadOnlyTextBox}"/>
                         <TextBox Grid.Column="2" Margin="1,1" Text="{Binding SelectedOrderHeader.UpdateDate, Converter={StaticResource VdateConverter}}" Style="{StaticResource ReadOnlyTextBox}"/>
-                        <Button Grid.Column="3"  Margin="1,1"  Content="商品CD検索"/>
+                        <Button Grid.Column="3"  Margin="1,1"  Content="商品CD検索" Command="{Binding ProductSearchCommand}"/>
 
                         <StackPanel Grid.Column="5" Grid.ColumnSpan="3" Orientation="Horizontal">
                             <Button Grid.Column="5" Margin="1,0" Style="{DynamicResource UpdateIconBtn}" Command="{Binding DoUpdateCommand}"/>

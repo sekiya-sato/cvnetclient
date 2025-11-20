@@ -6,7 +6,9 @@ using CvnetClient.Utils;
 using CvnetClient.Views;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Drawing;
 using System.Windows;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
@@ -67,7 +69,7 @@ namespace CvnetClient.ViewModels
         private BtListHelper? product;
         [ObservableProperty]
         public string csvname;
-        private int CSV_flg;
+        private int CSV_flg;        
         private string[] param1 = new string[18];
         private string[] param2 = new string[2];
         string sql_collist1 = "手入力伝票NO,在庫計上日,納品日,取引区分,入力社員CD,取引先CD2," +
@@ -756,9 +758,62 @@ namespace CvnetClient.ViewModels
             window.ShowDialog();
         }
         [RelayCommand]
-        public void InpBarcode() { }
+        public void InpBarcode() 
+        {
+            if (SelectedOrderHeader.Ware.Code == "")
+            {
+                ClientLib.MessageBoxError(this, "先に入庫先を入力してください");
+                return;
+            }
+            /* マスタチェック */
+            if (OnCheckMst() < 0) return;
+
+            var wrk_para = new string[6];
+            wrk_para[0] = v_denkbn.ToString();
+            wrk_para[1] = SelectedOrderHeader.Ware.Code;
+            wrk_para[2] = SelectedOrderHeader.Hachubi?.ToString("yyyyMMdd");
+            wrk_para[3] = "X";
+            wrk_para[4] = "Y";
+            wrk_para[5] = SelectedOrderHeader.ToriKubun.ToString();
+            var vm = new SubDlgBcd01ViewModel(wrk_para);
+            var window = new SubDlgBcd01View { DataContext = vm };
+            window.ShowDialog();
+            
+        }
         [RelayCommand]
-        public void ProductSearch() { }
+        public void ProductSearch() 
+        {
+            var vm = new SubDlgSyoKenSakuViewModel();
+            var window = new SubDlgSyoKenSakuView { DataContext = vm };
+            window.ShowDialog();
+            var result = vm.Result;
+
+            if (result != null)
+            {
+                for (int i = 0; i < SelectedOrderDetail.Count; i++)
+                {
+                    var item = SelectedOrderDetail[i];
+
+                    // Default: no color
+                    item.RowColor = Brushes.Transparent;
+
+                    if (item.ProductCD == result[0])
+                        item.RowColor = Brushes.Red;
+
+                    else if (item.ProductCD == result[1])
+                        item.RowColor = Brushes.Blue;
+
+                    else if (item.ProductCD == result[2])
+                        item.RowColor = Brushes.Green;
+
+                    else if (item.ProductCD == result[3])
+                        item.RowColor = Brushes.Yellow;
+
+                    else if (item.ProductCD == result[4])
+                        item.RowColor = Brushes.Orange;
+                }
+            }
+        }
         [RelayCommand]
         private void AddNewRow()
         {
@@ -1768,6 +1823,8 @@ namespace CvnetClient.ViewModels
             private string? kubun;
             [ObservableProperty]
             private string? genkaFlg;
+            [ObservableProperty]
+            private Brush rowColor;
         }
         #endregion
     }

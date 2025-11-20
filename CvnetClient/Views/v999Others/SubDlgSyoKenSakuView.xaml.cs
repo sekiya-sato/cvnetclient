@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CvnetClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,11 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlgBcd01ViewModel.xaml
+    /// Interaction logic for SubDlgSyoKenSakuViewModel.xaml
     /// </summary>
-    public partial class SubDlgBcd01ViewModel : Window
+    public partial class SubDlgSyoKenSakuView : Window
     {
-        public SubDlgBcd01ViewModel()
+        public SubDlgSyoKenSakuView()
         {
             InitializeComponent();
         }
