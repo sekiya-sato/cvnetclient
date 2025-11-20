@@ -264,7 +264,7 @@
                             <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,1" ItemsSource="{Binding ComboListRenkei}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.Renkei}" Style="{StaticResource SearchableComboBox1}" Visibility="{Binding Renkeishow}"/>
                         </StackPanel>
 
-                        <Button Grid.Column="1" Margin="13,10,13,0" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" Content="一覧登録(F5)" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                        <Button Grid.Column="1" Margin="13,10,13,0" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" Content="一覧取得(F5)" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
                     </Grid>
 
                     <DataGrid  Grid.Row="2" Margin="8,3,8,10" d:ItemsSource="{d:SampleData ItemCount=5}" x:Name="MyDataGrid1"

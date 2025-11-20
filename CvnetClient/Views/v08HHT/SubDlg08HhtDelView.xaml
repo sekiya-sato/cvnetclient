@@ -10,7 +10,8 @@
         xmlns:utils="clr-namespace:CvnetClient.Utils"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="HHT未更新データ一括削除" Height="450" Width="800">
+        Title="HHT未更新データ一括削除" 
+        Style="{StaticResource SmallWindow}">
     <Window.DataContext>
         <vm:SubDlg08HhtDelViewModel />
     </Window.DataContext>
@@ -22,12 +23,12 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="1" Text="削除範囲指定" VerticalAlignment="Bottom" Margin="10,0"/>
-        <Border Grid.Row="1" Grid.Column="1" BorderThickness="1" CornerRadius="8" BorderBrush="Gray" />
+        <Border Grid.Row="1" Grid.Column="1" BorderThickness="0.5" CornerRadius="8" BorderBrush="#CCC" />
         <Grid Grid.Row="1"  Grid.Column="1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="30*"/>
@@ -42,12 +43,12 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  Content="処理区分"/>
@@ -60,14 +61,14 @@
             <!--<DatePicker Grid.Row="3" Grid.Column="2" />-->
             <xctk:DateTimePicker 
                 Grid.Row="3" Grid.Column="2"
-                 Grid.RowSpan="2" VerticalAlignment="Top" 
+                Grid.RowSpan="2" VerticalAlignment="Top" 
                 Format="Custom"
                 FormatString="yyyy/MM/dd" 
                 ShowButtonSpinner="True" 
                 TimePickerVisibility="Collapsed" 
                 AllowTextInput="False"
                 Value="{Binding CreditDate1}" 
-                Height="34"/>
+                Height="30"/>
             <Label Grid.Row="3" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <!--<DatePicker Grid.Row="3" Grid.Column="4"/>-->
             <xctk:DateTimePicker 
@@ -79,11 +80,10 @@
                 TimePickerVisibility="Collapsed" 
                 AllowTextInput="False"
                 Value="{Binding CreditDate2}" 
-                Height="34"/>
+                Height="30"/>
 
-            <StackPanel Grid.Row="5" Grid.Column="2" VerticalAlignment="Center"  Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,41,0" Width="166">
-                <TextBox Width="auto" MinWidth="130"
-        TextWrapping="Wrap">
+            <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBox Width="auto" MinWidth="150" TextWrapping="Wrap">
                     <TextBox.Text>
                         <MultiBinding StringFormat='{}{0} {1}'>
                             <Binding Path="WorkerTo.WorkerCD" />
@@ -96,9 +96,8 @@ SelectedValue ="{Binding FindWarehouseCd1}"
 Command="{Binding SelectWarehouse1Command}"/>
             </StackPanel>
             <Label Grid.Row="5" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <StackPanel Grid.Row="5" Grid.Column="4" Orientation="Horizontal"  Grid.RowSpan="2" VerticalAlignment="Top" >
-                <TextBox  MinWidth="130"
-        TextWrapping="Wrap">
+            <StackPanel Grid.Row="5" Grid.Column="4" Orientation="Horizontal"  Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBox Width="auto" MinWidth="150" TextWrapping="Wrap">
                     <TextBox.Text>
                         <MultiBinding StringFormat='{}{0} {1}'>
                             <Binding Path="WorkerTo.WorkerCD" />
@@ -126,7 +125,7 @@ Command="{Binding SelectWarehouse2Command}"/>
                     <ColumnDefinition Width="0.2*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.RowSpan="5" Grid.ColumnSpan="4" BorderBrush="LightGray" BorderThickness="1" CornerRadius="8"/>
+                <Border Grid.RowSpan="5" Grid.ColumnSpan="4" BorderBrush="#CCC" BorderThickness="1" CornerRadius="8"/>
                 <Label Grid.Row="1" Grid.Column="1" Content="対象件数"/>
                 <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Amount}"/>
                 <Label Grid.Row="2" Grid.Column="1" Content="全件数" />

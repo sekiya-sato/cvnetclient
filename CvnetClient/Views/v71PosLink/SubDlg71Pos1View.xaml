@@ -28,12 +28,12 @@
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <TextBlock HorizontalAlignment="Left" Text="※倉庫連携用マスタデータを作成します" VerticalAlignment="Top" Margin="10"></TextBlock>
+            <TextBlock HorizontalAlignment="Left" Text="※倉庫連携用マスタデータを作成します" VerticalAlignment="Center" Margin="0,0,0,10"></TextBlock>
             <xctk:DateTimePicker VerticalAlignment="Top"
                 HorizontalAlignment="Right" Margin="10"
                 Format="Custom"
                 FormatString="yyyy/MM/dd HH:mm:ss" 
-                Width="180"                                  
+                MinWidth="180"                                  
                 ShowButtonSpinner="True" 
                 TimePickerVisibility="Collapsed" 
                 AllowTextInput="False"
@@ -74,7 +74,7 @@
         <Grid Grid.Row="2">
             <TextBlock Text="{Binding Result}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBox Text="{Binding DayBefore, StringFormat={}{0:0.000}, UpdateSourceTrigger=PropertyChanged}" Margin="10" Width="100" IsEnabled="False"></TextBox>
+                <TextBox Text="{Binding DayBefore, StringFormat={}{0:0.000}, UpdateSourceTrigger=PropertyChanged}" Margin="10" MinWidth="100" IsEnabled="False"></TextBox>
                 <TextBlock Text="日前" VerticalAlignment="Center"></TextBlock>
             </StackPanel>
         </Grid>
