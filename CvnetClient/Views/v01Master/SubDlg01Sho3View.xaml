@@ -58,25 +58,14 @@
 					 Text="{Binding SelProductCd}"
                          HorizontalAlignment="Center"
 					 MinWidth="100"/>
-                <Button Grid.Column="3"
-					Width="35" 
-					VerticalAlignment="Center"
-					HorizontalAlignment="Right" 
-                    
-					Content="&lt;&lt;" />
+                
                 <Button Grid.Column="4"
 					VerticalAlignment="Center"
 					HorizontalAlignment="Right"
 					Command="{Binding SelDspUpdateCommand}"
 					Content=" 表示更新(F5) "
                     Style="{StaticResource ExecButton}"
-                    Margin="2,0"/>
-                <Button Grid.Column="5"
-					Width="35" 
-					VerticalAlignment="Center"
-					HorizontalAlignment="Right"
-					Margin="0,0,15,0"
-					Content="&gt;&gt;" />
+                    Margin="15,0"/>
 
             </Grid>
 
@@ -97,7 +86,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Grid Grid.Row="2" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Grid Grid.Row="2" Margin="10,5" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -116,6 +105,11 @@
 					 HorizontalAlignment="Right"
 					 Width="50" />
             </Grid>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
+                <Button Margin="1,0" Command="{Binding BackListCommand}" Style="{DynamicResource PrevPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button Margin="1,0" Command="{Binding NextListCommand}" Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+            </StackPanel>
         </Grid>
 
         <Grid Grid.Row="0" Grid.Column="1">
@@ -530,7 +524,7 @@
 								Height="140" Width="150"  
 								Margin="0,5,5,0"
 								BorderThickness="1">
-                                <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Vertical" Margin="4">
                                     <Image Height="100"/>
                                     <Button Style="{StaticResource ImageUploadBtn}"   
 										VerticalAlignment="Bottom"

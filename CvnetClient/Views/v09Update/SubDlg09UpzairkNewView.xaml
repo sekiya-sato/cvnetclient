@@ -71,18 +71,19 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
+            <Border Grid.ColumnSpan="2" CornerRadius="12" BorderBrush="#CCC" BorderThickness="1" />
             <RadioButton Grid.Column="0" Content="再計算" 
         GroupName="CalcType"
         IsChecked="{Binding Condition.SelectedCalc, 
                             Converter={StaticResource StringToBoolConverter}, 
                             ConverterParameter=Recalculation, Mode=TwoWay}"
-Margin="0,0,20,0"/>
+Margin="20"/>
             <RadioButton Grid.Column="1" Content="指定月数以前在庫0除外" 
                  GroupName="CalcType"
                          IsChecked="{Binding Condition.SelectedCalc, 
                                              Converter={StaticResource StringToBoolConverter}, 
                                              ConverterParameter=Exclude, Mode=TwoWay}"
-                 Margin="0,0,20,0"/>
+                 Margin="20"/>
         </Grid>
 
         <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">

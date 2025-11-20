@@ -21,12 +21,15 @@
         <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
         <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
     </Window.InputBindings>
-    <Grid Margin="20">
+    <Grid Margin="20" HorizontalAlignment="Center" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="92*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="0.5*" MinWidth="100"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="0.5*" MinWidth="100"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -35,22 +38,17 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="処理区分"></Label>
-            <ComboBox Grid.Column="1" Margin="0,8" 
-              ItemsSource="{Binding ComboListProcess}" 
-              DisplayMemberPath="Value" 
-              SelectedValuePath="Key" 
-              Width="150"
-              Style="{DynamicResource SearchableComboBox1}" 
-              SelectedValue="{Binding Condition.Process}"></ComboBox>
-        </Grid>
+        <GroupBox Grid.RowSpan="6" Grid.ColumnSpan="4" Header="印刷範囲指定　(※システム設定にかかわらず対象データ範囲を印刷します)" BorderThickness="1" BorderBrush="#CCC"/>
+        <Label    Grid.Row="1" Grid.Column="1" Content="処理区分"/>
+        <ComboBox Grid.Row="1" Grid.Column="2"
+            ItemsSource="{Binding ComboListProcess}" 
+            DisplayMemberPath="Value" 
+            SelectedValuePath="Key" 
+            Style="{DynamicResource SearchableComboBox1}" 
+            SelectedValue="{Binding Condition.Process}"/>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label Grid.Row="2" Grid.Column="1" Content="計上日"/>
+        <Grid  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -58,36 +56,33 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-
-            <TextBlock Grid.Column="0" Text="計上日" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
                 <xctk:DateTimePicker 
-         Format="Custom"
-         FormatString="yyyy/MM/dd" 
-         Width="180" 
-         ShowButtonSpinner="True" 
-         TimePickerVisibility="Collapsed" 
-         AllowTextInput="False"
-         Value="{Binding Condition.DateFrom}" 
-         Height="34"></xctk:DateTimePicker>
+                     Format="Custom"
+                     FormatString="yyyy/MM/dd" 
+                     ShowButtonSpinner="True" 
+                     TimePickerVisibility="Collapsed" 
+                     AllowTextInput="False"
+                     Value="{Binding Condition.DateFrom}" 
+                     MaxHeight="30"
+                     MinWidth="150"/>
             </StackPanel>
-
-
             <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
             <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
                 <xctk:DateTimePicker 
-         Format="Custom"
-         FormatString="yyyy/MM/dd" 
-         Width="180" 
-         ShowButtonSpinner="True" 
-         TimePickerVisibility="Collapsed" 
-         AllowTextInput="False"
-         Value="{Binding Condition.DateTo}" 
-         Height="34"></xctk:DateTimePicker>
+                     Format="Custom"
+                     FormatString="yyyy/MM/dd" 
+                     ShowButtonSpinner="True" 
+                     TimePickerVisibility="Collapsed" 
+                     AllowTextInput="False"
+                     Value="{Binding Condition.DateTo}" 
+                     MaxHeight="30"
+                     MinWidth="150"/>
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label Grid.Row="3" Grid.Column="1" Content="倉庫"/>
+        <Grid  Grid.Row="3" Grid.Column="2"  Margin="0,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -96,9 +91,9 @@
             </Grid.ColumnDefinitions>
 
 
-            <TextBlock Grid.Column="0" Text="倉庫" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
+           
             <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                <TextBox Width="150"
+                <TextBox MinWidth="150"
                 d:Text="倉庫：Data"  
                 TextWrapping="Wrap">
                     <TextBox.Text>
@@ -134,13 +129,14 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="3" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label Grid.Row="4" Grid.Column="1" Content="出力区分"/>
+        <Grid Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="出力区分"></Label>
+            
             <RadioButton Grid.Column="1" Content="スプール" 
         GroupName="PrintType"
         IsChecked="{Binding Condition.SelectedPrint, 
@@ -155,8 +151,8 @@ Margin="0,0,20,0"/>
                  Margin="0,0,20,0"/>
         </Grid>
 
-        <TextBlock Grid.Row="4" Text="未更新データを印刷します" VerticalAlignment="Center" Grid.ColumnSpan="2" HorizontalAlignment="Center"></TextBlock>
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right" Grid.ColumnSpan="2">
+        <TextBlock Grid.Row="5" Grid.Column="1" Text="未更新データを印刷します" VerticalAlignment="Center" Grid.ColumnSpan="2" HorizontalAlignment="Left"/>
+        <StackPanel Grid.Row="6" Grid.Column="2"  Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right" Grid.ColumnSpan="2">
             <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}" Content="実行(F5)"/>
             <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
         </StackPanel>

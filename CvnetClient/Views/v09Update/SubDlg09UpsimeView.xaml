@@ -19,14 +19,12 @@
     </Window.InputBindings>
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="6.5*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" HorizontalAlignment="Center">
+        <Grid Grid.Row="0" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -34,36 +32,44 @@
             <TextBlock Grid.Row="0" Text="※設定日付以前の伝票、更新処理が行われません。" Foreground="Red"></TextBlock>
             <TextBlock Grid.Row="1" Text="※実行後、締日以前の伝票修正、更新処理が実行不可となります" Foreground="Red"></TextBlock>
         </Grid>
-        <Grid Grid.Row="1" HorizontalAlignment="Center">
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="締日" Grid.Column="0"></Label>
+            <Label Content="締日" Grid.Column="0"/>
             <xctk:DateTimePicker 
                 Grid.Column="1"
          Format="Custom"
          FormatString="yyyy/MM/dd" 
-         Width="180" 
+         MinWidth="180" 
          ShowButtonSpinner="True" 
          TimePickerVisibility="Collapsed" 
          AllowTextInput="False"
-         Value="{Binding Condition.Date}" 
-         Height="34"></xctk:DateTimePicker>
+         Value="{Binding Condition.Date}"/>
+            <Grid Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Condition.FirstDate}"></TextBlock>
+            </Grid>
+            <Grid Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Condition.LastDate}"></TextBlock>
+            </Grid>
+            <Grid Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding Condition.Person}"></TextBlock>
+            </Grid>
+            
         </Grid>
-
-        <Grid Grid.Row="2" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Condition.FirstDate}"></TextBlock>
-        </Grid>
-        <Grid Grid.Row="3" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Condition.LastDate}"></TextBlock>
-        </Grid>
-        <Grid Grid.Row="4" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Condition.Person}"></TextBlock>
-        </Grid>
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
             <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoExecuteCommand}"/>
             <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
         </StackPanel>
+
     </Grid>
 </Window>
