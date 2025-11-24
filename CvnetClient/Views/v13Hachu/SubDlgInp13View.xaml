@@ -137,12 +137,10 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.SupplierTo.Display}"/>
-                                        <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
+                                    <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
                                             SelectedValue ="{Binding EditSearch.SupplierTo.Code}"
                                             Command="{Binding SelSupplier2Command}"/>
                                 </Grid>
-
-
                                 <Label Grid.Row="1" Grid.Column="0" Content="入庫先" VerticalAlignment="Center" Margin="0,1" Visibility="{Binding sokoshow}"/>
                                 <Grid Grid.Row="1" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
@@ -151,8 +149,8 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding EditSearch.WareFrom.Display}" Visibility="{Binding sokoshow}"/>
                                     <uc:CvnetBtListView Grid.Column="1" MstName="Ac移動倉庫" StyleDesign="2" 
-    SelectedValue ="{Binding EditSearch.WareFrom.Code}" Visibility="{Binding Sokoshow}"
-    Command="{Binding SelWare1Command}"/>
+                                                        SelectedValue ="{Binding EditSearch.WareFrom.Code}" Visibility="{Binding Sokoshow}"
+                                                        Command="{Binding SelWare1Command}"/>
                                 </Grid>
 
                                 <Label Grid.Row="1" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center" Visibility="{Binding sokoshow}"/>
@@ -171,7 +169,6 @@
                                 <Button Grid.Row="2" Grid.Column="0" Content="商品" VerticalAlignment="Center" Margin="0,1" Command="{Binding ClickProdCommand}">
                                     <Button.Style>
                                         <Style TargetType="Button">
-                                            <!-- Gaya asal -->
                                             <Setter Property="Background" Value="LightGray"/>
                                             <Setter Property="FontWeight" Value="Normal"/>
                                             <Setter Property="Height" Value="28"/>
@@ -553,7 +550,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" Margin="5,0" Content="一括Refresh" Command="{Binding RefreshCommand}"/>
-                            <Button Grid.Column="1" Content="バーコード入力"/>
+                            <Button Grid.Column="1" Content="バーコード入力" Command="{Binding InpBarcodeCommand}"/>
                         </Grid>
                        
                     </Grid>
@@ -588,7 +585,7 @@
                             <Style TargetType="DataGridRow" 
            BasedOn="{StaticResource {x:Type DataGridRow}}">
                                 <Setter Property="Background" 
-                Value="Red" />
+                Value="Transparent" />
                                 <Setter Property="OverridesDefaultStyle" Value="True"/>
                             </Style>
                         </uc:CvnetFlexView.RowStyle>
