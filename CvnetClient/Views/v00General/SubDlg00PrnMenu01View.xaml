@@ -109,7 +109,7 @@
 						</Grid>
 						<!-- ==== Row 2: 範囲 To ==== -->
 						<TextBlock Grid.Row="3" Grid.Column="2"
-								   Text="~" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Bottom" />
+								   Text="～" HorizontalAlignment="Right" Margin="0,10,10,5" VerticalAlignment="Bottom" />
                         <Grid Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="4" VerticalAlignment="Bottom">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*"/>
@@ -120,8 +120,8 @@
 							TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="SelectWorkerShop.FromWorkerShopCd"/>
-										<Binding Path="SelectWorkerShop.FromWorkerShopName"/>
+										<Binding Path="SelectWorkerShop.ToWorkerShopCd"/>
+										<Binding Path="SelectWorkerShop.ToWorkerShopName"/>
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
@@ -129,7 +129,7 @@
 							<uc:CvnetBtListView Grid.Column="1"
 												MstName="{Binding MstName}"
 												StyleDesign="2"
-												SelectedValue="{Binding FindToWorkerShopCd}"
+												SelectedValue="{Binding SelectWorkerShop.FromWorkerShopCd}"
 												Command="{Binding FindToWorkerShopCommand}"/>
 						</Grid>
 
