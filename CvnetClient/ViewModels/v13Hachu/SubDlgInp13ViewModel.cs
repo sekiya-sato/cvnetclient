@@ -794,7 +794,6 @@ namespace CvnetClient.ViewModels
                 {
                     var item = SelectedOrderDetail[i];
 
-                    // Default: no color
                     item.RowColor = Brushes.Transparent;
 
                     if (item.ProductCD == result[0])

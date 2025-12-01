@@ -54,7 +54,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="80"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -64,7 +64,7 @@
 
 
                     <TextBlock Grid.Column="0" Text="日付" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
-                    <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.Date, Mode=TwoWay}" Margin="10"></DatePicker>
+                    <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.Date, Mode=TwoWay}" Margin="0,0,10,0"></DatePicker>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,10,0">
                         <DatePicker  Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateFrom}" IsHitTestVisible="False"></DatePicker>
                     </StackPanel>
@@ -78,7 +78,7 @@
 
                 <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="80"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -86,7 +86,7 @@
 
                     <TextBlock Grid.Column="0" Text="伝票処理区分:" 
                                 VerticalAlignment="Center" 
-                                Margin="0,0,20,0"/>
+                                Margin="0"/>
 
                     <RadioButton Grid.Column="1" Content="出荷売上" 
                                  GroupName="ProcessType"
@@ -107,9 +107,10 @@
                                              ConverterParameter=All, Mode=TwoWay}"
                                 Margin="0,0,20,0"/>
                 </Grid>
+                
                 <Grid Grid.Row="5" Grid.ColumnSpan="2" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="80"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -117,7 +118,7 @@
 
                     <TextBlock Grid.Column="0" Text="出力区分:" 
            VerticalAlignment="Center" 
-           Margin="0,0,20,0"/>
+           Margin="0"/>
 
                     <RadioButton Grid.Column="1" Content="スプール" 
                             GroupName="PrintType"
@@ -135,7 +136,7 @@
 
                 <Grid Grid.Row="6" Grid.ColumnSpan="2" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="80"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -143,7 +144,7 @@
 
                     <TextBlock Grid.Column="0" Text="担当者出力:"  Visibility="{Binding Condition.ShowOrNot}"
                                 VerticalAlignment="Center" 
-                                Margin="0,0,20,0"/>
+                                Margin="0"/>
 
                     <RadioButton Grid.Column="1" Content="売上伝票" 
                  GroupName="TantoType"
@@ -163,7 +164,7 @@
 
                 <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="80"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -210,7 +211,7 @@
 
                 <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="80"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -253,7 +254,7 @@ Command="{Binding SelShop2Command}"/>
 
                 <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" MinWidth="80"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
