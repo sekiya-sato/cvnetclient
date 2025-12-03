@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using static CvnetClient.ViewModels.SubDlg00PrnMenu01ViewModel;
+using static CvnetClient.ViewModels.SubDlg01ShojanViewModel;
 
 namespace CvnetClient.ViewModels
 {
@@ -21,7 +22,7 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public Dictionary<string, string>? selectedCondition;
         [ObservableProperty]
-        private string mstName = "店舗";   // default
+        private string mstName = "移動倉庫";   // default
         [ObservableProperty]
         private MasterCodeSettingMenu? selectCodeSetting = new();
         public string getCode;
@@ -57,32 +58,97 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void DoAssignIIUD()
         {
+            int flag = 0;
+            SelectCodeSetting.DeviceID = CodeLabel;
             //var wrk_csv = OnQuery();
             if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
-            var item = Common.CloneObject(SelectCodeSetting);
-            Common.ConvertDotStringAdd(item);
 
+            var qs = "select a.seq_no,a.vdate_create,a.vdate_update,a.得意先CD,a.端末ID,a.メモ1,a.メモ2,";
+            qs += $@" nvl((select b.得意先名 from hc$master_tokui b where b.得意先CD = a.得意先CD),'該当無し') 得意先名 from hc$master_uuid a where a.端末ID = '{SelectCodeSetting.DeviceID}'";
 
-            if (item == null) return;
+            var ret_csv = AppData.Http?.AspxSqlQuery(qs, sql_col_list);
 
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_UUID", 0, "0",
-            new string[] { "端末ID", "得意先CD" },
-            new string[] { item.DeviceID!, item.StockCd!});
+            var item1 = new MasterCodeSettingMenu();
 
-            if (ret.Code == 0)
+            if (ret_csv != null && ret_csv.Rows.Count > 0)
             {
-                item.SeqNo = ret.NewSeq;
-                item.VdateUpdate = decimal.Parse(ret.VDate);
-                item.VdateCreate = item.VdateUpdate;
-                Common.ConvertDotStringDel(item);
-                //ListShohinJan!.Add(item);
-                //SelectedProduct = item;
-                ClientLib.MessageBoxOk(this, "登録しました");
+                var row = ret_csv.Rows[0];  // first row
+                item1.SeqNo = Convert.ToInt64(row["seq_no"]);
+                item1.VdateCreate = Convert.ToDecimal(row["vdate_create"]);
+                item1.VdateUpdate = Convert.ToDecimal(row["vdate_update"]);
+                item1.DeviceID = row["端末ID"]?.ToString() ?? string.Empty;
+                item1.ShopCd = row["得意先CD"]?.ToString() ?? string.Empty;
+                item1.ShopName = row["得意先名"]?.ToString() ?? string.Empty;
+                item1.Memo1 = row["メモ1"]?.ToString() ?? string.Empty;
+                item1.Memo2 = row["メモ2"]?.ToString() ?? string.Empty;
             }
             else
             {
-                ClientLib.MessageBoxError(this, ret.Code.ToString());
+                item1.DeviceID = string.Empty;
             }
+
+            if (item1.DeviceID == SelectCodeSetting.DeviceID)
+            {
+                if (ClientLib.MessageBox(this, $@"現在に{item1.ShopName}に登録されています。上書きしてもよろしいですか？"))
+                {
+                    flag = 1;
+                    //var ret1 = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Master_UUID", item1.SeqNo, item1.VdateUpdate.ToString(),
+                    //new string[0], new string[0]);
+                }
+                else
+                    return;
+            }
+
+            var item2 = Common.CloneObject(SelectCodeSetting);
+
+            if (item2 == null) return;
+
+            if (flag == 0)
+            {
+                Common.ConvertDotStringAdd(item2);
+                var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_UUID", 0, "0",
+                new string[] { "端末ID", "得意先CD", "メモ2" },
+                new string[] { item2.DeviceID!, item2.ShopCd!, item2.ClientCd });
+
+                if (ret.Code == 0)
+                {
+                    //item2.SeqNo = ret.NewSeq;
+                    //item2.SeqNo = item1.SeqNo;
+                    //item2.VdateUpdate = decimal.Parse(ret.VDate);
+                    //item2.VdateUpdate = item1.VdateCreate;
+                    //item2.VdateCreate = item2.VdateUpdate;
+                    //item2.VdateCreate = decimal.Parse(ret.VDate);
+                    //Common.ConvertDotStringDel(item2);
+                    ClientLib.MessageBoxOk(this, "登録しました");
+                }
+                else
+                {
+                    ClientLib.MessageBoxError(this, ret.Code.ToString());
+                }
+            }
+            else if (flag == 1)
+            {
+                var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "Master_UUID", item1.SeqNo, item1.VdateUpdate.ToString(),
+                            new string[] { "端末ID", "得意先CD", "メモ2" },
+                            new string[] { item2.DeviceID!, item2.ShopCd!, item2.ClientCd });
+
+                if (ret.Code == 0)
+                {
+                    //item2.SeqNo = ret.NewSeq;
+                    //item2.SeqNo = item1.SeqNo;
+                    //item2.VdateUpdate = decimal.Parse(ret.VDate);
+                    //item2.VdateUpdate = item1.VdateCreate;
+                    //item2.VdateCreate = item2.VdateUpdate;
+                    //item2.VdateCreate = decimal.Parse(ret.VDate);
+                    //Common.ConvertDotStringDel(item2);
+                    ClientLib.MessageBoxOk(this, "登録しました");
+                }
+                else
+                {
+                    ClientLib.MessageBoxError(this, ret.Code.ToString());
+                }
+            }
+        
         }
 
         [RelayCommand]
@@ -103,8 +169,8 @@ namespace CvnetClient.ViewModels
 
             FindStockCd = new BtListHelper(value.Code, value.Name);
 
-            SelectCodeSetting.StockCd = value.Code;
-            SelectCodeSetting.StockName = value.Name;
+            SelectCodeSetting.ClientCd = value.Code;
+            SelectCodeSetting.ClientName = value.Name;
         }
 
         [RelayCommand]
@@ -115,45 +181,6 @@ namespace CvnetClient.ViewModels
             qs += " nvl((select b.得意先名 from hc$master_tokui b where b.得意先CD = a.得意先CD),'該当無し') 得意先名 from hc$master_uuid a where a.端末ID = :1";
             
         }
-
-        // for 追加 button
-        [RelayCommand]
-        void DoInsert()
-        {
-            //if (!ClientLib.MessageBox(this, "新規登録しますか？")) return;
-            //var item = Common.CloneObject(EditProduct);
-            //Common.ConvertDotStringAdd(item);
-
-            //if (item == null) return;
-
-            //var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_UUID", 0, "0",
-            //new string[] { "端末ID", "得意先CD"},
-            //new string[] { item.ProductCD!, item.ColorCD!, item.SizeCD!, item.JanCode1!, item.JanCode2!,
-            //                    item.JanCode3!, item.Memo!, item.UseFlag.ToString()!, item.ScheduledProductionQuantity.ToString()!, item.CuttingQuantity.ToString()!, item.TagNumber.ToString()!, item.AutoAllocationFlag.ToString()!, item.RetailPrice.ToString()!, item.SupplierPrice.ToString()!, item.ForeignCurrencyPrice.ToString()!, item.CostPrice.ToString()!});
-
-            //var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "Master_SHOHIN_JAN", 0, "0",
-            //       new string[] { "商品CD", "色CD", "サイズCD", "JANコード1", "JANコード2", "JANコード3",
-            //                    "メモ", "使用FLG", "生産予定数", "裁断数", "下札枚数",
-            //                    "自動配分FLG", "上代", "仕入価格", "外貨仕入価格", "原価"},
-            //       new string[] { item.ProductCD!, item.ColorCD!, item.SizeCD!, item.JanCode1!, item.JanCode2!,
-            //                    item.JanCode3!, item.Memo!, item.UseFlag.ToString()!, item.ScheduledProductionQuantity.ToString()!, item.CuttingQuantity.ToString()!, item.TagNumber.ToString()!, item.AutoAllocationFlag.ToString()!, item.RetailPrice.ToString()!, item.SupplierPrice.ToString()!, item.ForeignCurrencyPrice.ToString()!, item.CostPrice.ToString()!});
-
-            //if (ret.Code == 0)
-            //{
-            //    item.SeqNo = ret.NewSeq;
-            //    item.VdateUpdate = decimal.Parse(ret.VDate);
-            //    item.VdateCreate = item.VdateUpdate;
-            //    Common.ConvertDotStringDel(item);
-            //    ListShohinJan!.Add(item);
-            //    SelectedProduct = item;
-            //    ClientLib.MessageBoxOk(this, "登録しました");
-            //}
-            //else
-            //{
-            //    ClientLib.MessageBoxError(this, ret.Code.ToString());
-            //}
-        }
-
 
         public static string GetMachineUUID()
         {
@@ -216,11 +243,13 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? deviceID;
             [ObservableProperty]
-            private string? stockCd;
-            [ObservableProperty]
-            private string? stockName;
+            private string? clientName;
             [ObservableProperty]
             private string? clientCd;
+            [ObservableProperty]
+            private string? memo1;
+            [ObservableProperty]
+            private string? memo2;
             [ObservableProperty]
             private long seqNo;
             [ObservableProperty]
