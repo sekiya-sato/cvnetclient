@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CvnetClient.ViewModels.v01Master
+namespace CvnetClient.ViewModels.v999Others
 {
-    internal class SubDlg00ConfigViewModel
+    internal class SubDlg13HachujissekiViewModel
     {
     }
 }

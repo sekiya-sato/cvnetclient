@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace CvnetClient.ViewModels
 {
-    public enum TenpoType { 全店, 店別 }
+    public enum TenpoType { All, NotAll }
     public partial class SubDlg80GphABC2ViewModel : BaseViewModel
     {
         [ObservableProperty]
@@ -21,8 +21,8 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         ListFlexData listFlexData = new ListFlexData();
         [ObservableProperty]
-        private TenpoType selectedTenpo = TenpoType.全店;
-        public bool IsTenpoEnabled => SelectedTenpo == TenpoType.店別;
+        private TenpoType selectedTenpo = TenpoType.All;
+        public bool IsTenpoEnabled => SelectedTenpo == TenpoType.NotAll;
 
         
         public void OnInit()
@@ -76,7 +76,7 @@ namespace CvnetClient.ViewModels
         {
             OnPropertyChanged(nameof(IsTenpoEnabled));
 
-            if (value == TenpoType.全店 && ListSearch != null)
+            if (value == TenpoType.All && ListSearch != null)
             {
                 ListSearch.Tenpo = string.Empty; // auto clear
             }

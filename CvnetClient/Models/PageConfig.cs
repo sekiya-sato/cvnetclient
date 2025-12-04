@@ -98,7 +98,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "本発注配分リスト", WindowId="" },
                 new ButtonConfig { Text = "MDマップ", WindowId="" },
                 new ButtonConfig { Text = "納品予定照会", WindowId="" },
-                new ButtonConfig { Text = "発注配分パターン入力", WindowId="" },
+                new ButtonConfig { Text = "発注配分パターン入力", WindowId=typeof(Views.SubDlg13Hbnpatten150View).FullName },
                 new ButtonConfig { Text = "仕入未受リスト", WindowId="" }
             }
         }},
@@ -113,7 +113,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "発注配分リスト", WindowId="" },
                 new ButtonConfig { Text = "MDマップ", WindowId="" },
                 new ButtonConfig { Text = "納品予定照会", WindowId="" },
-                new ButtonConfig { Text = "受注発注連携更新", WindowId="" },
+                new ButtonConfig { Text = "受注発注連携更新", WindowId=typeof(Views.SubDlgInp13JuhatsuView).FullName },
                 new ButtonConfig { Text = "仕入未受リスト", WindowId="" }
             }
         }},

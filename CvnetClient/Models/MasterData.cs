@@ -948,7 +948,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? lastModifier; // 最終修正者
 	}
-
+	//HC$MASTER_SHOHIN_JAN
 	public partial class MasterShohinJan : ObservableObject
 	{
         [ObservableProperty]
@@ -1283,5 +1283,34 @@ namespace CvnetClient.Models
         string? item90; //項目90
         [ObservableProperty]
         string? inpEmployeeCD;	//入力社員CD
+    }
+	//HC$MASTER_HYUHIBN_PTN
+	public partial class MasterHyuHbnPtn : ObservableObject
+	{
+		[ObservableProperty]
+		long seqNO;
+		[ObservableProperty]
+		decimal vdateCreate;
+		[ObservableProperty]
+		decimal vdateUpdate;
+		[ObservableProperty]
+		long patternNO; // パターンNO
+		[ObservableProperty]
+		string? patternName; //パターン名
+        [ObservableProperty]
+        string? entEmpCD; //入力社員CD
+		[ObservableProperty]
+        string? custCD; //得意先CD
+		[ObservableProperty]
+        double? allocRate; //配分率
+		[ObservableProperty]
+		string? memo; //メモ
+		[ObservableProperty]
+        int? sharedFLG; //共有FLG
+		[ObservableProperty]
+        int? reserveFLG; //予備FLG
+		[ObservableProperty]
+        string? brandCD; //ブランドCD
+
     }
 }
