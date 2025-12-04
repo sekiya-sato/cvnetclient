@@ -141,7 +141,7 @@
                                         Width="110" />
 										<Button Content="Felica"
                                         Margin="0,5,5,5"
-                                        Width="60" />
+                                        Padding="10,0"/>
 									</StackPanel>
 								</Grid>
 
@@ -257,11 +257,11 @@
 											<ColumnDefinition Width="Auto"/>
 										</Grid.ColumnDefinitions>
 
-										<Button Grid.Column="0" Content="店舗用" Margin="3,0"/>
-										<Button Grid.Column="1" Content="倉庫メニュー" Margin="3,0"/>
-										<Button Grid.Column="3" Content="全メニュー可" Margin="3,0"/>
-										<Button Grid.Column="4" Content="全Userメニュー可" Margin="3,0"/>
-										<Button Grid.Column="5" Content="全メニュー不可" Margin="3,0"/>
+										<Button Grid.Column="0" Content="店舗用" Margin="3,0" Padding="10,0"/>
+                                        <Button Grid.Column="1" Content="倉庫メニュー" Margin="3,0"  Padding="10,0"/>
+                                        <Button Grid.Column="3" Content="全メニュー可" Margin="3,0"  Padding="10,0"/>
+                                        <Button Grid.Column="4" Content="全Userメニュー可" Margin="3,0"  Padding="10,0"/>
+                                        <Button Grid.Column="5" Content="全メニュー不可" Margin="3,0"  Padding="10,0"/>
 									</Grid>
 								</Grid>
 							</StackPanel>
@@ -295,7 +295,7 @@
 					<Button Content="内容修正" BorderThickness="10" Command="{Binding DoInsertCommand}"/>
 					<Button Content="LOGIN不可に" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
 					<Button Content="LOGIN可能に" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
-					<Button Content="戻る" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
+                    <Button Content="戻る" Grid.Column="6" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" />
 				</Grid>
 			</Grid>
 			

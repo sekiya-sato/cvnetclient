@@ -64,23 +64,25 @@
                                 <Button Grid.Row="0" Grid.Column="4" Content="{Binding DateName}" VerticalAlignment="Center" Margin="0,1" Command="{Binding ClickDateTitleCommand}"/>
                                 <xctk:DateTimePicker 
                                                     Format="Custom"
+                                                    HorizontalAlignment="Left"
                                                     FormatString="yyyy/MM/dd" Grid.Row="0" Grid.Column="5"
-                                                    Width="180" 
+                                                    MinWidth="180" 
                                                     ShowButtonSpinner="True" 
                                                     TimePickerVisibility="Collapsed" 
                                                     AllowTextInput="False"
                                                     Value="{Binding EditSearch.NohinbiFrom}" 
-                                                    Height="34"></xctk:DateTimePicker>
+                                                    Height="34"/>
                                 <Label Grid.Row="0" Grid.Column="6" Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
                                 <xctk:DateTimePicker 
                                                     Format="Custom"
+                                                    HorizontalAlignment="Left"
                                                     FormatString="yyyy/MM/dd" Grid.Row="0" Grid.Column="7"
-                                                    Width="180" 
+                                                    MinWidth="180" 
                                                     ShowButtonSpinner="True" 
                                                     TimePickerVisibility="Collapsed" 
                                                     AllowTextInput="False"
                                                     Value="{Binding EditSearch.NohinbiTo}" 
-                                                    Height="34"></xctk:DateTimePicker>
+                                                    Height="34"/>
 
                                 <Label Grid.Row="1" Grid.Column="0" Content="取引区分" VerticalAlignment="Center" Margin="0,1"/>
                                 <ComboBox Grid.Row="1" Grid.Column="1"  Margin="0,1" ItemsSource="{Binding ComboListToriHikiFrom}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditSearch.ToriKubunFrom}" Style="{StaticResource SearchableComboBox1}"/>
