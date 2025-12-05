@@ -172,7 +172,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "配分データメンテ", WindowId="" },
                 new ButtonConfig { Text = "出荷指示明細書印刷", WindowId="" },
                 new ButtonConfig { Text = "納入一覧表", WindowId="" },
-                new ButtonConfig { Text = "取置受付一覧表", WindowId="" },
+                new ButtonConfig { Text = "取置受付一覧表", WindowId=typeof(Views.SubDlg60ToriukeView).FullName,Parameter="0" },
                 new ButtonConfig { Text = "配分チェックリスト", WindowId="" },
                 new ButtonConfig { Text = "店舗配分パターン登録", WindowId="" },
                 new ButtonConfig { Text = "配分関連メンテナンス", WindowId="" },
