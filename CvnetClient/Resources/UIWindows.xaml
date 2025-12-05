@@ -97,6 +97,11 @@
         <Setter Property="Height" Value="650"/>
     </Style>
 
+    <Style x:Key="JissekiWindowStyle" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
+        <Setter Property="Width" Value="1000"/>
+        <Setter Property="Height" Value="1000"/>
+    </Style>
+
     <Style x:Key="MasterWindowStyle2" TargetType="Window" BasedOn="{StaticResource GlobalWindowStyle}">
         <Setter Property="Width" Value="1000"/>
         <Setter Property="Height" Value="800"/>
