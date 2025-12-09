@@ -4,11 +4,13 @@ using CvnetBaseCore;
 using CvnetClient.Class;
 using CvnetClient.Models;
 using CvnetClient.Utils;
+using CvnetClient.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
@@ -33,6 +35,10 @@ namespace CvnetClient.ViewModels
         ListFlexData listFlexData2 = new ListFlexData();
         [ObservableProperty]
         SearchCondition? condition;
+        [ObservableProperty]
+        Visibility showOrNot;
+        [ObservableProperty]
+        bool canOrNot;
 
         public void OnInit(object? init_para = null) 
         {
@@ -49,23 +55,16 @@ namespace CvnetClient.ViewModels
             SelectedSituation = SituationType.Enabled;
             if (para[0] == "1")
             {
-                /* 店舗モード */
                 var tenpo = GetTenpo(AppData.ClassCvnet.SysImp.Rows[1][1].ToString());
                 Condition.CodeTen1 = new BtListHelper(tenpo[0], tenpo[1]);
                 Condition.CodeTen2 = Condition.CodeTen1;
-                //Form1.CodeTen1.Editable = $FALSE;
-                //Form1.CodeTen2.Editable = $FALSE;
-                //Form1.CodeTen1.Active = $FALSE;
-                //Form1.CodeTen2.Active = $FALSE;
-                //Form1.Button1.Active = $FALSE;
-                //Form1.Button2.Active = $FALSE;
+                ShowOrNot = Visibility.Hidden;
+                CanOrNot = false;
             }
             else
             {
-                //Form1.CodeTen1.Editable = $TRUE;
-                //Form1.CodeTen2.Editable = $TRUE;
-                //Form1.Button1.Active = $TRUE;
-                //Form1.Button2.Active = $TRUE;
+                ShowOrNot = Visibility.Visible;
+                CanOrNot = true;
             }
             List<CsvItem> def1 = AppData.ClassEtc.Bunrui_List1;
             List<CsvItem> def2 = AppData.ClassEtc.Bunrui_List0;
@@ -80,6 +79,54 @@ namespace CvnetClient.ViewModels
                 flag = 0
             };
         }
+        [RelayCommand]
+        public void SelTenpo1(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && Condition != null)
+            {
+                Condition.CodeTen1 = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelTenpo2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && Condition != null)
+            {
+                Condition.CodeTen2 = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
+        [RelayCommand]
+        public void SelTanto1(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && Condition != null)
+            {
+                Condition.CodeTanto1 = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+        [RelayCommand]
+        public void SelTanto2(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && Condition != null)
+            {
+                Condition.CodeTanto2 = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
+        [RelayCommand]
+        public void SelKokyaku(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && Condition != null)
+            {
+                Condition.CodeKokyaku1 = new BtListHelper(get_sel00.Code, get_sel00.Name);
+            }
+        }
+
         [RelayCommand]
         async Task DoPrintAsync() 
         {
@@ -103,11 +150,11 @@ namespace CvnetClient.ViewModels
 
             v_para[0] = new string(date_from);
             v_para[1] = new string(date_to);
-            v_para[2] = chkValue(Condition.CodeTen1.Code);
-            v_para[3] = chkValue(Condition.CodeTen2.Code);
-            v_para[4] = chkValue(Condition.CodeTanto1.Code);
-            v_para[5] = chkValue(Condition.CodeTanto2.Code);
-            v_para[6] = chkValue(Condition.CodeKokyaku1.Code);
+            v_para[2] = chkValue(Condition.CodeTen1?.Code);
+            v_para[3] = chkValue(Condition.CodeTen2?.Code);
+            v_para[4] = chkValue(Condition.CodeTanto1?.Code);
+            v_para[5] = chkValue(Condition.CodeTanto2?.Code);
+            v_para[6] = chkValue(Condition.CodeKokyaku1?.Code);
 
             v_para[7] = sql_bunrui;
             v_para[8] = sql_bunrui2;
@@ -127,10 +174,63 @@ namespace CvnetClient.ViewModels
             {
                 v_opt[1] = "2";
             }
+            var ret_csv = OnQuery(v_para, v_opt);
+            var lines = ret_csv.Split('\n');
 
-            OnQuery(v_para, v_opt);
+            if (lines.Length < 2 || lines[1] == "0")
+            {
+                ClientLib.MessageBoxError(this, "PDFデータがありません");
+                return;
+            }
+
+            string pdfPath = lines[0];
+
+            if (SelectedOutput == OutputType.Spool)
+            {
+                string url = AppData.Http!.URLroot + pdfPath + "/data.pdf";
+
+                bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+                if (!ready)
+                {
+                    ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                    return;
+                }
+
+                var win = new WebpdfView();
+                if (win.DataContext is WebpdfViewModel vm)
+                {
+                    vm.Pdfdata = url;
+                }
+                ClientLib.CursorToNormal();
+                ClientLib.ShowDialogView(win, this);
+            }
+            else
+            {
+                var csv_para = new BizCsvDocument();
+                string datapath = AppData.Http!.URLroot + pdfPath + "/data.txt";
+                string headpath = AppData.Http!.URLroot + pdfPath + "/d_sql.txt";
+                bool ready = await Utils.GlobalFunc.WaitForPdfAsync(datapath, TimeSpan.FromSeconds(30));
+                if (!ready)
+                {
+                    ClientLib.MessageBoxError(this, "Data生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                    return;
+                }
+
+                ready = await Utils.GlobalFunc.WaitForPdfAsync(headpath, TimeSpan.FromSeconds(30));
+                if (!ready)
+                {
+                    ClientLib.MessageBoxError(this, "Header生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                    return;
+                }
+                await csv_para.LoadFromUrlAsync(datapath, headpath);
+                try
+                {
+                    csv_para.SaveCsv(DateTime.Now.ToString("yyyyMMdd") + "_得意先別売上日報");
+                }
+                catch (Exception ex) { }
+            }
         }
-        void OnQuery(string[] v_para, string[] v_opt)
+        string OnQuery(string[] v_para, string[] v_opt)
         {
 
             var sql_opt = new string[7];
@@ -229,9 +329,7 @@ namespace CvnetClient.ViewModels
 
             var qfm_name = "cvnet_toriuke.qfm";
 
-            var ret_csv = AppData.Http!.AspxSqlQuery(sql_query, sql_opt, qfm_name);
-
-            
+            return AppData.Http!.AspxSqlQueryCsv(sql_query, sql_opt, qfm_name);            
         }
         string chkValue(string? c_val)
         {
