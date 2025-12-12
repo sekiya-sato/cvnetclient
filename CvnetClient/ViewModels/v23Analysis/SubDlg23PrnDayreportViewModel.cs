@@ -155,7 +155,7 @@ namespace CvnetClient.ViewModels
 
             string pdfPath = lines[0];
 
-            if (Condition.SelectedPrint.ToString() == "スプール")
+            if (Condition.SelectedPrint == PrintType.Spool)
             {
                 string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
 

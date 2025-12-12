@@ -18,7 +18,7 @@ namespace CvnetClient.Interface
 
         SubDlgSelUsrViewModel GetSelUsr(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
 
-        SubDlgSelTokViewModel GetSelTok(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
+        SubDlgSelTokViewModel GetSelTok(string v_mst = "", string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
 
         SubDlgSelSirViewModel GetSelSir(string v_mst, string[] init_para = null, string[] wrk_para = null, List<CsvItem> def = null, string[] wrk_para2 = null);
 

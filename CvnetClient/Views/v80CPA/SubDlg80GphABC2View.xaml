@@ -57,8 +57,8 @@
             <Label Grid.Row="1" Grid.Column="5"  Content="~" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Center"/>
             <TextBox Grid.Row="1" Grid.Column="6"  Grid.ColumnSpan="3" Margin="0" Text="{Binding ListSearch.KikanTo, StringFormat={}{0:yyyy/MM/dd}}"/>
 
-            <RadioButton Grid.Row="2" Grid.Column="6" Content="全店" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=全店, Mode=TwoWay}" Margin="0"/>
-            <RadioButton Grid.Row="2" Grid.Column="7" Content="店別" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=店別, Mode=TwoWay}" />
+            <RadioButton Grid.Row="2" Grid.Column="6" Content="全店" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=All, Mode=TwoWay}" Margin="0"/>
+            <RadioButton Grid.Row="2" Grid.Column="7" Content="店別" GroupName="TenpoType" IsChecked="{Binding SelectedTenpo,Converter={StaticResource EnumToBoolConverter},ConverterParameter=NotAll, Mode=TwoWay}" />
             <Label Grid.Row="2" Grid.Column="1" Content="店舗" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0"/>
             <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding ListSearch.Tenpo}" IsEnabled="{Binding IsTenpoEnabled}"/>
             <Button Grid.Row="2" Grid.Column="5" Style="{DynamicResource ComboButton}" Margin="0" HorizontalAlignment="Left" IsEnabled="{Binding IsTenpoEnabled}"/>

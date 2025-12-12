@@ -90,7 +90,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "本発注入力", WindowId="" },
                 new ButtonConfig { Text = "本発注配分入力", WindowId="" },
                 new ButtonConfig { Text = "入荷予定入力", WindowId="" },
-                new ButtonConfig { Text = "本発注実績表", WindowId="" },
+                new ButtonConfig { Text = "本発注実績表", WindowId=typeof(Views.SubDlg13HachujissekiView).FullName,Parameter="0" },
                 new ButtonConfig { Text = "入荷予定実績表", WindowId="" },
                 new ButtonConfig { Text = "本発注残完了設定", WindowId="" },
                 new ButtonConfig { Text = "本発注残管理表", WindowId="" },
@@ -98,7 +98,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "本発注配分リスト", WindowId="" },
                 new ButtonConfig { Text = "MDマップ", WindowId="" },
                 new ButtonConfig { Text = "納品予定照会", WindowId="" },
-                new ButtonConfig { Text = "発注配分パターン入力", WindowId="" },
+                new ButtonConfig { Text = "発注配分パターン入力", WindowId=typeof(Views.SubDlg13Hbnpatten150View).FullName },
                 new ButtonConfig { Text = "仕入未受リスト", WindowId="" }
             }
         }},
@@ -113,7 +113,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "発注配分リスト", WindowId="" },
                 new ButtonConfig { Text = "MDマップ", WindowId="" },
                 new ButtonConfig { Text = "納品予定照会", WindowId="" },
-                new ButtonConfig { Text = "受注発注連携更新", WindowId="" },
+                new ButtonConfig { Text = "受注発注連携更新", WindowId=typeof(Views.SubDlgInp13JuhatsuView).FullName },
                 new ButtonConfig { Text = "仕入未受リスト", WindowId="" }
             }
         }},
@@ -172,7 +172,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "配分データメンテ", WindowId="" },
                 new ButtonConfig { Text = "出荷指示明細書印刷", WindowId="" },
                 new ButtonConfig { Text = "納入一覧表", WindowId="" },
-                new ButtonConfig { Text = "取置受付一覧表", WindowId="" },
+                new ButtonConfig { Text = "取置受付一覧表", WindowId=typeof(Views.SubDlg60ToriukeView).FullName,Parameter="0" },
                 new ButtonConfig { Text = "配分チェックリスト", WindowId="" },
                 new ButtonConfig { Text = "店舗配分パターン登録", WindowId="" },
                 new ButtonConfig { Text = "配分関連メンテナンス", WindowId="" },

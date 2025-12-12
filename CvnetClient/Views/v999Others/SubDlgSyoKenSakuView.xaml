@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="6*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Content="商品1" HorizontalAlignment="Right" Background="Red"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="商品1" HorizontalAlignment="Right" Background="{StaticResource SearchColor1}"/>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                 <TextBox  TextWrapping="Wrap" Text="{Binding Product1.Display}" Width="200"/>
                 <uc:CvnetBtListView MstName="商品" StyleDesign="2" 
@@ -32,7 +32,7 @@
                     Command="{Binding SelProduct1Command}"/>
             </StackPanel>
 
-            <Label Grid.Row="1" Grid.Column="0" Content="商品2" HorizontalAlignment="Right" Background="LightBlue"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="商品2" HorizontalAlignment="Right" Background="{StaticResource SearchColor2}"/>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                 <TextBox  TextWrapping="Wrap" Text="{Binding Product2.Display}" Width="200"/>
                 <uc:CvnetBtListView MstName="商品" StyleDesign="2" 
@@ -40,7 +40,7 @@
         Command="{Binding SelProduct2Command}"/>
             </StackPanel>
 
-            <Label Grid.Row="2" Grid.Column="0" Content="商品3" HorizontalAlignment="Right" Background="ForestGreen"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="商品3" HorizontalAlignment="Right" Background="{StaticResource SearchColor3}"/>
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                 <TextBox  TextWrapping="Wrap" Text="{Binding Product3.Display}" Width="200"/>
                 <uc:CvnetBtListView MstName="商品" StyleDesign="2" 
@@ -48,7 +48,7 @@ SelectedValue ="{Binding Product3.Code}"
 Command="{Binding SelProduct3Command}"/>
             </StackPanel>
 
-            <Label Grid.Row="3" Grid.Column="0" Content="商品4" HorizontalAlignment="Right" Background="Yellow"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="商品4" HorizontalAlignment="Right" Background="{StaticResource SearchColor4}"/>
             <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
                 <TextBox  TextWrapping="Wrap" Text="{Binding Product4.Display}" Width="200"/>
                 <uc:CvnetBtListView MstName="商品" StyleDesign="2" 
@@ -56,7 +56,7 @@ SelectedValue ="{Binding Product4.Code}"
 Command="{Binding SelProduct4Command}"/>
             </StackPanel>
 
-            <Label Grid.Row="4" Grid.Column="0" Content="商品5" HorizontalAlignment="Right" Background="Purple"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="商品5" HorizontalAlignment="Right" Background="{StaticResource SearchColor5}"/>
             <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
                 <TextBox  TextWrapping="Wrap" Text="{Binding Product5.Display}" Width="200"/>
                 <uc:CvnetBtListView MstName="商品" StyleDesign="2" 

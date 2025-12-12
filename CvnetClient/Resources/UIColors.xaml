@@ -29,7 +29,11 @@
     <SolidColorBrush x:Key="RowSelectedColor" Color="#B3D9E2"/>
     <SolidColorBrush x:Key="RowSelectedTextColor" Color="White"/>
 
-
+    <SolidColorBrush x:Key="SearchColor1" Color="#ff6666"/>
+    <SolidColorBrush x:Key="SearchColor2" Color="#66ffff"/>
+    <SolidColorBrush x:Key="SearchColor3" Color="#66ff66"/>
+    <SolidColorBrush x:Key="SearchColor4" Color="#ffff66"/>
+    <SolidColorBrush x:Key="SearchColor5" Color="#ff66ff"/>
 
     <sys:Double x:Key="AppFontSize">16</sys:Double>
     <sys:Double x:Key="MenuFontSize">14</sys:Double>
