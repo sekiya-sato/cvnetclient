@@ -278,7 +278,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "売掛金管理表", WindowId="" },
                 new ButtonConfig { Text = "月別入金予定表", WindowId="" },
                 new ButtonConfig { Text = "請求一覧表", WindowId="" },
-                new ButtonConfig { Text = "請求書印刷", WindowId="" },
+                new ButtonConfig { Text = "請求書印刷", WindowId=typeof(Views.SubDlg03Prn04fView).FullName,Parameter="0",Flag="0"  },
                 new ButtonConfig { Text = "請求計算", WindowId="" },
                 new ButtonConfig { Text = "売掛消費税計算", WindowId="" },
                 new ButtonConfig { Text = "支払入力", WindowId="" },
