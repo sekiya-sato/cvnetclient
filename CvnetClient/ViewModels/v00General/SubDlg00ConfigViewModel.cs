@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CvnetClient.ViewModels.v01Master
+namespace CvnetClient.ViewModels.v00General
 {
     internal class SubDlg00ConfigViewModel
     {

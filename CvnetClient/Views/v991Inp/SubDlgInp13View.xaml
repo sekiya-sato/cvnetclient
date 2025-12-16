@@ -565,7 +565,8 @@
                             RelativeSource={RelativeSource AncestorType=Window},
                             Converter={StaticResource SubtractHeaderFooterHeightConverter},
                             ConverterParameter=380}"                                                     
-                        HeadersVisibility="Column"                         
+                        HeadersVisibility="Column"    EnableRowVirtualization="False"
+EnableColumnVirtualization="False"                     
                         Grid.ColumnSpan="2" 
                         ColumnWidth="*"
                         Margin="0,2,0,6"
@@ -584,11 +585,9 @@
                         </uc:CvnetFlexView.CellStyle>
 
                         <uc:CvnetFlexView.RowStyle>
-                            <Style TargetType="DataGridRow" 
-           BasedOn="{StaticResource {x:Type DataGridRow}}">
-                                <Setter Property="Background" 
-                Value="Transparent" />
-                                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{Binding RowColor,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                <Setter Property="FontSize" Value="14"/>
                             </Style>
                         </uc:CvnetFlexView.RowStyle>
 

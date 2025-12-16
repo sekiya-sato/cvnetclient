@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Media;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
@@ -431,7 +432,8 @@ namespace CvnetClient.ViewModels
                             Weight = Convert.ToInt32(dr["数量"]),
                             Kubun = dr["仕入区分"].ToString() ?? string.Empty,
                             Kanryo = dr["完了FLG"].ToString() ?? string.Empty,
-                            Abstracts = dr["明細メモ"].ToString() ?? string.Empty
+                            Abstracts = dr["明細メモ"].ToString() ?? string.Empty,
+                            RowColor = "Transparent"
 
                         }).OrderBy(c => c.ProductCD).ToList();
             Common.ConvertDotStringDel(list);
@@ -772,8 +774,8 @@ namespace CvnetClient.ViewModels
             wrk_para[0] = v_denkbn.ToString();
             wrk_para[1] = SelectedOrderHeader.Ware.Code;
             wrk_para[2] = SelectedOrderHeader.Hachubi?.ToString("yyyyMMdd");
-            wrk_para[3] = "X";
-            wrk_para[4] = "Y";
+            wrk_para[3] = "0";
+            wrk_para[4] = "0";
             wrk_para[5] = SelectedOrderHeader.ToriKubun.ToString();
             var vm = new SubDlgBcd01ViewModel(wrk_para);
             var window = new SubDlgBcd01View { DataContext = vm };
@@ -794,22 +796,33 @@ namespace CvnetClient.ViewModels
                 {
                     var item = SelectedOrderDetail[i];
 
-                    item.RowColor = Brushes.Transparent;
-
+                    item.RowColor = "Transparent";
+                    
                     if (item.ProductCD == result[0])
-                        item.RowColor = Brushes.Red;
-
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor1"];
+                        item.RowColor = brush.Color.ToString();
+                    }                       
                     else if (item.ProductCD == result[1])
-                        item.RowColor = Brushes.Blue;
-
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor2"];
+                        item.RowColor = brush.Color.ToString();
+                    }
                     else if (item.ProductCD == result[2])
-                        item.RowColor = Brushes.Green;
-
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor3"];
+                        item.RowColor = brush.Color.ToString();
+                    }
                     else if (item.ProductCD == result[3])
-                        item.RowColor = Brushes.Yellow;
-
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor4"];
+                        item.RowColor = brush.Color.ToString();
+                    }
                     else if (item.ProductCD == result[4])
-                        item.RowColor = Brushes.Orange;
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor5"];
+                        item.RowColor = brush.Color.ToString();
+                    }
                 }
             }
         }
@@ -1823,7 +1836,7 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private string? genkaFlg;
             [ObservableProperty]
-            private Brush rowColor;
+            private string? rowColor;
         }
         #endregion
     }

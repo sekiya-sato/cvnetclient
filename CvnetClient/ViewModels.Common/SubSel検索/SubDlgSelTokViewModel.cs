@@ -30,7 +30,7 @@ namespace CvnetClient.ViewModels
         SelValueModel? selectedValue; /* Return value for CvnetBtListView */
         public BizArray SelTokResult0;
         public Tuple<string, BizArray> SelTokResult1; /* Default return result method, datatype depends on DoExecute() */
-        public void OnInit(string v_mstname, string[] init_para = null, string[] v_para2 = null)
+        public void OnInit(string v_mstname = "", string[] init_para = null, string[] v_para2 = null)
         {
             OnInit(v_mstname, init_para, v_para2, null, null);
         }

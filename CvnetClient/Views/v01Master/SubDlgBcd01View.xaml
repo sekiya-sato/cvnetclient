@@ -5,27 +5,161 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CvnetClient.Views"
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="ﾊﾞｰｺｰﾄﾞ入力" Style="{StaticResource SmallWindow}">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="6*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="6.5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left">
+                <Label Content="バーコード"/>
+                <TextBox Text="{Binding Barcode, UpdateSourceTrigger=PropertyChanged}" Width="200">
+                    <i:Interaction.Triggers>
+
+                        <!-- Tekan Enter -->
+                        <i:EventTrigger EventName="KeyUp">
+                            <i:InvokeCommandAction Command="{Binding BarcodeEnterCommand}"
+                                   PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+
+                        <!-- Keluar dari textbox (LostFocus) -->
+                        <i:EventTrigger EventName="LostFocus">
+                            <i:InvokeCommandAction Command="{Binding BarcodeLostFocusCommand}" />
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
+                </TextBox>
+            </StackPanel>
+            <CheckBox Content="2段階目まで読む" IsChecked="{Binding IsFeatureEnabled, Mode=TwoWay}" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <Button Content="JANコード確認" Command="{Binding CheckJanCommand}" HorizontalAlignment="Right" Margin="0,0,5,0" Width="90" Grid.Column="2" Height="28"/>
         </Grid>
-        <DataGrid Grid.Row="1" Style="{DynamicResource WinGridData}"></DataGrid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Margin="0,0,8,0" Content="展開" Width="90" Height="28"/>
+        <DataGrid Grid.Row="1" Style="{DynamicResource WinGridData}"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding ListOrder}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="30" Binding="{Binding Num}" Header="行" />
+                <DataGridTemplateColumn Width="100">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="商品CD" FontWeight="Bold"/>
+                                <TextBlock Text="商品名" FontWeight="Bold"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding ProductCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" />
+                                <Border Grid.Row="1" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                    <TextBlock Grid.Row="1"  Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0"/>
+                                </Border>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTextColumn Width="30" Binding="{Binding Flg}" Header="原" />
+                
+                
+                
+                <DataGridTextColumn Width="100" Binding="{Binding Color}" Header="色" />
+                <DataGridTextColumn Width="100" Binding="{Binding Size }" Header="サイズ" />
+                <DataGridTextColumn Width="50" Binding="{Binding Sum }" Header="数量" />
+                <DataGridTemplateColumn Width="90">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="下代" FontWeight="Bold"/>
+                                <TextBlock Text="下代金額" FontWeight="Bold"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Gedai}" Margin="0" />
+                                <Border Grid.Row="1" BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                    <TextBlock Grid.Row="1" Text="{Binding GedaiPrice}" Margin="0"/>
+                                </Border>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="90">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="上代" FontWeight="Bold"/>
+                                <TextBlock Text="上代金額" FontWeight="Bold"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Jodai}" Margin="0" />
+                                <Border Grid.Row="1"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
+                                    <TextBlock Grid.Row="1" Text="{Binding JodaiProce}" Margin="0"/>
+                                </Border>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="2" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="90"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Width="50" Grid.Column="5" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Width="90" Grid.Column="6" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Width="90" Grid.Column="7" Style="{StaticResource ReadOnlyTextBox}"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
+            <Button Margin="0,0,8,0" Content="選択実行(F1)" Width="90" Height="28" Command="{Binding DoCommand}"/>
             <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
         </StackPanel>
     </Grid>
