@@ -1,0 +1,229 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg60ToriukeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="取置受付一覧表" Style="{StaticResource PrintWindowStyle1}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg60ToriukeViewModel />
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="日付"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,0">
+                <xctk:DateTimePicker 
+        Format="Custom"
+        FormatString="yyyy/MM/dd" 
+        ShowButtonSpinner="True" 
+        TimePickerVisibility="Collapsed" 
+        AllowTextInput="False"
+        Value="{Binding Condition.DateEdit1}" 
+        MaxHeight="30"
+        MinWidth="270"/>
+            </StackPanel>
+            <Label Grid.Row="0" Grid.Column="2" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,0,0">
+                <xctk:DateTimePicker 
+        Format="Custom"
+        FormatString="yyyy/MM/dd" 
+        ShowButtonSpinner="True" 
+        TimePickerVisibility="Collapsed" 
+        AllowTextInput="False"
+        Value="{Binding Condition.DateEdit2}" 
+        MaxHeight="30"
+        MinWidth="270"/>
+            </StackPanel>
+
+            <Label Grid.Row="1" Grid.Column="0" Content="店舗" VerticalAlignment="Center" Margin="0,1" Visibility="{Binding ShowOrNot}"/>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Condition.CodeTen1.Display}" Visibility="{Binding ShowOrNot}"  IsEnabled="{Binding CanOrNot}"/>
+                <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2"  Visibility="{Binding ShowOrNot}"  IsEnabled="{Binding CanOrNot}"
+            SelectedValue ="{Binding Condition.CodeTen1.Code}"
+            Command="{Binding SelTenpo1Command}"/>
+            </Grid>
+
+            <Label Grid.Row="1" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+            <Grid Grid.Row="1" Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Condition.CodeTen2.Display}" Visibility="{Binding ShowOrNot}" IsEnabled="{Binding CanOrNot}"/>
+                <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2"  Visibility="{Binding ShowOrNot}" IsEnabled="{Binding CanOrNot}"
+                    SelectedValue ="{Binding Condition.CodeTen2.Code}"
+                    Command="{Binding SelTenpo2Command}"/>
+            </Grid>
+            <Grid Grid.Row="2" Grid.ColumnSpan="4" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="得意先分類:" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="1" Content="AND" GroupName="List2Type"
+                 IsChecked="{Binding SelectedList2, 
+                                     Converter={StaticResource StringToBoolConverter}, 
+                                     ConverterParameter=And, Mode=TwoWay}"
+                Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="2" Content="OR" GroupName="List2Type"
+                 IsChecked="{Binding SelectedList2, 
+                                     Converter={StaticResource StringToBoolConverter}, 
+                                     ConverterParameter=Or, Mode=TwoWay}"/>
+            </Grid>
+            <local:ListFlexView Grid.Row="3" Grid.ColumnSpan="4" Grid.RowSpan="4" Margin="0" DataSource="{Binding ListFlexData2}"/>
+
+            <Grid Grid.Row="7" Grid.ColumnSpan="4" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="商品分類:" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="1" Content="AND" GroupName="List1Type"
+     IsChecked="{Binding SelectedList1, 
+                         Converter={StaticResource StringToBoolConverter}, 
+                         ConverterParameter=And, Mode=TwoWay}"
+    Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="2" Content="OR" GroupName="List1Type"
+     IsChecked="{Binding SelectedList1, 
+                         Converter={StaticResource StringToBoolConverter}, 
+                         ConverterParameter=Or, Mode=TwoWay}"/>
+            </Grid>
+            <local:ListFlexView Grid.Row="8" Grid.ColumnSpan="4" Grid.RowSpan="4" Margin="0" DataSource="{Binding ListFlexData1}"/>
+
+            <Label Grid.Row="12" Grid.Column="0" Content="担当者" VerticalAlignment="Center" Margin="0,1"/>
+            <Grid Grid.Row="12" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Condition.CodeTanto1.Display}"/>
+                <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
+SelectedValue ="{Binding Condition.CodeTanto1.Code}"
+Command="{Binding SelTanto1Command}"/>
+            </Grid>
+
+            <Label Grid.Row="12" Grid.Column="2"  Content="~" VerticalAlignment="Center" Margin="0,1" HorizontalAlignment="Center"/>
+            <Grid Grid.Row="12" Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Condition.CodeTanto2.Display}"/>
+                <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
+        SelectedValue ="{Binding Condition.CodeTanto2.Code}"
+        Command="{Binding SelTanto2Command}"/>
+            </Grid>
+
+            <Label Grid.Row="13" Grid.Column="0" Content="顧客CD" VerticalAlignment="Center" Margin="0,1"/>
+            <Grid Grid.Row="13" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Condition.CodeKokyaku1.Display}"/>
+                <uc:CvnetBtListView Grid.Column="1" MstName="仕入先" StyleDesign="2" 
+                                    SelectedValue ="{Binding Condition.CodeKokyaku1.Code}"
+                                    Command="{Binding SelKokyakuCommand}"/>
+            </Grid>
+
+            <Grid Grid.Row="14" Grid.ColumnSpan="4" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="状態:" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="1" Content="有効" GroupName="SituationType"
+ IsChecked="{Binding SelectedSituation, 
+                     Converter={StaticResource StringToBoolConverter}, 
+                     ConverterParameter=Enabled, Mode=TwoWay}"
+Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="2" Content="解除" GroupName="SituationType"
+ IsChecked="{Binding SelectedSituation, 
+                     Converter={StaticResource StringToBoolConverter}, 
+                     ConverterParameter=Cancel, Mode=TwoWay}" Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="3" Content="全て" GroupName="SituationType"
+IsChecked="{Binding SelectedSituation, 
+                    Converter={StaticResource StringToBoolConverter}, 
+                    ConverterParameter=All, Mode=TwoWay}" />
+            </Grid>
+
+            <Grid Grid.Row="15" Grid.ColumnSpan="4" Margin="10,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="出力区分:" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="1" Content="スプール" GroupName="OutputType"
+ IsChecked="{Binding SelectedOutput, 
+                     Converter={StaticResource StringToBoolConverter}, 
+                     ConverterParameter=Spool, Mode=TwoWay}"
+Margin="0,0,20,0"/>
+                <RadioButton Grid.Column="2" Content="CSV" GroupName="OutputType"
+ IsChecked="{Binding SelectedOutput, 
+                     Converter={StaticResource StringToBoolConverter}, 
+                     ConverterParameter=CSV, Mode=TwoWay}" Margin="0,0,20,0"/>
+            </Grid>
+
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,20,0,0">
+            <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoPrintCommand}" Content="実行(Enter)"/>
+            <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

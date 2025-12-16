@@ -47,14 +47,14 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="2*" MinWidth="80"/>
                     <!-- Label column -->
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8*"/>
                     <!-- Input column -->
                 </Grid.ColumnDefinitions>
 
-                <!-- バーコード -->
-                <Grid Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                <Label Grid.Row="0" Grid.Column="0" Content="日付" Margin="0,10,0,0"/>
+                <Grid Grid.Row="0" Grid.Column="1" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -62,26 +62,19 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="出力区分:" 
-               VerticalAlignment="Center" 
-               Margin="0,0,20,0"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
+                        <DatePicker Grid.Column="1" MinWidth="180" SelectedDate="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                    </StackPanel>
 
-                    <RadioButton Grid.Column="1" Content="スプール" 
-                                GroupName="PrintType"
-                                IsChecked="{Binding Condition.SelectedPrint, 
-                                            Converter={StaticResource StringToBoolConverter}, 
-                                            ConverterParameter=Spool, Mode=TwoWay}"
-                                Margin="0,0,20,0"/>
-                    <RadioButton Grid.Column="2" Content="CSV" 
-                                GroupName="PrintType"
-                                IsChecked="{Binding Condition.SelectedPrint, 
-                                             Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=CSV, Mode=TwoWay}"
-                                Margin="0,0,20,0"/>
+
+                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
+                        <DatePicker Grid.Column="1" MinWidth="180" SelectedDate="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+                    </StackPanel>
                 </Grid>
 
-
-                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                <Label Grid.Row="1" Grid.Column="0" Content="得意先" Margin="0,10,0,0"/>
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -89,10 +82,8 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-
-                    <TextBlock Grid.Column="0" Text="得意先" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                        <TextBox Width="150"
+                        <TextBox MinWidth="150"
                                 d:Text="得意先：Data"  
                                 TextWrapping="Wrap">
                             <TextBox.Text>
@@ -108,7 +99,7 @@
                     </StackPanel>
                     <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <StackPanel Grid.Column="3" Orientation="Horizontal">
-                        <TextBox Width="150"
+                        <TextBox MinWidth="150"
                             d:Text="得意先：Data"  
                             TextWrapping="Wrap">
                             <TextBox.Text>
@@ -124,29 +115,28 @@
                     </StackPanel>
                 </Grid>
 
-                
-
-                <Grid Grid.Row="0" Grid.ColumnSpan="2" Margin="0,10,0,0">
+                <Label Grid.Row="2" Grid.Column="0" Content="出力区分:" Margin="0,10,0,0"/>
+                <Grid Grid.Row="2" Grid.Column="1" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
-
-                    <TextBlock Grid.Column="0" Text="日付" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                        <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
-                    </StackPanel>
-
-
-                    <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
-                    <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
-                        <DatePicker Grid.Column="1" Width="180" SelectedDate="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
-                    </StackPanel>
+                    <RadioButton Grid.Column="1" Content="スプール" 
+                 GroupName="PrintType"
+                 IsChecked="{Binding Condition.SelectedPrint, 
+                             Converter={StaticResource StringToBoolConverter}, 
+                             ConverterParameter=Spool, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
+                    <RadioButton Grid.Column="2" Content="CSV" 
+                 GroupName="PrintType"
+                 IsChecked="{Binding Condition.SelectedPrint, 
+                              Converter={StaticResource StringToBoolConverter}, 
+                              ConverterParameter=CSV, Mode=TwoWay}"
+                 Margin="0,0,20,0"/>
                 </Grid>
-               
+
 
             </Grid>
         </Border>

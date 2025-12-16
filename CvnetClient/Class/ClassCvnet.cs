@@ -429,15 +429,15 @@ namespace CvnetBaseCore
         /// </summary>
         /// <param name="v_date">対象日付</param>
         /// <returns>0:正常, -1:エラー</returns> 
-        public int CheckImpDate(DateTime v_date)
+        public int CheckImpDate(DateTime? v_date)
         {
             // 開始日
             var date = AppData.ClassCvnet.SysMst._data.Rows[0][17].ToString();
-            var v_start = DateTime.Parse(date);
+            var v_start = DateTime.Parse(date.Substring(0,4) + "/" + date.Substring(4,2) + "/" + date.Substring(6,2));
             if (v_date < v_start) return -1;
 
             // v_day = 入力日 - 今日
-            int v_day = (v_date - DateTime.Today).Days;
+            int v_day = int.Parse((v_date - DateTime.Today).ToString());
 
             // 許容範囲
             int v_pre = int.Parse(AppData.ClassCvnet.SysMst._data.Rows[0][15].ToString());  // 過去許容

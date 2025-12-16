@@ -47,12 +47,12 @@
 					<!-- Inner layout of the dialog -->
 					<Grid Margin="20">
 						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
+							<RowDefinition />
 							<RowDefinition Height="20"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
+							<RowDefinition />
+							<RowDefinition />
 							<RowDefinition Height="20"/>
-							<RowDefinition Height="Auto"/>
+							<RowDefinition />
 							<RowDefinition Height="20"/>
 							<RowDefinition Height="*"/>
 						</Grid.RowDefinitions>
@@ -64,7 +64,7 @@
 							<ColumnDefinition Width="2*"/>
 							<ColumnDefinition Width="2*"/>
 							<ColumnDefinition Width="2*"/>
-							<ColumnDefinition Width="3*"/>
+							<ColumnDefinition Width="2*"/>
 						</Grid.ColumnDefinitions>
 
 						<!-- ==== Row 0: 選択条件 ==== -->
@@ -73,10 +73,11 @@
 							   VerticalAlignment="Center"
                                Margin="0,0,8,0"/>
 
-						<ComboBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"
+						<ComboBox Grid.Column="1" Grid.ColumnSpan="3"
 									  ItemsSource="{Binding SelectConditionList}"
 								      SelectedItem="{Binding SelectedSelectCondition}"
-									  DisplayMemberPath="Name"/>
+									  DisplayMemberPath="Name"
+									  Style="{StaticResource SearchableComboBox1}"/>
 
 						<!-- ==== Row 1: 範囲 From ==== -->
 						<TextBlock Grid.Row="2" Grid.Column="0"
@@ -84,7 +85,7 @@
 								   VerticalAlignment="Center"
 								   Margin="0,0,8,0"/>
 
-						<Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,0,10,0">
+                        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" >
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="Auto"/>
@@ -107,9 +108,9 @@
 												Command="{Binding FindFromWorkerShopCommand}"/>
 						</Grid>
 						<!-- ==== Row 2: 範囲 To ==== -->
-						<TextBlock Grid.Row="3" Grid.Column="1"
-								   Text="~" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Center" />
-						<Grid Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="4" Margin="0,10,10,0">
+						<TextBlock Grid.Row="3" Grid.Column="2"
+								   Text="～" HorizontalAlignment="Right" Margin="0,10,10,5" VerticalAlignment="Bottom" />
+                        <Grid Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="4" VerticalAlignment="Bottom">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*"/>
 								<ColumnDefinition Width="Auto"/>
@@ -119,8 +120,8 @@
 							TextWrapping="Wrap">
 								<TextBox.Text>
 									<MultiBinding StringFormat='{}{0} {1}'>
-										<Binding Path="SelectWorkerShop.FromWorkerShopCd"/>
-										<Binding Path="SelectWorkerShop.FromWorkerShopName"/>
+										<Binding Path="SelectWorkerShop.ToWorkerShopCd"/>
+										<Binding Path="SelectWorkerShop.ToWorkerShopName"/>
 									</MultiBinding>
 								</TextBox.Text>
 							</TextBox>
@@ -128,7 +129,7 @@
 							<uc:CvnetBtListView Grid.Column="1"
 												MstName="{Binding MstName}"
 												StyleDesign="2"
-												SelectedValue="{Binding FindToWorkerShopCd}"
+												SelectedValue="{Binding SelectWorkerShop.FromWorkerShopCd}"
 												Command="{Binding FindToWorkerShopCommand}"/>
 						</Grid>
 
@@ -138,17 +139,17 @@
 					   VerticalAlignment="Center"
 					   Margin="0,0,8,0"/>
 
-						<Border Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" CornerRadius="3" >
-							<ComboBox Grid.Column="1" Height="26" Grid.ColumnSpan="2"
-									  ItemsSource="{Binding SortConditionList}"
-									  SelectedItem="{Binding SelectedSortCondition}"
-									  Style="{StaticResource SearchableComboBox1}"/>
-						</Border>
+						
+                        <ComboBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3"
+									ItemsSource="{Binding SortConditionList}"
+									SelectedItem="{Binding SelectedSortCondition}"
+									Style="{StaticResource SearchableComboBox1}"/>
+						
 
 						<!-- ==== Row 4: Radio button ==== -->
-						<Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="7">
-							<StackPanel Orientation="Horizontal"
-							            HorizontalAlignment="Center">
+						
+                            <StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal"
+							            HorizontalAlignment="Left">
 								<RadioButton Content="全社員"
 											 FontStyle="Normal"
 											 GroupName="EmployeeScope"
@@ -160,19 +161,18 @@
 											 IsChecked="{Binding IsWorkingOnly}"
 											 Margin="0,0,10,0"/>
 							</StackPanel>
-						</Border>
+						
 					</Grid>
 				</GroupBox>
 			</Grid>
 		</Border>
 
-		<Border Grid.Row="1">
-			<StackPanel Orientation="Horizontal"
-            HorizontalAlignment="Right">
-				<Button Content="実行(ENTER)" Style="{DynamicResource PrintIconBtn}" Command="{Binding DoPrintCommand}" Padding="6,4" HorizontalAlignment="Right" Margin="0,0,40,0"/>
-				<Button Content="戻る(ESC)" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" Padding="16,4" HorizontalAlignment="Right" Margin="0,0,40,0"/>
-			</StackPanel>
-		</Border>
+		
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Content="実行(ENTER)" Style="{DynamicResource ExecButton}" Command="{Binding DoPrintCommand}" HorizontalAlignment="Center" Margin="0,0,40,0"/>
+            <Button Content="戻る(ESC)" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" HorizontalAlignment="Center" Margin="0,0,40,0"/>
+		</StackPanel>
+		
 
 	</Grid>
 </Window>

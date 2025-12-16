@@ -57,7 +57,8 @@
 			<Button Grid.Column="5" 
 					Margin="0,0,5,0"
 					Content="表示更新(F5)" 
-					Command="{Binding DoSearchCommand}"/>
+					Command="{Binding DoSearchCommand}"
+                    Style="{StaticResource ExecButton}"/>
 			<Button Grid.Column="6"
 					Margin="0,0,5,0"
 					Content="商品ﾏｽﾀCHK"
@@ -228,7 +229,8 @@
 			<Button Grid.Column="5"
 					Margin="0,0,5,0"
 					Content="ファイル作成" 
-					Command="{Binding DoExecuteCommand}"/>
+					Command="{Binding DoExecuteCommand}"
+                    Style="{StaticResource UpdateIconBtn}"/>
 			<Button Grid.Column="6"
 					Margin="0,0,5,0"
 					Content="戻る(ESC)" 

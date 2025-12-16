@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 public class ClassSatoo
 {
     private static readonly HttpClient httpClient = new HttpClient();
@@ -582,6 +583,53 @@ public class ClassSatoo
         return new DateTime(wrkY, v_mon, 1);
     }
 
+    public double GetHexValue(string v_hex_para)
+    {
+        /* ===================================================
+            ■関数 GetHexValue = 16進を表す文字列を数値に変換する
+                引数1:I	String = 16進を表す文字列
+                戻値		Number
+            =================================================== */
+        var v_hex = v_hex_para;
+        var wrk00 = "0123456789ABCDEF";
+        double ret_val = 0;
+        int now_hex;
+        var j = v_hex.Length;
+        for (var i = 0; i < v_hex.Length; i++)
+        {
+            j--;
+            if ((now_hex = wrk00.IndexOf(v_hex.Substring(i, 1).ToUpper(), 0)) >= 0)
+            {
+                ret_val += (now_hex) * Math.Pow(16, j);
+            }
+        }
+        return ret_val;
+    }
+
+    public int AspxGetSESS_ID()
+    {
+        /* ===================================================
+            ■関数 AspxGetSESS_ID = 内部のAspxRandId文字列からSESS_IDの数値を求める
+                戻値		Number
+            =================================================== */
+        var seed_value = 200000000;
+        var rand_id = AspxRandId;
+        var wrk_id_length = int.Parse(rand_id.Substring(rand_id.Length - 1, 1));
+        var rand_id_sub = rand_id.Substring(0, wrk_id_length);
+        double wrk_id;
+        double wrk_id2;
+        if (rand_id_sub.Substring(0, 1) != "-")
+        {
+            wrk_id = GetHexValue(rand_id.Substring(0, wrk_id_length).ToString());
+        }
+        else
+        {
+            wrk_id = GetHexValue(rand_id.Substring(0, wrk_id_length)) * -1;
+        }
+        wrk_id2 = GetHexValue(rand_id.Substring(wrk_id_length, rand_id.Length - wrk_id_length - 1));
+        var ret_val = int.Parse((wrk_id2 + wrk_id - seed_value).ToString());
+        return ret_val;
+    }
     private static DateTime start_date = new DateTime(1901, 1, 1, 0, 0, 0); // 1901/01/01 00:00:00
     /// <summary>
     /// 日付から、日付を表す値を求める

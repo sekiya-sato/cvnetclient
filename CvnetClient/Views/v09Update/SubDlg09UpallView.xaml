@@ -22,15 +22,15 @@
     </Window.InputBindings>
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" Text="※更新処理は処理件数により数分～数十分かかります" Foreground="Red" HorizontalAlignment="Center"></TextBlock>
-        
+
+        <TextBlock Grid.Row="0" Text="※更新処理は処理件数により数分～数十分かかります" Foreground="Red" HorizontalAlignment="Left"/>
+
 
         <Grid Grid.Row="1" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -40,31 +40,29 @@
                 <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="一括更新対象年月" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                <xctk:DateTimePicker 
+            <Label Grid.Column="0" Content="一括更新対象年月"/>
+            <xctk:DateTimePicker Grid.Column="1"
                                      Format="Custom"
                                      FormatString="yyyy-MM" 
-                                     Width="180" 
+                                     MinWidth="180" 
                                      ShowButtonSpinner="True" 
                                      TimePickerVisibility="Collapsed" 
                                      AllowTextInput="False"
                                      Value="{Binding Condition.DateMonthFrom, Mode=TwoWay}" 
-                                     Height="34"></xctk:DateTimePicker>
-            </StackPanel>
+                                     MaxHeight="34"
+                                     Margin="0,0,10,0"/>
 
-            <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
-            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
-                <xctk:DateTimePicker 
-                                      Format="Custom"
+            <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
+            <xctk:DateTimePicker Grid.Column="3"
+                                     Format="Custom"
                                      FormatString="yyyy-MM" 
-                                     Width="180" 
+                                     MinWidth="180" 
                                      ShowButtonSpinner="True" 
                                      TimePickerVisibility="Collapsed" 
                                      AllowTextInput="False"
                                      Value="{Binding Condition.DateMonthTo, Mode=TwoWay}" 
-                                     Height="34"></xctk:DateTimePicker>
-            </StackPanel>
+                                     MaxHeight="34"
+                                     Margin="0,0,10,0"/>
         </Grid>
         <TextBlock Grid.Row="2" HorizontalAlignment="Center">
             <TextBlock.Text>
@@ -75,39 +73,31 @@
             </TextBlock.Text>
         </TextBlock>
         
-        <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center">
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-
-            <RadioButton Grid.Column="0" Content="在庫" 
-        GroupName="ProcessType"
-        IsChecked="{Binding Condition.SelectedProcess, 
-                            Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=Stock, Mode=TwoWay}"
-Margin="0,0,20,0"/>
-            <RadioButton Grid.Column="1" Content="売掛" 
-                 GroupName="ProcessType"
+            <Border Grid.ColumnSpan="4" CornerRadius="12" BorderBrush="#CCC" BorderThickness="1" MaxHeight="100"/>
+            <RadioButton Grid.Column="0" Content="在庫" GroupName="ProcessType" Margin="20,0,20,0"
+                IsChecked="{Binding Condition.SelectedProcess, 
+                                    Converter={StaticResource StringToBoolConverter}, 
+                                    ConverterParameter=Stock, Mode=TwoWay}"/>
+            <RadioButton Grid.Column="1" Content="売掛" GroupName="ProcessType" Margin="0,0,20,0"
                          IsChecked="{Binding Condition.SelectedProcess, 
                                              Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=Account, Mode=TwoWay}"
-                 Margin="0,0,20,0"/>
-            <RadioButton Grid.Column="2" Content="買掛" 
-     GroupName="ProcessType"
-             IsChecked="{Binding Condition.SelectedProcess, 
-                                 Converter={StaticResource StringToBoolConverter}, 
-                                 ConverterParameter=Payable, Mode=TwoWay}"
-     Margin="0,0,20,0"/>
-            <RadioButton Grid.Column="3" Content="全て" 
-     GroupName="ProcessType"
-             IsChecked="{Binding Condition.SelectedProcess, 
-                                 Converter={StaticResource StringToBoolConverter}, 
-                                 ConverterParameter=All, Mode=TwoWay}"
-     Margin="0,0,20,0"/>
+                                             ConverterParameter=Account, Mode=TwoWay}"/>
+            <RadioButton Grid.Column="2" Content="買掛" GroupName="ProcessType" Margin="0,0,20,0"
+                         IsChecked="{Binding Condition.SelectedProcess, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=Payable, Mode=TwoWay}"/>
+            <RadioButton Grid.Column="3" Content="全て" GroupName="ProcessType" Margin="0,0,20,0"
+                         IsChecked="{Binding Condition.SelectedProcess, 
+                                             Converter={StaticResource StringToBoolConverter}, 
+                                             ConverterParameter=All, Mode=TwoWay}"/>
         </Grid>
 
         <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">

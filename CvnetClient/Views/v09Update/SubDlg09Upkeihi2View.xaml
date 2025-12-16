@@ -22,104 +22,79 @@
     </Window.InputBindings>
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" HorizontalAlignment="Center">
+        <Grid Grid.Row="0" HorizontalAlignment="Left">
             <Grid.RowDefinitions>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Text="※更新処理は処理件数により数分～数十分かかります" Foreground="Red"></TextBlock>
         </Grid>
 
+
         <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="按分方法" Grid.Column="0"></Label>
-            <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListHow}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding Condition.ComboBox}"></ComboBox>
-        </Grid>
-
-        <Grid Grid.Row="2" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="移動日" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" />
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,10,0">
-                <xctk:DateTimePicker 
-	Grid.Column="1"
-         Format="Custom"
-         FormatString="yyyy/MM/dd" 
-         Width="180" 
-         ShowButtonSpinner="True" 
-         TimePickerVisibility="Collapsed" 
-         AllowTextInput="False"
-         Value="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-         Height="34"></xctk:DateTimePicker>
-            </StackPanel>
+            <Label    Grid.Row="0" Content="按分方法" Grid.Column="0"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Style="{DynamicResource SearchableComboBox1}" 
+                      ItemsSource="{Binding ComboListHow}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Condition.ComboBox}"/>
+            
+            
+            <Label Grid.Row="1" Grid.Column="0" Content="移動日" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <xctk:DateTimePicker 
+                Grid.Row="1" Grid.Column="1"
+                Format="Custom"
+                FormatString="yyyy/MM/dd" 
+                MinWidth="180"
+                MaxHeight="30"
+                ShowButtonSpinner="True" 
+                TimePickerVisibility="Collapsed" 
+                AllowTextInput="False"
+                Value="{Binding Condition.DateFrom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Margin="0,0,10,0"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
+            <xctk:DateTimePicker 
+	             Grid.Row="1"  Grid.Column="3"
+                 Format="Custom"
+                 FormatString="yyyy/MM/dd" 
+                 MinWidth="180" 
+                 MaxHeight="30"
+                 ShowButtonSpinner="True" 
+                 TimePickerVisibility="Collapsed" 
+                 AllowTextInput="False"
+                 Value="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+            <Label      Grid.Row="2" Grid.Column="0" Content="締日" Visibility="Hidden"/>
+            <DatePicker Grid.Row="2" Grid.Column="1" SelectedDate="{Binding Condition.Date}" Visibility="Hidden"/>
+            
 
-            <TextBlock Grid.Column="2" Text="~" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,10,0"/>
-            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="0,0,10,0">
-                <xctk:DateTimePicker 
-	Grid.Column="1"
-         Format="Custom"
-         FormatString="yyyy/MM/dd" 
-         Width="180" 
-         ShowButtonSpinner="True" 
-         TimePickerVisibility="Collapsed" 
-         AllowTextInput="False"
-         Value="{Binding Condition.DateTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-         Height="34"></xctk:DateTimePicker>
-            </StackPanel>
+            <Label       Grid.Row="3" Grid.Column="0" Content="原価更新" VerticalAlignment="Center"/>
+            <RadioButton Grid.Row="3" Grid.Column="1" Content="しない"
+                        GroupName="PriceType" IsChecked="{Binding Condition.SelectedPrice, 
+                                            Converter={StaticResource StringToBoolConverter}, 
+                                            ConverterParameter=Not, Mode=TwoWay}"/>
+            <RadioButton Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Content="する"
+                 GroupName="PriceType" IsChecked="{Binding Condition.SelectedPrice, 
+                                    Converter={StaticResource StringToBoolConverter}, 
+                                    ConverterParameter=Do, Mode=TwoWay}"/>
+
         </Grid>
 
-        <Grid Grid.Row="3" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="8*"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="締日" Grid.Column="0" Visibility="Hidden"></Label>
-            <DatePicker Grid.Column="1" SelectedDate="{Binding Condition.Date}" Visibility="Hidden"></DatePicker>
-        </Grid>
-        
-        <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10,0,0" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0" Text="原価更新" 
-               VerticalAlignment="Center" 
-               Margin="0,0,20,0"/>
-
-            <RadioButton Grid.Column="1" Content="しない" 
-        GroupName="PriceType"
-        IsChecked="{Binding Condition.SelectedPrice, 
-                            Converter={StaticResource StringToBoolConverter}, 
-                            ConverterParameter=Not, Mode=TwoWay}"
-Margin="0,0,20,0"/>
-            <RadioButton Grid.Column="2" Content="する" 
-                 GroupName="PriceType"
-                         IsChecked="{Binding Condition.SelectedPrice, 
-                                             Converter={StaticResource StringToBoolConverter}, 
-                                             ConverterParameter=Do, Mode=TwoWay}"
-                 Margin="0,0,20,0"/>
-        </Grid>
-        
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
             <Button Style="{DynamicResource ExecButton}" Margin="0,0,8,0" Command="{Binding DoExecuteCommand}"/>
             <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
         </StackPanel>

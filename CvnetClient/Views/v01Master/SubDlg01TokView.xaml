@@ -30,16 +30,15 @@
             <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Margin="15">
+        <Grid Margin="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0" Margin="13,6" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+            <Button Grid.Row="0" Margin="13,0" Command="{Binding DoListCommand}" Style="{DynamicResource ExecButton}" HorizontalAlignment="Right"/>
 
-
-            <DataGrid  Grid.Row="1" Margin="8,10,8,10" d:ItemsSource="{d:SampleData ItemCount=5}"
+            <DataGrid  Grid.Row="1" Margin="8" d:ItemsSource="{d:SampleData ItemCount=5}"
                 AutoGenerateColumns="False"
                 Style="{DynamicResource WinGridData}"
                 IsReadOnly="True"
@@ -58,1163 +57,714 @@
                 <Button Margin="1,1,6,1" Command="{Binding NextListCommand}" Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
             </StackPanel>
         </Grid>
+        
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="8*"/>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Grid.RowSpan="2" Background="White" CornerRadius="6" Padding="8">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <!--<Border Grid.Row="0" Grid.RowSpan="2" Background="White" CornerRadius="6" Padding="8">-->
+            <Grid>
+
+                <TabControl BorderThickness="1" Margin="0,0,20,0">
+                    <TabItem Header="基本情報(Shift+F1)">
+                        <Grid Margin="0,8,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="8*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="8*"/>
+                            </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" Content="得意先CD" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" Text="{Binding EditShop.TradingCD}" />
+
+                                <Label Grid.Row="1" Content="得意先名" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"  Margin="0,8" Text="{Binding EditShop.TradingName}"/>
+
+
+                                <Label   Grid.Row="2" Grid.Column="0" Content="カナ" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Katakana}"/>
+
+                                <Label Grid.Row="2" Grid.Column="2" Content="略称" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Row="2" Grid.Column="3" Margin="0,8" Text="{Binding EditShop.Abbr}"/>
+
+
+                                <Button   Grid.Row="3"  Content="〒" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox   Grid.Row="3"  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
+
+                                <Label   Grid.Row="3"  Grid.Column="2"  Content="旧コード" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox  Grid.Row="3"  Grid.Column="3" Margin="0,8" Text="{Binding EditShop.OldCD}"/>
+
+                                <Label Grid.Row="4" Content="住所" VerticalAlignment="Center" Margin="0,8"/>
+                                <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Margin="0,8" Text="{Binding EditShop.Address1}"/>
+                                    <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Address2}"/>
+                                    <TextBox  Grid.Column="2" Margin="0,8" Text="{Binding EditShop.Address3}"/>
+                                </Grid>
+
+                                <Label Grid.Row="5" Content="TEL" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.TelNo}"/>
+
+                                <Label Grid.Row="5" Grid.Column="2" Content="FAX" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Row="5" Grid.Column="3" Margin="0,8" Text="{Binding EditShop.FaxNo}"/>
+
+                                <Label Grid.Row="6" Content="MAIL" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" Text="{Binding EditShop.CustEmail}"/>
+
+                                <Label Grid.Row="7" Content="宛名名称" VerticalAlignment="Center" Margin="0,8"/>
+                                <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox  Grid.Column="0" Margin="0,8" Text="{Binding EditShop.AddressName1}"/>
+                                    <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.AddressName2}"/>
+                                </Grid>
+
+                            <Label Grid.Row="8" Content="部門" VerticalAlignment="Center" Margin="0,8"/>
+
+                            <ComboBox Grid.Row="8" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.Department}"/>
+                            <Button Grid.Row="8" Grid.Column="2" Content="営業担当" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox Grid.Row="8" Grid.Column="3" Margin="0,8" Text="{Binding EditShop.SalesRepCD}"/>
+
+                            <Label Grid.Row="9" Content="店種区分" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="9" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListTenshu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.StoreCate}" />
+                            <Label Grid.Row="9"  Grid.Column="2" Content="在庫管理" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="9" Grid.Column="3"  Margin="0,8" ItemsSource="{Binding ComboListZaiko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.InvManageFLG}"/>
+
+                            <Label Grid.Row="10" Content="移動区分" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="10" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListIdo}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.TransCate}"/>
+
+                            <Label Grid.Row="10" Grid.Column="2" Content="出荷停止" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="10" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListShukka}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.ShipmentStopFlg}"/>
+
+                            <Label  Grid.Row="11" Content="配分ランク01" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox Grid.Row="11" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.AllocRank01}"/>
+                            <Label  Grid.Row="11" Grid.Column="2" Content="配分ランク02" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox  Grid.Row="11" Grid.Column="3" Margin="0,8" Text="{Binding EditShop.AllocRank02}"/>
+
+
+                            <Label Grid.Row="12" Content="自動補充" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="12" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListJido}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.AutoAllocFLG}"/>
+                            <Label Grid.Row="12" Grid.Column="2" Content="ECFLG" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="12" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListEC}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.EcFLG}"/>
+
+                            <Label Grid.Row="13" Content="POS送信区分" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="13" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListPOS}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PosCate}"/>
+                            <Label Grid.Row="13" Grid.Column="2" Content="倉庫区分" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="13" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListSoko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.WarehouseCate}"/>
+
+                            <Label Grid.Row="14" Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
+                            <Grid Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="7.5*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="7.5*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="7.5*"/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <TextBox Grid.Column="0" Margin="0,8" Text="{Binding EditShop.VdateCreate, Converter={StaticResource VdateConverter}}"/>
+                                <Label Grid.Column="1" Content="修正日" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox Grid.Column="2" Margin="0,8" Text="{Binding EditShop.VdateUpdate, Converter={StaticResource VdateConverter}}"/>
+
+                                <Label Grid.Column="3" Content="最終修正者" VerticalAlignment="Center" Margin="0,8"/>
+                                <TextBox  Grid.Column="4" Margin="0,8" Text="{Binding EditShop.EnterEmployeeCD}"/>
+
+                                </Grid>
+                            </Grid>
+                    </TabItem>
+
+                    <TabItem Header="請求関連(Shift+F2)">
+                        <Grid Margin="0,8,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+
+                            <Label    Content="掛率" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.CommissionRate}"/>
+                            <Label    Grid.Column="2" Margin="0,8" Content="セール掛率" VerticalAlignment="Center" />
+                            <TextBox  Grid.Column="3" Margin="0,8" Text="{Binding EditShop.SaleCommRate}"/>
+
+                            <Button Grid.Row="1" Content="請求先" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" Text="{Binding EditShop.InvoiceAddrCD}"/>
+
+                            <Label    Grid.Row="2" Content="請求印刷" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,8" ItemsSource="{Binding Com}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.InvoicePrint}"/>
+                            <Label     Grid.Row="2" Grid.Column="2" Content="入金方法" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox  Grid.Row="2" Grid.Column="3" ItemsSource="{Binding Comb}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PayMethod}"/>
+
+
+                            <Label    Grid.Row="3" Content="締日1" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ClosingDate}"/>
+
+                            <Label    Grid.Row="3"  Grid.Column="2" Content="入金予定日1" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox  Grid.Row="3" Grid.Column="3" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ExpectedPayDate}"/>
+                            <ComboBox  Grid.Row="3" Grid.Column="4" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+
+                            <Label    Grid.Row="4" Content="締日2" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.CloseDate2}"/>
+                            <Label    Grid.Row="4" Grid.Column="2" Content="入金予定日2" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="4" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.XpPayDate2}"/>
+                            <ComboBox Grid.Row="4" Grid.Column="4" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+
+                            <Label    Grid.Row="5" Content="締日3" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.CloseDate3}"/>
+                            <Label    Grid.Row="5" Grid.Column="2" Content="入金予定日3" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="5" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.XpPayDate3}"/>
+                            <ComboBox Grid.Row="5" Grid.Column="4" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+
+                            <Label    Grid.Row="6" Content="下代計算" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,8" ItemsSource="{Binding comboListGeKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceCalcFLG}"/>
+
+                            <Label    Grid.Row="6" Grid.Column="2" Content="下代桁切" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="6" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListGeKiri}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceCutoffSpec}"/>
+
+                            <Label    Grid.Row="6" Grid.Column="4" Content="下代端数" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="6" Grid.Column="5" Margin="0,8" ItemsSource="{Binding ComboListGeHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceFracCate}"/>
+
+                            <Label    Grid.Row="7" Content="消費税計算" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="7" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxCalc}"/>
+
+                            <Label    Grid.Row="7" Grid.Column="2" Content="消費税CD" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="7" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListShoCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxCD}"/>
+
+
+                            <Label    Grid.Row="7" Grid.Column="4" Content="消費税端数" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="7" Grid.Column="5" Margin="0,8" ItemsSource="{Binding ComboListShoHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxFrac}"/>
+
+
+                            <Label   Grid.Row="8" Content="入金率" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox Grid.Row="8" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.PaymentRate}"/>
+
+                            <Label   Grid.Row="8"  Grid.Column="2" Content="与信限度額" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox Grid.Row="8"  Grid.Column="3" Margin="0,8"  Text="{Binding EditShop.CreditLimit}"/>
+
+                            <Label   Grid.Row="8" Grid.Column="4" Content="登録番号" VerticalAlignment="Center" Margin="0,8"/>
+                            <TextBox Grid.Row="8" Grid.Column="5" Margin="0,8"  Text="{Binding EditShop.RegistNum}"/>
+
+                            <Label Grid.Row="9" Content="納品伝票" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="9"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" ItemsSource="{Binding ComboListNohin}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+
+                        </Grid>
+                    </TabItem>
                     
-                    <TabControl Grid.Row="0" Grid.RowSpan="2" BorderThickness="1">
-
-                        <TabItem Header="基本情報(Shift+F1)">
-                            <StackPanel >
-                                <Grid Margin="0,8,0,8">
+                    <TabItem Header="拡張情報(Shift+F3)">
+                        <StackPanel >
+                            <Grid Margin="0,8,0,8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                    
+                                <Grid Grid.Row="0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="8*"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類01" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui01}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD01}"/>
+                                        </Grid>
+                                    </StackPanel>
 
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Label Grid.Row="0" Content="得意先CD" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.TradingCD}" />
-
-                                    <Label Grid.Row="1" Content="得意先名" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1"  Margin="0,8" Text="{Binding EditShop.TradingName}"/>
-
-                                    <Grid Grid.Row="2" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="カナ" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Katakana}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="略称" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Abbr}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="3" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button  Content="〒" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Postal}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="旧コード" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.OldCD}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="4" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="8*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="住所" VerticalAlignment="Center" Margin="0,8"/>
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBox Grid.Column="0" Margin="0,8" Text="{Binding EditShop.Address1}"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.Address2}"/>
-                                                <TextBox  Grid.Column="2" Margin="0,8" Text="{Binding EditShop.Address3}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-                                    
-                                    <Grid Grid.Row="5" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="TEL" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.TelNo}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="FAX" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.FaxNo}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-                                                                      
-                                    <Label Grid.Row="6" Content="MAIL" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.CustEmail}"/>
-
-                                    <Grid Grid.Row="7" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="8*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="宛名名称" VerticalAlignment="Center" Margin="0,8"/>
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBox  Grid.Column="0" Margin="0,8" Text="{Binding EditShop.AddressName1}"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.AddressName2}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="8" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="部門" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.Department}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button Content="営業担当" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.SalesRepCD}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="9" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="店種区分" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListTenshu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.StoreCate}" />
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="在庫管理" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1"  Margin="0,8" ItemsSource="{Binding ComboListZaiko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.InvManageFLG}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="10" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="移動区分" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListIdo}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.TransCate}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="出荷停止" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShukka}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.ShipmentStopFlg}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="11" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="配分ランク01" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.AllocRank01}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="配分ランク02" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.AllocRank02}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-                                    
-                                    <Grid Grid.Row="12" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="自動補充" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListJido}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.AutoAllocFLG}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="ECFLG" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListEC}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.EcFLG}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-                                    
-                                    <Grid Grid.Row="13" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="POS送信区分" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListPOS}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PosCate}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="倉庫区分" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListSoko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.WarehouseCate}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-                                    
-                                    <Grid Grid.Row="14" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <StackPanel Grid.Row="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2.5*"/>
-                                                    <ColumnDefinition Width="7.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.VdateCreate, Converter={StaticResource VdateConverter}}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2.5*"/>
-                                                    <ColumnDefinition Width="7.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" Content="修正日" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.VdateUpdate, Converter={StaticResource VdateConverter}}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="6.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" Content="最終修正者" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.EnterEmployeeCD}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                        
-                                    </Grid>
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類02" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui02}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD02}"/>
+                                        </Grid>
+                                    </StackPanel>
                                 </Grid>
-                            </StackPanel>
-                        </TabItem>
-                        <TabItem Header="請求関連(Shift+F2)">
 
-                            <StackPanel >
-                                <Grid Margin="0,8,0,8">
+                                <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="8*"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類03" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui03}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD03}"/>
+                                        </Grid>
+                                    </StackPanel>
 
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>  
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Grid Grid.Row="0" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="掛率" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.CommissionRate}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="セール掛率" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.SaleCommRate}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Button Grid.Row="1" Content="請求先" VerticalAlignment="Center" Margin="0,8"/>
-                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,8" Text="{Binding EditShop.InvoiceAddrCD}"/>
-                            
-                                    
-
-                                    <Grid Grid.Row="2" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="請求印刷" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding Com}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.InvoicePrint}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="入金方法" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" ItemsSource="{Binding Comb}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PayMethod}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="3" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="4*"/>
-                                            <ColumnDefinition Width="6*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="締日1" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ClosingDate}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="4*"/>
-                                                    <ColumnDefinition Width="3*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="入金予定日1" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ExpectedPayDate}"/>
-                                                <ComboBox  Grid.Column="2" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Margin="0,8" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="4" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="4*"/>
-                                            <ColumnDefinition Width="6*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="締日2" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.CloseDate2}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="4*"/>
-                                                    <ColumnDefinition Width="3*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="入金予定日2" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.XpPayDate2}"/>
-                                                <ComboBox  Grid.Column="2" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="5" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="4*"/>
-                                            <ColumnDefinition Width="6*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="締日3" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.CloseDate3}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="4*"/>
-                                                    <ColumnDefinition Width="3*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="入金予定日3" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListOutPutFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.XpPayDate3}"/>
-                                                <ComboBox  Grid.Column="2" Margin="0,8" ItemsSource="{Binding ComboListDay}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="6" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="下代計算" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding comboListGeKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceCalcFLG}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="下代桁切" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListGeKiri}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceCutoffSpec}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="7*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="下代端数" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListGeHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.LowerPriceFracCate}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="7" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="6.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="消費税計算" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoKeisan}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxCalc}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="6.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="消費税CD" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxCD}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="6.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="消費税端数" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListShoHasu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ConsumpTaxFrac}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="8" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="6.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="入金率" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8" Text="{Binding EditShop.PaymentRate}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="6.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="与信限度額" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox  Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.CreditLimit}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="6.5*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="登録番号" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.RegistNum}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Label Grid.Row="9" Content="納品伝票" VerticalAlignment="Center" Margin="0,8"/>
-                                    <ComboBox Grid.Row="9"  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListNohin}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
-
-                                    <Border Grid.Row="10" Grid.RowSpan="6" Visibility="Hidden" BorderBrush="Gray" BorderThickness="1">
-                                        
-                                    </Border>
-                                    
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類04" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui04}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD04}"/>
+                                        </Grid>
+                                    </StackPanel>
                                 </Grid>
-                            </StackPanel>
 
-                        </TabItem>
-                        <TabItem Header="拡張情報(Shift+F3)">
-                            <StackPanel >
-                                <Grid Margin="0,8,0,8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類01" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui01}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD01}"/>
-                                            </Grid>
-                                        </StackPanel>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類05" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui05}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD05}"/>
+                                        </Grid>
+                                    </StackPanel>
 
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類02" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui02}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD02}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類03" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui03}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD03}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類04" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui04}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD04}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類05" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui05}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD05}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類06" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui06}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD06}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類07" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui07}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD07}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類08" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui08}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD08}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="4">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類09" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui09}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD09}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類10" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui10}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD10}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類11" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui11}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD11}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類12" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui12}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD12}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="6">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類13" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui13}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD13}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類14" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui14}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD14}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="7">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類15" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui15}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD15}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類16" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui16}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD16}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="8">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類17" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui17}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD17}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類18" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui18}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD18}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="9">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類19" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui19}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD19}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="分類20" VerticalAlignment="Center" Margin="0,8"/>
-                                                <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui20}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD20}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="10">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="開店日" VerticalAlignment="Center" Margin="0,8"/>
-                                                <DatePicker Grid.Column="1" Margin="0,8" Text="{Binding EditShop.StartDate}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="閉店日" VerticalAlignment="Center" Margin="0,8"/>
-                                                <DatePicker Grid.Column="1" Margin="0,8" Text="{Binding EditShop.EndDate}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="11">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="4*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="4*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label  Content="棚卸日" VerticalAlignment="Center" Margin="0,8"/>
-                                        <DatePicker Grid.Column="1" Margin="0,8" Text="{Binding EditShop.InvDate}"/>
-                                        <Label Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
-                                        <DatePicker Grid.Column="3" Margin="0,8" Text="{Binding EditShop.InvDateEND}"/>
-                                    </Grid>
-
-                                    <Grid Grid.Row="12" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="坪数" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.Area}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label  Content="営業時間" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.BusinHours1}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="13">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button  Content="UUID取得" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.TerminalID}"/>
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="8*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Column="0" Content="備考" VerticalAlignment="Center" Margin="0,8"/>
-                                                <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.Notes}"/>
-                                            </Grid>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <Grid Grid.Row="14">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="開始時刻" VerticalAlignment="Center" Margin="0,8"/>
-                                        <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListHour}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Hour1}"/>
-                                        <Label Grid.Column="2" Content="時" VerticalAlignment="Center" Margin="0,8"/>
-                                        <ComboBox  Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Min1}"/>
-                                        <Label Grid.Column="4" Content="分" VerticalAlignment="Center" Margin="0,8"/>
-                                        <ComboBox  Grid.Column="5" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Sec1}"/>
-                                        <Label Grid.Column="6" Content="秒" VerticalAlignment="Center" Margin="0,8"/>
-                                    </Grid>
-
-                                    <Grid Grid.Row="15">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Label Grid.Column="0" Content="終了時刻" VerticalAlignment="Center" Margin="0,8"/>
-                                        <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListHour}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Hour2}"/>
-                                        <Label Grid.Column="2" Content="時" VerticalAlignment="Center" Margin="0,8"/>
-                                        <ComboBox  Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Min2}"/>
-                                        <Label Grid.Column="4" Content="分" VerticalAlignment="Center" Margin="0,8"/>
-                                        <ComboBox  Grid.Column="5" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Sec2}"/>
-                                        <Label Grid.Column="6" Content="秒" VerticalAlignment="Center" Margin="0,8"/>
-                                    </Grid>
-
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類06" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui06}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD06}"/>
+                                        </Grid>
+                                    </StackPanel>
                                 </Grid>
-                            </StackPanel>
-                        </TabItem>
-                    </TabControl>
-                <Grid  Grid.Row="1" Margin="8,8,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
 
-                    <Button Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
-                    <Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
-                    <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
-                    <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
-                </Grid>
+                                <Grid Grid.Row="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類07" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui07}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD07}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類08" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui08}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD08}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類09" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui09}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD09}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類10" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui10}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD10}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類11" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui11}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD11}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類12" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui12}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD12}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類13" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui13}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD13}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類14" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui14}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD14}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="7">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類15" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui15}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD15}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類16" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui16}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD16}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類17" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui17}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD17}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類18" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui18}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD18}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="9">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類19" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui19}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD19}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="分類20" VerticalAlignment="Center" Margin="0,8"/>
+                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui20}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD20}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="開店日" VerticalAlignment="Center" Margin="0,8"/>
+                                            <DatePicker Grid.Column="1" Margin="0,8" Text="{Binding EditShop.StartDate}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="閉店日" VerticalAlignment="Center" Margin="0,8"/>
+                                            <DatePicker Grid.Column="1" Margin="0,8" Text="{Binding EditShop.EndDate}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="11">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label  Content="棚卸日" VerticalAlignment="Center" Margin="0,8"/>
+                                    <DatePicker Grid.Column="1" Margin="0,8" Text="{Binding EditShop.InvDate}"/>
+                                    <Label Grid.Column="2" Content="~" VerticalAlignment="Center" Margin="0,8" HorizontalAlignment="Center"/>
+                                    <DatePicker Grid.Column="3" Margin="0,8" Text="{Binding EditShop.InvDateEND}"/>
+                                </Grid>
+
+                                <Grid Grid.Row="12" Grid.ColumnSpan="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="坪数" VerticalAlignment="Center" Margin="0,8"/>
+                                            <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.Area}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Content="営業時間" VerticalAlignment="Center" Margin="0,8"/>
+                                            <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.BusinHours1}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="13">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button  Content="UUID取得" VerticalAlignment="Center" Margin="0,8"/>
+                                            <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.TerminalID}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="備考" VerticalAlignment="Center" Margin="0,8"/>
+                                            <TextBox Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.Notes}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="開始時刻" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListHour}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Hour1}"/>
+                                    <Label Grid.Column="2" Content="時" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox  Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Min1}"/>
+                                    <Label Grid.Column="4" Content="分" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox  Grid.Column="5" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Sec1}"/>
+                                    <Label Grid.Column="6" Content="秒" VerticalAlignment="Center" Margin="0,8"/>
+                                </Grid>
+
+                                <Grid Grid.Row="15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="終了時刻" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListHour}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Hour2}"/>
+                                    <Label Grid.Column="2" Content="時" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox  Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Min2}"/>
+                                    <Label Grid.Column="4" Content="分" VerticalAlignment="Center" Margin="0,8"/>
+                                    <ComboBox  Grid.Column="5" Margin="0,8" ItemsSource="{Binding ComboListMinSec}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding Sec2}"/>
+                                    <Label Grid.Column="6" Content="秒" VerticalAlignment="Center" Margin="0,8"/>
+                                </Grid>
+
+                            </Grid>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+                
             </Grid>
-        </Border>
+        <!--</Border>-->
 
-        <Button Grid.Row="2" Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
+            <Grid  Grid.Row="1" Margin="8,8,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Style="{DynamicResource AddIconBtn}" Command="{Binding DoInsertCommand}"/>
+                <Button Style="{DynamicResource UpdateIconBtn}" Grid.Column="2" Command="{Binding DoUpdateCommand}"/>
+                <Button Style="{DynamicResource DeleteIconBtn}" Grid.Column="4" Command="{Binding DoDeleteCommand}"/>
+                <Button Style="{DynamicResource PrintIconBtn}" Grid.Column="6" Command="{Binding DoPrintCommand}"/>
+            </Grid>
+            <Button Grid.Row="2" Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
     </Grid>
     </Grid>
 </Window>

@@ -403,6 +403,30 @@ namespace CvnetClient.Utils
 
             csv_table = table;
         }
+
+        public async Task LoadHeaderFromUrl(string headerUrl) {
+            using var http = new HttpClient();
+
+            // 🟢 Baca sebagai byte dan decode dengan Shift-JIS
+            var headerBytes = await http.GetByteArrayAsync(headerUrl);
+
+            string headerText = Encoding.GetEncoding("shift_jis").GetString(headerBytes);
+
+            string[] headerCells = headerText.Trim().Split(',');
+            DataTable table = new DataTable();
+            foreach (var col in headerCells)
+                table.Columns.Add(col.Trim());
+            csv_table = table;
+
+            table.Rows.InsertAt(table.NewRow(),0);
+            int i = 0;
+            foreach (var line in headerCells)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;                
+                table.Rows[0][i] = line.Trim();
+                i++;
+            }
+        }
         #endregion
 
         #region List Features 
