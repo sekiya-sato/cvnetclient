@@ -238,6 +238,8 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                     <DataGrid x:Name="ListDetail" Grid.Row="2"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     ItemsSource="{Binding ListDetailGenka}"
+                    Style="{DynamicResource WinGridData}"
+                    AutoGenerateColumns="False"
                     AlternationCount="999999"
                     IsSynchronizedWithCurrentItem="True"
                     HeadersVisibility="Column"                         
@@ -249,7 +251,10 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                     HorizontalGridLinesBrush="#B0B0B0"
                     VerticalGridLinesBrush="#B0B0B0"
                     BorderBrush="#707070"
-                    BorderThickness="1">
+                    BorderThickness="1"
+                    CanUserAddRows = "False"
+                    CanUserDeleteRows = "False"
+                    SelectionMode = "Single">
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="Padding" Value="0"/>
@@ -321,7 +326,7 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
+                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="商品CD" FontWeight="Bold"/>
                                             <TextBlock Text="商品名" FontWeight="Bold"/>
                                         </StackPanel>
@@ -340,9 +345,9 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding ProductCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Height="30" FontSize="12"  Text="{Binding ProductCD}" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Height="30" Text="{Binding ProductName}" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                             </Border>
                                         </Grid>
 
@@ -354,7 +359,7 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                             <DataGridTemplateColumn Width="*">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
-                                        <StackPanel HorizontalAlignment="Center">
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                                             <TextBlock Text="メーカー品番" FontWeight="Bold" HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
@@ -372,7 +377,7 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding MakerNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding MakerNo}" Margin="0"/>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -400,9 +405,9 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding RetailPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Height="30" Text="{Binding RetailPrice}" Margin="0" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding MarkupRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Height="30" Text="{Binding MarkupRate}" Margin="0"/>
                                             </Border>
                                         </Grid>
                                     </DataTemplate>
@@ -431,7 +436,7 @@ d:DataContext="{d:DesignInstance Type=vm:SubDlg01GenhenkouViewModel, IsDesignTim
                                                 <ColumnDefinition Width="4*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBox Grid.Column="0" Grid.ColumnSpan="2"  Text="{Binding OriCostPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+                                            <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Height="30" Text="{Binding OriCostPrice}" Margin="0" />
                                             <Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
                                                 <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding NewCostPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
                                             </Border>
