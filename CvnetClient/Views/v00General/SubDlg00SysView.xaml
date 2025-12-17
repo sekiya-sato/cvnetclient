@@ -1,0 +1,707 @@
+﻿<Window
+    x:Class="CvnetClient.Views.SubDlg00SysView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CvnetClient.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:CvnetClient.Views"
+    xmlns:utils="clr-namespace:CvnetClient.Utils"
+    xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+    Title="メンテナンス : システム管理マスタ"
+    Height="750"
+    Style="{StaticResource MasterWindowStyle2}"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <utils:VdateConverter x:Key="VdateConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Grid>
+        <Border
+            Grid.Column="2"
+            Padding="5"
+            Background="#FFEEEEEE">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Border
+                    Padding="5"
+                    Background="White"
+                    CornerRadius="6">
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="9*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+
+                        <TabControl Grid.Row="0" BorderThickness="1">
+
+                            <TabItem Header="基本情報 (Shift+F11)">
+                                <Border
+                                    Padding="5,5,5,15"
+                                    Background="#FFEBF7F1"
+                                    CornerRadius="10">
+                                    <Grid Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="4*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="4*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+
+                                        </Grid.RowDefinitions>
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="自社名" />
+                                        <TextBox
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="0,5,0,5"
+                                            Text="{Binding EditSupplier.SupplierCD}" />
+
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            Margin="10,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Content="登録番号" />
+                                        <!--  Purchase name  -->
+                                        <Grid Grid.Row="0" Grid.Column="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Margin="0,5" Text="{Binding EditSupplier.PostalCode}" />
+                                        </Grid>
+
+                                        <Label
+                                            Grid.Row="1"
+                                            HorizontalAlignment="left"
+                                            Content="〒" />
+                                        <Grid Grid.Row="1" Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Margin="0,5" Text="{Binding EditSupplier.PostalCode}" />
+                                        </Grid>
+
+                                        <Label
+                                            Grid.Row="2"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="住所" />
+                                        <!--  address  -->
+
+                                        <Grid
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Margin="0,5,10,5">
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0" Text="{Binding EditSupplier.Address1}" />
+                                            <TextBox Grid.Column="1" Text="{Binding EditSupplier.Address2}" />
+                                            <TextBox Grid.Column="3" Text="{Binding EditSupplier.Address3}" />
+                                        </Grid>
+
+                                        <Grid Grid.Row="3" Grid.ColumnSpan="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label
+                                                Margin="0,5"
+                                                VerticalAlignment="Center"
+                                                Content="TEL" />
+                                            <TextBox
+                                                Grid.Column="1"
+                                                Margin="0,5"
+                                                Text="{Binding EditSupplier.Tel}" />
+                                            <Label
+                                                Grid.Column="2"
+                                                Margin="10,5"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Content="FAX" />
+                                            <TextBox
+                                                Grid.Column="3"
+                                                Margin="0,5,10,5"
+                                                Text="{Binding EditSupplier.Fax}" />
+                                            <Label
+                                                Grid.Column="4"
+                                                Margin="10,5"
+                                                VerticalAlignment="Center"
+                                                Content="管理者Mail" />
+                                            <TextBox
+                                                Grid.Column="5"
+                                                Margin="-50,5,10,5"
+                                                Text="{Binding EditSupplier.SupplierMail}" />
+                                        </Grid>
+
+                                        <Label
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="ホームページ" />
+                                        <TextBox
+                                            Grid.Row="4"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Margin="0,5,10,5"
+                                            Text="{Binding EditSupplier.SupplierMail}" />
+
+                                        <Label
+                                            Grid.Row="5"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="メールサーバ" />
+                                        <!--  Address name  -->
+
+                                        <TextBox
+                                            Grid.Row="5"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Text="{Binding EditSupplier.RecipientName1}" />
+
+                                        <Label
+                                            Grid.Row="6"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="振込先1" />
+                                        <!--  Address name  -->
+
+                                        <TextBox
+                                            Grid.Row="6"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Text="{Binding EditSupplier.RecipientName1}" />
+
+
+                                        <Label
+                                            Grid.Row="7"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="振込先2" />
+                                        <!--  Address name  -->
+
+                                        <TextBox
+                                            Grid.Row="7"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Text="{Binding EditSupplier.RecipientName1}" />
+                                        <Label
+                                            Grid.Row="8"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="振込先3" />
+                                        <!--  Address name  -->
+
+                                        <TextBox
+                                            Grid.Row="8"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Text="{Binding EditSupplier.RecipientName1}" />
+                                        <Label
+                                            Grid.Row="9"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="メッセージ1" />
+                                        <!--  Address name  -->
+
+                                        <TextBox
+                                            Grid.Row="9"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Text="{Binding EditSupplier.RecipientName1}" />
+                                        <Label
+                                            Grid.Row="10"
+                                            Margin="0,5"
+                                            VerticalAlignment="Center"
+                                            Content="メッセージ2" />
+                                        <TextBox
+                                            Grid.Row="10"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="3"
+                                            Text="{Binding EditSupplier.RecipientName1}" />
+
+                                        <Grid
+                                            Grid.Row="11"
+                                            Grid.ColumnSpan="4"
+                                            Margin="0,10,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="10*" />
+
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Grid.Column="0" Content="作成日" />
+
+                                            <TextBox
+                                                Grid.Column="1"
+                                                IsEnabled="False"
+                                                Style="{DynamicResource ReadOnlyTextBox}"
+                                                Text="{Binding EditSupplier.VdateCreate, Converter={StaticResource VdateConverter}}" />
+
+                                            <Label
+                                                Grid.Column="2"
+                                                Margin="10,0,0,0"
+                                                HorizontalAlignment="Center"
+                                                Content="修正日" />
+                                            <TextBox
+                                                Grid.Column="3"
+                                                IsEnabled="False"
+                                                Style="{DynamicResource ReadOnlyTextBox}"
+                                                Text="{Binding EditSupplier.VdateUpdate, Converter={StaticResource VdateConverter}}" />
+
+                                        </Grid>
+                                    </Grid>
+
+                                </Border>
+                            </TabItem>
+                            <TabItem Header="システム設定 (Shift+F2)">
+
+                                <Border
+                                    Padding="5,5,5,15"
+                                    Background="#FFF2F7EB"
+                                    CornerRadius="10">
+                                    <StackPanel>
+                                        <Grid Margin="0,5,0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="6*" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="6*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Label
+                                                Grid.Row="0"
+                                                Margin="0,5"
+                                                VerticalAlignment="Center"
+                                                Content="支払先" />
+                                            <Grid
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBox
+                                                    Grid.Column="0"
+                                                    Margin="0,8"
+                                                    Text="{Binding EditSupplier.Rate1}" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Margin="10,8"
+                                                    HorizontalAlignment="Right"
+                                                    Content="自社締日" />
+
+                                                <TextBox
+                                                    Grid.Column="2"
+                                                    Margin="0,8"
+                                                    Text="{Binding EditSupplier.Rate2}" />
+                                                <Label
+                                                    Grid.Column="3"
+                                                    Margin="10,8"
+                                                    HorizontalAlignment="Right"
+                                                    Content="修正有効日数" />
+
+                                                <TextBox
+                                                    Grid.Column="4"
+                                                    Margin="0,8"
+                                                    Text="{Binding EditSupplier.DueDate}" />
+                                                <Label
+                                                    Grid.Column="5"
+                                                    Margin="10,8"
+                                                    HorizontalAlignment="Right"
+                                                    Content="先付有効日数" />
+
+                                                <TextBox
+                                                    Grid.Column="6"
+                                                    Margin="0,8"
+                                                    Text="{Binding EditSupplier.MinimumAmount}" />
+
+                                            </Grid>
+
+                                            <Label
+                                                Grid.Row="2"
+                                                Margin="0,5"
+                                                VerticalAlignment="Center"
+                                                Content="支払印刷" />
+                                            <!--  payment printing  -->
+                                            <ComboBox
+                                                Grid.Row="2"
+                                                Grid.Column="1"
+                                                Margin="0,5"
+                                                DisplayMemberPath="Value"
+                                                ItemsSource="{Binding ComboPaymentPrintFlag}"
+                                                SelectedValue="{Binding EditSupplier.PaymentPrintFlag}"
+                                                SelectedValuePath="Key"
+                                                Style="{StaticResource SearchableComboBox1}" />
+
+                                            <Label
+                                                Grid.Row="2"
+                                                Grid.Column="2"
+                                                Margin="10,5,10,5"
+                                                VerticalAlignment="Bottom"
+                                                Content="支払方法" />
+                                            <!--  payment method  -->
+                                            <ComboBox
+                                                Grid.Row="2"
+                                                Grid.Column="3"
+                                                Margin="0,5"
+                                                DisplayMemberPath="Value"
+                                                ItemsSource="{Binding ComboPaymentMethod}"
+                                                SelectedValue="{Binding EditSupplier.PaymentMethod}"
+                                                SelectedValuePath="Key"
+                                                Style="{StaticResource SearchableComboBox1}" />
+
+                                            <Grid Grid.Row="4" Grid.ColumnSpan="4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="2*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label
+                                                    Grid.Column="0"
+                                                    Margin="0,5"
+                                                    VerticalAlignment="Center"
+                                                    Content="消費税CD" />
+                                                <!--  consumption tax CD  -->
+                                                <ComboBox
+                                                    Grid.Column="1"
+                                                    Margin="0,5,0,5"
+                                                    DisplayMemberPath="Value"
+                                                    ItemsSource="{Binding ComboTaxCd}"
+                                                    SelectedValue="{Binding EditSupplier.TaxCd}"
+                                                    SelectedValuePath="Key"
+                                                    Style="{StaticResource SearchableComboBox1}" />
+
+                                                <Label
+                                                    Grid.Column="2"
+                                                    Margin="10,5"
+                                                    VerticalAlignment="Center"
+                                                    Content="消費税端数" />
+                                                <!--  Consumption tax fraction  -->
+                                                <ComboBox
+                                                    Grid.Column="3"
+                                                    Margin="0,5,0,5"
+                                                    DisplayMemberPath="Value"
+                                                    ItemsSource="{Binding ComboTaxRounding}"
+                                                    SelectedValue="{Binding EditSupplier.TaxRounding}"
+                                                    SelectedValuePath="Key"
+                                                    Style="{StaticResource SearchableComboBox1}" />
+
+                                                <Label
+                                                    Grid.Column="4"
+                                                    Margin="10,5"
+                                                    VerticalAlignment="Center"
+                                                    Content="消費税計算" />
+                                                <!--  Consumption tax calculation  -->
+                                                <ComboBox
+                                                    Grid.Column="5"
+                                                    Margin="0,5,0,5"
+                                                    DisplayMemberPath="Value"
+                                                    ItemsSource="{Binding ComboTaxCalculationMethod}"
+                                                    SelectedValue="{Binding EditSupplier.TaxCalculationMethod}"
+                                                    SelectedValuePath="Key"
+                                                    Style="{StaticResource SearchableComboBox1}" />
+
+
+                                            </Grid>
+                                            <Label
+                                                Grid.Row="5"
+                                                Margin="0,8"
+                                                VerticalAlignment="Center"
+                                                Content="セール上代掛率" />
+                                            <Grid
+                                                Grid.Row="5"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  Multiplication rate  -->
+                                                <Grid Grid.Column="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="6*" />
+                                                        <ColumnDefinition Width="4*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox
+                                                        Grid.Column="0"
+                                                        Margin="0,8"
+                                                        Text="{Binding EditSupplier.Rate1}" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Margin="0,8"
+                                                        HorizontalAlignment="Left"
+                                                        Content="%" />
+                                                </Grid>
+                                                <Grid Grid.Column="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="6*" />
+                                                        <ColumnDefinition Width="4*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox
+                                                        Grid.Column="0"
+                                                        Margin="0,8"
+                                                        Text="{Binding EditSupplier.Rate2}" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Margin="0,8"
+                                                        HorizontalAlignment="Left"
+                                                        Content="%" />
+                                                </Grid>
+                                                <Grid Grid.Column="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="6*" />
+                                                        <ColumnDefinition Width="4*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox
+                                                        Grid.Column="0"
+                                                        Margin="0,8"
+                                                        Text="{Binding EditSupplier.DueDate}" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Margin="0,8"
+                                                        HorizontalAlignment="Left"
+                                                        Content="%" />
+                                                </Grid>
+                                                <Grid Grid.Column="3">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="6*" />
+                                                        <ColumnDefinition Width="4*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox
+                                                        Grid.Column="0"
+                                                        Margin="0,8"
+                                                        Text="{Binding EditSupplier.MinimumAmount}" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Margin="0,8"
+                                                        HorizontalAlignment="Left"
+                                                        Content="%" />
+                                                </Grid>
+                                            </Grid>
+                                            <GroupBox
+                                                Grid.Row="6"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="2"
+                                                Padding="10"
+                                                BorderBrush="#FFEEEEEE"
+                                                BorderThickness="2"
+                                                Foreground="Black"
+                                                Header="消費税1-3設定">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="100*" />
+                                                        <ColumnDefinition Width="100*" />
+                                                        <ColumnDefinition Width="100*" />
+                                                        <ColumnDefinition Width="50*" />
+
+
+
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <ComboBox
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboClosingDay}"
+                                                        SelectedValue="{Binding EditSupplier.ClosingDay, Mode=TwoWay}"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+                                                    <Label
+                                                        Grid.Column="1"
+                                                        Margin="15,5,0,5"
+                                                        VerticalAlignment="Center"
+                                                        Content="支払予定日1" />
+                                                    <!--  Scheduled payment month  -->
+                                                    <ComboBox
+                                                        Grid.Row="0"
+                                                        Grid.Column="2"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboScheduledPaymentMonth}"
+                                                        SelectedValue="{Binding EditSupplier.ScheduledPaymentMonth}"
+                                                        SelectedValuePath="Key"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+                                                    <ComboBox
+                                                        Grid.Row="0"
+                                                        Grid.Column="3"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboScheduledPaymentDay}"
+                                                        SelectedValue="{Binding EditSupplier.ScheduledPaymentDay, Mode=TwoWay}"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+
+                                                    <ComboBox
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboClosingDay2}"
+                                                        SelectedValue="{Binding EditSupplier.ClosingDay2, Mode=TwoWay}"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+                                                    <Label
+                                                        Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Margin="15,5,0,5"
+                                                        VerticalAlignment="Center"
+                                                        Content="支払予定日2" />
+                                                    <ComboBox
+                                                        Grid.Row="1"
+                                                        Grid.Column="2"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboScheduledPaymentMonth2}"
+                                                        SelectedValue="{Binding EditSupplier.ScheduledPaymentMonth2}"
+                                                        SelectedValuePath="Key"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+                                                    <ComboBox
+                                                        Grid.Row="1"
+                                                        Grid.Column="3"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboScheduledPaymentDay2}"
+                                                        SelectedValue="{Binding EditSupplier.ScheduledPaymentDay2, Mode=TwoWay}"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+
+                                                    <ComboBox
+                                                        Grid.Row="2"
+                                                        Grid.Column="0"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboClosingDay3}"
+                                                        SelectedValue="{Binding EditSupplier.ClosingDay3, Mode=TwoWay}"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+                                                    <Label
+                                                        Grid.Row="2"
+                                                        Grid.Column="1"
+                                                        Margin="15,5,0,5"
+                                                        VerticalAlignment="Center"
+                                                        Content="支払予定日3" />
+                                                    <ComboBox
+                                                        Grid.Row="2"
+                                                        Grid.Column="2"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboScheduledPaymentMonth3}"
+                                                        SelectedValue="{Binding EditSupplier.ScheduledPaymentMonth3}"
+                                                        SelectedValuePath="Key"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+                                                    <ComboBox
+                                                        Grid.Row="2"
+                                                        Grid.Column="3"
+                                                        Margin="0,5,0,5"
+                                                        DisplayMemberPath="Value"
+                                                        ItemsSource="{Binding ComboScheduledPaymentDay3}"
+                                                        SelectedValue="{Binding EditSupplier.ScheduledPaymentDay3, Mode=TwoWay}"
+                                                        Style="{StaticResource SearchableComboBox1}" />
+
+                                                </Grid>
+                                            </GroupBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </TabItem>
+
+                        </TabControl>
+                        <Grid Grid.Row="1" Margin="8,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <Button
+                                    Margin="30,0"
+                                    Command="{Binding DoUpdateCommand}"
+                                    Style="{DynamicResource UpdateIconBtn}" />
+                                <Button
+                                    Margin="30,0"
+                                    Command="{Binding DoPrintCommand}"
+                                    Style="{DynamicResource PrintIconBtn}" />
+                            </StackPanel>
+
+                        </Grid>
+                    </Grid>
+
+                </Border>
+
+                <Button
+                    Grid.Row="2"
+                    Margin="35,0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding ExitCommand}"
+                    IsCancel="True"
+                    Style="{DynamicResource BackBtn}" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
