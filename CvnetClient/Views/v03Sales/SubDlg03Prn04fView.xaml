@@ -79,7 +79,6 @@
 									  ItemsSource="{Binding Shimebi}"
 									  DisplayMemberPath="Value"
 								      SelectedValuePath="Key"
-									  SelectedItem="{Binding SelectedSelectDeadline}"
 									  SelectedValue="{Binding ChooseMenu.DeadLine}"
 									  Style="{StaticResource SearchableComboBox1}"/>
 
@@ -95,8 +94,8 @@
 							ShowButtonSpinner="True" 
 							TimePickerVisibility="Collapsed" 
 							AllowTextInput="False"
-							Value="{Binding Condition.DateFrom}" 
-							Height="34"/>
+							Value="{Binding SelectShop.DateFrom}" 
+							Height="30"/>
 
 						<Label Grid.Row="4" Grid.Column="0"
 								   Content="請求先"
@@ -122,7 +121,6 @@
 												MstName="{Binding MstName}"
 												StyleDesign="2"
 												SelectedValue="{Binding SelectShop.FromWorkerShopCd}"
-												Param2="{Binding ChooseMenu.DeadLine}"
 												Command="{Binding FindFromWorkerShopCommand}" />
 						</Grid>
 
@@ -146,55 +144,60 @@
 							<uc:CvnetBtListView Grid.Column="1"
 												MstName="{Binding MstName}"
 												StyleDesign="2"
-												Param2="{Binding ChooseMenu.DeadLine}"
 												SelectedValue="{Binding SelectShop.FromWorkerShopCd}"
 												Command="{Binding FindToWorkerShopCommand}"/>
 						</Grid>
 
-						<Label Grid.Row="7" Grid.Column="0"
+						
+							<Label Grid.Row="7" Grid.Column="0"
 								   Content="出力単位"
 								   VerticalAlignment="Center"
 								   Margin="0,0,8,0"/>
+						<StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal">
+							<RadioButton Content="伝票単位"
+								 FontStyle="Normal"
+								 IsChecked="{Binding IsOutputUnitVoucher}"
+								 Margin="0,0,10,0"/>
+							<RadioButton Content="商品CD単位"
+								 FontStyle="Normal"
+								 IsChecked="{Binding IsOutputUnitProduct}"
+								 Margin="0,0,10,0"/>
+						</StackPanel>
 
-						<RadioButton Grid.Row="7" Grid.Column="1" Content="伝票単位"
-											 FontStyle="Normal" Grid.ColumnSpan="2"
-											 IsChecked="{Binding IsOutputUnitVoucher}"
-											 Margin="0,0,10,0"/>
-						<RadioButton Grid.Row="7" Grid.Column="2" Content="商品CD単位"
-											 FontStyle="Normal" Grid.ColumnSpan="2"
-											 IsChecked="{Binding IsOutputUnitProduct}"
-											 Margin="0,0,10,0"/>
-
-						<Label Grid.Row="9" Grid.Column="0"
+						
+							<Label Grid.Row="9" Grid.Column="0"
 								   Content="出力タイプ"
 								   VerticalAlignment="Center"
-								   Margin="0,0,8,0"/>
+									Margin="0,0,8,0"/>
+						<StackPanel Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal">
+							<RadioButton Grid.Row="9" Grid.Column="1" Content="親のみ"
+								 FontStyle="Normal"
+								 IsChecked="{Binding IsOutputTypeParent}"
+								 Margin="0,0,10,0"/>
+							<RadioButton Grid.Row="9" Grid.Column="2" Content="子明細"
+								 FontStyle="Normal"
+						         IsChecked="{Binding IsOutputTypeSubdetail}"
+								 Margin="0,0,10,0"/>
+						</StackPanel>
 
-						<RadioButton Grid.Row="9" Grid.Column="1" Content="親のみ"
-											 FontStyle="Normal"
-											 IsChecked="{Binding IsOutputTypeParent}"
-											 Margin="0,0,10,0"/>
-						<RadioButton Grid.Row="9" Grid.Column="2" Content="子明細"
-											 FontStyle="Normal"
-									         IsChecked="{Binding IsOutputTypeSubdetail}"
-											 Margin="0,0,10,0"/>
-
-						<TextBlock Grid.Row="11" Grid.Column="0"
-								   Text="出力方法"
+						<Label Grid.Row="11" Grid.Column="0"
+								   Content="出力方法"
 								   VerticalAlignment="Center"
 								   Margin="0,0,8,0"
 								   Visibility="Hidden" />
-
-						<RadioButton Grid.Row="11" Grid.Column="1" Content="印刷"
-											 FontStyle="Normal"
-											 Margin="0,0,10,0"
-											 IsChecked="{Binding IsOutputWayPrint}"
-											 Visibility="Hidden"/>
-						<RadioButton Grid.Row="11" Grid.Column="2" Content="メール"
-											 FontStyle="Normal"
-											 IsChecked="{Binding IsOutputWayMail}"
-											 Margin="0,0,10,0"
-											 Visibility="Hidden"/>
+						<StackPanel>
+							<RadioButton Grid.Row="11" Grid.Column="1" Content="印刷"
+								 FontStyle="Normal"
+								 Margin="0,0,10,0"
+								 IsChecked="{Binding IsOutputWayPrint}"
+								 Visibility="Hidden"/>
+							<RadioButton Grid.Row="11" Grid.Column="2" Content="メール"
+								 FontStyle="Normal"
+								 IsChecked="{Binding IsOutputWayMail}"
+								 Margin="0,0,10,0"
+								 Visibility="Hidden"/>
+						</StackPanel>
+						
 					</Grid>
 				</GroupBox>
 			</Grid>
@@ -217,7 +220,7 @@
                 Margin="0,0,40,0">
 
 				<Button Content="実行(ENTER)"
-                Style="{DynamicResource ExecButton}"
+                Style="{DynamicResource PrintIconBtn}"
                 Command="{Binding DoPrintCommand}"
                 Margin="0,0,10,0"/>
 
