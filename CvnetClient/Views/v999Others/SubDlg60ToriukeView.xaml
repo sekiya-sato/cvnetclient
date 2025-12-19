@@ -185,16 +185,15 @@ Command="{Binding SelTanto1Command}"/>
 
                 <TextBlock Grid.Column="0" Text="状態:" VerticalAlignment="Center" Margin="0,0,20,0"/>
                 <RadioButton Grid.Column="1" Content="有効" GroupName="SituationType"
- IsChecked="{Binding SelectedSituation, 
+                    IsChecked="{Binding SelectedSituation, 
                      Converter={StaticResource StringToBoolConverter}, 
-                     ConverterParameter=Enabled, Mode=TwoWay}"
-Margin="0,0,20,0"/>
+                     ConverterParameter=Enabled, Mode=TwoWay}" Margin="0,0,20,0"/>
                 <RadioButton Grid.Column="2" Content="解除" GroupName="SituationType"
- IsChecked="{Binding SelectedSituation, 
+                    IsChecked="{Binding SelectedSituation, 
                      Converter={StaticResource StringToBoolConverter}, 
                      ConverterParameter=Cancel, Mode=TwoWay}" Margin="0,0,20,0"/>
                 <RadioButton Grid.Column="3" Content="全て" GroupName="SituationType"
-IsChecked="{Binding SelectedSituation, 
+                    IsChecked="{Binding SelectedSituation, 
                     Converter={StaticResource StringToBoolConverter}, 
                     ConverterParameter=All, Mode=TwoWay}" />
             </Grid>
@@ -208,16 +207,14 @@ IsChecked="{Binding SelectedSituation,
 
                 <TextBlock Grid.Column="0" Text="出力区分:" VerticalAlignment="Center" Margin="0,0,20,0"/>
                 <RadioButton Grid.Column="1" Content="スプール" GroupName="OutputType"
- IsChecked="{Binding SelectedOutput, 
+                    IsChecked="{Binding SelectedOutput, 
                      Converter={StaticResource StringToBoolConverter}, 
-                     ConverterParameter=Spool, Mode=TwoWay}"
-Margin="0,0,20,0"/>
+                     ConverterParameter=Spool, Mode=TwoWay}" Margin="0,0,20,0"/>
                 <RadioButton Grid.Column="2" Content="CSV" GroupName="OutputType"
- IsChecked="{Binding SelectedOutput, 
+                    IsChecked="{Binding SelectedOutput, 
                      Converter={StaticResource StringToBoolConverter}, 
                      ConverterParameter=CSV, Mode=TwoWay}" Margin="0,0,20,0"/>
             </Grid>
-
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal"
                     HorizontalAlignment="Right"
