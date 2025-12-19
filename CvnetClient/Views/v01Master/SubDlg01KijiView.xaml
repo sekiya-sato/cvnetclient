@@ -61,7 +61,7 @@
 
                         <Label Content="生地付属CD" Width="80" VerticalAlignment="Center"/>
                         <TextBox x:Name="fabricInclCd" Text="{Binding FindFabricCd}" Grid.Column="1" Width="240" />
-                        
+
                     </Grid>
 
 
@@ -77,10 +77,10 @@
 								MstName="仕入先"
 								SelectedValue="{Binding FindSupplierCd.Code}"		
 								Command="{Binding SelectSupplierCommand}" />
-						<TextBox Grid.Column="1" Width="240"
+                        <TextBox Grid.Column="1" Width="240"
 								 Text="{Binding FindSupplierCd.Display}"/>
 
-					</Grid>
+                    </Grid>
                     <!--<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
                         <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
 HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
@@ -119,7 +119,7 @@ SelectionMode="Single">
 		Binding="{Binding SupplierCd}"
 		Header="仕入先CD" />
                 </DataGrid.Columns>
-                
+
             </DataGrid>
             <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,0,6,0">
                 <Button Margin="1,6"  Style="{DynamicResource PrevPageBtn}"
@@ -221,7 +221,7 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
 						    DisplayMemberPath="Value" 
 						    SelectedValuePath="Key"
                             Style="{StaticResource SearchableComboBox1}">
-                            
+
                         </ComboBox>
                     </Grid>
 
@@ -292,13 +292,14 @@ BorderBrush="Transparent" BorderThickness="2" Margin="0,8,15,0" Padding="10,0,16
 
                     <Grid Margin="0,0,0,8">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="88*"/>
+                            <ColumnDefinition Width="148*"/>
+                            <ColumnDefinition Width="205*"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Content="最終修正者"
    VerticalAlignment="Center"/>
-                        <TextBox x:Name="latsDateEdit" Grid.Column="1" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditKiji.InpStaffCD}"/>
+                        <TextBox x:Name="latsDateEdit" Style="{DynamicResource ReadOnlyTextBox}" Text="{Binding EditKiji.InpStaffCD}" Grid.ColumnSpan="3" Margin="88,0,0,0"/>
                     </Grid>
 
                     <Grid Margin="8,8,15,8" >

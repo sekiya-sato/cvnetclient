@@ -1,0 +1,50 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CvnetClient.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+    Title="{Binding Title}"
+    Width="400"
+    Height="350"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:SubDlgSel06ViewModel />
+    </Window.DataContext>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="ContentRendered">
+            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    <Border Margin="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="1" Grid.Column="0" Content="出力拡張子"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <RadioButton Grid.Row="1" Grid.Column="1" Content="CSV" Margin="0,0,20,0"/>
+                <RadioButton Grid.Row="1" Grid.Column="2" Content="XML" Margin="20,0,20,0"/>
+            </StackPanel>
+            <Button Grid.Row="2" Grid.Column="2" Content="ファイル出力" Width="90"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="日付補正" />
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="10,0,10,0"/>
+            <Label Grid.Row="3" Grid.Column="2" Content="以前を削除します"/>
+            <Button Grid.Row="4" Grid.Column="2" Content="削除実行"  Width="90"/>
+            <Button Grid.Row="6" Grid.Column="2" Content="戻る(ESC)"  Width="90"/>
+        </Grid>
+    </Border>
+</Window>

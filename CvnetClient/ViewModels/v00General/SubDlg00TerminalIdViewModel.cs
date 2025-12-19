@@ -12,8 +12,6 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using static CvnetClient.ViewModels.SubDlg00PrnMenu01ViewModel;
-using static CvnetClient.ViewModels.SubDlg01ShojanViewModel;
 
 namespace CvnetClient.ViewModels
 {
@@ -112,13 +110,6 @@ namespace CvnetClient.ViewModels
 
                 if (ret.Code == 0)
                 {
-                    //item2.SeqNo = ret.NewSeq;
-                    //item2.SeqNo = item1.SeqNo;
-                    //item2.VdateUpdate = decimal.Parse(ret.VDate);
-                    //item2.VdateUpdate = item1.VdateCreate;
-                    //item2.VdateCreate = item2.VdateUpdate;
-                    //item2.VdateCreate = decimal.Parse(ret.VDate);
-                    //Common.ConvertDotStringDel(item2);
                     ClientLib.MessageBoxOk(this, "登録しました");
                 }
                 else
@@ -134,13 +125,6 @@ namespace CvnetClient.ViewModels
 
                 if (ret.Code == 0)
                 {
-                    //item2.SeqNo = ret.NewSeq;
-                    //item2.SeqNo = item1.SeqNo;
-                    //item2.VdateUpdate = decimal.Parse(ret.VDate);
-                    //item2.VdateUpdate = item1.VdateCreate;
-                    //item2.VdateCreate = item2.VdateUpdate;
-                    //item2.VdateCreate = decimal.Parse(ret.VDate);
-                    //Common.ConvertDotStringDel(item2);
                     ClientLib.MessageBoxOk(this, "登録しました");
                 }
                 else
