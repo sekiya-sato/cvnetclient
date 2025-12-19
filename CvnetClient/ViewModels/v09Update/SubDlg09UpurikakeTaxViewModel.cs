@@ -52,6 +52,7 @@ namespace CvnetClient.ViewModels
             SelectShop.ToWorkerShopCd = "99999999";
         }
         #endregion
+        
         // Display result
         [RelayCommand]
         async Task DoPrintAsync()

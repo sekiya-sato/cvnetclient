@@ -51,12 +51,6 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="*"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="20"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="20"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="20"/>
 					</Grid.RowDefinitions>
 
 					<Grid.ColumnDefinitions>
