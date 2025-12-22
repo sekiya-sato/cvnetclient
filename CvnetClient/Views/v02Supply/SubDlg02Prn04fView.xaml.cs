@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlg01SetjanView.xaml
+    /// Interaction logic for SubDlg02Prn04fView.xaml
     /// </summary>
-    public partial class SubDlg01SetjanView : Window
+    public partial class SubDlg02Prn04fView : Window
     {
-        public SubDlg01SetjanView()
+        public SubDlg02Prn04fView()
         {
             InitializeComponent();
         }
