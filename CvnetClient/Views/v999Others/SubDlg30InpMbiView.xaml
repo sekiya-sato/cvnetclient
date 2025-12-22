@@ -52,19 +52,13 @@
 							Title="ブランド" 
 							MstName="ブランド"
                             StyleDesign="1"
-							SelectedValue ="{Binding SearchCond.Brd}"
+							SelectedValue ="{Binding SearchCond.Brd.Code}"
 							Command="{Binding SelBrandCommand}" />
                 <TextBox Grid.Column="3"
 				 Margin="5,0,0,0"
 				 d:Text="ブランド：Data"  
-				 TextWrapping="Wrap" >
-                        <TextBox.Text>
-                            <MultiBinding StringFormat='{}{0} {1}'>
-                                <Binding Path="SearchCond.Brd" />
-                                <Binding Path="SearchCond.BrdName" />
-                            </MultiBinding>
-                        </TextBox.Text>
-                    </TextBox>
+				 TextWrapping="Wrap" Text="{Binding SearchCond.Brd.Display}">
+                </TextBox>
                
             </Grid>
 
@@ -81,16 +75,10 @@
                 <StackPanel  Grid.Column="1" Orientation="Horizontal" Margin="0">
                     <TextBox MinWidth="350"
                             d:Text="アイテム：Data"  
-                            TextWrapping="Wrap">
-                        <TextBox.Text>
-                            <MultiBinding StringFormat='{}{0} {1}'>
-                                <Binding Path="SearchCond.ItemFrom" />
-                                <Binding Path="SearchCond.ItemFromName" />
-                            </MultiBinding>
-                        </TextBox.Text>
+                            TextWrapping="Wrap" Text="{Binding SearchCond.ItemFrom.Display}">
                     </TextBox>
                     <uc:CvnetBtListView MstName="アイテム" StyleDesign="2" 
-                    SelectedValue ="{Binding SearchCond.ItemFrom}"
+                    SelectedValue ="{Binding SearchCond.ItemFrom.Code}"
                     Command="{Binding SelItem1Command}"/>
                 </StackPanel>
 
@@ -98,16 +86,10 @@
                 <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="5,0,0,0">
                     <TextBox MinWidth="350"
                             d:Text="アイテム：Data"  
-                            TextWrapping="Wrap">
-                        <TextBox.Text>
-                            <MultiBinding StringFormat='{}{0} {1}'>
-                                <Binding Path="SearchCond.ItemTo" />
-                                <Binding Path="SearchCond.ItemToName" />
-                            </MultiBinding>
-                        </TextBox.Text>
+                            TextWrapping="Wrap" Text="{Binding SearchCond.ItemTo.Display}">
                     </TextBox>
                     <uc:CvnetBtListView MstName="アイテム" StyleDesign="2" 
-                    SelectedValue ="{Binding SearchCond.ItemTo}"
+                    SelectedValue ="{Binding SearchCond.ItemTo.Code}"
                     Command="{Binding SelItem2Command}"/>
                 </StackPanel>
             </Grid>
