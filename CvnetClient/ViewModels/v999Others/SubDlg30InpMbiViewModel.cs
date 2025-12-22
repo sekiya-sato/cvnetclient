@@ -25,30 +25,27 @@ namespace CvnetClient.ViewModels
                 OnInitBase(init_para, init_flg);
                 SearchCond = new Search();
                 SearchCond.Date = DateTime.Now;
-                SearchCond.ItemTo = "zzzzzzzzzzzzzz";
+                SearchCond.ItemTo = new BtListHelper("zzzzzzzzzzzzzz","");
             }
-            //SearchCond.Date = DateOnly.TryParse(DateTime.Now.ToString(), out null);
         }
         #endregion
         #region Function
         [RelayCommand]
         void DoSearch() {
-            int strFLG = 0;
             string strSql = "";
-            //var ret_csv = null;
             string[] wrk_para = new string[5];
             wrk_para[0] = SearchCond?.Date?.ToString("yyyyMM") + "01";
             wrk_para[1] = ".";
-            wrk_para[2] = SearchCond.Brd;
-            wrk_para[3] = SearchCond.ItemFrom;
-            wrk_para[4] = SearchCond.ItemTo;
+            wrk_para[2] = SearchCond.Brd?.Code ?? string.Empty;
+            wrk_para[3] = SearchCond.ItemFrom?.Code ?? string.Empty;
+            wrk_para[4] = SearchCond.ItemTo?.Code ?? string.Empty;
 
-            if (wrk_para[3] == null)
+            if (wrk_para[3] == "")
             {
                 wrk_para[3] = ".";
             }
 
-            if (wrk_para[4] == null)
+            if (wrk_para[4] == "")
             {
                 wrk_para[4] = "zzzzzzzzzzzzzz";
             }
@@ -147,7 +144,7 @@ namespace CvnetClient.ViewModels
             
             var v_para = new string[3];
             v_para[0] = "Master_YO_Item";
-            v_para[1] = csv_para!.SaveStr(0);
+            v_para[1] = csv_para!.SaveStr(0).Replace("\r\n", "\n");
             v_para[2] = "4";
             var ret_csv = AppData.Http!.AspxSqlQuery2("mi_csv", v_para,"",-1);
 
@@ -157,7 +154,14 @@ namespace CvnetClient.ViewModels
             }
             else
             {
-                ClientLib.MessageBoxOk(this, "登録しました。");
+                if (ret_csv.Split('\n')[1].Trim().Split('=')[1].Trim() == "0") {
+                    ClientLib.MessageBoxOk(this, "データが登録されません。");
+                }
+                else
+                {
+                    ClientLib.MessageBoxOk(this, "登録しました。");
+                }
+                    
             }
         }
         [RelayCommand]
@@ -166,8 +170,7 @@ namespace CvnetClient.ViewModels
             var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && SearchCond != null)
             {
-                SearchCond.ItemFrom = get_sel00.Code;
-                SearchCond.ItemFromName = get_sel00.Name;
+                SearchCond.ItemFrom = new BtListHelper(get_sel00.Code,get_sel00.Name);
             }
         }
         [RelayCommand]
@@ -176,8 +179,7 @@ namespace CvnetClient.ViewModels
             var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && SearchCond != null)
             {
-                SearchCond.ItemTo = get_sel00.Code;
-                SearchCond.ItemToName = get_sel00.Name;
+                SearchCond.ItemTo = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
         [RelayCommand]
@@ -186,46 +188,41 @@ namespace CvnetClient.ViewModels
             var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && SearchCond != null)
             {
-                SearchCond.Brd = get_sel00.Code;
-                SearchCond.BrdName = get_sel00.Name;
+                SearchCond.Brd = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
         #endregion
+        #region Class
         public partial class Budget : ObservableObject
         {
             [ObservableProperty]
-            public string? shopCD;
+            private string? shopCD;
             [ObservableProperty]
-            public string? brdCD;
+            private string? brdCD;
             [ObservableProperty]
-            public string? itemCD;
+            private string? itemCD;
             [ObservableProperty]
-            public string? itemName;
+            private string? itemName;
             [ObservableProperty]
-            public string? date;
+            private string? date;
             [ObservableProperty]
-            public int? quantity;
+            private int? quantity;
             [ObservableProperty]
-            public int? budgetPrice;
+            private int? budgetPrice;
             [ObservableProperty]
-            public string? inpName;
+            private string? inpName;
         }
         public partial class Search : ObservableObject
         {
             [ObservableProperty]
-            public DateTime? date;
+            private DateTime? date;
             [ObservableProperty]
-            public string? brd;
+            private BtListHelper? brd;
             [ObservableProperty]
-            public string? brdName;
+            private BtListHelper? itemFrom;
             [ObservableProperty]
-            public string? itemFrom;
-            [ObservableProperty]
-            public string? itemTo;
-            [ObservableProperty]
-            public string? itemFromName;
-            [ObservableProperty]
-            public string? itemToName;
+            private BtListHelper? itemTo;
         }
-    }   
+        #endregion
+    }
 }
