@@ -164,7 +164,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void DoList()
         {
-            subList(0, ">=", "asc");
+            subList(0, "<=", "desc");
             if (ListGenka == null || ListGenka.Count == 0)
                 ClientLib.MessageBoxOk(this, "データがありません");
         }
@@ -308,7 +308,7 @@ namespace CvnetClient.ViewModels
             var last = ListGenka.Last();
             var receiptNo = last.receiptNo;
 
-            subList(receiptNo, ">=", "asc");
+            subList(receiptNo, "<=", "desc");
             if (ListGenka == null || ListGenka.Count == 0)
                 ClientLib.MessageBoxOk(this, "データがありません");
         }
@@ -322,7 +322,7 @@ namespace CvnetClient.ViewModels
             var first = ListGenka.First();
             var receiptNo = first.receiptNo;
 
-            subList(receiptNo, "<=", "desc");
+            subList(receiptNo, ">=", "asc");
             if (ListGenka == null || ListGenka.Count == 0)
                 ClientLib.MessageBoxOk(this, "データがありません");
 

@@ -36,7 +36,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "名称マスタコピー作成", WindowId=typeof(Views.SubDlg01MeiConvView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "取込レイアウト作成", WindowId=typeof(Views.SubDlg00InputCsvView).FullName },
                 new ButtonConfig { Text = "外部CSVデータ取込", WindowId=typeof(Views.SubDlg01Csvshov2View).FullName},
-                new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId="" },
+                new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId=typeof(Views.SubDlg01SetjanView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
                 new ButtonConfig { Text = "商品色サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
                 new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId="" },
@@ -280,7 +280,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "請求一覧表", WindowId="" },
                 new ButtonConfig { Text = "請求書印刷", WindowId=typeof(Views.SubDlg03Prn04fView).FullName,Parameter="0",Flag="0"  },
                 new ButtonConfig { Text = "請求計算", WindowId="" },
-                new ButtonConfig { Text = "売掛消費税計算", WindowId="" },
+                new ButtonConfig { Text = "売掛消費税計算", WindowId=typeof(Views.SubDlg09UpurikakeTaxView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "支払入力", WindowId="" },
                 new ButtonConfig { Text = "支払消込", WindowId="" },
                 new ButtonConfig { Text = "支払取込", WindowId="" },
@@ -288,7 +288,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "買掛金管理表", WindowId="" },
                 new ButtonConfig { Text = "月別支払予定表", WindowId="" },
                 new ButtonConfig { Text = "支払一覧表", WindowId="" },
-                new ButtonConfig { Text = "支払残高明細書", WindowId="" },
+                new ButtonConfig { Text = "支払残高明細書", WindowId=typeof(Views.SubDlg02Prn04fView).FullName,Parameter="1",Flag="0" },
                 new ButtonConfig { Text = "支払計算", WindowId="" },
                 new ButtonConfig { Text = "買掛消費税計算", WindowId="" }
             }
