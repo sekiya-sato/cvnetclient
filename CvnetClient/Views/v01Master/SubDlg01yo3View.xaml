@@ -1,0 +1,559 @@
+﻿<Window
+    x:Class="CvnetClient.Views.SubDlg01yo3"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CvnetClient.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:CvnetClient.Views"
+    xmlns:utils="clr-namespace:CvnetClient.Utils"
+    xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+    Title="マスタ : 営業担当別予算マスタ"
+    Style="{StaticResource MasterWindowStyle2}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <utils:VdateConverter x:Key="VdateConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg01yo3ViewModel />
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding DoListCommand}" />
+        <KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
+        <KeyBinding Key="F7" Command="{Binding DoDeleteCommand}" />
+        <KeyBinding Key="F8" Command="{Binding DoInsertCommand}" />
+        <KeyBinding Key="F9" Command="{Binding DoPrintCommand}" />
+    </Window.InputBindings>
+
+    <!--  OUTER: top band + main area  -->
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="15*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.Row="0"
+            Margin="0,0,0,5"
+            VerticalAlignment="Center"
+            Text="マスタ : 営業担当別予算マスタ" />
+        <!--  ======= TOP BAND =======================  -->
+        <Border
+            Grid.Row="1"
+            Margin="15,5,5,5"
+            Padding="10"
+            Background="#FFFFFF"
+            BorderBrush="#FFAFAFAF"
+            BorderThickness="1"
+            CornerRadius="15">
+            <Grid>
+                <!--  Two rows: line1 (商品CD/商品名/単価), line2 (JANコード full width)  -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,5,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="9*" />
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Content="年月" />
+                    <DatePicker
+                        Grid.Column="1"
+                        BorderBrush="#FFCCCCCC"
+                        SelectedDate="{Binding SearchOpt.StartRegDate}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="～" />
+                    <DatePicker
+                        Grid.Column="3"
+                        Background="White"
+                        BorderBrush="#FFCCCCCC"
+                        SelectedDate="{Binding SearchOpt.EndRegDate}" />
+                </Grid>
+
+                <Grid Grid.Row="1" Margin="0,5,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Content="営業担当CD" />
+
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding SearchOpt.StartStoreCD}" />
+                        <uc:CvnetBtListView
+                            Grid.Column="1"
+                            Margin="-20,0,0,0"
+                            Command="{Binding DoStartStoreCommand}"
+                            MstName="店舗"
+                            StyleDesign="2" />
+                    </Grid>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="-20,0,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="～" />
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Grid.ColumnSpan="2"
+                        Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding SearchOpt.EndStoreCD}" />
+                        <uc:CvnetBtListView
+                            Grid.Column="1"
+                            Margin="-20,0,0,0"
+                            Command="{Binding DoEndStoreCommand}"
+                            MstName="店舗"
+                            StyleDesign="2" />
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="2" Margin="0,5,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Content="営業担当CD" />
+
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding SearchOpt.StartStoreCD}" />
+                        <uc:CvnetBtListView
+                            Grid.Column="1"
+                            Margin="-20,0,0,0"
+                            Command="{Binding DoStartStoreCommand}"
+                            MstName="店舗"
+                            StyleDesign="2" />
+                    </Grid>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="-20,0,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="～" />
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Grid.ColumnSpan="2"
+                        Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding SearchOpt.EndStoreCD}" />
+                        <uc:CvnetBtListView
+                            Grid.Column="1"
+                            Margin="-20,0,0,0"
+                            Command="{Binding DoEndStoreCommand}"
+                            MstName="店舗"
+                            StyleDesign="2" />
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </Border>
+
+        <!--  ======= MAIN AREA (2 columns: table | form) ========  -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <!--  LEFT: table  -->
+                <ColumnDefinition Width="*" />
+                <!--  RIGHT: form  -->
+            </Grid.ColumnDefinitions>
+
+            <!--  LEFT: TABLE  -->
+            <Border
+                Margin="15,5,0,15"
+                Background="White"
+                BorderBrush="#FFAFAFAF"
+                BorderThickness="1"
+                CornerRadius="15">
+                <Grid Margin="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,10,0,0">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Button
+                                Width="35"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center"
+                                Command="{Binding BackPageCommand}"
+                                Content="&lt;&lt;"
+                                Style="{DynamicResource ExecButton}" />
+                            <Button
+                                HorizontalAlignment="Center"
+                                Command="{Binding SelDspUpdateCommand}"
+                                CommandParameter="1"
+                                Style="{DynamicResource ExecButton}" />
+                            <Button
+                                Width="35"
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Command="{Binding BackPageCommand}"
+                                Content="&gt;&gt;"
+                                Style="{DynamicResource ExecButton}" />
+                        </StackPanel>
+
+                    </Grid>
+                    <DataGrid
+                        x:Name="ProductGrid"
+                        Grid.Row="1"
+                        Margin="4"
+                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                        AutoGenerateColumns="False"
+                        ColumnHeaderHeight="24"
+                        GridLinesVisibility="All"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding ListShohinJan}"
+                        RowHeaderWidth="0"
+                        RowHeight="24"
+                        SelectedItem="{Binding SelectedProduct}"
+                        Style="{DynamicResource WinGridData}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Width="2*"
+                                Binding="{Binding ProductCD}"
+                                Header="担当CD" />
+                            <DataGridTextColumn
+                                Width="2*"
+                                Binding="{Binding ColorCD}"
+                                Header="日付" />
+                            <DataGridTextColumn
+                                Width="2*"
+                                Binding="{Binding SizeCD}"
+                                Header="得意先CD" />
+                            <DataGridTextColumn
+                                Width="2*"
+                                Binding="{Binding ProductName}"
+                                Header="ブランドCD" />
+                            <DataGridTextColumn
+                                Width="3*"
+                                Binding="{Binding ProductName}"
+                                Header="担当名" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+            <!--  RIGHT: FORM  -->
+
+            <Grid Grid.Column="1" Margin="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <GroupBox
+                    Grid.Row="0"
+                    Margin="4"
+                    Padding="6"
+                    Background="White"
+                    BorderBrush="#FFAFAFAF"
+                    BorderThickness="1"
+                    Header="詳細">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Vertical">
+                            <!--  中止 & 生産予定数  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="営業担当CD" />
+                                <Grid
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="3"
+                                    Margin="0,5,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding SearchOpt.EndStoreCD}" />
+                                    <uc:CvnetBtListView
+                                        Grid.Column="1"
+                                        Margin="-20,0,0,0"
+                                        Command="{Binding DoEndStoreCommand}"
+                                        MstName="店舗"
+                                        StyleDesign="2" />
+                                </Grid>
+
+                            </Grid>
+                            <!--  自動配分 & メモ  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="日付" />
+                                <ComboBox
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Height="26"
+                                    DisplayMemberPath="Value"
+                                    ItemsSource="{Binding Jidohaibun}"
+                                    SelectedValue="{Binding EditProduct.AutoAllocationFlag}"
+                                    SelectedValuePath="Key"
+                                    Style="{StaticResource SearchableComboBox1}" />
+
+                            </Grid>
+                            <!--  仕入価格 & 下札枚数  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="得意先CD" />
+                                <Grid
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="3"
+                                    Margin="0,5,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding SearchOpt.EndStoreCD}" />
+                                    <uc:CvnetBtListView
+                                        Grid.Column="1"
+                                        Margin="-20,0,0,0"
+                                        Command="{Binding DoEndStoreCommand}"
+                                        MstName="店舗"
+                                        StyleDesign="2" />
+                                </Grid>
+
+                            </Grid>
+                            <!--  原価  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="原価" />
+                                <Grid
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="3"
+                                    Margin="0,5,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding SearchOpt.EndStoreCD}" />
+                                    <uc:CvnetBtListView
+                                        Grid.Column="1"
+                                        Margin="-20,0,0,0"
+                                        Command="{Binding DoEndStoreCommand}"
+                                        MstName="店舗"
+                                        StyleDesign="2" />
+                                </Grid>
+                            </Grid>
+                            <!--  外貨単価  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="ブランド" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Height="26"
+                                    Text="{Binding EditProduct.ForeignCurrencyPrice}" />
+                            </Grid>
+                            <!--  裁断数  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="予算金額" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Height="26"
+                                    Text="{Binding EditProduct.CuttingQuantity}" />
+                            </Grid>
+                            <!--  作成日  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="作成日" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Height="26"
+                                    Style="{StaticResource ReadOnlyTextBox}"
+                                    Text="{Binding EditProduct.VdateCreate, Converter={StaticResource VdateConverter}}" />
+                            </Grid>
+                            <!--  修正日  -->
+                            <Grid Margin="0,2,0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Content="修正日" />
+                                <TextBox
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="2"
+                                    Height="26"
+                                    Style="{StaticResource ReadOnlyTextBox}"
+                                    Text="{Binding EditProduct.VdateUpdate, Converter={StaticResource VdateConverter}, TargetNullValue='', FallbackValue='', Mode=OneWay}" />
+                            </Grid>
+                        </StackPanel>
+                        <!--  Button (追加、修正、削除、印刷)  -->
+                        <Grid
+                            Grid.Row="1"
+                            Margin="8,8,15,8"
+                            HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+                            <Button
+                                BorderThickness="10"
+                                Command="{Binding DoInsertCommand}"
+                                Style="{DynamicResource AddIconBtn}" />
+                            <Button
+                                Grid.Column="2"
+                                Command="{Binding DoUpdateCommand}"
+                                Style="{DynamicResource UpdateIconBtn}" />
+                            <Button
+                                Grid.Column="4"
+                                Command="{Binding DoDeleteCommand}"
+                                Style="{DynamicResource DeleteIconBtn}" />
+                            <Button
+                                Grid.Column="6"
+                                Command="{Binding DoPrintCommand}"
+                                Style="{DynamicResource PrintIconBtn}" />
+                        </Grid>
+                    </Grid>
+                </GroupBox>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding ExitCommand}"
+                        Content="戻る(ESC)"
+                        Style="{DynamicResource BackBtn}" />
+                </Grid>
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>
+

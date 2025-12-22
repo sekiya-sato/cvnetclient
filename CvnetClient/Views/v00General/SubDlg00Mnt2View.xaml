@@ -1,0 +1,38 @@
+﻿<Window
+    x:Class="CvnetClient.Views.SubDlg00Mnt2View"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CvnetClient.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:CvnetClient.Views"
+    xmlns:utils="clr-namespace:CvnetClient.Utils"
+    xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+    Title="マスタ : 仕入先マスタ"
+    Width="1100"
+    Height="850"
+    Style="{StaticResource MasterWindowStyle2}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <utils:VdateConverter x:Key="VdateConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg00Mnt2ViewModel />
+    </Window.DataContext>
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="ContentRendered">
+            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding DoListCommand}" />
+        <KeyBinding Key="F6" Command="{Binding DoUpdateCommand}" />
+        <KeyBinding Key="F7" Command="{Binding DoDeleteCommand}" />
+        <KeyBinding Key="F8" Command="{Binding DoInsertCommand}" />
+        <KeyBinding Key="F9" Command="{Binding DoPrintCommand}" />
+    </Window.InputBindings>
+    <Grid />
+</Window>
