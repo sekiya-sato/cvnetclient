@@ -196,7 +196,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "倉庫別受払表", WindowId="" },
                 new ButtonConfig { Text = "商品別受払表", WindowId="" },
                 new ButtonConfig { Text = "倉庫別在庫集計表", WindowId="" },
-                new ButtonConfig { Text = "汎用在庫表", WindowId="" },
+                new ButtonConfig { Text = "汎用在庫表", WindowId=typeof(Views.SubDlg04prnShuk01rNewView).FullName },
                 new ButtonConfig { Text = "在庫移動入力", WindowId="" },
                 new ButtonConfig { Text = "移動未受リスト", WindowId="" }
             }

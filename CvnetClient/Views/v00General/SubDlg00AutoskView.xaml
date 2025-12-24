@@ -195,7 +195,7 @@
                             <DataGridTemplateColumn Width="0.5*" Header="削除">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Click="DeleteRow_Click" Style="{DynamicResource DeleteFlexBtn}" />
+                                        <!--<Button Click="DeleteRow_Click" Style="{DynamicResource DeleteFlexBtn}" />-->
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
