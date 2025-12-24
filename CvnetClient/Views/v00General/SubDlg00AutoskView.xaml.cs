@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CvnetClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,28 @@ namespace CvnetClient.Views
     /// </summary>
     public partial class SubDlg00AutoskView : Window
     {
+        public static readonly DependencyProperty DataSourceProperty =
+        DependencyProperty.Register(nameof(DataSource),
+        typeof(ListFlexData),
+        typeof(ListFlexView),
+        new PropertyMetadata(null));
+        public ListFlexData DataSource
+        {
+            get => (ListFlexData)GetValue(DataSourceProperty);
+            set => SetValue(DataSourceProperty, value);
+        }
+        private void DeleteRow_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is ListFlexItem row)
+            {
+                DataSource.ListFlexSource.Remove(row);
+
+                // re-number No after delete
+                for (int i = 0; i < DataSource.ListFlexSource.Count; i++)
+                {
+                    DataSource.ListFlexSource[i].No = i + 1;
+                }
+            }
+        }
     }
 }
