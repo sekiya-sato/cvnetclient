@@ -1,4 +1,4 @@
-﻿<Window x:Class="CvnetClient.Views.SubDlg60ToriukeView"
+﻿<Window x:Class="CvnetClient.Views.SubDlg04prnShuk01rNewView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,12 +10,12 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="取置受付一覧表" Style="{StaticResource PrintWindowStyle1}">
+        Title="汎用在庫表" Style="{StaticResource PrintWindowStyle1}">
     <Window.Resources>
         <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
     </Window.Resources>
     <Window.DataContext>
-        <vm:SubDlg60ToriukeViewModel />
+        <vm:SubDlg04prnShuk01rNewViewModel/>
     </Window.DataContext>
     <Window.InputBindings>
         <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />

@@ -1,4 +1,4 @@
-﻿<Window x:Class="CvnetClient.Views.SubDlg03Prn04fView"
+﻿<Window x:Class="CvnetClient.Views.SubDlg02Prn04fView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
@@ -11,12 +11,12 @@
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="請求書印刷" Style="{StaticResource SmallWindow}" Background="White" >
+        Title="支払残高明細書" Style="{StaticResource SmallWindow}" Background="White" >
 	<Window.Resources>
 		<utils:VdateConverter x:Key="VdateConverter" />
 	</Window.Resources>
 	<Window.DataContext>
-		<vm:SubDlg03Prn04fViewModel />
+		<vm:SubDlg02Prn04fViewModel />
 	</Window.DataContext>
 	<behaviors:Interaction.Triggers>
 		<behaviors:EventTrigger EventName="ContentRendered">
@@ -46,18 +46,17 @@
 					<Grid Margin="0,20,0,0">
 						<Grid.RowDefinitions>
 							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="*"/>
+							<RowDefinition/>
 							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="*"/>
+							<RowDefinition/>
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="*"/>
+							<RowDefinition/>
 							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="20"/>
 							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="20"/>
 							<RowDefinition Height="Auto"/>
 							<RowDefinition Height="20"/>
+
 						</Grid.RowDefinitions>
 
 						<Grid.ColumnDefinitions>
@@ -148,56 +147,64 @@
 												Command="{Binding FindToWorkerShopCommand}"/>
 						</Grid>
 
-						
-							<Label Grid.Row="7" Grid.Column="0"
-								   Content="出力単位"
+
+						<Label Grid.Row="7" Grid.Column="0"
+								   Content="出力基準"
 								   VerticalAlignment="Center"
 								   Margin="0,0,8,0"/>
 						<StackPanel Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal">
-							<RadioButton Content="伝票単位"
+							<RadioButton Content="支払集計月"
 								 FontStyle="Normal"
 								 IsChecked="{Binding IsOutputUnitVoucher}"
-								 Margin="0,0,10,0"/>
-							<RadioButton Content="商品CD単位"
+								 Margin="0,0,88,0"/>
+							<RadioButton Content="支払予定月"
 								 FontStyle="Normal"
 								 IsChecked="{Binding IsOutputUnitProduct}"
 								 Margin="0,0,10,0"/>
 						</StackPanel>
 
-						
-							<Label Grid.Row="9" Grid.Column="0"
-								   Content="出力タイプ"
+
+						<Label Grid.Row="8" Grid.Column="0"
+								   Content="出力単位"
 								   VerticalAlignment="Center"
 									Margin="0,0,8,0"/>
-						<StackPanel Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal">
-							<RadioButton Grid.Row="9" Grid.Column="1" Content="親のみ"
+						<StackPanel Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal">
+							<RadioButton Grid.Row="8" Grid.Column="1" Content="伝票単位"
 								 FontStyle="Normal"
 								 IsChecked="{Binding IsOutputTypeParent}"
-								 Margin="0,0,10,0"/>
-							<RadioButton Grid.Row="9" Grid.Column="2" Content="子明細"
+								 Margin="0,0,100,0"/>
+							<RadioButton Grid.Row="8" Grid.Column="2" Content="商品CD単位"
 								 FontStyle="Normal"
 						         IsChecked="{Binding IsOutputTypeSubdetail}"
 								 Margin="0,0,10,0"/>
 						</StackPanel>
 
-						<Label Grid.Row="11" Grid.Column="0"
-								   Content="出力方法"
-								   VerticalAlignment="Center"
-								   Margin="0,0,8,0"
-								   Visibility="Hidden" />
-						<StackPanel>
-							<RadioButton Grid.Row="11" Grid.Column="1" Content="印刷"
-								 FontStyle="Normal"
-								 Margin="0,0,10,0"
-								 IsChecked="{Binding IsOutputWayPrint}"
-								 Visibility="Hidden"/>
-							<RadioButton Grid.Row="11" Grid.Column="2" Content="メール"
-								 FontStyle="Normal"
-								 IsChecked="{Binding IsOutputWayMail}"
-								 Margin="0,0,10,0"
-								 Visibility="Hidden"/>
+						<Label Grid.Row="9" Grid.Column="0"
+								Content="ソート基準"
+								VerticalAlignment="Center"
+								Margin="0,0,8,0"
+							    Visibility="Collapsed"/>		
+						<StackPanel Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="4" Orientation="Horizontal">
+							<RadioButton Grid.Row="8" Grid.Column="1" Content="日付順"
+										 FontStyle="Normal"
+										 IsChecked="{Binding IsOutputTypeParent}"
+										 Margin="0,0,112,0"
+										 Visibility="Collapsed"/>
+							<RadioButton Grid.Row="9" Grid.Column="2" Content="仕入先伝票順"
+										 FontStyle="Normal"
+										 IsChecked="{Binding IsOutputTypeSubdetail}"
+										 Margin="0,0,10,0"
+										 Visibility="Collapsed"/>
 						</StackPanel>
-						
+						<Label Grid.Row="9" Grid.Column="5"
+										Content="支払保留額"
+										VerticalAlignment="Center"
+										Margin="0,0,0,0"
+										Visibility="Collapsed"/>
+						<TextBox Grid.Row="9" Grid.Column="6"
+										Text="{Binding SelectShop.OutputBaseline}"
+										Visibility="Collapsed"/>
+
 					</Grid>
 				</GroupBox>
 			</Grid>
@@ -212,7 +219,7 @@
 			<TextBlock Grid.Column="0"
                Margin="40,-20,0,0"
                VerticalAlignment="Top"
-               Text="【請求計算】の実行後、印刷可能" />
+               Text="【支払計算】実行後、印刷可能" />
 
 			<StackPanel Grid.Column="1"
                 Orientation="Horizontal"
