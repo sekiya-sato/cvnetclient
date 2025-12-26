@@ -27,27 +27,29 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         string? message;
 
-        public void OnInit()
+        public void OnInit(object? init_para = null, string? init_flg = null)
         {
+            OnInitBase(init_para, init_flg);
+
             try { 
-                if(AppData.ClassCvnet.HHT_Csv.GetEnv() == "") message="初期設定がされてません";
+                if(AppData.ClassCvnet.HHT_Csv.GetEnv() == "") Message="初期設定がされてません";
             }
             catch {
-                message ="初期設定がされてません";
+                Message ="初期設定がされてません";
             }
 
             if(AppData.ClassCvnet.SysHhtMst.Rows[0][33].ToString() == "1") PathStr = "C:\\";
         }
 
         [RelayCommand]
-        public void OnSet()
+        void Do()
         {
-            AppData.ClassCvnet.HHT_Csv.SetEnv(pathStr);
-            hhtPath = "";
+            AppData.ClassCvnet.HHT_Csv.SetEnv(PathStr);
+            HhtPath = "";
             var fs = new FileSystem();
             for (var i=0; i< AppData.ClassCvnet.HHT_Csv._data.Rows.Count; i++) {
-                hhtPath += AppData.ClassCvnet.HHT_Csv._data.Rows[i][1] + "\n";
-                hhtPath += " " + fs.MakePath(AppData.ClassCvnet.HHT_Csv.GetEnv(), AppData.ClassCvnet.HHT_Csv._data.Rows[i][2].ToString()) + "\n";
+                HhtPath += AppData.ClassCvnet.HHT_Csv._data.Rows[i][1] + "\n";
+                HhtPath += " " + fs.MakePath(AppData.ClassCvnet.HHT_Csv.GetEnv(), AppData.ClassCvnet.HHT_Csv._data.Rows[i][2].ToString()) + "\n";
             }
         }
 

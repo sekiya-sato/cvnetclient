@@ -19,7 +19,10 @@
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVisible" />
 	</Window.Resources>
-	<Grid Margin="10">
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding OkCommand}" />
+    </Window.InputBindings>
+    <Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
@@ -39,7 +42,7 @@
 			<Button
 				Width="130"
 				Margin="5"
-				d:Content="OK"
+				d:Content="OK(Enter)"
 				Command="{Binding OkCommand}"
 				Content="{Binding BtnOkText}"
 				IsDefault="True"
