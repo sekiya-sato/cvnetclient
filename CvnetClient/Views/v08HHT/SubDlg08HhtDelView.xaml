@@ -24,7 +24,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
-            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="8*"  />
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="1" Text="削除範囲指定" VerticalAlignment="Bottom" Margin="10,0"/>
@@ -55,39 +55,30 @@
             <Label Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  Content="計上日"/>
             <Label Grid.Row="5" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  Content="倉庫"/>
 
-            <ComboBox Grid.Row="1" Grid.Column="2"  Grid.RowSpan="2" VerticalAlignment="Top"  Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding SelectKubun}" SelectedValue="{Binding Category}"/>
+            <ComboBox Grid.Row="1" Grid.Column="2"  Grid.RowSpan="2" VerticalAlignment="Top"  Style="{StaticResource SearchableComboBox1}" 
+                      DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding SelectKubun}" SelectedValue="{Binding Category}"/>
             <ComboBox Grid.Row="1" Grid.Column="4" Visibility="Hidden"/>
 
             <!--<DatePicker Grid.Row="3" Grid.Column="2" />-->
-            <xctk:DateTimePicker 
+            <DatePicker 
                 Grid.Row="3" Grid.Column="2"
                 Grid.RowSpan="2" VerticalAlignment="Top" 
-                Format="Custom"
-                FormatString="yyyy/MM/dd" 
-                ShowButtonSpinner="True" 
-                TimePickerVisibility="Collapsed" 
-                AllowTextInput="False"
-                Value="{Binding CreditDate1}" 
+                SelectedDate="{Binding CreditDate1}"
                 Height="30"/>
             <Label Grid.Row="3" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <!--<DatePicker Grid.Row="3" Grid.Column="4"/>-->
-            <xctk:DateTimePicker 
+            <DatePicker 
                 Grid.Row="3" Grid.Column="4"
-                 Grid.RowSpan="2" VerticalAlignment="Top" 
-                Format="Custom"
-                FormatString="yyyy/MM/dd"
-                ShowButtonSpinner="True" 
-                TimePickerVisibility="Collapsed" 
-                AllowTextInput="False"
-                Value="{Binding CreditDate2}" 
+                Grid.RowSpan="2" VerticalAlignment="Top" 
+                SelectedDate="{Binding CreditDate2}"
                 Height="30"/>
 
             <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left">
                 <TextBox Width="auto" MinWidth="150" TextWrapping="Wrap">
                     <TextBox.Text>
                         <MultiBinding StringFormat='{}{0} {1}'>
-                            <Binding Path="WorkerTo.WorkerCD" />
-                            <Binding Path="WorkerTo.Name" />
+                            <Binding Path="FindWarehouseCd1.Code" />
+                            <Binding Path="FindWarehouseCd1.Name" />
                         </MultiBinding>
                     </TextBox.Text>
                 </TextBox>
@@ -100,8 +91,8 @@ Command="{Binding SelectWarehouse1Command}"/>
                 <TextBox Width="auto" MinWidth="150" TextWrapping="Wrap">
                     <TextBox.Text>
                         <MultiBinding StringFormat='{}{0} {1}'>
-                            <Binding Path="WorkerTo.WorkerCD" />
-                            <Binding Path="WorkerTo.Name" />
+                            <Binding Path="FindWarehouseCd2.Code" />
+                            <Binding Path="FindWarehouseCd2.Name" />
                         </MultiBinding>
                     </TextBox.Text>
                 </TextBox>
@@ -127,10 +118,10 @@ Command="{Binding SelectWarehouse2Command}"/>
 
                 <Border Grid.RowSpan="5" Grid.ColumnSpan="4" BorderBrush="#CCC" BorderThickness="1" CornerRadius="8"/>
                 <Label Grid.Row="1" Grid.Column="1" Content="対象件数"/>
-                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Amount}"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Amount}" Style="{StaticResource ReadOnlyTextBox}"/>
                 <Label Grid.Row="2" Grid.Column="1" Content="全件数" />
-                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding TotalAmount}"/>
-                <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="削除件数確認(F5)" Command="{Binding OnBtnCheckCommand}"/>
+                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding TotalAmount}" Style="{StaticResource ReadOnlyTextBox}"/>
+                <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Content="削除件数確認(F5)" Command="{Binding OnCheckAmountDelCommand}"/>
 
 
             </Grid>
