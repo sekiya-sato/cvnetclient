@@ -3,6 +3,7 @@ using CvnetClient.Class;
 using CvnetClient.Utils;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.Intrinsics.X86;
 using System.Text.RegularExpressions;
 
 namespace CvnetClient.ViewModels
@@ -158,6 +159,34 @@ namespace CvnetClient.ViewModels
                     return rt_ar.ToArray();
                 }
             }
+        }
+
+        public BizArray GetSearchPara(BizArray v_para = null)
+        {
+            var col_name = new BizArray();
+
+            if (ListFlexSource == null || ListFlexSource.Count == 0) return col_name;
+            if (v_para == null) v_para = new BizArray();
+
+            foreach (var row in ListFlexSource)
+            {
+                if (string.IsNullOrEmpty(row.SelectedItem)) continue;
+                var ar = Search_Data(row.SelectedItem).ToArray();
+                var cd_name = GetConvKubun(ar[1]);
+                if (string.IsNullOrEmpty(cd_name)) 
+                {
+                    cd_name = GetConvColName(row.SelectedItem);
+                }
+
+                if (!string.IsNullOrEmpty(cd_name))
+                {
+                        col_name[col_name.Count] = cd_name;
+                        v_para[v_para.Count] = row.FromValue;
+                        v_para[v_para.Count] = row.ToValue;
+
+                }
+            }
+            return col_name;
         }
 
         // ---------------------------

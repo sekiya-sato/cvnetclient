@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CvnetClient.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -259,8 +260,8 @@ namespace CvnetClient.Models
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "HHT用マスタデータ作成(cvnetcom)", WindowId=typeof(Views.SubDlg08Hht1View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "HHT未更新データ印刷", WindowId=typeof(Views.SubDlg08HhterrView).FullName,Parameter="0",Flag="0" },
-                new ButtonConfig { Text = "HHT未更新データ一括削除", WindowId=typeof(Views.SubDlg08HhtDelView).FullName},
-                new ButtonConfig { Text = "HHT用PATH設定", WindowId=typeof(Views.SubDlg08Hht0View).FullName},
+                new ButtonConfig { Text = "HHT未更新データ一括削除", WindowId=typeof(Views.SubDlg08HhtDelView).FullName,Parameter="0",Flag="0"},
+                new ButtonConfig { Text = "HHT用PATH設定", WindowId=typeof(Views.SubDlg08Hht0View).FullName,Parameter="0",Flag="0"},
                 new ButtonConfig { Text = "HHT手動データ受信(店舗固定)", WindowId="" },
                 new ButtonConfig { Text = "HHT手動データ受信(ﾃﾞｰﾀ送信後)", WindowId="" },
                 new ButtonConfig { Text = "HHTエラーデータ修正入力", WindowId="" },
@@ -362,7 +363,7 @@ namespace CvnetClient.Models
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "マスタデータ作成", WindowId=typeof(Views.SubDlg71Pos1View).FullName ,Parameter="0",Flag="0"},
                 new ButtonConfig { Text = "連携データ手動送信", WindowId=typeof(Views.SubDlg71SendManualView).FullName,Parameter="0",Flag="0" },
-                new ButtonConfig { Text = "連携データ手動受信", WindowId="" },
+                new ButtonConfig { Text = "連携データ手動受信", WindowId=typeof(Views.SubDlg71RecvManualView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "連携エラーデータ照会", WindowId="" }
             }
         }},

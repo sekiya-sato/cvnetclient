@@ -16,12 +16,101 @@
     <Window.DataContext>
         <vm:SubDlg01SetjanViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+    <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <uc:ListFlexView Grid.Row="2"   
+				 DataSource="{Binding ListFlexData}">
+                <uc:ListFlexView.Style>
+                    <Style TargetType="uc:ListFlexView">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SearchOpt.FlexIsVisible}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </uc:ListFlexView.Style>
+            </uc:ListFlexView>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="1" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="49設定" HorizontalAlignment="Center"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="1段目"  HorizontalAlignment="Center"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="上書き" HorizontalAlignment="Center"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="体系"   HorizontalAlignment="Center" Visibility="Collapsed"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="2段目"  HorizontalAlignment="Center" Visibility="Collapsed"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="3段目"  HorizontalAlignment="Center" Visibility="Collapsed"/>
+
+            <RadioButton Grid.Row="0" Grid.Column="1" Content="49" GroupName="settings" IsEnabled="{Binding IsSettingsEnabled}" IsChecked="{Binding SelectedType,  Converter={StaticResource StringToBoolConverter}, ConverterParameter=Type49}"/>
+            <RadioButton Grid.Row="0" Grid.Column="2" Content="45" GroupName="settings" IsEnabled="{Binding IsSettingsEnabled}" IsChecked="{Binding SelectedType, Converter={StaticResource StringToBoolConverter}, ConverterParameter=Type45}"/>
+            <TextBlock   Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="Red" Text="{Binding ErrorMess}" Visibility="Hidden"/>
+
+            <RadioButton Grid.Row="1" Grid.Column="1" Content="更新しない" GroupName="first" IsChecked="{Binding SelectedFirst, Converter={StaticResource StringToBoolConverter}, ConverterParameter=None}" Visibility="Collapsed"/>
+            <RadioButton Grid.Row="1" Grid.Column="1" Content="JANコード1" GroupName="first" IsChecked="{Binding SelectedFirst, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード1}"/>
+            <RadioButton Grid.Row="1" Grid.Column="2" Content="JANコード2" GroupName="first" IsChecked="{Binding SelectedFirst, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード2}"/>
+            <RadioButton Grid.Row="1" Grid.Column="3" Content="JANコード3" GroupName="first" IsChecked="{Binding SelectedFirst, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード3}"/>
+
+            <RadioButton Grid.Row="2" Grid.Column="1" Content="しない" IsEnabled="{Binding IsOverwriteEnabled}" GroupName="overwrite"  IsChecked="{Binding SelectedOverwrite, Converter={StaticResource StringToBoolConverter}, ConverterParameter=shinai}"/>
+            <RadioButton Grid.Row="2" Grid.Column="2" Content="する"   IsEnabled="{Binding IsOverwriteEnabled}" GroupName="overwrite"  IsChecked="{Binding SelectedOverwrite, Converter={StaticResource StringToBoolConverter}, ConverterParameter=suru}"/>
+
+            <RadioButton Grid.Row="3" Grid.Column="1" Content="49JAN"     IsEnabled="{Binding IsBodyEnabled}" GroupName="body" Visibility="Collapsed"   IsChecked="{Binding SelectedBody, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JAN49}"/>
+            <RadioButton Grid.Row="3" Grid.Column="2" Content="自社コード" IsEnabled="{Binding IsBodyEnabled}" GroupName="body" Visibility="Collapsed"   IsChecked="{Binding SelectedBody, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JishaCD}"/>
+
+            <RadioButton Grid.Row="4" Grid.Column="1" Content="更新しない" GroupName="second" Visibility="Collapsed"   IsChecked="{Binding SelectedSecond, Converter={StaticResource StringToBoolConverter}, ConverterParameter=None}"/>
+            <RadioButton Grid.Row="4" Grid.Column="2" Content="JANコード1" GroupName="second" Visibility="Collapsed"  IsChecked="{Binding SelectedSecond, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード1}"/>
+            <RadioButton Grid.Row="4" Grid.Column="3" Content="JANコード2" GroupName="second" Visibility="Collapsed"  IsChecked="{Binding SelectedSecond, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード2}"/>
+            <RadioButton Grid.Row="4" Grid.Column="4" Content="JANコード3" GroupName="second" Visibility="Collapsed"  IsChecked="{Binding SelectedSecond, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード3}"/>
+
+            <RadioButton Grid.Row="5" Grid.Column="1" Content="更新しない"  GroupName="third" Visibility="Collapsed" IsChecked="{Binding SelectedThird, Converter={StaticResource StringToBoolConverter}, ConverterParameter=None}"/>
+            <RadioButton Grid.Row="5" Grid.Column="2" Content="JANコード1" GroupName="third" Visibility="Collapsed" IsChecked="{Binding SelectedThird, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード1}"/>
+            <RadioButton Grid.Row="5" Grid.Column="3" Content="JANコード2" GroupName="third" Visibility="Collapsed" IsChecked="{Binding SelectedThird, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード2}"/>
+            <RadioButton Grid.Row="5" Grid.Column="4" Content="JANコード3" GroupName="third" Visibility="Collapsed" IsChecked="{Binding SelectedThird, Converter={StaticResource StringToBoolConverter}, ConverterParameter=JANコード3}"/>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Margin="5,0" Content="タグデータ重複チェック" Command="{Binding CheckDuplicateCommand}"/>
+                <Button Margin="5,0" Style="{StaticResource ExecButton}" Command="{Binding DoListCommand}"/>
+                <Button Margin="5,0" Style="{StaticResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True"/>
+            </StackPanel>
+            
+        </Grid>
     </Grid>
 </Window>
