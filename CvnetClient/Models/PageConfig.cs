@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CvnetClient.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,8 +67,8 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "システムメンテナンス処理", WindowId="" },
                 new ButtonConfig { Text = "汎用SQL問い合わせ(管理者用)", WindowId="" },
                 new ButtonConfig { Text = "DB定義書出力", WindowId=typeof(Views.SubDlg00DBTableView).FullName,Parameter="0",Flag="0" },
-                new ButtonConfig { Text = "自動実行管理マスタ", WindowId="" },
-                new ButtonConfig { Text = "自動実行スケジュール設定", WindowId="" }
+                new ButtonConfig { Text = "自動実行管理マスタ",  WindowId=typeof(Views.SubDlg00AutoknriView).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "自動実行スケジュール設定",  WindowId=typeof(Views.SubDlg00AutoskView).FullName,Parameter="0",Flag="0" },
             }
         }},
         { "予算", new PageData {
@@ -76,13 +77,13 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "販売員別予算マスタ(月)", WindowId="" },
                 new ButtonConfig { Text = "店別ブランド別予算マスタ", WindowId="" },
                 new ButtonConfig { Text = "販売員別予算マスタ", WindowId="" },
-                new ButtonConfig { Text = "営業担当別予算マスタ", WindowId="" },
+                new ButtonConfig { Text = "営業担当別予算マスタ", WindowId=typeof(Views.SubDlg01yo3View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "月別ﾌﾞﾗﾝﾄﾞｱｲﾃﾑ仕入予算マスタ", WindowId=typeof(Views.SubDlg30InpMbiView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "店舗予算表", WindowId="" },
                 new ButtonConfig { Text = "店舗別予算実績対比", WindowId="" },
                 new ButtonConfig { Text = "販売員予算表", WindowId="" },
-                new ButtonConfig { Text = "担当別売上予算実績半期報", WindowId="" },
-                new ButtonConfig { Text = "投入計画表", WindowId="" }
+                new ButtonConfig { Text = "担当別売上予算実績半期報", WindowId=typeof(Views.SubDlg23PrnTantouhankiView).FullName,Parameter="0",Flag="0" },
+                new ButtonConfig { Text = "投入計画表", WindowId=typeof(Views.SubDlg90Keikaku150View).FullName,Parameter="0",Flag="0" }
             }
         }},
         { "本発注", new PageData {
@@ -196,7 +197,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "倉庫別受払表", WindowId="" },
                 new ButtonConfig { Text = "商品別受払表", WindowId="" },
                 new ButtonConfig { Text = "倉庫別在庫集計表", WindowId="" },
-                new ButtonConfig { Text = "汎用在庫表", WindowId="" },
+                new ButtonConfig { Text = "汎用在庫表", WindowId=typeof(Views.SubDlg04prnShuk01rNewView).FullName },
                 new ButtonConfig { Text = "在庫移動入力", WindowId="" },
                 new ButtonConfig { Text = "移動未受リスト", WindowId="" }
             }
@@ -259,8 +260,8 @@ namespace CvnetClient.Models
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "HHT用マスタデータ作成(cvnetcom)", WindowId=typeof(Views.SubDlg08Hht1View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "HHT未更新データ印刷", WindowId=typeof(Views.SubDlg08HhterrView).FullName,Parameter="0",Flag="0" },
-                new ButtonConfig { Text = "HHT未更新データ一括削除", WindowId=typeof(Views.SubDlg08HhtDelView).FullName},
-                new ButtonConfig { Text = "HHT用PATH設定", WindowId=typeof(Views.SubDlg08Hht0View).FullName},
+                new ButtonConfig { Text = "HHT未更新データ一括削除", WindowId=typeof(Views.SubDlg08HhtDelView).FullName,Parameter="0",Flag="0"},
+                new ButtonConfig { Text = "HHT用PATH設定", WindowId=typeof(Views.SubDlg08Hht0View).FullName,Parameter="0",Flag="0"},
                 new ButtonConfig { Text = "HHT手動データ受信(店舗固定)", WindowId="" },
                 new ButtonConfig { Text = "HHT手動データ受信(ﾃﾞｰﾀ送信後)", WindowId="" },
                 new ButtonConfig { Text = "HHTエラーデータ修正入力", WindowId="" },
@@ -362,7 +363,7 @@ namespace CvnetClient.Models
             Buttons = new List<ButtonConfig> {
                 new ButtonConfig { Text = "マスタデータ作成", WindowId=typeof(Views.SubDlg71Pos1View).FullName ,Parameter="0",Flag="0"},
                 new ButtonConfig { Text = "連携データ手動送信", WindowId=typeof(Views.SubDlg71SendManualView).FullName,Parameter="0",Flag="0" },
-                new ButtonConfig { Text = "連携データ手動受信", WindowId="" },
+                new ButtonConfig { Text = "連携データ手動受信", WindowId=typeof(Views.SubDlg71RecvManualView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "連携エラーデータ照会", WindowId="" }
             }
         }},

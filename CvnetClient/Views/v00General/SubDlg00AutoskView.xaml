@@ -1,0 +1,319 @@
+﻿<Window
+    x:Class="CvnetClient.Views.SubDlg00AutoskView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:CvnetClient.Views"
+    xmlns:util="clr-namespace:CvnetClient.Utils"
+    xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+    Title="{Binding Title}"
+    Width="1300"
+    Height="750"
+    Style="{StaticResource MasterWindowStyle}"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:SubDlg00AutoskViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <util:RdIntToBoolConverter x:Key="RdIntToBoolConverter" />
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="9*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border
+            Margin="10"
+            Background="White"
+            CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="20">
+                    <Calendar>
+                        <Calendar.CalendarDayButtonStyle>
+                            <Style TargetType="CalendarDayButton">
+                                <Setter Property="MinWidth" Value="50" />
+                                <Setter Property="MinHeight" Value="10" />
+                                <Setter Property="FontSize" Value="16" />
+                            </Style>
+                        </Calendar.CalendarDayButtonStyle>
+                    </Calendar>
+
+                </StackPanel>
+
+                <Grid Grid.Column="1" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="5*" />
+                    </Grid.RowDefinitions>
+                    <!--  Initial automatic processing list  -->
+                    <Border
+                        Margin="5,0,5,0"
+                        Background="#FFDBF2DE"
+                        CornerRadius="10,10,0,0">
+                        <Label HorizontalAlignment="Center" Content="初期自動処理一覧" />
+                    </Border>
+                    <Border Grid.Row="1">
+                        <DataGrid
+                            Margin="5"
+                            AutoGenerateColumns="False"
+                            Background="#FF666666"
+                            CanUserAddRows="False"
+                            ColumnWidth="*"
+                            HeadersVisibility="Column"
+                            ItemsSource="{Binding DataSource.ListFlexSource, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            Style="{DynamicResource WinGridData}">
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                </Style>
+                            </DataGrid.CellStyle>
+                            <!--  Processing number  -->
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding ProcessingNumber}"
+                                    Header="処理番号">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <!--  priority number  -->
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding PriorityNumber}"
+                                    Header="優先番号">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <!--  Processing name  -->
+                                <DataGridTextColumn
+                                    Width="3*"
+                                    Binding="{Binding ProcessingName}"
+                                    Header="処理名">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <!--  Startup category  -->
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding StartupCategory}"
+                                    Header="起動区分" />
+                                <!--  startup unit  -->
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding StartupUnit}"
+                                    Header="起動単位" />
+                                <!--  specified date  -->
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding SpecifiedDate}"
+                                    Header="指定日" />
+                                <!--  When specified  -->
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding WhenSpecified}"
+                                    Header="指定時" />
+                                <!--  specified amount  -->
+                                <DataGridTextColumn
+                                    Width="*"
+                                    Binding="{Binding SpecifiedAmount}"
+                                    Header="指定分" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Border>
+        <Border
+            Grid.Row="1"
+            Margin="10"
+            Padding="15,15,15,15"
+            Background="White"
+            CornerRadius="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="5*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions />
+                <!--  Automatic change processing list  -->
+                <Border
+                    Margin="5,0,5,0"
+                    Background="#FFDBF2DE"
+                    CornerRadius="10,10,0,0">
+                    <Label HorizontalAlignment="Center" Content="変更自動処理一覧" />
+                </Border>
+                <Border Grid.Row="1" VerticalAlignment="Top">
+                    <DataGrid
+                        Height="350"
+                        Margin="5"
+                        AutoGenerateColumns="False"
+                        Background="#FF666666"
+                        CanUserAddRows="False"
+                        ColumnWidth="*"
+                        HeadersVisibility="Column"
+                        ItemsSource="{Binding DataSource.ListFlexSource, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Style="{DynamicResource WinGridData}">
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn
+                                Width="0.5*"
+                                Binding="{Binding No}"
+                                Header="行">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <!--  delete  -->
+                            <DataGridTemplateColumn Width="0.5*" Header="削除">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!--<Button Click="DeleteRow_Click" Style="{DynamicResource DeleteFlexBtn}" />-->
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <!--  Processing number  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding ProcessingNumber}"
+                                Header="処理番号">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <!--  priority number  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding PriorityNumber}"
+                                Header="優先番号">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <!--  Processing name  -->
+                            <DataGridTextColumn
+                                Width="3*"
+                                Binding="{Binding ProcessingName}"
+                                Header="処理名">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <!--  Startup category  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding StartupCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Header="起動区分" />
+                            <!--  startup unit  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding StartupUnit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Header="起動単位" />
+                            <!--  specified date  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding SpecifiedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Header="指定日" />
+                            <!--  When specified  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding WhenSpecified, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Header="指定時" />
+                            <!--  specified amount  -->
+                            <DataGridTextColumn
+                                Width="*"
+                                Binding="{Binding SpecifiedAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Header="指定分" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Grid.ColumnSpan="3"
+                        Margin="5,5,150,5"
+                        BorderBrush="#FFD0D3D4"
+                        BorderThickness="1"
+                        CornerRadius="5">
+                        <StackPanel Orientation="Horizontal">
+                            <DatePicker
+                                Width="150"
+                                Margin="5,0,0,0"
+                                BorderBrush="#FFCECECE" />
+                            <!--  Copy changes to  -->
+                            <Label
+                                Margin="0,0,20,0"
+                                HorizontalAlignment="Center"
+                                Content="に変更内容をコピーする" />
+                            <Button
+                                Width="80"
+                                HorizontalAlignment="Left"
+                                Command="{Binding DoCopyCommand}"
+                                Content="コピー(F7)"
+                                ToolTip="F7でデータ更新実行" />
+                        </StackPanel>
+                    </Border>
+                    <Button
+                        Grid.Column="5"
+                        Margin="0,0,5,0"
+                        Command="{Binding DoExecuteCommand}"
+                        Style="{DynamicResource ExecButton}" />
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!--  Action Buttons  -->
+        <StackPanel
+            Grid.Row="2"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+
+            <Button
+                Margin="0,0,15,0"
+                Command="{Binding DoExitCommand}"
+                Style="{DynamicResource BackBtn}" />
+        </StackPanel>
+    </Grid>
+</Window>
+
+

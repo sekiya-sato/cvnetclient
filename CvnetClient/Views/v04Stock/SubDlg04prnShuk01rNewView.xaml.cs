@@ -1,5 +1,4 @@
-﻿using CvnetClient.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +11,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static MaterialDesignThemes.Wpf.Theme;
 
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlg71RecvManualView.xaml
+    /// Interaction logic for SubDlg04prnShuk01rNewView.xaml
     /// </summary>
-    public partial class SubDlg71RecvManualView : Window
+    public partial class SubDlg04prnShuk01rNewView : Window
     {
-        public SubDlg71RecvManualView()
+        public SubDlg04prnShuk01rNewView()
         {
             InitializeComponent();
         }
