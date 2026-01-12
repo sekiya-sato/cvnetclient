@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
 		xmlns:ie="clr-namespace:CvnetClient.Behaviors"
-		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 		xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
@@ -204,25 +203,6 @@
 					VerticalAlignment="Top"
 					Content="データ取得" 
 					Command="{Binding DoSearchDateCommand}"/>
-			<!--<xctk:DateTimePicker Grid.Column="2" 
-								 Value="{Binding SelDate, Mode=TwoWay}"
-								 Format="Custom"
-								 FormatString="yyyy/MM/dd HH:mm:ss"
-								 Margin="0,0,5,0">
-				<xctk:DateTimePicker.Style>
-					<Style TargetType="xctk:DateTimePicker">
-						<Setter Property="IsEnabled" Value="True"/>
-						<Style.Triggers>
-							<DataTrigger Binding="{Binding IsDateEnable}" Value="1">
-								<Setter Property="IsEnabled" Value="True"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsDateEnable}" Value="0">
-								<Setter Property="IsEnabled" Value="False"/>
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>
-				</xctk:DateTimePicker.Style>
-			</xctk:DateTimePicker>-->
 			<uc:CustomDateView Grid.Column="2"
 							   SelectedDateTime="{Binding SelDate, Mode=TwoWay}"
 							   Format="yyyy/MM/dd HH:mm:ss">
