@@ -7,6 +7,7 @@
 		xmlns:ie="clr-namespace:CvnetClient.Behaviors"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+		xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
 		Title="{Binding Title}"
         WindowStartupLocation="CenterScreen"
@@ -203,7 +204,7 @@
 					VerticalAlignment="Top"
 					Content="データ取得" 
 					Command="{Binding DoSearchDateCommand}"/>
-			<xctk:DateTimePicker Grid.Column="2" 
+			<!--<xctk:DateTimePicker Grid.Column="2" 
 								 Value="{Binding SelDate, Mode=TwoWay}"
 								 Format="Custom"
 								 FormatString="yyyy/MM/dd HH:mm:ss"
@@ -221,7 +222,24 @@
 						</Style.Triggers>
 					</Style>
 				</xctk:DateTimePicker.Style>
-			</xctk:DateTimePicker>
+			</xctk:DateTimePicker>-->
+			<uc:CustomDateView Grid.Column="2"
+							   SelectedDateTime="{Binding SelDate, Mode=TwoWay}"
+							   Format="yyyy/MM/dd HH:mm:ss">
+				<uc:CustomDateView.Style>
+					<Style TargetType="uc:CustomDateView">
+						<Setter Property="IsEnabled" Value="True" />
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding IsDateEnable}" Value="1">
+								<Setter Property="IsEnabled" Value="True"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsDateEnable}" Value="0">
+								<Setter Property="IsEnabled" Value="False"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</uc:CustomDateView.Style>
+			</uc:CustomDateView>
 			<TextBlock Grid.Column="3"
 					   Text="以降"
 					   Margin="0,0,5,0"
