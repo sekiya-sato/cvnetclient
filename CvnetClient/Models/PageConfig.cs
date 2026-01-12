@@ -290,7 +290,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "支払一覧表", WindowId="" },
                 new ButtonConfig { Text = "支払残高明細書", WindowId=typeof(Views.SubDlg02Prn04fView).FullName,Parameter="1",Flag="0" },
                 new ButtonConfig { Text = "支払計算", WindowId="" },
-                new ButtonConfig { Text = "買掛消費税計算", WindowId="" }
+                new ButtonConfig { Text = "買掛消費税計算", WindowId=typeof(Views.SubDlg09UpKaikakeTaxView ).FullName,Parameter="0",Flag="0" }
             }
         }},
         { "月次", new PageData {

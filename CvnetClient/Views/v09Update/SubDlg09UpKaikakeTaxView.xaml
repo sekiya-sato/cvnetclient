@@ -1,0 +1,158 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg09UpKaikakeTaxView"        
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="買掛消費税計算" Style="{StaticResource SmallWindow}" Background="White" >
+	<Window.Resources>
+		<utils:VdateConverter x:Key="VdateConverter" />
+	</Window.Resources>
+	<Window.DataContext>
+		<vm:SubDlg09UpurikakeTaxViewModel />
+	</Window.DataContext>
+	<behaviors:Interaction.Triggers>
+		<behaviors:EventTrigger EventName="ContentRendered">
+			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+		</behaviors:EventTrigger>
+	</behaviors:Interaction.Triggers>
+	<Grid Margin="0,0,0,0">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="9*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Border Grid.Row="0" 
+        CornerRadius="10"
+        Padding="10"
+        BorderBrush="White"
+        BorderThickness="1"
+        Margin="10,0,10,0"   
+		HorizontalAlignment="Stretch" >
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="20*" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+
+				<Grid Margin="0,20,0,0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+					</Grid.RowDefinitions>
+
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="90"/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="2*"/>
+					</Grid.ColumnDefinitions>
+
+					<Label Grid.Row="2" Grid.Column="0"
+								Content="請求月"
+								VerticalAlignment="Center"
+								Margin="0,0,8,0"/>
+
+					<xctk:DateTimePicker 
+							Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+							Format="Custom"
+							FormatString="yyyy/MM"  
+							ShowButtonSpinner="True" 
+							TimePickerVisibility="Collapsed" 
+							AllowTextInput="False"
+							Value="{Binding SelectShop.DateFrom}" 
+							Height="30"/>
+
+					<Label Grid.Row="4" Grid.Column="0"
+								   Content="請求先"
+								   VerticalAlignment="Center"
+								   Margin="0,0,8,0"/>
+
+					<Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" VerticalAlignment="Center" >
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<TextBox Grid.Column="0"
+									TextWrapping="Wrap">
+							<TextBox.Text>
+								<MultiBinding StringFormat='{}{0} {1}'>
+									<Binding Path="SelectShop.FromWorkerShopCd"/>
+									<Binding Path="SelectShop.FromWorkerShopName"/>
+								</MultiBinding>
+							</TextBox.Text>
+						</TextBox>
+
+						<uc:CvnetBtListView Grid.Column="1"
+												MstName="{Binding MstName}"
+												StyleDesign="2"
+												SelectedValue="{Binding SelectShop.FromWorkerShopCd}"
+												Command="{Binding FindFromWorkerShopCommand}" />
+					</Grid>
+
+					<TextBlock Grid.Row="5" Grid.Column="2"
+								   Text="～" HorizontalAlignment="Right" Margin="0,10,10,5" VerticalAlignment="Bottom" />
+					<Grid Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="4" VerticalAlignment="Bottom">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<TextBox Grid.Column="0"
+							TextWrapping="Wrap">
+							<TextBox.Text>
+								<MultiBinding StringFormat='{}{0} {1}'>
+									<Binding Path="SelectShop.ToWorkerShopCd"/>
+									<Binding Path="SelectShop.ToWorkerShopName"/>
+								</MultiBinding>
+							</TextBox.Text>
+						</TextBox>
+
+						<uc:CvnetBtListView Grid.Column="1"
+												MstName="{Binding MstName}"
+												StyleDesign="2"
+												SelectedValue="{Binding SelectShop.FromWorkerShopCd}"
+												Command="{Binding FindToWorkerShopCommand}"/>
+					</Grid>
+
+				</Grid>
+			</Grid>
+		</Border>
+
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<StackPanel Grid.Column="1"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
+                Margin="0,0,40,0">
+
+				<Button Content="実行(ENTER)"
+                Style="{DynamicResource PrintIconBtn}"
+                Command="{Binding DoPrintCommand}"
+                Margin="0,0,10,0"/>
+
+				<Button Content="戻る(ESC)"
+                Style="{DynamicResource BackBtn}"
+                Command="{Binding ExitCommand}" />
+			</StackPanel>
+		</Grid>
+	</Grid>
+</Window>
