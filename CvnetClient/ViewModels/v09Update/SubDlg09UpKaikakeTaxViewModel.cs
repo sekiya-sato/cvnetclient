@@ -15,10 +15,8 @@ namespace CvnetClient.ViewModels
         #region Declare
         [ObservableProperty]
         private MasterWorkerShopMenu? selectShop = new();
-
         [ObservableProperty]
-        private string mstName = "請求";   // default
-
+        private string mstName = "支払先登録";   // default not 支払？
         [ObservableProperty]
         BtListHelper findFromWorkerShopCd = new();
         [ObservableProperty]
@@ -96,13 +94,11 @@ namespace CvnetClient.ViewModels
 
         private void OnQuery()
         {
-            string sql_str = "SELECT TO_CHAR(TRUNC(ADD_MONTHS(TO_DATE(D.日付, 'YYYYMMDD'), -1), 'MM') + D.締日, 'YYYYMMDD') AS 開始日,"
-                        + "TO_CHAR(TRUNC(TO_DATE(D.日付, 'YYYYMMDD'), 'MM') + D.締日 - 1, 'YYYYMMDD') AS 終了日 "
-                        + "FROM(SELECT '20251201' AS 日付, 自社締日 AS 締日 "
-                        + "FROM HC$MASTER_SYSKANRI WHERE 自社締日 != 99) D "
-                        + "UNION ALL "
-                        + "SELECT TO_CHAR(TRUNC(TO_DATE(D.日付, 'YYYYMMDD'), 'MM'), 'YYYYMMDD') AS 開始日,"
-                        + "TO_CHAR(LAST_DAY(TO_DATE(D.日付, 'YYYYMMDD')), 'YYYYMMDD') AS 終了日 FROM (SELECT '20251201' AS 日付 FROM HC$MASTER_SYSKANRI WHERE 自社締日 = 99) D";
+            string sql_str = "select to_char(to_date((substr(to_char(last_day(to_date(D.日付)-to_number(D.締日)),'YYYYMMDD'),0,6)||D.締日))+1,'YYYYMMDD') 開始日,"
+                    + "(to_char(last_day(to_date((substr(to_char(last_day(to_date(D.日付)-to_number(D.締日)),'YYYYMMDD'),0,6)||D.締日)))+1,'YYYYMM')||D.締日) 終了日"
+                    + " from (select '" + SelectShop.DateFrom + "' 日付,trim(TO_CHAR(自社締日,'09')) 締日 from HC$MASTER_SYSKANRI where 自社締日!=99) D"
+                    + " union all select (substr(D.日付,0,6)||'01') 開始日,to_char(last_day(to_date(D.日付)),'YYYYMMDD') 終了日"
+                    + " from (select '" + SelectShop.DateFrom + "' 日付,trim(TO_CHAR(自社締日,'09')) 締日 from HC$MASTER_SYSKANRI where 自社締日=99) D";
 
             var retCsv = AppData.Http!.AspxSqlQueryCsv(sql_str, null);
 

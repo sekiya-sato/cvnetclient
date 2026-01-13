@@ -16,7 +16,7 @@
 		<utils:VdateConverter x:Key="VdateConverter" />
 	</Window.Resources>
 	<Window.DataContext>
-		<vm:SubDlg09UpurikakeTaxViewModel />
+		<vm:SubDlg09UpKaikakeTaxViewModel />
 	</Window.DataContext>
 	<behaviors:Interaction.Triggers>
 		<behaviors:EventTrigger EventName="ContentRendered">
@@ -64,7 +64,7 @@
 					</Grid.ColumnDefinitions>
 
 					<Label Grid.Row="2" Grid.Column="0"
-								Content="請求月"
+								Content="年月"
 								VerticalAlignment="Center"
 								Margin="0,0,8,0"/>
 
@@ -79,7 +79,7 @@
 							Height="30"/>
 
 					<Label Grid.Row="4" Grid.Column="0"
-								   Content="請求先"
+								   Content="仕入先"
 								   VerticalAlignment="Center"
 								   Margin="0,0,8,0"/>
 
