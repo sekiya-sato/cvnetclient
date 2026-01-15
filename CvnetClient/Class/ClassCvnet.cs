@@ -375,6 +375,10 @@ namespace CvnetBaseCore
         public DateTime GetSysWeek(DateTime v_date)
         {
             // Get week start type from SysMst (0 = Sunday start, else = Monday start)
+            //string weekStartFlag = AppData.ClassCvnet.SysMst._data.Rows[0][18].ToString();
+            var table = AppData.ClassCvnet.SysMst._data;
+            if (table.Rows.Count == 0) return new DateTime(1901, 1, 1);
+            var row = table.Rows[0];
             string weekStartFlag = AppData.ClassCvnet.SysMst._data.Rows[0][18].ToString();
 
             // C# DayOfWeek: Sunday=0, Monday=1, ..., Saturday=6

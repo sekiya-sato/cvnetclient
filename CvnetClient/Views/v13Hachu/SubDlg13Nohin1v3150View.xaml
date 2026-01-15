@@ -1,0 +1,220 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg13Nohin1v3150View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="MDマップ" Style="{StaticResource PrintWindowStyle}">
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:SubDlg13Nohin1v3150ViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding OpenSubDlg13Nohin2Command}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="8*"  />
+            <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="検索範囲指定" VerticalAlignment="Bottom" Margin="10,0"/>
+        <Border Grid.Row="1" Grid.Column="1" BorderThickness="0.5" CornerRadius="8" BorderBrush="#CCC" Background="White" />
+        <Grid Grid.Row="1"  Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Center"  Content="展開月"/>
+
+            <Grid Grid.Row="1" Grid.Column="2" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <DatePicker 
+                    Grid.Row="1"
+Grid.Column="0"
+VerticalAlignment="Center" 
+SelectedDate="{Binding CodeNen0}"
+Height="30"/>
+                
+                <DatePicker 
+                    Grid.Row="2"
+    Grid.Column="0"
+    VerticalAlignment="Center" 
+    SelectedDate="{Binding CodeNen1}"
+    Height="30"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <DatePicker 
+                    Grid.Row="2"
+    Grid.Column="2"
+    VerticalAlignment="Center" 
+    SelectedDate="{Binding CodeNen2}"
+    Height="30"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Margin="5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="0.5*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition Width="0.8*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.4*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.RowSpan="7" Grid.ColumnSpan="6" BorderBrush="#CCC" BorderThickness="0.5" CornerRadius="8"/>
+                <Label   Grid.Row="1" Grid.Column="1" Content="第1週"/>
+                <DatePicker Grid.Row="1" Grid.Column="2" SelectedDate="{Binding CodNen01}" />
+                <Label   Grid.Row="1" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="1" Grid.Column="4" SelectedDate="{Binding CodNen02}" />
+
+                <Label   Grid.Row="2" Grid.Column="1" Content="第2週" />
+                <DatePicker Grid.Row="2" Grid.Column="2" SelectedDate="{Binding CodNen03}" />
+                <Label   Grid.Row="2" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="2" Grid.Column="4" SelectedDate="{Binding CodNen04}" />
+
+                <Label   Grid.Row="3" Grid.Column="1" Content="第3週" />
+                <DatePicker Grid.Row="3" Grid.Column="2" SelectedDate="{Binding CodNen05}" />
+                <Label   Grid.Row="3" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="3" Grid.Column="4" SelectedDate="{Binding CodNen06}" />
+
+                <Label   Grid.Row="4" Grid.Column="1" Content="第4週" />
+                <DatePicker Grid.Row="4" Grid.Column="2" SelectedDate="{Binding CodNen07}" />
+                <Label   Grid.Row="4" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="4" Grid.Column="4" SelectedDate="{Binding CodNen08}" />
+
+                <Label   Grid.Row="5" Grid.Column="1" Content="第5週" />
+                <DatePicker Grid.Row="5" Grid.Column="2" SelectedDate="{Binding CodNen09}" />
+                <Label   Grid.Row="5" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DatePicker Grid.Row="5" Grid.Column="4" SelectedDate="{Binding CodNen10}" />
+
+
+            </Grid>
+
+            <Label Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  Content="ブランド"/>
+            <Label Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  Content="アイテム"/>
+            <Label Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  Content="取引区分"/>
+            <Label Grid.Row="5" Grid.Column="1" Grid.RowSpan="2" VerticalAlignment="Top"  Content="伝票区分"/>
+
+            <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBox Width="auto" MinWidth="250" TextWrapping="Wrap">
+                    <TextBox.Text>
+                        <MultiBinding StringFormat='{}{0} {1}'>
+                            <Binding Path="FindBrand.Code" />
+                            <Binding Path="FindBrand.Name" />
+                        </MultiBinding>
+                    </TextBox.Text>
+                </TextBox>
+                <uc:CvnetBtListView MstName="ブランド" StyleDesign="2" 
+SelectedValue ="{Binding SelectedBrand}"
+Command="{Binding SelBrandCommand}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBox Width="auto" MinWidth="250" TextWrapping="Wrap">
+                    <TextBox.Text>
+                        <MultiBinding StringFormat='{}{0} {1}'>
+                            <Binding Path="FindItem1.Code" />
+                            <Binding Path="FindItem1.Name" />
+                        </MultiBinding>
+                    </TextBox.Text>
+                </TextBox>
+                <uc:CvnetBtListView MstName="アイテム" StyleDesign="2" 
+SelectedValue ="{Binding SelectedItem1}"
+Command="{Binding SelItem1Command}"/>
+            </StackPanel>
+            <Label Grid.Row="3" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Horizontal"  Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBox Width="auto" MinWidth="250" TextWrapping="Wrap">
+                    <TextBox.Text>
+                        <MultiBinding StringFormat='{}{0} {1}'>
+                            <Binding Path="FindItem2.Code" />
+                            <Binding Path="FindItem2.Name" />
+                        </MultiBinding>
+                    </TextBox.Text>
+                </TextBox>
+                <uc:CvnetBtListView MstName="アイテム" StyleDesign="2" 
+SelectedValue ="{Binding SelectedItem2}"
+Command="{Binding SelItem2Command}"/>
+            </StackPanel>
+
+            <ComboBox Grid.Row="4" Grid.Column="2"  Grid.RowSpan="2" VerticalAlignment="Top"  Style="{StaticResource SearchableComboBox1}" 
+                      DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding CodeTyp1List}" SelectedValue="{Binding SelectedCodeTyp1}"/>
+            <Label Grid.Row="4" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="4" Grid.Column="4" VerticalAlignment="Top"  Style="{StaticResource SearchableComboBox1}" 
+                      DisplayMemberPath="Value" SelectedValuePath="Key" ItemsSource="{Binding CodeTyp2List}" SelectedValue="{Binding SelectedCodeTyp2}"/>
+
+            
+            <Grid Grid.Row="5" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton Grid.Column="0" Content="発注" GroupName="settings" IsEnabled="{Binding IsSettingsEnabled}" IsChecked="{Binding SelectedType,  Converter={StaticResource StringToBoolConverter}, ConverterParameter=Type49}" FontStyle="Normal"/>
+                <RadioButton Grid.Column="1" Content="契約発注" GroupName="settings" IsEnabled="{Binding IsSettingsEnabled}" IsChecked="{Binding SelectedType, Converter={StaticResource StringToBoolConverter}, ConverterParameter=Type45}" FontStyle="Normal"/>
+            </Grid>
+            
+            
+            
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="2" Content="実行(Enter)"  Command="{Binding OpenSubDlg13Nohin2Command}"/>
+            <Button Grid.Column="3" Style="{StaticResource BackBtn}" Command="{Binding ExitCommand}"/>
+        </Grid>
+
+    </Grid>
+</Window>
