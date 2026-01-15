@@ -40,7 +40,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "JAN一括設定(49JAN含む)", WindowId=typeof(Views.SubDlg01SetjanView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "マスタ復帰処理", WindowId="" },
                 new ButtonConfig { Text = "商品色サイズメンテ", WindowId=typeof(Views.SubDlg01ShojanView).FullName },
-                new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId="" },
+                new ButtonConfig { Text = "下札発行用CSVデータ作成", WindowId=typeof(Views.SubDlg70Tag3View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "社員使用メニュー一覧", WindowId=typeof(Views.SubDlg00PrnMenu01View).FullName,Parameter="0",Flag="0"  },
                 new ButtonConfig { Text = "端末UUID設定(Felica用)", WindowId=typeof(Views.SubDlg00TerminalIdView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "週マスタ", WindowId=typeof(Views.SubDlg01WeekView).FullName },
