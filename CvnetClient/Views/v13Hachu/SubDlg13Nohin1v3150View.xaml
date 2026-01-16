@@ -112,29 +112,29 @@ Height="30"/>
 
                 <Border Grid.RowSpan="7" Grid.ColumnSpan="6" BorderBrush="#CCC" BorderThickness="0.5" CornerRadius="8"/>
                 <Label   Grid.Row="1" Grid.Column="1" Content="第1週"/>
-                <DatePicker Grid.Row="1" Grid.Column="2" SelectedDate="{Binding CodNen01}" />
+                <DatePicker Grid.Row="1" Grid.Column="2" SelectedDate="{Binding CodeNen01}" />
                 <Label   Grid.Row="1" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <DatePicker Grid.Row="1" Grid.Column="4" SelectedDate="{Binding CodNen02}" />
+                <DatePicker Grid.Row="1" Grid.Column="4" SelectedDate="{Binding CodeNen02}" />
 
                 <Label   Grid.Row="2" Grid.Column="1" Content="第2週" />
-                <DatePicker Grid.Row="2" Grid.Column="2" SelectedDate="{Binding CodNen03}" />
+                <DatePicker Grid.Row="2" Grid.Column="2" SelectedDate="{Binding CodeNen03}" />
                 <Label   Grid.Row="2" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <DatePicker Grid.Row="2" Grid.Column="4" SelectedDate="{Binding CodNen04}" />
+                <DatePicker Grid.Row="2" Grid.Column="4" SelectedDate="{Binding CodeNen04}" />
 
                 <Label   Grid.Row="3" Grid.Column="1" Content="第3週" />
-                <DatePicker Grid.Row="3" Grid.Column="2" SelectedDate="{Binding CodNen05}" />
+                <DatePicker Grid.Row="3" Grid.Column="2" SelectedDate="{Binding CodeNen05}" />
                 <Label   Grid.Row="3" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <DatePicker Grid.Row="3" Grid.Column="4" SelectedDate="{Binding CodNen06}" />
+                <DatePicker Grid.Row="3" Grid.Column="4" SelectedDate="{Binding CodeNen06}" />
 
                 <Label   Grid.Row="4" Grid.Column="1" Content="第4週" />
-                <DatePicker Grid.Row="4" Grid.Column="2" SelectedDate="{Binding CodNen07}" />
+                <DatePicker Grid.Row="4" Grid.Column="2" SelectedDate="{Binding CodeNen07}" />
                 <Label   Grid.Row="4" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <DatePicker Grid.Row="4" Grid.Column="4" SelectedDate="{Binding CodNen08}" />
+                <DatePicker Grid.Row="4" Grid.Column="4" SelectedDate="{Binding CodeNen08}" />
 
                 <Label   Grid.Row="5" Grid.Column="1" Content="第5週" />
-                <DatePicker Grid.Row="5" Grid.Column="2" SelectedDate="{Binding CodNen09}" />
+                <DatePicker Grid.Row="5" Grid.Column="2" SelectedDate="{Binding CodeNen09}" />
                 <Label   Grid.Row="5" Grid.Column="3" Content="~" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <DatePicker Grid.Row="5" Grid.Column="4" SelectedDate="{Binding CodNen10}" />
+                <DatePicker Grid.Row="5" Grid.Column="4" SelectedDate="{Binding CodeNen10}" />
 
 
             </Grid>
