@@ -938,13 +938,13 @@ namespace CvnetBaseCore {
 
         #region Xml Document
         /// <summary>
-        /// Get Xml Paturn Data from Server
+        /// Get Xml Data from Server (Isql/Data/)
         /// Dynamic Custome Xml Available for below:
 		/// Bunseki_Paturn.xml, Convert_Paturn.xml, Item_List.xml, Kinsyu_Paturn.xml, Kyakusuu_Paturn.xml, TagCsv_Paturn.xml
         /// </summary>
         /// <param name="fileName">Xml Filename</param>
         /// <returns></returns>
-        public dynamic GetXmlFile(string fileName) 
+        public dynamic GetIsqlXmlFile(string fileName) 
 		{
 			string url = URLroot + v_AddUrl + "/Data/" + fileName;
             dynamic result = new ExpandoObject();
@@ -956,7 +956,7 @@ namespace CvnetBaseCore {
                     wc.Encoding = Encoding.UTF8;
                     xml = wc.DownloadString(url);
                 } 
-				result = ParsePaturnXml(fileName, xml); 
+				result = ParseIsqlPaturnXml(fileName, xml); 
             }
 			catch (Exception e)
 			{
@@ -965,7 +965,7 @@ namespace CvnetBaseCore {
 			return result;
 		}
 
-		public dynamic ParsePaturnXml(string filename, string content)
+		public dynamic ParseIsqlPaturnXml(string filename, string content)
 		{
             // Parse XML
             var doc = XDocument.Parse(content); 
@@ -1131,6 +1131,210 @@ namespace CvnetBaseCore {
 				return result;
 			}
 			return result;
+        }
+
+		public dynamic GetDataXmlFile(string fileName)
+		{
+            string url = URLroot + "/Data/" + fileName;
+            dynamic result = new ExpandoObject();
+            try
+            {
+                string xml;
+                using (var wc = new WebClient())
+                {
+                    wc.Encoding = Encoding.UTF8;
+                    xml = wc.DownloadString(url);
+                }
+                result = ParseDataPaturnXml(fileName, xml);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            return result;
+        }
+
+		public dynamic ParseDataPaturnXml(string filename, string content)
+		{
+            // Parse XML
+            var doc = XDocument.Parse(content);
+            dynamic result = new ExpandoObject();
+
+			if (filename.ToLower() == "bunseki_paturn150.xml")
+			{
+                result.Item = new List<dynamic>();
+                foreach (var i in doc.Root.Elements("Item"))
+                {
+                    dynamic item = new ExpandoObject();
+                    item.name = (string)i.Attribute("name");
+                    item.defaults = (int?)i.Attribute("default") ?? 0;
+                    item.d_kbn = (int?)i.Attribute("d_kbn") ?? 0;
+                    item.unit = (int?)i.Attribute("unit") ?? 0;
+                    item.visible = (bool?)i.Attribute("visible") ?? false;
+					 
+                    item.Main_sql_value = i.Element("Main_sql").Value;
+
+                    result.Item.Add(item);
+                }
+            }
+			else if (filename.ToLower() == "convert_paturn.xml")
+			{
+                result.Paturn = new List<dynamic>();
+                foreach (var p in doc.Root.Elements("Paturn"))
+                {
+                    dynamic paturn = new ExpandoObject();
+                    paturn.id = (string)p.Attribute("id");
+                    paturn.name = (string)p.Attribute("name");
+                    paturn.keys = (int?)p.Attribute("keys") ?? 0;
+                    paturn.cols = (int?)p.Attribute("cols") ?? 0;
+                    paturn.kubun = (string)p.Attribute("kubun");
+                    paturn.visible = (bool?)p.Attribute("visible") ?? false;
+
+                    var el_confirm = p.Element("Confirm");
+                    paturn.Confirm = null;
+                    if (el_confirm != null)
+                    {
+                        paturn.Confirm = new ExpandoObject();
+                        paturn.Confirm.use = (bool?)el_confirm.Attribute("use") ?? false;
+                        paturn.Confirm.value = el_confirm.Value;
+                    }
+
+                    paturn.List = new List<dynamic>();
+                    foreach (var l in p.Elements("List"))
+                    {
+                        dynamic paturn_list = new ExpandoObject();
+                        // Attributes
+                        paturn_list.name = (string)l.Attribute("name");
+                        paturn_list.col = (int?)l.Attribute("col") ?? 0;
+
+                        // Inner text
+                        paturn_list.value = l.Value;
+
+                        paturn.List.Add(paturn_list);
+                    }
+
+                    paturn.Convert = new List<dynamic>();
+                    foreach (var c in p.Elements("Convert"))
+                    {
+                        dynamic paturn_convert = new ExpandoObject();
+                        // Attributes
+                        paturn_convert.name = (string)c.Attribute("name");
+                        paturn_convert.col = (int?)c.Attribute("col") ?? 0;
+
+                        paturn.Convert.Add(paturn_convert);
+                    }
+
+                    result.Paturn.Add(paturn);
+                }
+            }
+			else if (filename.ToLower() == "kinsyu_paturn.xml")
+			{
+				result.List = new List<dynamic>();
+				foreach (var l in doc.Root.Elements("List"))
+				{
+					dynamic list = new ExpandoObject();
+					// Attributes
+					list.name = (string)l.Attribute("name");
+					list.format = (string)l.Attribute("format");
+					list.next = (int?)l.Attribute("next") ?? 0;
+					list.kbn = (int?)l.Attribute("kbn") ?? 0;
+
+					// Inner text
+					list.value = l.Value;
+
+					result.List.Add(list);
+				}
+			}
+			else if (filename.ToLower() == "kyakusuu_paturn.xml")
+			{
+				result.List = new List<dynamic>();
+				foreach (var l in doc.Root.Elements("List"))
+				{
+					dynamic list = new ExpandoObject();
+					// Attributes
+					list.name = (string)l.Attribute("name");
+					result.List.Add(list);
+				}
+			}
+			else if (filename.ToLower() == "renkei_paturn.xml")
+			{
+				result.Paturn = new List<dynamic>();
+				foreach (var p in doc.Root.Elements("Paturn"))
+				{
+					dynamic paturn = new ExpandoObject();
+					paturn.id = (string)p.Attribute("id");
+					paturn.name = (string)p.Attribute("name");
+
+					paturn.List = new List<dynamic>();
+					foreach (var l in p.Elements("List"))
+					{
+						dynamic paturn_list = new ExpandoObject();
+						// Attributes
+						paturn_list.name = (string)l.Attribute("name");
+						paturn_list.length = (int?)l.Attribute("length") ?? 0;
+						paturn_list.format = (string)l.Attribute("format");
+
+						paturn.List.Add(paturn_list);
+					}
+					result.Paturn.Add(paturn);
+				}
+			}
+			else if (filename.ToLower() == "salesseisan_paturn.xml")
+			{
+				result.List = new List<dynamic>();
+				foreach (var l in doc.Root.Elements("List"))
+				{
+					dynamic list = new ExpandoObject();
+					// Attributes
+					list.name = (string)l.Attribute("name");
+					result.List.Add(list);
+				}
+			}
+			else if (filename.ToLower() == "tagcsv_paturn.xml")
+			{
+				result.Paturn = new List<dynamic>();
+				foreach (var p in doc.Root.Elements("Paturn"))
+				{
+					dynamic paturn = new ExpandoObject();
+					paturn.id = (string)p.Attribute("id");
+					paturn.name = (string)p.Attribute("name");
+					paturn.visible = (bool?)p.Attribute("visible") ?? false;
+					paturn.kbn = (int?)p.Attribute("kbn") ?? 0;
+
+					paturn.List = new List<dynamic>();
+					foreach (var l in p.Elements("List"))
+					{
+						dynamic paturn_list = new ExpandoObject();
+						// Attributes
+						paturn_list.name = (string)l.Attribute("name");
+						paturn_list.sqlnm = (string)l.Attribute("sqlnm");
+						paturn_list.col = (int?)l.Attribute("col") ?? 0;
+						paturn_list.width = (int?)l.Attribute("width") ?? 0;
+						paturn_list.type = (string)l.Attribute("type");
+						paturn_list.rp = (int?)l.Attribute("rp") ?? 0;
+
+						// Inner text
+						paturn_list.value = l.Value;
+
+						paturn.List.Add(paturn_list);
+					}
+					result.Paturn.Add(paturn);
+				}
+			}
+			else
+			{
+				// 1️. Raw XML
+				result.RawXml = content;
+
+				// 2. Pretty (readable) XML
+				result.PrettyXml = doc.ToString();
+
+				// 3. XML -> dynamic object
+				result.Data = XmlToDynamic(doc.Root);
+
+				return result;
+			}
+            return result;
         }
 
         private dynamic XmlToDynamic(XElement element)
