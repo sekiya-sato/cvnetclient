@@ -41,8 +41,13 @@ namespace CvnetClient.ViewModels {
                 AppData.ClassSatoo.SHAIN_Tenpo = ret.Item2.SHAIN_Tenpo;
                 AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
-				AppData.ClassCvnet.AspxSqlQuerySysHHTMst();
-				var win = ClientLib.GetActiveView(this);
+
+                AppData.ClassCvnet.AspxSqlQuerySysMst();
+				AppData.ClassCvnet.AspxSqlQuerySysKintaiMst();
+                AppData.ClassCvnet.AspxSqlQuerySysHHTMst();
+				AppData.ClassCvnet.AspxSqlQueryConfig(); 
+
+                var win = ClientLib.GetActiveView(this);
 				if(win != null) 
 					win.DialogResult = true;
 				Exit();

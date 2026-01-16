@@ -486,8 +486,11 @@ namespace CvnetBaseCore
             var wrk_csv = AppData.Http?.AspxSqlQuery(sqlstr);
             if (wrk_csv != null)
             {
+                if (AppData.ClassCvnet.SysKintaiMst == null)
+                    AppData.ClassCvnet.SysKintaiMst = new SysKintaiMstTb();
+
                 AppData.ClassCvnet.SysKintaiMst._data.Clear(); 
-                AppData.ClassCvnet.SysKintaiMst._data = wrk_csv; 
+                AppData.ClassCvnet.SysKintaiMst = new SysKintaiMstTb(wrk_csv); 
             }
         }
 
@@ -2675,9 +2678,9 @@ namespace CvnetBaseCore
         /// </summary>
         public void AspxSqlQuerySysMst()
         {
-            string sqlstr = "select * from HC$Master_SYSKANRI";
-            SysMst = new SysMstTb();
-            SysMst._data = AppData.Http?.AspxSqlQuery(sqlstr);
+            string sqlstr = "select * from HC$Master_SYSKANRI"; 
+            var resp = AppData.Http?.AspxSqlQuery(sqlstr);
+            if (resp != null) SysMst = new SysMstTb(resp);
             sqlstr = "select * from HC$Master_SYSTAX";
             SysTax = AppData.Http?.AspxSqlQuery(sqlstr);
             if (SysMst._data?.Rows.Count > 0 && SysMst._data?.Columns.Count > 15)
