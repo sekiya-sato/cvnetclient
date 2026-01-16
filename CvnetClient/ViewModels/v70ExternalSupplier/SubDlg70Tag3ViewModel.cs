@@ -183,7 +183,7 @@ namespace CvnetClient.ViewModels
         #region Function
         void GetServerPaturn()
         {
-            var data = AppData.Http?.GetXmlFile("Kyakusuu_Paturn.xml");
+            var paturn = AppData.Http?.GetDataXmlFile("Bunseki_Paturn150.xml");
         }
         #endregion
     }

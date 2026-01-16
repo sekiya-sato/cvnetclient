@@ -22,6 +22,6 @@ namespace CvnetClient.Views
         public SubDlg13HbnhtykNewView()
         {
             InitializeComponent();
-        }
+        } 
     }
 }

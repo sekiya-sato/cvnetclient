@@ -305,8 +305,9 @@
                             <DataGridTextColumn Width="*" Binding="{Binding Kanren}" Header="関連伝票NO" />
                         </DataGrid.Columns>
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
+							<i:EventTrigger EventName="PreviewMouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" 
+													   CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </DataGrid>
