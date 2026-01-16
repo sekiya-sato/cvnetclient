@@ -97,7 +97,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "本発注残管理表", WindowId="" },
                 new ButtonConfig { Text = "本発注書", WindowId="" },
                 new ButtonConfig { Text = "本発注配分リスト", WindowId="" },
-                new ButtonConfig { Text = "MDマップ", WindowId="" },
+                new ButtonConfig { Text = "MDマップ", WindowId=typeof(Views.SubDlg13Nohin1v3150View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "納品予定照会", WindowId="" },
                 new ButtonConfig { Text = "発注配分パターン入力", WindowId=typeof(Views.SubDlg13Hbnpatten150View).FullName },
                 new ButtonConfig { Text = "仕入未受リスト", WindowId="" }
@@ -364,7 +364,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "マスタデータ作成", WindowId=typeof(Views.SubDlg71Pos1View).FullName ,Parameter="0",Flag="0"},
                 new ButtonConfig { Text = "連携データ手動送信", WindowId=typeof(Views.SubDlg71SendManualView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "連携データ手動受信", WindowId=typeof(Views.SubDlg71RecvManualView).FullName,Parameter="0",Flag="0" },
-                new ButtonConfig { Text = "連携エラーデータ照会", WindowId="" }
+                new ButtonConfig { Text = "連携エラーデータ照会", WindowId=typeof(Views.SubDlg71WMSErrorView).FullName,Parameter="0",Flag="0" },
             }
         }},
         { "CVPOS", new PageData {
