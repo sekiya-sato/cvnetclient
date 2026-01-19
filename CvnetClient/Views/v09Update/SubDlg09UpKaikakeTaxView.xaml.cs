@@ -14,12 +14,9 @@ using System.Windows.Shapes;
 
 namespace CvnetClient.Views
 {
-    /// <summary>
-    /// Interaction logic for SubDlg71SendManual.xaml
-    /// </summary>
-    public partial class SubDlg71WMSErrorView : Window
+    public partial class SubDlg09UpKaikakeTaxView : Window
     {
-        public SubDlg71WMSErrorView()
+        public SubDlg09UpKaikakeTaxView()
         {
             InitializeComponent();
         }

@@ -188,7 +188,7 @@ namespace CvnetClient {
 				subvm.FontSize = fontSize; // フォントサイズを設定 [Set the font size]
 				subvm.BtnOkEnabled = false; // 位置的にCancelボタンのみ表示
 				subvm.BtnCancelEnabled = true;
-				subvm.BtnCancelText = "OK";
+				subvm.BtnCancelText = "OK(Enter)";
 			}
 			v.ShowDialog();
 			return true;

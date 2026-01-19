@@ -17,11 +17,7 @@
     <Window.DataContext>
         <vm:SubDlg08Hht0ViewModel/>
     </Window.DataContext>
-    <behaviors:Interaction.Triggers>
-        <behaviors:EventTrigger EventName="ContentRendered">
-            <behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
-        </behaviors:EventTrigger>
-    </behaviors:Interaction.Triggers>
+
 
     <Grid>
         <Grid.RowDefinitions>
@@ -42,9 +38,9 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="1" Grid.Column="1" Text="ハンディシステムのインストールフォルダを指定して、設定ボタンを押して下さい。" Foreground="Red" FontSize="16" FontWeight="Bold"/>
-        <TextBox Grid.Row="2" Grid.Column="1"  Text="{Binding PathStr}"  />
+        <TextBox Grid.Row="2" Grid.Column="1"  Text="{Binding PathStr}"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Message}" Foreground="Red"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Grid.RowSpan="4" Height="auto" Style="{StaticResource ReadOnlyTextBox}" IsReadOnly="True" Text="{Binding HhtPath}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Grid.RowSpan="4" Height="auto" Style="{StaticResource ReadOnlyTextBox}" IsReadOnly="True" Text="{Binding HhtPath}" VerticalContentAlignment="Top"/>
         <Grid Grid.Row="8" Grid.Column="1" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -54,7 +50,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button  Grid.Column="1" Content="設定" Width="90" Command="{Binding OnSetCommand}"/>
+            <Button  Grid.Column="1" Content="設定" Width="90" Command="{Binding DoCommand}"/>
             <Button  Grid.Column="3" Style="{StaticResource BackBtn}" Command="{Binding ExitCommand}" />
         </Grid>
         

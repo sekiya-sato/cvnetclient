@@ -2,16 +2,22 @@
 using CommunityToolkit.Mvvm.Input;
 using CvnetClient.Models;
 using CvnetClient.Utils;
+using System.Data;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg70Tag3ViewModel : BaseViewModel {
         #region Variables
         [ObservableProperty]
-        string? title;
+        string? title = "外部連携 : 下札発行用CSVデータ作成";
 
         [ObservableProperty]
-        Tag3SearchOpt? tagSearchOpt; 
+        Tag3SearchOpt? tagSearchOpt;
+
+        private int col_max = 90;
+        private string txt_no = string.Empty;
+        private string pos_no = string.Empty;
+        private int num_su = 0;
         #endregion
 
         #region Combobox List 
@@ -20,14 +26,17 @@ namespace CvnetClient.ViewModels
         /// </summary>
         [ObservableProperty]
         public Dictionary<string, string>? m_BillList;
-         
+
         [ObservableProperty]
         public Dictionary<string, string>? m_SlipCatList;
-        #endregion
+        #endregion 
 
-        public void OnInit(object? init_para = null)
-        {  
+        public void OnInit(object? init_para = null, string? init_flg = null)
+        {
             OnInitBase(init_para);
+
+            /* xmlパターンファイル取得/読込追加 */
+            GetServerPaturn();
 
             TagSearchOpt = new Tag3SearchOpt();
         }
@@ -36,16 +45,16 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void SelProd01()
         {
-            if (TagSearchOpt == null) return; 
+            if (TagSearchOpt == null) return;
             /* 自社社員 全表示 */
             if (AppData.ClassSatoo.LoginKubun == 0)
             {
                 if (AppData.ClassCvnet.MstDialog.ContainsKey("商品"))
-                { 
+                {
                     SelValueModel sel_value = new SelValueModel();
                     sel_value.Code = TagSearchOpt.SelProdStart.Code;
-                    sel_value.Name = TagSearchOpt.SelProdStart.Name; 
-                    var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, 
+                    sel_value.Name = TagSearchOpt.SelProdStart.Name;
+                    var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null,
                                                           new string[] { "0" }, null, null, 0, sel_value);
                     if (vm != null)
                     {
@@ -55,8 +64,8 @@ namespace CvnetClient.ViewModels
                 }
             }
             else
-            { 
-                /* 自社社員以外(仕入先) 仕入先縛り有 */ 
+            {
+                /* 自社社員以外(仕入先) 仕入先縛り有 */
             }
         }
         [RelayCommand]
@@ -134,40 +143,47 @@ namespace CvnetClient.ViewModels
         /// </summary>
         [RelayCommand]
         void DoSearch()
-        { 
-            
+        {
+
         }
         /// <summary>
         /// 割合加算 Button
         /// </summary>
         [RelayCommand]
         void DoPercentAdd()
-        { 
-        
+        {
+
         }
         /// <summary>
         /// 枚数加算 Button
         /// </summary>
         [RelayCommand]
         void DoSheetNum()
-        { 
-            
+        {
+
         }
         /// <summary>
         /// データ作成 Button
         /// </summary>
         [RelayCommand]
         void DoExecute()
-        { 
-            
+        {
+
         }
         /// <summary>
         /// 戻る Button
         /// </summary>
         [RelayCommand]
         void DoCancel()
-        { 
-            
+        {
+
+        }
+        #endregion
+
+        #region Function
+        void GetServerPaturn()
+        {
+            var paturn = AppData.Http?.GetDataXmlFile("Bunseki_Paturn150.xml");
         }
         #endregion
     }

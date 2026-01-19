@@ -8,7 +8,7 @@
 		xmlns:util="clr-namespace:CvnetClient.Utils"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="SubDlg70Tag3View" 
+        Title="{Binding Title}"
 		Style="{StaticResource MasterWindowStyle}">
 	<Window.DataContext>
 		<vm:SubDlg70Tag3ViewModel />
@@ -179,17 +179,15 @@
 			<Label Grid.Row="0" Grid.Column="4"   
 				   VerticalContentAlignment="Center"
 				   Content="在庫計上日" />
-			<xctk:DateTimePicker Grid.Row="0" Grid.Column="5"
-								 Value="{Binding TagSearchOpt.SelInvStartDate, Mode=TwoWay}"
-								 Format="Custom"
-								 FormatString="yyyy/MM/dd" />
+			<uc:CustomDateView Grid.Row="0" Grid.Column="5"
+							   SelectedDateTime="{Binding TagSearchOpt.SelInvStartDate, Mode=TwoWay}"
+							   Format="yyyy/MM/dd" />
 			<TextBlock Grid.Row="0" Grid.Column="6" 
 					   Text="～"
 					   VerticalAlignment="Center"/>
-			<xctk:DateTimePicker Grid.Row="0" Grid.Column="7"
-								 Value="{Binding TagSearchOpt.SelInvEndDate, Mode=TwoWay}"
-								 Format="Custom"
-								 FormatString="yyyy/MM/dd" />
+			<uc:CustomDateView Grid.Row="0" Grid.Column="7"
+							   SelectedDateTime="{Binding TagSearchOpt.SelInvEndDate, Mode=TwoWay}"
+							   Format="yyyy/MM/dd" />
 			<Label Grid.Row="0" Grid.Column="8"   
 				   VerticalContentAlignment="Center"
 				   Content="行" />
