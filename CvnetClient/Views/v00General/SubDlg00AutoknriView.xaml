@@ -165,9 +165,11 @@
                 <RowDefinition Height="9.5*" />
                 <RowDefinition Height="0.5*" />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="White"
+            <Border
+                Grid.Row="0"
+                Background="White"
                 CornerRadius="10">
-                <Grid >
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20*" />
                         <RowDefinition Height="1*" />
@@ -193,139 +195,139 @@
                         </Grid.RowDefinitions>
                         <!--  Processing number  -->
                         <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Content="処理番号" />
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Content="処理番号" />
                         <TextBox
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Margin="10,0,30,0"
-                        Text="{Binding EditJidoKanri.ProcessingNumber}" />
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="10,0,30,0"
+                            Text="{Binding EditJidoKanri.ProcessingNumber}" />
                         <!--  priority number  -->
                         <Label
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        Content="優先番号" />
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Content="優先番号" />
                         <TextBox
-                        Grid.Row="0"
-                        Grid.Column="3"
-                        Margin="10,0,30,0"
-                        Text="{Binding EditJidoKanri.PriorityNumber}" />
+                            Grid.Row="0"
+                            Grid.Column="3"
+                            Margin="10,0,30,0"
+                            Text="{Binding EditJidoKanri.PriorityNumber}" />
                         <!--  Processing name  -->
                         <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Content="処理名" />
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Content="処理名" />
                         <TextBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="5"
-                        Margin="10,0,30,0"
-                        Text="{Binding EditJidoKanri.ProcessingName}" />
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="5"
+                            Margin="10,0,30,0"
+                            Text="{Binding EditJidoKanri.ProcessingName}" />
                         <!--  remarks  -->
                         <Label
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Top"
-                        Content="備考" />
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            VerticalAlignment="Top"
+                            Content="備考" />
                         <TextBox
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Grid.ColumnSpan="5"
-                        Height="80"
-                        Margin="10,0,30,0"
-                        VerticalContentAlignment="Top"
-                        AcceptsReturn="True"
-                        Style="{DynamicResource NotesTextBoxPlaceholder}"
-                        Text="{Binding EditJidoKanri.Remarks}"
-                        TextWrapping="Wrap" />
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="5"
+                            Height="80"
+                            Margin="10,0,30,0"
+                            VerticalContentAlignment="Top"
+                            AcceptsReturn="True"
+                            Style="{DynamicResource NotesTextBoxPlaceholder}"
+                            Text="{Binding EditJidoKanri.Remarks}"
+                            TextWrapping="Wrap" />
                         <!--  Startup category  -->
                         <Label Grid.Row="3" Content="起動区分" />
                         <ComboBox
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Margin="10,0,30,0"
-                        Style="{DynamicResource SearchableComboBox1}"
-                        Text="{Binding StartupCategory}" />
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="10,0,30,0"
+                            Style="{DynamicResource SearchableComboBox1}"
+                            Text="{Binding StartupCategory}" />
                         <!--  startup unit  -->
                         <Label
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        Content="起動単位" />
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Content="起動単位" />
                         <ComboBox
-                        Grid.Row="3"
-                        Grid.Column="3"
-                        Margin="10,0,30,0"
-                        Style="{DynamicResource SearchableComboBox1}"
-                        Text="{Binding StartupUnit}" />
+                            Grid.Row="3"
+                            Grid.Column="3"
+                            Margin="10,0,30,0"
+                            Style="{DynamicResource SearchableComboBox1}"
+                            Text="{Binding StartupUnit}" />
                         <!--  specified date  -->
                         <Label Grid.Row="4" Content="指定日" />
                         <ComboBox
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Margin="10,0,30,0"
-                        Style="{DynamicResource SearchableComboBox1}"
-                        Text="{Binding SpecifiedDate}" />
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="10,0,30,0"
+                            Style="{DynamicResource SearchableComboBox1}"
+                            Text="{Binding SpecifiedDate}" />
                         <!--  When specified  -->
                         <Label
-                        Grid.Row="4"
-                        Grid.Column="2"
-                        Content="指定時" />
+                            Grid.Row="4"
+                            Grid.Column="2"
+                            Content="指定時" />
                         <ComboBox
-                        Grid.Row="4"
-                        Grid.Column="3"
-                        Margin="10,0,30,0"
-                        Style="{DynamicResource SearchableComboBox1}"
-                        Text="{Binding WhenSpecified}" />
+                            Grid.Row="4"
+                            Grid.Column="3"
+                            Margin="10,0,30,0"
+                            Style="{DynamicResource SearchableComboBox1}"
+                            Text="{Binding WhenSpecified}" />
                         <!--  specified amount  -->
                         <Label
-                        Grid.Row="4"
-                        Grid.Column="4"
-                        Content="指定分" />
+                            Grid.Row="4"
+                            Grid.Column="4"
+                            Content="指定分" />
                         <ComboBox
-                        Grid.Row="4"
-                        Grid.Column="5"
-                        Margin="10,0,30,0"
-                        Style="{DynamicResource SearchableComboBox1}"
-                        Text="{Binding SpecifiedAmount}" />
+                            Grid.Row="4"
+                            Grid.Column="5"
+                            Margin="10,0,30,0"
+                            Style="{DynamicResource SearchableComboBox1}"
+                            Text="{Binding SpecifiedAmount}" />
                         <!--  start date  -->
                         <Label
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        Content="開始日" />
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Content="開始日" />
                         <TextBox
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        Margin="10,0,30,0"
-                        Text="{Binding EditJidoKanri.StartDate}" />
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="10,0,30,0"
+                            Text="{Binding EditJidoKanri.StartDate}" />
                         <!--  end date  -->
                         <Label
-                        Grid.Row="5"
-                        Grid.Column="2"
-                        Content="終了日" />
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            Content="終了日" />
                         <TextBox
-                        Grid.Row="5"
-                        Grid.Column="3"
-                        Margin="10,0,30,0"
-                        Text="{Binding EditJidoKanri.EndDate}" />
+                            Grid.Row="5"
+                            Grid.Column="3"
+                            Margin="10,0,30,0"
+                            Text="{Binding EditJidoKanri.EndDate}" />
                         <!--  execution date  -->
                         <Label
-                        Grid.Row="5"
-                        Grid.Column="4"
-                        Content="実行日" />
+                            Grid.Row="5"
+                            Grid.Column="4"
+                            Content="実行日" />
                         <TextBox
-                        Grid.Row="5"
-                        Grid.Column="5"
-                        Margin="10,0,30,0"
-                        Text="{Binding EditJidoKanri.ExecutionDate}" />
+                            Grid.Row="5"
+                            Grid.Column="5"
+                            Margin="10,0,30,0"
+                            Text="{Binding EditJidoKanri.ExecutionDate}" />
                         <Border
-                        Grid.Row="6"
-                        Grid.ColumnSpan="6"
-                        Margin="5"
-                        Background="AliceBlue"
-                        BorderBrush="#FFE0E0E0"
-                        BorderThickness="1"
-                        CornerRadius="10">
+                            Grid.Row="6"
+                            Grid.ColumnSpan="6"
+                            Margin="5"
+                            Background="AliceBlue"
+                            BorderBrush="#FFE0E0E0"
+                            BorderThickness="1"
+                            CornerRadius="10">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1*" />
@@ -357,95 +359,95 @@
                                         </Grid.RowDefinitions>
                                         <!--  Parameter 1 - 10  -->
                                         <Label
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ1" />
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ1" />
                                         <TextBox
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter01}" />
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter01}" />
                                         <Label
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ2" />
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ2" />
                                         <TextBox
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter02}" />
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter02}" />
                                         <Label
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ3" />
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ3" />
                                         <TextBox
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter03}" />
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter03}" />
                                         <Label
-                                        Grid.Row="3"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ4" />
+                                            Grid.Row="3"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ4" />
                                         <TextBox
-                                        Grid.Row="3"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter04}" />
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter04}" />
                                         <Label
-                                        Grid.Row="4"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ5" />
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ5" />
                                         <TextBox
-                                        Grid.Row="4"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter05}" />
+                                            Grid.Row="4"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter05}" />
                                         <Label
-                                        Grid.Row="5"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ6" />
+                                            Grid.Row="5"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ6" />
                                         <TextBox
-                                        Grid.Row="5"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter06}" />
+                                            Grid.Row="5"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter06}" />
                                         <Label
-                                        Grid.Row="6"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ7" />
+                                            Grid.Row="6"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ7" />
                                         <TextBox
-                                        Grid.Row="6"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter07}" />
+                                            Grid.Row="6"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter07}" />
                                         <Label
-                                        Grid.Row="7"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ8" />
+                                            Grid.Row="7"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ8" />
                                         <TextBox
-                                        Grid.Row="7"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter08}" />
+                                            Grid.Row="7"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter08}" />
                                         <Label
-                                        Grid.Row="8"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ9" />
+                                            Grid.Row="8"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ9" />
                                         <TextBox
-                                        Grid.Row="8"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter09}" />
+                                            Grid.Row="8"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter09}" />
                                         <Label
-                                        Grid.Row="9"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ10" />
+                                            Grid.Row="9"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ10" />
                                         <TextBox
-                                        Grid.Row="9"
-                                        Grid.Column="1"
-                                        Margin="10,0,10,0"
-                                        Text="{Binding EditJidoKanri.Parameter10}" />
+                                            Grid.Row="9"
+                                            Grid.Column="1"
+                                            Margin="10,0,10,0"
+                                            Text="{Binding EditJidoKanri.Parameter10}" />
                                     </Grid>
 
                                     <Grid Grid.Column="1">
@@ -466,94 +468,94 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <Label
-                                        Grid.Row="0"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ11" />
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ11" />
                                         <TextBox
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter11}" />
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter11}" />
                                         <Label
-                                        Grid.Row="1"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ12" />
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ12" />
                                         <TextBox
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter12}" />
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter12}" />
                                         <Label
-                                        Grid.Row="2"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ13" />
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ13" />
                                         <TextBox
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter13}" />
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter13}" />
                                         <Label
-                                        Grid.Row="3"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ14" />
+                                            Grid.Row="3"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ14" />
                                         <TextBox
-                                        Grid.Row="3"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter14}" />
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter14}" />
                                         <Label
-                                        Grid.Row="4"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ15" />
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ15" />
                                         <TextBox
-                                        Grid.Row="4"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter15}" />
+                                            Grid.Row="4"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter15}" />
                                         <Label
-                                        Grid.Row="5"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ16" />
+                                            Grid.Row="5"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ16" />
                                         <TextBox
-                                        Grid.Row="5"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter16}" />
+                                            Grid.Row="5"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter16}" />
                                         <Label
-                                        Grid.Row="6"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ17" />
+                                            Grid.Row="6"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ17" />
                                         <TextBox
-                                        Grid.Row="6"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter17}" />
+                                            Grid.Row="6"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter17}" />
                                         <Label
-                                        Grid.Row="7"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ18" />
+                                            Grid.Row="7"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ18" />
                                         <TextBox
-                                        Grid.Row="7"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter18}" />
+                                            Grid.Row="7"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter18}" />
                                         <Label
-                                        Grid.Row="8"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ19" />
+                                            Grid.Row="8"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ19" />
                                         <TextBox
-                                        Grid.Row="8"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter19}" />
+                                            Grid.Row="8"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter19}" />
                                         <Label
-                                        Grid.Row="9"
-                                        Grid.Column="0"
-                                        Content="ﾊﾟﾗﾒｰﾀ20" />
+                                            Grid.Row="9"
+                                            Grid.Column="0"
+                                            Content="ﾊﾟﾗﾒｰﾀ20" />
                                         <TextBox
-                                        Grid.Row="9"
-                                        Grid.Column="1"
-                                        Text="{Binding EditJidoKanri.Parameter20}" />
+                                            Grid.Row="9"
+                                            Grid.Column="1"
+                                            Text="{Binding EditJidoKanri.Parameter20}" />
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Border>
 
                         <Grid
-                        Grid.Row="7"
-                        Grid.ColumnSpan="6"
-                        Margin="0,0,10,10">
+                            Grid.Row="7"
+                            Grid.ColumnSpan="6"
+                            Margin="0,0,10,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="2.5*" />
@@ -564,33 +566,33 @@
                             </Grid.ColumnDefinitions>
 
                             <Label
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Content="作成日" />
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Content="作成日" />
                             <TextBox
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Style="{DynamicResource ReadOnlyTextBox}"
-                            Text="{Binding EditJidoKanri.VdateCreate}" />
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Style="{DynamicResource ReadOnlyTextBox}"
+                                Text="{Binding EditJidoKanri.VdateCreate}" />
 
                             <Label
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Content="修正日" />
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Content="修正日" />
                             <TextBox
-                            Grid.Row="0"
-                            Grid.Column="3"
-                            Style="{DynamicResource ReadOnlyTextBox}"
-                            Text="{Binding EditJidoKanri.VdateUpdate}" />
+                                Grid.Row="0"
+                                Grid.Column="3"
+                                Style="{DynamicResource ReadOnlyTextBox}"
+                                Text="{Binding EditJidoKanri.VdateUpdate}" />
                             <!--  Import from generic SQL  -->
                             <Button
-                            Grid.Row="0"
-                            Grid.Column="4"
-                            Grid.ColumnSpan="2"
-                            Width="150"
-                            Margin="0,0,20,0"
-                            HorizontalAlignment="right"
-                            Content="汎用SQLから取込(F9)" />
+                                Grid.Row="0"
+                                Grid.Column="4"
+                                Grid.ColumnSpan="2"
+                                Width="150"
+                                Margin="0,0,20,0"
+                                HorizontalAlignment="right"
+                                Content="汎用SQLから取込(F9)" />
                         </Grid>
                     </Grid>
 
@@ -608,17 +610,17 @@
 
                             <Button Command="{Binding DoInsertCommand}" Style="{DynamicResource AddIconBtn}" />
                             <Button
-                            Grid.Column="2"
-                            Command="{Binding DoUpdateCommand}"
-                            Style="{DynamicResource UpdateIconBtn}" />
+                                Grid.Column="2"
+                                Command="{Binding DoUpdateCommand}"
+                                Style="{DynamicResource UpdateIconBtn}" />
                             <Button
-                            Grid.Column="4"
-                            Command="{Binding DoDeleteCommand}"
-                            Style="{DynamicResource DeleteIconBtn}" />
+                                Grid.Column="4"
+                                Command="{Binding DoDeleteCommand}"
+                                Style="{DynamicResource DeleteIconBtn}" />
                             <Button
-                            Grid.Column="6"
-                            Command="{Binding DoPrintCommand}"
-                            Style="{DynamicResource PrintIconBtn}" />
+                                Grid.Column="6"
+                                Command="{Binding DoPrintCommand}"
+                                Style="{DynamicResource PrintIconBtn}" />
                         </Grid>
                     </Grid>
                 </Grid>
