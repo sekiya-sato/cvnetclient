@@ -154,8 +154,7 @@
                                         DisplayMemberPath="Value"
                                         ItemsSource="{Binding DataSource.ListFlexVar.Unit_list, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         SelectedValue="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        SelectedValuePath="Value"
-                                        SelectionChanged="ComboBox_SelectionChanged" />
+                                        SelectedValuePath="Value"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -172,7 +171,6 @@
                                 <DataTemplate>
                                     <Button
                                         Margin="0"
-                                        Click="ListFrom_Click"
                                         Content="一覧"
                                         IsEnabled="{Binding IsListFromEnabled}"
                                         Style="{StaticResource FlexButton}" />
@@ -191,7 +189,6 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button
-                                        Click="ListTo_Click"
                                         Content="一覧"
                                         IsEnabled="{Binding IsListToEnabled}"
                                         Style="{StaticResource FlexButton}" />
@@ -203,7 +200,7 @@
                         <DataGridTemplateColumn Width="*" Header="削除">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Click="DeleteRow_Click" Style="{DynamicResource DeleteFlexBtn}" />
+                                    <Button Style="{DynamicResource DeleteFlexBtn}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
