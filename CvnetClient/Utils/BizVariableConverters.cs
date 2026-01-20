@@ -75,7 +75,7 @@ namespace CvnetClient.Utils
 
     public class BizCsvDocument
     {
-        DataTable csv_table; 
+        public DataTable csv_table { get; set; }
 
         #region DataTable Features
         public BizCsvDocument() {
@@ -96,6 +96,11 @@ namespace CvnetClient.Utils
         /// </param>
         /// <param name="head_flag">0 Without Column Header, 1 With Column Header</param>
         public BizCsvDocument(string csv_text, int head_flag = 0)
+        {
+            ConvertStrToTable(csv_text, head_flag);
+        }
+
+        private void ConvertStrToTable(string csv_text, int head_flag = 0)
         {
             var dt = new DataTable();
             this.csv_table = dt;
@@ -261,13 +266,15 @@ namespace CvnetClient.Utils
         /// <summary>
         /// Direct convert DataTable into CSV File
         /// </summary> 
-        public void SaveCsv(string fileName = "export")
+        public string SaveCsv(string fileName = "export")
         {
+            string filePath = string.Empty;
+
             if (csv_table?.Rows?.Count == 0)
             {
                 System.Windows.MessageBox.Show("No data to export!", "Warning",
                     System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-                return;
+                return filePath;
             }
 
             using (var dialog = new SaveFileDialog())
@@ -303,6 +310,7 @@ namespace CvnetClient.Utils
                                 writer.WriteLine();
                             }
                         }
+                        filePath = dialog.FileName;
 
                         System.Windows.MessageBox.Show("CSV export successful!", "Success",
                             System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
@@ -313,6 +321,8 @@ namespace CvnetClient.Utils
                     }
                 }
             }
+
+            return filePath;
         }
         /// <summary>
         /// 固定長ファイル出力
@@ -404,6 +414,11 @@ namespace CvnetClient.Utils
             csv_table = table;
         }
 
+        /// <summary>
+        /// Read text file from server that provided table column name only
+        /// </summary>
+        /// <param name="headerUrl">For example: d_sql.txt</param>
+        /// <returns></returns>
         public async Task LoadHeaderFromUrl(string headerUrl) {
             using var http = new HttpClient();
 
@@ -426,6 +441,26 @@ namespace CvnetClient.Utils
                 table.Rows[0][i] = line.Trim();
                 i++;
             }
+        }
+
+        /// <summary>
+        /// Read text file from data.txt
+        /// </summary>
+        /// <param name="dataUrl"></param>
+        public async Task LoadDataFromUrlAsync(string dataUrl)
+        {
+            try
+            {
+                using var http = new HttpClient();
+                var dataBytes = await http.GetByteArrayAsync(dataUrl);
+                string dataText = Encoding.GetEncoding("shift_jis").GetString(dataBytes);
+
+                if (!string.IsNullOrEmpty(dataText))
+                {
+                    ConvertStrToTable(dataText, 0);
+                }
+            }
+            catch { }
         }
         #endregion
 

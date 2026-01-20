@@ -349,7 +349,7 @@
             <TabItem Header="修正・登録画面(Shift+F2)">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -845,9 +845,8 @@ EnableColumnVirtualization="False"
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
 
-                                        <Grid>
-
-                                            <TextBlock Text="更新" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+										<Grid>
+											<TextBlock Text="更新" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Grid>
 
                                     </DataTemplate>

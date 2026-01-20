@@ -7,6 +7,8 @@
 		xmlns:uc="clr-namespace:CvnetClient.Views"
 		xmlns:util="clr-namespace:CvnetClient.Utils"
 		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+		xmlns:ie="clr-namespace:CvnetClient.Behaviors"
         mc:Ignorable="d"
         Title="{Binding Title}"
 		Style="{StaticResource MasterWindowStyle}">
@@ -27,7 +29,7 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<Grid Grid.Row="0">
+		<Grid Grid.Row="0" Margin="0,0,0,5">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
@@ -45,9 +47,8 @@
 					  VerticalAlignment="Top"
 					  VerticalContentAlignment="Center"
 					  ItemsSource="{Binding BillList}"
-					  DisplayMemberPath="Key"
-					  SelectedValuePath="Value"
-					  SelectedValue="{Binding TagSearchOpt.SelBill}"
+					  DisplayMemberPath="name"
+					  SelectedValue="{Binding SelBill, Mode=TwoWay}"
 					  Style="{StaticResource SearchableComboBox1}"/>
 			<Label Grid.Row="0" Grid.Column="2"   
 				   VerticalContentAlignment="Center"
@@ -56,9 +57,9 @@
 					  VerticalAlignment="Top"
 					  VerticalContentAlignment="Center"
 					  ItemsSource="{Binding SlipCatList}"
-					  DisplayMemberPath="Key"
-					  SelectedValuePath="Value"
-					  SelectedValue="{Binding TagSearchOpt.SelSlipCat}"
+					  DisplayMemberPath="Value"
+					  SelectedValuePath="Key"
+					  SelectedValue="{Binding SelSlipCat}"
 					  Style="{StaticResource SearchableComboBox1}"/>
 		</Grid>
 
@@ -76,76 +77,265 @@
 				<ColumnDefinition Width="2*" />
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
-			<Label Grid.Row="0" Grid.Column="0"   
+			<Label Grid.Row="0" Grid.Column="0"  
+				   Margin="0,0,0,5"
 				   VerticalContentAlignment="Center"
 				   Content="商品CD" />
 			<TextBox Grid.Row="0" Grid.Column="1" 
+					 Margin="0,0,0,5"
 					 HorizontalContentAlignment="Left"
 					 VerticalContentAlignment="Center"
 					 Text="{Binding TagSearchOpt.SelProdStart.Display}"/>
 			<Button Grid.Row="0" Grid.Column="2" 
+					Margin="0,0,0,5"
 					Command="{Binding SelProd01Command}"
 					Style="{StaticResource ComboButton}" />
 			<TextBlock Grid.Row="0" Grid.Column="3" 
+					   Margin="0,0,0,5"
 					   Text="～"
 					   VerticalAlignment="Center"/>
 			<TextBox Grid.Row="0" Grid.Column="4" 
+					 Margin="0,0,0,5"
 					 HorizontalContentAlignment="Left"
 					 VerticalContentAlignment="Center"
 					 Text="{Binding TagSearchOpt.SelProdEnd.Display}"/>
 			<Button Grid.Row="0" Grid.Column="5"
+					Margin="0,0,0,5"
 					Command="{Binding SelProd02Command}"
 					Style="{StaticResource ComboButton}"/>
 
 			<Label Grid.Row="1" Grid.Column="0"   
+				   Margin="0,0,0,5"
 				   VerticalContentAlignment="Center"
-				   Content="得意先" />
+				   Content="{Binding LblTitle15}" />
 			<TextBox Grid.Row="1" Grid.Column="1" 
+					 Margin="0,0,0,5"
 					 HorizontalContentAlignment="Left"
 					 VerticalContentAlignment="Center"
 					 Text="{Binding TagSearchOpt.SelCustStart.Display}"/>
 			<uc:CvnetBtListView Grid.Row="1" Grid.Column="2" 
-								MstName="{Binding TagSearchOpt.SelMstCust}"
+								Margin="0,0,0,5"
 								StyleDesign="2"
 								SelectedValue="{Binding TagSearchOpt.SelCustStart.Code}"
-								Command="{Binding SelCust01Command}"/>
+								Command="{Binding SelCust01Command}">
+				<uc:CvnetBtListView.Style>
+					<Style TargetType="uc:CvnetBtListView">
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="00">
+								<Setter Property="MstName" Value="得意先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="01">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="02">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="03">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="05">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="10">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="11">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="12">
+								<Setter Property="MstName" Value="得意先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="13">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="14">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="88">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="99">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</uc:CvnetBtListView.Style>
+			</uc:CvnetBtListView>
 			<TextBlock Grid.Row="1" Grid.Column="3" 
+					   Margin="0,0,0,5"
 					   Text="～"
 					   VerticalAlignment="Center"/>
 			<TextBox Grid.Row="1" Grid.Column="4" 
+					 Margin="0,0,0,5"
 					 HorizontalContentAlignment="Left"
 					 VerticalContentAlignment="Center"
 					 Text="{Binding TagSearchOpt.SelCustEnd.Display}"/>
 			<uc:CvnetBtListView Grid.Row="1" Grid.Column="5" 
+								Margin="0,0,0,5"
 								MstName="{Binding TagSearchOpt.SelMstCust}"
 								StyleDesign="2"
 								SelectedValue="{Binding TagSearchOpt.SelCustEnd.Code}"
-								Command="{Binding SelCust02Command}"/>
+								Command="{Binding SelCust02Command}">
+				<uc:CvnetBtListView.Style>
+					<Style TargetType="uc:CvnetBtListView">
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="00">
+								<Setter Property="MstName" Value="得意先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="01">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="02">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="03">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="05">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="10">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="11">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="12">
+								<Setter Property="MstName" Value="得意先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="13">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="14">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="88">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="99">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</uc:CvnetBtListView.Style>
+			</uc:CvnetBtListView>
 
 			<Label Grid.Row="2" Grid.Column="0"   
+				   Margin="0,0,0,5"
 				   VerticalContentAlignment="Center"
 				   Content="倉庫" />
 			<TextBox Grid.Row="2" Grid.Column="1" 
+					 Margin="0,0,0,5"
 					 HorizontalContentAlignment="Left"
 					 VerticalContentAlignment="Center"
 					 Text="{Binding TagSearchOpt.SelStoreStart.Display}"/>
 			<uc:CvnetBtListView Grid.Row="2" Grid.Column="2" 
+								Margin="0,0,0,5"
 								MstName="{Binding TagSearchOpt.SelMstStore}"
 								StyleDesign="2"
 								SelectedValue="{Binding TagSearchOpt.SelStoreStart.Code}"
-								Command="{Binding SelStore01Command}"/>
+								Command="{Binding SelStore01Command}">
+				<uc:CvnetBtListView.Style>
+					<Style TargetType="uc:CvnetBtListView">
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="00">
+								<Setter Property="MstName" Value="倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="01">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="02">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="03">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="05">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="10">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="11">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="12">
+								<Setter Property="MstName" Value="倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="13">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="14">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="99">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="88">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</uc:CvnetBtListView.Style>
+			</uc:CvnetBtListView>
 			<TextBlock Grid.Row="2" Grid.Column="3" 
+					   Margin="0,0,0,5"
 					   Text="～"
 					   VerticalAlignment="Center"/>
-			<TextBox Grid.Row="2" Grid.Column="4" 					 
+			<TextBox Grid.Row="2" Grid.Column="4"
+					 Margin="0,0,0,5"
 					 HorizontalContentAlignment="Left"
 					 VerticalContentAlignment="Center"
 					 Text="{Binding TagSearchOpt.SelStoreEnd.Display}"/>
-			<uc:CvnetBtListView Grid.Row="2" Grid.Column="5" 
+			<uc:CvnetBtListView Grid.Row="2" Grid.Column="5"
+								Margin="0,0,0,5"
 								MstName="{Binding TagSearchOpt.SelMstStore}"
 								StyleDesign="2"
 								SelectedValue="{Binding TagSearchOpt.SelStoreEnd.Code}"
-								Command="{Binding SelStore02Command}"/>
+								Command="{Binding SelStore02Command}">
+				<uc:CvnetBtListView.Style>
+					<Style TargetType="uc:CvnetBtListView">
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="00">
+								<Setter Property="MstName" Value="倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="01">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="02">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="03">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="05">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="10">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="11">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="12">
+								<Setter Property="MstName" Value="倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="13">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="14">
+								<Setter Property="MstName" Value="仕入先" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="99">
+								<Setter Property="MstName" Value="移動倉庫" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding SelSlipCat}" Value="88">
+								<Setter Property="MstName" Value="店舗" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</uc:CvnetBtListView.Style>
+			</uc:CvnetBtListView>
 		</Grid>
 
 		<Grid Grid.Row="2">
@@ -170,12 +360,14 @@
 				   VerticalContentAlignment="Center"
 				   Content="伝票NO" />
 			<TextBox Grid.Row="0" Grid.Column="1"
-					 TextWrapping="Wrap" />
+					 TextWrapping="Wrap" 
+					 Text="{Binding TagSearchOpt.SelSlipStartNo}" />
 			<TextBlock Grid.Row="0" Grid.Column="2"
 					   Text="～"
 					   VerticalAlignment="Center"/>
 			<TextBox Grid.Row="0" Grid.Column="3"
-					 TextWrapping="Wrap" />
+					 TextWrapping="Wrap"
+					 Text="{Binding TagSearchOpt.SelSlipEndNo}"/>
 			<Label Grid.Row="0" Grid.Column="4"   
 				   VerticalContentAlignment="Center"
 				   Content="在庫計上日" />
@@ -232,19 +424,19 @@
 					   Content="変更タイトル" />
 				<TextBox Grid.Row="0" Grid.Column="1"  
 						 TextWrapping="Wrap" 
-						 Text="{Binding TagSearchOpt.ChgTitle}"/>
+						 Text="{Binding ChgTitle,UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Row="0" Grid.Column="2"   
 					   VerticalContentAlignment="Center"
 					   Content="変更内容(文字列用)" />
 				<TextBox Grid.Row="0" Grid.Column="3"  
 						 TextWrapping="Wrap" 
-						 Text="{Binding TagSearchOpt.ChgWordCnt}"/>
+						 Text="{Binding ChgWord,UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Row="0" Grid.Column="4"   
 					   VerticalContentAlignment="Center"
 					   Content="変更内容(数値用)" />
 				<TextBox Grid.Row="0" Grid.Column="5"  
 						 TextWrapping="Wrap" 
-						 Text="{Binding TagSearchOpt.ChgNumCnt}"/>
+						 Text="{Binding ChgNum,UpdateSourceTrigger=PropertyChanged}"/>
 				<Button Grid.Row="0" Grid.Column="6"  
 						Content="割合加算"
 						Command="{Binding DoPercentAddCommand}"
@@ -262,9 +454,15 @@
 			</Grid>
 		</GroupBox>
 
-		<uc:CvnetFlexView Grid.Row="4">
-			<uc:CvnetFlexView.Columns>
-			</uc:CvnetFlexView.Columns>
+		<uc:CvnetFlexView Grid.Row="4" 
+						  CanUserSortColumns="False"
+						  AutoGenerateColumns="True"
+						  ItemsSource="{Binding FlexDataTable.csv_table}">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="MouseDoubleClick">
+					<ie:HeaderDoubleClickCommandAction Command="{Binding DoUpdateColsCommand}" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
 		</uc:CvnetFlexView>
 
 		<TextBlock Grid.Row="5"
@@ -286,6 +484,7 @@
 			<TextBox Grid.Column="1"
 					 Margin="0,0,5,0"
 					 TextWrapping="Wrap"
+					 IsEnabled="False"
 					 Text="{Binding TagSearchOpt.OutputDest}"/>
 			<TextBlock Grid.Column="2"  
 					   Margin="0,0,5,0"
