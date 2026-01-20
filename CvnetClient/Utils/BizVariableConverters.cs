@@ -266,7 +266,7 @@ namespace CvnetClient.Utils
         /// <summary>
         /// Direct convert DataTable into CSV File
         /// </summary> 
-        public string SaveCsv(string fileName = "export")
+        public string SaveCsv(string fileName = "export", bool writeHead = true)
         {
             string filePath = string.Empty;
 
@@ -288,14 +288,17 @@ namespace CvnetClient.Utils
                     {
                         using (var writer = new StreamWriter(dialog.FileName, false, Encoding.UTF8)) {
 
-                            // Write header
-                            for (int i = 0; i < csv_table.Columns.Count; i++)
+                            if (writeHead)
                             {
-                                writer.Write(csv_table.Columns[i].ColumnName);
-                                if (i < csv_table.Columns.Count - 1)
-                                    writer.Write(",");
+                                // Write header
+                                for (int i = 0; i < csv_table.Columns.Count; i++)
+                                {
+                                    writer.Write(csv_table.Columns[i].ColumnName);
+                                    if (i < csv_table.Columns.Count - 1)
+                                        writer.Write(",");
+                                }
+                                writer.WriteLine();
                             }
-                            writer.WriteLine();
 
                             // Write rows
                             foreach (DataRow row in csv_table.Rows)

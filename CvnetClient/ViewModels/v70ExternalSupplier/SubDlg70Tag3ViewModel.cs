@@ -4,6 +4,7 @@ using CvnetClient.Models;
 using CvnetClient.Utils;
 using System.Collections.ObjectModel;
 using System.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CvnetClient.ViewModels
 {
@@ -462,7 +463,59 @@ namespace CvnetClient.ViewModels
                 return;
             }
             if (TagSearchOpt == null) return;
-            TagSearchOpt.OutputDest = FlexDataTable.SaveCsv("バーコードラベル");
+            TagSearchOpt.OutputDest = FlexDataTable.SaveCsv("バーコードラベル",false);
+            return;
+
+            /* CSV作成 */
+            string[] wrk_str = new string[col_max];
+            int[] pos_str = new int[col_max];
+            var wrk1 = new BizCsvDocument(); /* flexview表示情報格納領域 */
+            var wrk2 = new BizCsvDocument(); /* wrk1加工後情報格納領域 */ 
+            wrk1 = FlexDataTable;
+
+            /* flexViewに値がセットされているTextNoを抽出 */
+            string[] col_no_list = txt_no.Split(",");
+            string[] pos_no_list = pos_no.Split(",");
+
+            for (int i = 0; i < col_no_list.Length; i++)
+            {
+                wrk2.csv_table.Columns.Add($"Col{pos_no_list[i]}");
+            }
+
+            int v_gyo = 0;
+            for (int i = 0; i < wrk1.csv_table.Rows.Count; i++)
+            {
+                /* 枚数確認 枚数０は出力しない 10.03.04　 */ 
+                int idx_su = wrk1.csv_table.Columns.IndexOf("枚数");
+                int num_wrk1 = int.TryParse(wrk1.csv_table.Rows[i][idx_su].ToString(), out num_wrk1) ? num_wrk1 : 0;
+
+                if (num_wrk1 != 0)
+                { 
+                    int set_col_no = 0;
+                    for (int j = 0; j < wrk1.csv_table.Columns.Count; j++)
+                    {
+                        wrk_str[j] = wrk1.csv_table.Rows[i][j].ToString();
+                    }
+
+                    DataRow newRow = wrk2.csv_table.NewRow();
+
+                    for (int j = 0; j < wrk1.csv_table.Columns.Count; j++)
+                    {
+                        for (int n = 0; n < col_no_list.Length; n++)
+                        {
+                            int col_no = int.TryParse(col_no_list[n], out col_no) ? col_no : 0;
+                            if (j + 1 == col_no)
+                            {
+                                newRow[$"Col{pos_no_list[n]}"] = wrk_str[j].Trim();
+                                set_col_no++;
+                            }
+                        }
+                    }
+                    wrk2.csv_table.Rows.Add(newRow);
+                    v_gyo++;
+                }
+            }
+            TagSearchOpt.OutputDest = wrk2.SaveCsv("バーコードラベル", false);
         }
         /// <summary>
         /// 戻る Button
