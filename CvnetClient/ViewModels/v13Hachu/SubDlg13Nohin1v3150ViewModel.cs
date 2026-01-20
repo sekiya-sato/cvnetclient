@@ -153,8 +153,12 @@ namespace CvnetClient.ViewModels
             if (string.IsNullOrWhiteSpace(CodeNen0))
                 return;
 
-            CodeNen1 = AppData.ClassSatoo.GetDateVal(DateTime.Now, 0);
-            CodeNen2 = AppData.ClassSatoo.GetDateVal(DateTime.Now, 1);
+            int _get_sime = 0;
+            string shimebi = AppData.ClassCvnet.SysMst.GetSime();
+            int.TryParse(shimebi, out _get_sime);
+
+            CodeNen1 = AppData.ClassSatoo.GetDateVal3(DateTime.Now, _get_sime, 0).ToString();
+            CodeNen2 = AppData.ClassSatoo.GetDateVal3(DateTime.Now, _get_sime, 1).ToString();
 
             DateTime fw1 = DateTime.Now;
             DateTime fw2 = DateTime.Now;
@@ -189,14 +193,14 @@ namespace CvnetClient.ViewModels
             lw5 = fw5.AddDays(6);
 
             CodeNen01 = AppData.ClassSatoo.GetDateVal(codeNen0Date,0);
-            CodeNen02 = lw1.ToString();
-            CodeNen03 = fw2.ToString();
-            CodeNen04 = lw2.ToString();
-            CodeNen05 = fw3.ToString();
-            CodeNen06 = lw3.ToString();
-            CodeNen07 = fw4.ToString();
-            CodeNen08 = lw4.ToString();
-            CodeNen09 = fw5.ToString();
+            CodeNen02 = lw1.ToString("yyyy/MM/dd");
+            CodeNen03 = fw2.ToString("yyyy/MM/dd");
+            CodeNen04 = lw2.ToString("yyyy/MM/dd");
+            CodeNen05 = fw3.ToString("yyyy/MM/dd");
+            CodeNen06 = lw3.ToString("yyyy/MM/dd");
+            CodeNen07 = fw4.ToString("yyyy/MM/dd");
+            CodeNen08 = lw4.ToString("yyyy/MM/dd");
+            CodeNen09 = fw5.ToString("yyyy/MM/dd");
             CodeNen10 = AppData.ClassSatoo.GetDateVal(codeNen0Date, 1);
         }
 

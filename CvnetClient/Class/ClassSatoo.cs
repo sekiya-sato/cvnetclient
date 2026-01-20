@@ -448,7 +448,7 @@ public class ClassSatoo
     {
         // Normalize to the first day of the current month
         var wrk1 = new DateTime(date_obj.Year, date_obj.Month, 1);
-
+        var wrk2 = v_sime;
         if (v_sime >= 29)
         {
             if (flag == 0)
@@ -467,7 +467,7 @@ public class ClassSatoo
         {
             // 締日の開始日 (前月 + v_sime 日)
             var prevMonth = GetDateVal2(wrk1, -1); // 前月1日
-            return prevMonth.AddDays(v_sime - 1);
+            return prevMonth.AddDays(v_sime);
         }
         else
         {
