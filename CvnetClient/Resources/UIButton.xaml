@@ -1,7 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-					xmlns:util="clr-namespace:CvnetClient.Utils">
+					xmlns:util="clr-namespace:CvnetClient.Utils"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
 
 	<!-- Tag to Image Source Converter -->
 	<util:TagToImageSourceConverter x:Key="TagToImgConvert" />
@@ -1414,21 +1417,21 @@ Padding="{TemplateBinding Padding}">
 	</Style>
 
 	<!--Image Button-->
-	<Style x:Key="ImageButton" TargetType="Button">
-		<Setter Property="BorderThickness" Value="0" />
-		<Setter Property="Background" Value="Transparent" />
-		<Setter Property="Cursor" Value="Hand" />
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="Button">
-					<Border x:Name="border"
+    <Style x:Key="ImageButton" TargetType="Button">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
 							Width="{TemplateBinding Width}"
 							Height="{TemplateBinding Height}"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="{TemplateBinding BorderThickness}"
 							Background="{TemplateBinding Background}"
 							CornerRadius="5">
-						<Image Source="{Binding Tag, 
+                        <Image Source="{Binding Tag, 
 												RelativeSource={RelativeSource TemplatedParent}, 
 												Converter={StaticResource TagToImgConvert}}" 
 								   Width="{Binding ActualWidth, 
@@ -1441,16 +1444,63 @@ Padding="{TemplateBinding Padding}">
 								                    ConverterParameter=0.55}"
 								   HorizontalAlignment="Center"
 								   VerticalAlignment="Center"/>
-					</Border>
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="border" Property="Background" Value="#E0FFFF" />
-						</Trigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#E0FFFF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ImgBtnnMDmap" TargetType="Button">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+
+        <!-- DESIGN-TIME PREVIEW IMAGE -->
+        <!--<Setter Property="Content">
+            <Setter.Value>
+                <d:Source="/Images/button_icon/search_icon.png"/>
+            </Setter.Value>
+        </Setter>-->
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="5">
+
+                        <Image Source="{TemplateBinding Content}"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           d:Source="/Images/button_icon/search_icon.png"/>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border"
+                                Property="Background"
+                                Value="#E0FFFF"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border"
+                                Property="Opacity"
+                                Value="0.7"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
     <!--MainMenu Button-->
     <Style x:Key="StripButtonStyle" TargetType="Button">

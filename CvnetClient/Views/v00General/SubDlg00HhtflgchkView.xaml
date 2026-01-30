@@ -1,0 +1,61 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg00HhtflgchkView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        Title="{Binding Title}" Style="{StaticResource SmallWindow}">
+    <Window.DataContext>
+        <vm:SubDlg00HhtflgchkViewModel/>
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Content="状態:"/>
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Status}" IsReadOnly="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Background" Value="LightGray"/>
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="実行中">
+                                <Setter Property="Background" Value="LightGray"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding Status}" Value="停止中">
+                                <Setter Property="Background" Value="Red"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Message}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <Button Grid.Row="3" Grid.Column="1" Content="ロック解除(F8)" Style="{StaticResource ExecButton}" HorizontalAlignment="Center" Command="{Binding DoUnlockCommand}"/>
+            <Button Grid.Row="3" Grid.Column="2" Content="ロック(F9)" Style="{StaticResource DeleteIconBtn3}" HorizontalAlignment="Center" Command="{Binding DoLockCommand}"/>
+            <Button Grid.Row="3" Grid.Column="3" Style="{StaticResource BackBtn}" HorizontalAlignment="Center" Command="{Binding ExitCommand}"/>
+        </Grid>
+
+
+    </Grid>
+</Window>
