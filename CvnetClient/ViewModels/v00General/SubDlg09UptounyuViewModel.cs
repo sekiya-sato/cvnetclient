@@ -17,7 +17,7 @@ namespace CvnetClient.ViewModels
     public partial class SubDlg09UptounyuViewModel : BaseViewModel
     {
         [ObservableProperty]
-        string? status;
+        DateTime dateStart = DateTime.Now;
 
         [ObservableProperty]
         BtListHelper? findWarehouse1 = new();
@@ -38,6 +38,8 @@ namespace CvnetClient.ViewModels
         void DoRun()
         {
             var wrk_para = new BizArray();
+            //int shimebi = AppData.ClassCvnet.SysMst._data.Rows[0][14].ToString();
+            //dateStart = AppData.ClassSatoo.GetDateVal3(dateStart, shimebi, 0);
             wrk_para[0] = new string("START");
             var ret_csv = AppData.Http?.AspxSqlQuery2("tran_tounyu", wrk_para.ToArray(),null,01);
             var ret1 = ret_csv.Split('\n');
