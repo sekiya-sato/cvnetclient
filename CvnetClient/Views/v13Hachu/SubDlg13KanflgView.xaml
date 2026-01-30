@@ -1,0 +1,204 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg13KanflgView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:local="clr-namespace:CvnetClient.Views"
+	xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+	xmlns:utils="clr-namespace:CvnetClient.Utils"
+	xmlns:uc="clr-namespace:CvnetClient.Views"
+	xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+	mc:Ignorable="d"
+	WindowStartupLocation="CenterScreen"
+	Title="発注残完了設定" Style="{StaticResource JissekiWindowStyle}" Background="White" >
+	<behaviors:Interaction.Triggers>
+		<behaviors:EventTrigger EventName="ContentRendered">
+			<behaviors:InvokeCommandAction Command="{Binding InitCommand}" />
+		</behaviors:EventTrigger>
+	</behaviors:Interaction.Triggers>
+	<Window.Resources>
+		<utils:VdateConverter x:Key="VdateConverter" />
+	</Window.Resources>
+	<Window.DataContext>
+		<!-- where to look for those properties -->
+		<vm:SubDlg13KanflgViewModel />
+	</Window.DataContext>
+
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<!-- Search area -->
+			<RowDefinition Height="Auto"/>
+			<!-- Button -->
+			<RowDefinition Height="*"/>
+			<!-- DataGrid -->
+			<RowDefinition Height="Auto"/>
+			<!-- Footer -->
+		</Grid.RowDefinitions>
+
+		<!-- Search condition grid -->
+		<Grid Grid.Row="0">
+			<!-- search Grid here -->
+			<Grid Margin="15">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="8"/>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="8"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="12"/>
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="1.5*"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="30"/>
+					<ColumnDefinition Width="1.5*"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="3*"/>
+				</Grid.ColumnDefinitions>
+
+
+				<TextBlock Grid.Row="0" Grid.Column="0" Text="仕入先"
+						   Margin="0,0,10,0"/>
+				<TextBox Grid.Row="0" Grid.Column="1" />
+				<uc:CvnetBtListView Grid.Row="0" Grid.Column="2"
+											MstName="{Binding MstName}"
+											StyleDesign="2"/>
+				<TextBlock Grid.Row="0" Grid.Column="3" Text="～"
+						   VerticalAlignment="Center" HorizontalAlignment="Center" />
+				<TextBox Grid.Row="0" Grid.Column="4" />
+				<uc:CvnetBtListView Grid.Row="0" Grid.Column="5"
+											MstName="{Binding MstName}"
+											StyleDesign="2"/>
+
+				<TextBlock Grid.Row="2" Grid.Column="0" Text="倉庫"
+						   VerticalAlignment="Center" Margin="0,0,10,0"/>
+				<TextBox Grid.Row="2" Grid.Column="1" />
+				<uc:CvnetBtListView Grid.Row="2" Grid.Column="2"
+											MstName="{Binding MstName}"
+											StyleDesign="2" />
+				<TextBlock Grid.Row="2" Grid.Column="3" Text="～"
+					   VerticalAlignment="Center" HorizontalAlignment="Center" />
+				<TextBox Grid.Row="2" Grid.Column="4" />
+				<uc:CvnetBtListView Grid.Row="2" Grid.Column="5"
+											MstName="{Binding MstName}"
+											StyleDesign="2" />
+
+				<TextBlock Grid.Row="2" Grid.Column="6" Text="納品日"
+						   VerticalAlignment="Center" Margin="10,0"/>
+
+				<Grid Grid.Row="2" Grid.Column="7">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+					<DatePicker Grid.Column="0" MinWidth="120"/>
+					<TextBlock Grid.Column="1" Text="～"
+               VerticalAlignment="Center" Margin="5,0"/>
+					<DatePicker Grid.Column="2" MinWidth="120"/>
+				</Grid>
+
+
+				<TextBlock Grid.Row="4" Grid.Column="0" Text="商品"
+						   VerticalAlignment="Center" Margin="0,0,10,0"/>
+				<TextBox Grid.Row="4" Grid.Column="1" />
+				<uc:CvnetBtListView Grid.Row="4" Grid.Column="2"
+										MstName="{Binding MstName}"
+										StyleDesign="2" />
+				<TextBlock Grid.Row="4" Grid.Column="3" Text="～"
+					   VerticalAlignment="Center" HorizontalAlignment="Center" />
+				<ComboBox Grid.Row="4" Grid.Column="4"/>
+				<uc:CvnetBtListView Grid.Row="4" Grid.Column="5"
+										MstName="{Binding MstName}"
+										StyleDesign="2" />
+				<TextBlock Grid.Row="4" Grid.Column="6" Text="伝票No"
+						   VerticalAlignment="Center" Margin="10,0"/>
+
+				<Grid Grid.Row="4" Grid.Column="7">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+					<TextBox Grid.Column="0" MinWidth="120"/>
+					<TextBlock Grid.Column="1" Text="～"
+							   VerticalAlignment="Center" Margin="5,0"/>
+					<TextBox Grid.Column="2" MinWidth="120" Text="999999999999"/>
+				</Grid>
+			</Grid>
+		</Grid>
+
+		<!-- 一覧取得 button -->
+		<Button Grid.Row="1"
+            Content="一覧取得(F5)"
+            Width="130"
+            HorizontalAlignment="Right"
+            Margin="0,8,0,8"/>
+
+		<!-- ===== Result DataGrid ===== -->
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<DataGrid Grid.Row="2"
+					  ItemsSource="{Binding Rows}"
+					  RowHeaderWidth="0"
+					  AutoGenerateColumns="False"
+					  HorizontalAlignment="Stretch"
+					  VerticalAlignment="Stretch"
+					  ColumnWidth="Auto"
+					  CanUserResizeColumns="False"
+					  FrozenColumnCount="1"
+					  EnableColumnVirtualization="False"
+					  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+					  ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="行" Binding="{Binding No}" Width="50"/>
+					<DataGridTextColumn Header="ヘッダNO" Binding="{Binding 完了FLG}" Width="80"/>
+					<DataGridTextColumn Header="完了FLG" Binding="{Binding 仕入先}" Width="120"/>
+					<DataGridTextColumn Header="商品CD" Binding="{Binding 商品コード}" Width="120"/>
+					<DataGridTextColumn Header="COL" Binding="{Binding 商品名}" Width="180"/>
+					<DataGridTextColumn Header="色名" Binding="{Binding 倉庫}" Width="100"/>
+					<DataGridTextColumn Header="SIZE" Binding="{Binding 数量}" Width="80"/>
+					<DataGridTextColumn Header="サイズ名" Binding="{Binding 金額}" Width="120"/>
+					<DataGridTextColumn Header="数量" Binding="{Binding 単価}" Width="100"/>
+					<DataGridTextColumn Header="単価" Binding="{Binding 税区分}" Width="80"/>
+					<DataGridTextColumn Header="金額" Binding="{Binding 税率}" Width="80"/>
+					<DataGridTextColumn Header="入荷数" Binding="{Binding 納品日}" Width="110"/>
+					<DataGridTextColumn Header="摘要" Binding="{Binding 伝票No}" Width="120"/>
+					<DataGridTextColumn Header="仕入先" Binding="{Binding 備考}" Width="800"/>
+				</DataGrid.Columns>
+			</DataGrid>
+		</Grid>
+
+		<!-- ===== Footer ===== -->
+		<Grid Grid.Row="3" Margin="0,5,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Text="※完了FLG 0：仕入未完了　1：仕入完了"
+                   VerticalAlignment="Center"/>
+
+			<Button Grid.Column="1"
+                Content="更新実行"
+                Width="100"
+                Margin="10,0"/>
+
+			<Button Grid.Column="2"
+                Content="戻る(ESC)"
+                Width="100"/>
+		</Grid>
+	</Grid>
+</Window>
