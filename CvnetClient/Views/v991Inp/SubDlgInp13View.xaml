@@ -305,8 +305,9 @@
                             <DataGridTextColumn Width="*" Binding="{Binding Kanren}" Header="関連伝票NO" />
                         </DataGrid.Columns>
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
+							<i:EventTrigger EventName="PreviewMouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" 
+													   CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </DataGrid>
@@ -348,7 +349,7 @@
             <TabItem Header="修正・登録画面(Shift+F2)">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -844,9 +845,8 @@ EnableColumnVirtualization="False"
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
 
-                                        <Grid>
-
-                                            <TextBlock Text="更新" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+										<Grid>
+											<TextBlock Text="更新" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Grid>
 
                                     </DataTemplate>

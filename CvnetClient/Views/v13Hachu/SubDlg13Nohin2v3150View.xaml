@@ -1,0 +1,430 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg13Nohin2v3150View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        xmlns:utils="clr-namespace:CvnetClient.Utils"
+        mc:Ignorable="d"
+        Height="963" Width="1275" 
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource PrintWindowStyle}">
+    <Window.DataContext>
+        <vm:SubDlg13Nohin2v3150ViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <utils:StringToBoolConverter x:Key="StringToBoolConverter"/>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding DoPrintCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding ExitCommand}" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Header-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.4*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.4*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+            <Label   Grid.Column="0" Content="月"/>
+            <TextBox Grid.Column="1" Style="{StaticResource ReadOnlyTextBox}" Text="{Binding MonthYear}"/>
+
+            <Label   Grid.Column="3" Content="ブランド"/>
+            <TextBox Grid.Column="4" Style="{StaticResource ReadOnlyTextBox}" Text="{Binding Brand}"/>
+
+            <Label   Grid.Column="6" Content="アイテム"/>
+            <TextBox Grid.Column="7" Style="{StaticResource ReadOnlyTextBox}" Text="{Binding Item1}"/>
+            <Label   Grid.Column="8" Content="～"/>
+            <TextBox Grid.Column="9" Style="{StaticResource ReadOnlyTextBox}" Text="{Binding Item2}"/>
+
+            <Label   Grid.Column="11" Content="取引区分"/>
+            <TextBox Grid.Column="12" Style="{StaticResource ReadOnlyTextBox}" Text="{Binding Category1}"/>
+            <Label   Grid.Column="13" Content="～"/>
+            <TextBox Grid.Column="14" Style="{StaticResource ReadOnlyTextBox}" Text="{Binding Category2}"/>
+
+            <TextBlock Grid.Column="15" Text="※絵型の背景表示　黄色：ｻﾝﾌﾟﾙ段階　 青：発注段階  赤：納品済"/>
+        </Grid>
+
+
+        <DataGrid Grid.Row="1" x:Name="MyDataGrid"
+                        AlternationCount="999999"
+                        ItemsSource="{Binding SelectedOrderDetail}"
+                        d:ItemsSource="{d:SampleData ItemCount=1}"
+                        IsSynchronizedWithCurrentItem="True"
+                        HeadersVisibility="Column"
+                        EnableRowVirtualization="False"
+                        EnableColumnVirtualization="False"
+                        ColumnWidth="*"
+                        Margin="0,2,0,6"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        GridLinesVisibility="All"
+                        HorizontalGridLinesBrush="#B0B0B0"
+                        VerticalGridLinesBrush="#B0B0B0"
+                        BorderBrush="#707070"
+                        BorderThickness="1">
+            
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </DataGrid.CellStyle>
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="{Binding RowColor,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+            </DataGrid.RowStyle>
+
+            <DataGrid.Columns>
+
+                <DataGridTemplateColumn Width="0.4*" >
+                    <!--<DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="第1週" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>-->
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.2*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <ItemsControl Grid.RowSpan="2" ItemsSource="{Binding VerticalText}"
+              d:ItemsSource="{d:DesignData
+                  Source='メンズシャツ'}"
+              HorizontalAlignment="Center">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding}"
+                       FontWeight="Bold"
+                       FontSize="30"
+                       />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn Width="*" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="第1週" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.2*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock  Grid.Row="0" Grid.Column="0" d:Text="商品名1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <TextBlock  Grid.Row="0" Grid.Column="1" d:Text="商品名2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <TextBlock  Grid.Row="0" Grid.Column="2" d:Text="商品名3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ImgBtnnMDmap}"/>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="第2週" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.2*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock  Grid.Row="0" Grid.Column="0" d:Text="商品名1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <TextBlock  Grid.Row="0" Grid.Column="1" d:Text="商品名2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <TextBlock  Grid.Row="0" Grid.Column="2" d:Text="商品名3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ImgBtnnMDmap}"/>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="第3種" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.2*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock  Grid.Row="0" Grid.Column="0" d:Text="商品名1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <TextBlock  Grid.Row="0" Grid.Column="1" d:Text="商品名2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <TextBlock  Grid.Row="0" Grid.Column="2" d:Text="商品名3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ImgBtnnMDmap}"/>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="第4週" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.2*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label  Grid.Row="0" Grid.Column="0"/>
+                                <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <Label  Grid.Row="0" Grid.Column="1"/>
+                                <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <Label  Grid.Row="0" Grid.Column="2"/>
+                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ImgBtnnMDmap}"/>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="第5週" FontWeight="Bold"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.2*"/>
+                                    <RowDefinition Height="0.8*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label  Grid.Row="0" Grid.Column="0"/>
+                                <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <Label  Grid.Row="0" Grid.Column="1"/>
+                                <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource ImgBtnnMDmap}"/>
+                                <Label  Grid.Row="0" Grid.Column="2"/>
+                                <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource ImgBtnnMDmap}"/>
+                            </Grid>
+
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="2" Content="印刷"/>
+            <Button Grid.Column="1" Margin="2,2,5,2" Content="CSV出力"/>
+            <Button Grid.Column="2" Margin="5,2,2,2" Content="印刷"/>
+            <Button Grid.Column="3" Margin="2,2,5,2" Content="CSV出力"/>
+            <Button Grid.Column="4" Margin="5,2,2,2" Content="印刷"/>
+            <Button Grid.Column="5" Margin="2,2,5,2" Content="CSV出力"/>
+            <Button Grid.Column="6" Margin="5,2,2,2" Content="印刷"/>
+            <Button Grid.Column="7" Margin="2,2,5,2" Content="CSV出力"/>
+            <Button Grid.Column="8" Margin="5,2,2,2" Content="印刷"/>
+            <Button Grid.Column="9" Margin="2" Content="CSV出力"/>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"  Content="第1週"/>
+            <Label Grid.Column="3"  Content="第2週"/>
+            <Label Grid.Column="6"  Content="第3週"/>
+            <Label Grid.Column="9"  Content="第4週"/>
+            <Label Grid.Column="12" Content="第5週"/>
+            <Label Grid.Column="15" Content="月間"/>
+            
+            <Label Grid.Column="1"  Content="上代合計"/>
+            <Label Grid.Column="4"  Content="上代合計"/>
+            <Label Grid.Column="7"  Content="上代合計"/>
+            <Label Grid.Column="10" Content="上代合計"/>
+            <Label Grid.Column="13" Content="上代合計"/>
+            <Label Grid.Column="16" Content="上代合計"/>
+
+            <Label Grid.Column="1"  Grid.Row="1" Content="枚数合計"/>
+            <Label Grid.Column="4"  Grid.Row="1" Content="枚数合計"/>
+            <Label Grid.Column="7"  Grid.Row="1" Content="枚数合計"/>
+            <Label Grid.Column="10" Grid.Row="1" Content="枚数合計"/>
+            <Label Grid.Column="13" Grid.Row="1" Content="枚数合計"/>
+            <Label Grid.Column="16" Grid.Row="1" Content="枚数合計"/>
+
+            <Label Grid.Column="1"  Grid.Row="2" Content="原価合計"/>
+            <Label Grid.Column="4"  Grid.Row="2" Content="原価合計"/>
+            <Label Grid.Column="7"  Grid.Row="2" Content="原価合計"/>
+            <Label Grid.Column="10" Grid.Row="2" Content="原価合計"/>
+            <Label Grid.Column="13" Grid.Row="2" Content="原価合計"/>
+            <Label Grid.Column="16" Grid.Row="2" Content="原価合計"/>
+
+            <TextBox Grid.Column="2"  Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="5"  Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="8"  Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="11" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="14" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="17" Style="{StaticResource ReadOnlyTextBox}"/>
+
+            <TextBox Grid.Column="2"  Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="5"  Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="8"  Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="11" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="14" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="17" Grid.Row="1" Style="{StaticResource ReadOnlyTextBox}"/>
+
+            <TextBox Grid.Column="2"  Grid.Row="2" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="5"  Grid.Row="2" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="8"  Grid.Row="2" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="11" Grid.Row="2" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="14" Grid.Row="2" Style="{StaticResource ReadOnlyTextBox}"/>
+            <TextBox Grid.Column="17" Grid.Row="2" Style="{StaticResource ReadOnlyTextBox}"/>
+        </Grid>
+        <Button Grid.Row="4" HorizontalAlignment="Right" Margin="20,0" Style="{StaticResource BackBtn}"/>
+
+    </Grid>
+</Window>

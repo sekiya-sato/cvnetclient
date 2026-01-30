@@ -8,15 +8,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Animation;
 using CvnetClient.Models;
 using System.Diagnostics;
 
@@ -50,8 +41,13 @@ namespace CvnetClient.ViewModels {
                 AppData.ClassSatoo.SHAIN_Tenpo = ret.Item2.SHAIN_Tenpo;
                 AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
-				AppData.ClassCvnet.AspxSqlQuerySysHHTMst();
-				var win = ClientLib.GetActiveView(this);
+
+                AppData.ClassCvnet.AspxSqlQuerySysMst();
+				AppData.ClassCvnet.AspxSqlQuerySysKintaiMst();
+                AppData.ClassCvnet.AspxSqlQuerySysHHTMst();
+				AppData.ClassCvnet.AspxSqlQueryConfig(); 
+
+                var win = ClientLib.GetActiveView(this);
 				if(win != null) 
 					win.DialogResult = true;
 				Exit();

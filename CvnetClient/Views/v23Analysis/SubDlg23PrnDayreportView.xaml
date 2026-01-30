@@ -123,13 +123,13 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <RadioButton Grid.Column="1" Content="スプール" 
+                    <RadioButton Grid.Column="1" Content="スプール" FontStyle="Normal"
                  GroupName="PrintType"
                  IsChecked="{Binding Condition.SelectedPrint, 
                              Converter={StaticResource StringToBoolConverter}, 
                              ConverterParameter=Spool, Mode=TwoWay}"
-                 Margin="0,0,20,0"/>
-                    <RadioButton Grid.Column="2" Content="CSV" 
+                 Margin="0,0,20,0" Height="30" VerticalAlignment="Top"/>
+                    <RadioButton Grid.Column="2" Content="CSV" FontStyle="Normal"
                  GroupName="PrintType"
                  IsChecked="{Binding Condition.SelectedPrint, 
                               Converter={StaticResource StringToBoolConverter}, 

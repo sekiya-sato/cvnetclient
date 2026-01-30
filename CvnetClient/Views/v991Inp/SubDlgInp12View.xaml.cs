@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views
+namespace CvnetClient.Views.v991Inp
 {
     /// <summary>
-    /// Interaction logic for SubDlg71SendManual.xaml
+    /// Interaction logic for SubDlgInp12View.xaml
     /// </summary>
-    public partial class SubDlg71WMSErrorView : Window
+    public partial class SubDlgInp12View : Window
     {
-        public SubDlg71WMSErrorView()
+        public SubDlgInp12View()
         {
             InitializeComponent();
         }
