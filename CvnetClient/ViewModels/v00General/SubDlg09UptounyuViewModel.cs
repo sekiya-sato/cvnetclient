@@ -51,7 +51,7 @@ namespace CvnetClient.ViewModels
 
             if (ret1[0] == "0")
             {
-                Status = "進行中";
+                //Status = "進行中";
                 //Form1.Text1.BgColor =$STD;
             }
             else
