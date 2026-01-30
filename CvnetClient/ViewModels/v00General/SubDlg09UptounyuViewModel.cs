@@ -37,10 +37,13 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         void DoRun()
         {
+            DateTime Start = DateTime.Now;
             var wrk_para = new BizArray();
-            //int shimebi = AppData.ClassCvnet.SysMst._data.Rows[0][14].ToString();
-            //dateStart = AppData.ClassSatoo.GetDateVal3(dateStart, shimebi, 0);
-            wrk_para[0] = new string("START");
+            int shimebi = int.Parse(AppData.ClassCvnet.SysMst._data.Rows[0][14].ToString());
+            DateStart = AppData.ClassSatoo.GetDateVal3(DateStart, shimebi, 0);
+            wrk_para[0] = DateStart.ToString("yyyyMMdd");
+            wrk_para[1] = FindWarehouse1.Code;
+            wrk_para[2] = FindWarehouse2.Code;
             var ret_csv = AppData.Http?.AspxSqlQuery2("tran_tounyu", wrk_para.ToArray(),null,01);
             var ret1 = ret_csv.Split('\n');
             if (ret1.Length < 2)
@@ -51,12 +54,15 @@ namespace CvnetClient.ViewModels
 
             if (ret1[0] == "0")
             {
-                //Status = "進行中";
-                //Form1.Text1.BgColor =$STD;
+                var wrk_mess = "時刻：" + Start.ToString("HH24:MI:SS") + "-" + DateTime.Now.ToString("HH24:MI:SS");
+                wrk_mess += "\n経過時間：" + AppData.ClassSatoo.GetDateDiff(Start, DateTime.Now);
+
+                ClientLib.MessageBoxOk(this, "更新終了しました。\n" + wrk_mess);
             }
             else
             {
-                ClientLib.MessageBoxError(this, ret1[0]);
+                ClientLib.MessageBoxError(this, "エラーが発生しました");
+                return;
             }
                 
         }
