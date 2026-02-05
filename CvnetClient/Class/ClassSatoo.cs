@@ -51,15 +51,15 @@ public class ClassSatoo
     /// </summary>
     /// <param name="v_value">Number = 仮想日付数値</param>
     /// <returns>Date = 日付</returns>
-    public DateTime GetVdate(long v_value)
+    public DateTime GetVdate(double v_value)
     {
         try
         {
             // Add back the offset
-            long adjusted = v_value + 366;
+            double adjusted = v_value + 366;
 
             // Use OADate conversion (matches Excel-style serial date system)
-            DateTime result = DateTime.FromOADate(adjusted);
+            DateTime result = DateTime.FromOADate(v_value);
 
             return result;
         }

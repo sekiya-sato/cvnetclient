@@ -3,11 +3,11 @@
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlgInp12View.xaml
+    /// Interaction logic for SubDlgSelclsz0View.xaml
     /// </summary>
-    public partial class SubDlgInp12View : Window
+    public partial class SubDlgSelclsz0View : Window
     {
-        public SubDlgInp12View()
+        public SubDlgSelclsz0View()
         {
             InitializeComponent();
         }

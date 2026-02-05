@@ -441,7 +441,8 @@ namespace CvnetBaseCore
             if (v_date < v_start) return -1;
 
             // v_day = 入力日 - 今日
-            int v_day = int.Parse((v_date - DateTime.Today).ToString());
+            DateTime date1 = v_date.Value;
+            int v_day = (date1 - DateTime.Now).Days;
 
             // 許容範囲
             int v_pre = int.Parse(AppData.ClassCvnet.SysMst._data.Rows[0][15].ToString());  // 過去許容
@@ -4748,16 +4749,16 @@ namespace CvnetBaseCore
             {
                 _list = new Dictionary<TKey, string>
                 {
-                     { (TKey)(object) 10, "10 受注" },
-                     { (TKey)(object) 11, "11 追加1" },
-                     { (TKey)(object) 12, "12 追加2" },
-                     { (TKey)(object) 13, "13 追加3" },
-                     { (TKey)(object) 14, "14 追加4" },
-                     { (TKey)(object) 15, "15 追加5" },
-                     { (TKey)(object) 16, "16 追加6" },
-                     { (TKey)(object) 17, "17 追加7" },
-                     { (TKey)(object) 18, "18 追加8" },
-                     { (TKey)(object) 19, "19 追加9" }
+                     { (TKey)(object) "10", "10 受注" },
+                     { (TKey)(object) "11", "11 追加1" },
+                     { (TKey)(object) "12", "12 追加2" },
+                     { (TKey)(object) "13", "13 追加3" },
+                     { (TKey)(object) "14", "14 追加4" },
+                     { (TKey)(object) "15", "15 追加5" },
+                     { (TKey)(object) "16", "16 追加6" },
+                     { (TKey)(object) "17", "17 追加7" },
+                     { (TKey)(object) "18", "18 追加8" },
+                     { (TKey)(object) "19", "19 追加9" }
                 };
             }
             if (_name == "倉庫区分02")

@@ -31,5 +31,7 @@ namespace CvnetClient.Interface
         SubDlgSel10pViewModel GetSel10p(string qs = "", string para2 = null, string[] para3 = null, string ken_cd = "", string ken_jyun = "");
 
         SubDlgSel002ViewModel GetSel002(string v_mstname = "", string sql_query = "", object v_para2 = null);
+
+        SubDlgSelclsz0ViewModel GetSelclsz0(string[] init_para = null, string[] wrk_para = null);
     }
 }
