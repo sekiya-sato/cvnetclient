@@ -9,7 +9,6 @@ using System.Data;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
-using static CvnetClient.ViewModels.SubDlg01SetjanViewModel;
 
 namespace CvnetClient.ViewModels
 {
@@ -34,6 +33,13 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         private int retailPriceTotal;
 
+        //[ObservableProperty]
+        //private ObservableCollection<int> retailPrice = new() {0, 0, 0, 0, 0 };
+
+        //[ObservableProperty]
+        //private int retailPriceTotal;
+
+
         [ObservableProperty]
         private int[] amountSheets = new int[5];
         [ObservableProperty]
@@ -46,6 +52,17 @@ namespace CvnetClient.ViewModels
 
         [ObservableProperty]
         private string[] weekLabel = new string[5];
+
+        [ObservableProperty]
+        private string weekLabel1;
+        [ObservableProperty]
+        private string weekLabel2;
+        [ObservableProperty]
+        private string weekLabel3;
+        [ObservableProperty]
+        private string weekLabel4;
+        [ObservableProperty]
+        private string weekLabel5;
 
         [ObservableProperty]
         private int selectedWeek;

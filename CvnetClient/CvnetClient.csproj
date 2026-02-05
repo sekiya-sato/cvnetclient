@@ -149,6 +149,9 @@
     <Compile Update="Views.Common\WebTextView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\v00General\SubDlg09UptounyuView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
