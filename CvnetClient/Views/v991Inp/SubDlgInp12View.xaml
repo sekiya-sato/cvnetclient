@@ -564,6 +564,7 @@
 									Style="{DynamicResource BackBtn}"/>
 							<Button Grid.Row="0" Grid.Column="7"  
 									Content="ｵｰﾙｸﾘｱ"
+									Command="{Binding DoAllClearCommand}"
 									Style="{DynamicResource BackBtn}"/>
 						</Grid>
 
@@ -661,9 +662,9 @@
 												SelectedValue="{Binding Inp12DetailOpt.SalesRep.Code}"
 												Command="{Binding SelSalesRepCommand}" />
 							<TextBox Grid.Row="0" Grid.Column="3"
-									HorizontalContentAlignment="Left"
-									VerticalContentAlignment="Center"
-									Text="{Binding Inp12DetailOpt.ProdCd.Display}"/>
+									 HorizontalContentAlignment="Left"
+									 VerticalContentAlignment="Center"
+									 Text="{Binding Inp12DetailOpt.ProdCd.Display}"/>
 							<uc:CvnetBtListView Grid.Row="0" Grid.Column="4"
 												Margin="0,0,5,0"
 												StyleDesign="2"
@@ -672,6 +673,7 @@
 												Command="{Binding SelProdCdCommand}"/>
 							<Button Grid.Row="0" Grid.Column="5"   
 									Content="展開商品CD"
+									Command="{Binding DoAvailProdCommand}"
 									Style="{DynamicResource BackBtn}"/>
 						</Grid>
 					</Grid>
@@ -719,6 +721,7 @@
 							<Button Grid.Column="1" 
 									Margin="0,0,5,0"
 									Content="ﾊﾞｰｺｰﾄﾞ入力"
+									Command="{Binding InpBarcodeCommand}"
 									Style="{DynamicResource BackBtn}"/>
 						</Grid>
 					</StackPanel>

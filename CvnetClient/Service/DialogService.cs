@@ -233,5 +233,33 @@ namespace CvnetClient.Service
             if (ret != true) return null;
             return vm;
         }
+
+        public SubDlg01Jan00NewViewModel GetJan00New(string[] init_para = null)
+        {
+            var view = new SubDlg01Jan00NewView();
+            var vm = view.DataContext as SubDlg01Jan00NewViewModel;
+
+            // Set parameters & init dialog
+            vm.OnInit(init_para);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
+        public SubDlgBcd01ViewModel GetBcd01(string[] init_para)
+        {
+            var view = new SubDlgBcd01View();
+            var vm = view.DataContext as SubDlgBcd01ViewModel;
+
+            // Set parameters & init dialog
+            vm.OnInit(init_para);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
     }
 }

@@ -4313,7 +4313,7 @@ namespace CvnetBaseCore
         public int kakehyjflg { get; set; }
         public int DateSort { get; set; }
         public int hhtmach { get; set; }
-        public string janConvertFlg1 { get; set; } = string.Empty;
+        public string janConvertFlg1 { get; set; } = "JANコード1";
         public string janConvertFlg2 { get; set; } = string.Empty;
         public string janConvertFlg3 { get; set; } = string.Empty;
         public string janConvertFlg4 { get; set; } = string.Empty;

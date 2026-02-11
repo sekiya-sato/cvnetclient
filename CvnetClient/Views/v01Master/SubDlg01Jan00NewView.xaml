@@ -3,10 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CvnetClient.Views"
+        xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
-        Title="JANコード確認" Style="{StaticResource SmallWindow}">
+        Title="{Binding Title}" Style="{StaticResource SmallWindow}">
+	<Window.DataContext>
+		<vm:SubDlg01Jan00NewViewModel />
+	</Window.DataContext>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -28,23 +31,58 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="商品CD" HorizontalAlignment="Right"/>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                <TextBox  TextWrapping="Wrap" Text="{Binding Product.Display}" Width="200"/>
-                <uc:CvnetBtListView MstName="商品" StyleDesign="2" 
-        SelectedValue ="{Binding Product.Code}"
-        Command="{Binding SelProductCommand}"/>
+				<TextBox  TextWrapping="Wrap" Text="{Binding Jan00NewOpt.ProdCD.Display}" Width="200"/>
+                <uc:CvnetBtListView MstName="商品" 
+					                StyleDesign="2" 
+                                    SelectedValue ="{Binding Jan00NewOpt.ProdCD.Code}"
+                                    Command="{Binding SelProductCommand}"/>
             </StackPanel>
-                
-            
-            <Label Grid.Row="1" Grid.Column="0" Content="原価FLG" HorizontalAlignment="Right"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding GenkaFlg}" Width="90" HorizontalAlignment="Left"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="色CD" HorizontalAlignment="Right"/>
+
+
+			<Label Grid.Row="1" Grid.Column="0" Content="原価FLG" 
+				   VerticalAlignment="Center"
+				   HorizontalAlignment="Right">
+				<Label.Style>
+					<Style TargetType="Label">
+						<Setter Property="Visibility" Value="Visible" />
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding Jan00NewOpt.CostFlgVisible}" Value="1">
+								<Setter Property="Visibility" Value="Visible" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Jan00NewOpt.CostFlgVisible}" Value="0">
+								<Setter Property="Visibility" Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Label.Style>
+			</Label>
+			<TextBox Grid.Row="1" Grid.Column="1" 
+					 Text="{Binding Jan00NewOpt.CostFlg}" Width="90" 
+					 HorizontalAlignment="Left">
+				<TextBox.Style>
+					<Style TargetType="TextBox">
+						<Setter Property="Visibility" Value="Visible" />
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding Jan00NewOpt.CostFlgVisible}" Value="1">
+								<Setter Property="Visibility" Value="Visible" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding Jan00NewOpt.CostFlgVisible}" Value="0">
+								<Setter Property="Visibility" Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</TextBox.Style>
+			</TextBox>
+			<Label Grid.Row="2" Grid.Column="0" Content="色CD" HorizontalAlignment="Right"/>
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                <TextBox Text="{Binding Color}" Width="100" />
+				<TextBox Text="{Binding Jan00NewOpt.ColorCD}" Width="100" />
                 <TextBlock Text="" Width="10"/>
-                <Button Content="色サイズ一覧" Width="100"/>
+                <Button Content="色サイズ一覧" 
+						Width="100"
+						Command="{Binding SelColorSizeCommand}"/>
             </StackPanel>
             <Label Grid.Row="3" Grid.Column="0" Content="サイズCD" HorizontalAlignment="Right"/>
-            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SizeCD}" Width="100" HorizontalAlignment="Left"/>
+			<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Jan00NewOpt.SizeCD}" Width="100" HorizontalAlignment="Left"/>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
@@ -56,14 +94,20 @@
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="6*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="JANコード確認" Command="{Binding JANCommand}" Grid.Column="0" Grid.Row="0" Height="28" Width="90" HorizontalAlignment="Right" Margin="0,0,10,0"/>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Jan1}" Width="200" HorizontalAlignment="Left"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Jan2}" Width="200" HorizontalAlignment="Left"/>
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Jan3}" Width="200" HorizontalAlignment="Left"/>
+            <Button Content="JANコード確認" Command="{Binding DoConfirmJanCommand}" Grid.Column="0" Grid.Row="0" Height="28" Width="90" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+			<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Jan00NewOpt.Jancode1}" Width="200" HorizontalAlignment="Left"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Jan00NewOpt.Jancode2}" Width="200" HorizontalAlignment="Left"/>
+			<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Jan00NewOpt.Jancode3}" Width="200" HorizontalAlignment="Left"/>
         </Grid>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Margin="0,0,8,0" Content="設定" Width="90" Height="28"/>
-            <Button  Margin="8" Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}" IsCancel="True" HorizontalAlignment="Right"/>
+            <Button Margin="0,0,8,0" 
+					Content="設定"
+					Command="{Binding DoExecuteCommand}"
+					Width="90" Height="28"/>
+            <Button  Margin="8" 
+					 Style="{DynamicResource BackBtn}" 
+					 Command="{Binding DoExitCommand}"
+					 IsCancel="True" HorizontalAlignment="Right"/>
         </StackPanel>
     </Grid>
 </Window>

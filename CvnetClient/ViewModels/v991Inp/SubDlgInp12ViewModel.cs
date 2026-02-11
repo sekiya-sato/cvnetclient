@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
-using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CvnetClient.ViewModels
 {
@@ -929,6 +929,28 @@ namespace CvnetClient.ViewModels
         public ObservableCollection<Inp12DetailItem> m_Inp12DetailItems;
         #endregion
 
+        #region Text Variable
+        private int Text20 = 12;
+        /* ｾｰﾙ掛率区分 */
+        private int Text19;
+        /* 得意先、掛率 */
+        private int Text30;
+        /* 得意先、セール掛率 */
+        private int Text31;
+        /* 得意先、消費税CD */
+        private int Text32;
+        /* 得意先、消費税計算方法 */
+        private int Text33;
+        /* 得意先、消費税端数 */
+        private int Text34;
+        /* 得意先、下代桁切指定 */
+        private int Text35;
+        /* 得意先、下代端数区分 */
+        private int Text36;
+        /* 得意先、下代計算FLG */
+        private int Text37;
+        #endregion
+
         #region ComboList Variable
         [ObservableProperty]
         public Dictionary<int, string> m_StatusList;
@@ -1016,9 +1038,93 @@ namespace CvnetClient.ViewModels
             {
                 var ritu = Inp12DetailOpt.MarkupRate;
                 foreach (var item in Inp12DetailItems)
-                {  
+                {
+                    if (ritu < 0) {
+                        ritu = item.BaseRate;
+                    }
+                    int _ritu = int.TryParse(ritu.ToString(), out int _r) ? _r : 0;
+                    item.WholesalesUnit = int.TryParse(OnGetGedai(item.RetailUnitPrice, _ritu).ToString(), out int _whole) ? _whole : 0;
+                    item.UnitPrice = item.WholesalesUnit;
+                    item.WholesalesAmount = item.Num * item.WholesalesUnit;
+                    item.TotalAmount = item.Num * item.UnitPrice;
 
+                    /* 計算に使用した率を計算掛率に表示 */
+                    SetKakeRitu(item, _ritu);
+                    OnChangeTotal(item);
                 }
+            }
+        }
+
+        [RelayCommand]
+        public void DoAllClear()
+        {
+            if (Inp12DetailItems.Count == 0) return;
+            var messbox = System.Windows.MessageBox.Show("明細表示が全てクリアされます。よろしいですか？", "確認", System.Windows.MessageBoxButton.OKCancel);
+            if (messbox == System.Windows.MessageBoxResult.OK)
+            {
+                Inp12DetailOpt = new Inp12DetailOpt();
+                Inp12DetailOpt.OrderDate = DateTime.Now;
+                Inp12DetailOpt.DeliverDate = DateTime.Now;
+
+                if (AppData.ClassCvnet.SysImp != null && AppData.ClassCvnet.SysImp.Rows.Count > 0)
+                    Inp12DetailOpt.StoreCd = new BtListHelper(AppData.ClassCvnet.SysImp.Rows[0][1].ToString(), AppData.ClassCvnet.SysImp.Rows[0][2].ToString());
+                else
+                    Inp12DetailOpt.StoreCd = new BtListHelper("", "");
+                Inp12DetailOpt.StoreCd.pre_data = new BtListHelper("", "");
+                Inp12DetailOpt.CustDest = new BtListHelper("", "");
+                Inp12DetailOpt.CustDest.pre_data = new BtListHelper("", "");
+
+                Inp12DetailOpt.InpCd = new BtListHelper(AppData.ClassSatoo.SHAIN_CD, AppData.ClassSatoo.SHAIN_Name);
+                Text20 = 12; 
+                Text19 = 0; 
+                Text30 = 0; 
+                Text31 = 0;
+                Text32 = 0;
+                Text33 = 0;
+                Text34 = 0;
+                Text35 = 0;
+                Text36 = 0;
+                Text37 = 0;
+                Inp12DetailOpt.TranCate = "10";
+            }
+        }
+
+        [RelayCommand]
+        public void DoAvailProd()
+        {
+            if (Inp12DetailOpt == null) return;
+            if (string.IsNullOrEmpty(Inp12DetailOpt.CustDest.Code))
+            {
+                Mess2 = "先に得意先を入力してください";
+                return;
+            }
+            if (OnCheckMst() < 0) return;
+
+
+        }
+
+        [RelayCommand]
+        public void InpBarcode()
+        {
+            if (string.IsNullOrEmpty(Inp12DetailOpt.CustDest.Code))
+            {
+                Mess2 = "先に得意先を入力してください";
+                return;
+            }
+            /* マスタチェック */
+            if (OnCheckMst() < 0) return;
+
+            var wrk_para = new BizArray();
+            wrk_para[0] = Text20.ToString();
+            wrk_para[1] = Inp12DetailOpt.CustDest.Code;
+            wrk_para[2] = Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd");
+            /* ジャコモ用取引区分追加 */
+            wrk_para[5] = Inp12DetailOpt.TranCate;
+
+            var vm_result = AppData.DlgService.GetBcd01(wrk_para.ToArray());
+            if (vm_result != null && vm_result.ret_para != null)
+            {
+                OnSetMultiRow(vm_result.ret_para, "3");
             }
         }
 
@@ -1328,6 +1434,179 @@ namespace CvnetClient.ViewModels
                 p_row.CalcRateBgColor = Brushes.Red;
             }
         }
+
+        /* マスタチェック集約 */
+        private int OnCheckMst()
+        {
+            if (Inp12DetailOpt == null) return -1;
+            /* 倉庫チェック */ 
+            if (Inp12DetailOpt.StoreCd.Display != "" && Inp12DetailOpt.StoreCd.pre_data != null && Inp12DetailOpt.StoreCd.pre_data.Code != Inp12DetailOpt.StoreCd.Code)
+            { 
+                string v_sqlstr = "select 得意先CD,得意先名 from HC$MASTER_TOKUI ";
+                v_sqlstr += " where 得意先CD =:1 and (店種区分=0 OR 倉庫区分=9)";
+                v_sqlstr += AppData.ClassCvnet.GetQueryStrHoujin();	/* 2010.09.22　法人CD対応 */
+                var v_array = new BizArray();
+                v_array[0] = Inp12DetailOpt.StoreCd.Code;
+                var wrk_csv = AppData.Http?.AspxSqlQuery(v_sqlstr, v_array.ToArray());
+                if (wrk_csv.Rows.Count > 0)
+                {
+                    Inp12DetailOpt.StoreCd = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                    Inp12DetailOpt.StoreCd.pre_data = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                }
+                else
+                {
+                    Inp12DetailOpt.StoreCd = new BtListHelper("", "");
+                    System.Windows.MessageBox.Show("倉庫CDがマスタに存在しません｡", "確認", System.Windows.MessageBoxButton.OK);
+                    return -1;
+                }
+            }
+            /* 得意先チェック */
+            /* 2017.09.15 問合せ_#37030対応 */
+            if (Inp12DetailOpt.CustDest.Code.Trim() != "" && Inp12DetailOpt.CustDest.pre_data != null && Inp12DetailOpt.CustDest.pre_data.Code != Inp12DetailOpt.CustDest.Code)
+            {
+                /* 20161206 チェックが一覧ボタンと同じものになるよう変更 */
+                string v_sqlstr = "select 得意先CD,得意先名,掛率,セール掛率,消費税CD,消費税計算方法,消費税端数,下代桁切指定,下代端数区分,下代計算FLG"
+                    + ", 営業担当CD||' '||NVL((select S.名前 from HC$MASTER_SHAIN S where S.社員CD=営業担当CD),'') 営業担当 from HC$master_TOKUI where 得意先CD=:1 and 店種区分 >0 " + 
+                    AppData.ClassCvnet.GetQueryStrHoujin();
+                var v_array = new BizArray();
+                v_array[0] = Inp12DetailOpt.CustDest.Code;
+                var wrk_csv = AppData.Http?.AspxSqlQuery(v_sqlstr, v_array.ToArray());
+                if (wrk_csv.Rows.Count > 0)
+                {
+                    Text30 = int.TryParse(wrk_csv.Rows[0][2].ToString(), out var text30) ? text30 : 0;
+                    Text31 = int.TryParse(wrk_csv.Rows[0][3].ToString(), out var text31) ? text31 : 0;
+                    Text32 = int.TryParse(wrk_csv.Rows[0][4].ToString(), out var text32) ? text32 : 0;
+                    Text33 = int.TryParse(wrk_csv.Rows[0][5].ToString(), out var text33) ? text33 : 0;
+                    Text34 = int.TryParse(wrk_csv.Rows[0][6].ToString(), out var text34) ? text34 : 0;
+                    Text35 = int.TryParse(wrk_csv.Rows[0][7].ToString(), out var text35) ? text35 : 0;
+                    Text36 = int.TryParse(wrk_csv.Rows[0][8].ToString(), out var text36) ? text36 : 0;
+                    Text37 = int.TryParse(wrk_csv.Rows[0][9].ToString(), out var text37) ? text37 : 0;
+                    /* 営業担当追加 */
+                    string salesRep = wrk_csv.Rows[0][10].ToString();
+                    if (salesRep.Trim() != "." && !string.IsNullOrEmpty(salesRep.Trim()))
+                    {
+                        string[] sales = salesRep.Split(' ');
+                        if (sales.Length > 1)
+                            Inp12DetailOpt.SalesRep = new BtListHelper(sales[0], sales[1]);
+                    }
+                    Inp12DetailOpt.MarkupRate = float.TryParse(Text30.ToString(), out var mark_rate) ? mark_rate : 0;
+                    Inp12DetailOpt.CustDest = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                    Inp12DetailOpt.CustDest.pre_data = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                }
+                else
+                {
+                    Inp12DetailOpt.CustDest = new BtListHelper("","");
+                    System.Windows.MessageBox.Show("得意先CDがマスタに存在しません｡", "確認", System.Windows.MessageBoxButton.OK);
+                    return -1;
+                }
+            }
+            /* 入力者チェック 21.10.13 */
+            if (Inp12DetailOpt.InpCd.Code.Trim() != "" && Inp12DetailOpt.InpCd.Code != "." && 
+                Inp12DetailOpt.InpCd.pre_data != null && Inp12DetailOpt.InpCd.pre_data.Code != Inp12DetailOpt.InpCd.Code)
+            {
+                string v_sqlstr = "select 社員CD,名前 from HC$MASTER_SHAIN where 社員CD=:1";
+                var v_array = new BizArray();
+                v_array[0] = Inp12DetailOpt.InpCd.Code;
+                var wrk_csv = AppData.Http?.AspxSqlQuery(v_sqlstr, v_array.ToArray());
+                if (wrk_csv.Rows.Count > 0)
+                {
+                    Inp12DetailOpt.InpCd = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                    Inp12DetailOpt.InpCd.pre_data = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                }
+                else
+                {
+                    Inp12DetailOpt.InpCd = new BtListHelper("", "");
+                    System.Windows.MessageBox.Show("入力者CDがマスタに存在しません｡", "確認", System.Windows.MessageBoxButton.OK);
+                    return -1;
+                }
+            }
+            /* 営業担当チェック 21.10.13 */
+            if (Inp12DetailOpt.SalesRep.Code.Trim() != "" && Inp12DetailOpt.SalesRep.Code != "." && 
+                Inp12DetailOpt.SalesRep.pre_data != null && Inp12DetailOpt.SalesRep.pre_data.Code != Inp12DetailOpt.SalesRep.Code)
+            {
+                string v_sqlstr = "select 社員CD,名前 from HC$MASTER_SHAIN where 社員CD=:1";
+                var v_array = new BizArray();
+                v_array[0] = Inp12DetailOpt.SalesRep.Code;
+                var wrk_csv = AppData.Http?.AspxSqlQuery(v_sqlstr, v_array.ToArray());
+                if (wrk_csv.Rows.Count > 0)
+                {
+                    Inp12DetailOpt.SalesRep = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                    Inp12DetailOpt.SalesRep.pre_data = new BtListHelper(wrk_csv.Rows[0][0].ToString(), wrk_csv.Rows[0][1].ToString());
+                }
+                else
+                {
+                    Inp12DetailOpt.SalesRep = new BtListHelper("", "");
+                    System.Windows.MessageBox.Show("営業担当者CDがマスタに存在しません｡", "確認", System.Windows.MessageBoxButton.OK);
+                    return -1;
+                }
+            }
+            return 0;
+        }
+
+        private void OnSetMultiRow(List<BizArray> set_para, string v_para)
+        {
+            /* データ列の並びを固定するようにする */
+            foreach (var para in set_para)
+            {
+                Inp12DetailItem item = new Inp12DetailItem();
+                item.ProdCD = para[0]; /* 商品CD */
+                item.DetailName = para[1]; /* 商品名 */
+                item.ColorCD = para[13]; /* 色CD */
+                item.SizeCD = para[14]; /* サイズCD */
+                item.ColorName = para[15]; /* 色名 */
+                item.SizeName = para[16]; /* サイズ名 */
+                item.Num = int.TryParse(para[18], out int _num) ? _num : 0; /* 数量 */
+
+                item.RetailUnitPrice = int.TryParse(para[23], out int _retail_unit) ? _retail_unit : 0; /* 上代 */
+                item.SizeName = para[25]; /* マスタ上代 */
+                item.TaxCalcMethod = short.TryParse(para[9], out short _cal_method) ? _cal_method : (short)0; /* 消費税計算方法 */
+                item.BaseRate = int.TryParse(para[28], out int _rate) ? _rate : 0; /* マスタ掛率 */
+                item.DeliverDate = para[32]; /* 納品日 */
+                item.DM1 = item.DeliverDate; /* 納品日(表示用) */
+                item.ApproveFlg = int.TryParse(para[33], out int _approve) ? _approve : 0; /* 明細承認FLG */
+                item.DeliverDestName = item.ApproveFlg.ToString(); /* 明細承認FLG(表示用) */
+
+                item.CostFlg = int.TryParse(para[35], out int _costflg) ? _costflg : 0; /* 原価FLG */
+                /* 下代単価計算 */
+                if (v_para == "1")
+                {
+                    /* 品番選択の場合、下代単価 */
+                    item.WholesalesUnit = int.TryParse(para[24], out int _whole_unit) ? _whole_unit : 0;
+                    /* 上代下代から掛率を算出 */
+                    OnCalcKakeRitu(item);
+                }
+                else
+                {
+                    /* 展開・バーコードの場合、上代金額＊掛率 */
+                    if (para.Count < 30 || v_para == "3")
+                    {
+                        int? jod = int.TryParse(para[23], out int _jod) ? _jod : 0;
+                        int? kake = int.TryParse(para[23], out int _kake) ? _kake : 0;
+                        item.WholesalesUnit = int.TryParse(OnGetGedai(jod, kake).ToString(), out int _unit) ? _unit : 0;
+                        int p_ritu = int.TryParse(para[28], out int _ritu) ? _ritu : 0;
+                        SetKakeRitu(item, p_ritu);
+                    }
+                    else
+                    {
+                        item.WholesalesUnit = int.TryParse(para[30], out int _unit) ? _unit : 0;
+                        int p_ritu = int.TryParse(para[31], out int _ritu) ? _ritu : 0;
+                        SetKakeRitu(item, p_ritu);
+                    }
+                }
+
+                /* 明細合計計算 */
+                item.UnitPrice = item.WholesalesUnit;
+                item.RetailAmount = item.Num * item.RetailUnitPrice;
+                item.WholesalesAmount = item.Num * item.WholesalesUnit;
+                item.TotalAmount = item.Num * item.UnitPrice;
+
+                item.CompleteFlg = 0;
+
+                OnChangeTotal(item); 
+                Inp12DetailItems.Add(item);
+            }
+        }
+
         #endregion 
     }
 
