@@ -1092,7 +1092,7 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         public void DoAvailProd()
         {
-            if (Inp12DetailOpt == null) return;
+            if (Inp12DetailOpt == null || Inp12DetailOpt.ProdCd == null) return;
             if (string.IsNullOrEmpty(Inp12DetailOpt.CustDest.Code))
             {
                 Mess2 = "先に得意先を入力してください";
@@ -1100,7 +1100,25 @@ namespace CvnetClient.ViewModels
             }
             if (OnCheckMst() < 0) return;
 
+            var v_para = new BizArray();
+            v_para[0] = Inp12DetailOpt.ProdCd.Code;
+            /* 下代掛率計算用得意先と取引区分を追加 */
+            v_para[1] = Inp12DetailOpt.CustDest.Code;
+            v_para[2] = "10";
+            v_para[3] = Text35.ToString(); /* 下代桁 */
+            v_para[4] = Text36.ToString(); /* 下代端数 */
 
+            var v_para2 = new BizArray();
+            v_para2[0] = Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd");
+            v_para2[1] = Inp12DetailOpt.StoreCd.Code;
+            v_para2[2] = Text20.ToString();
+            if (AppData.ClassCvnet.config.jodaihyjflg == 0) v_para2[0] = "19000101";
+             
+            var vm_result = AppData.DlgService.GetSku01(v_para.ToArray(), v_para2.ToArray());
+            if (vm_result != null && vm_result.ret_para != null) 
+            {
+                OnSetMultiRow(vm_result.ret_para, "2");
+            }
         }
 
         [RelayCommand]

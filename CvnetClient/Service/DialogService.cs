@@ -261,5 +261,19 @@ namespace CvnetClient.Service
             if (ret != true) return null;
             return vm;
         }
+
+        public SubDlgSKU01ViewModel GetSku01(string[] init_para, string[] init_para2 = null)
+        {
+            var view = new SubDlgSKU01View();
+            var vm = view.DataContext as SubDlgSKU01ViewModel;
+
+            // Set parameters & init dialog
+            vm.OnInit(init_para, init_para2);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
     }
 }

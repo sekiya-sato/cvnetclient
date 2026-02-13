@@ -255,7 +255,7 @@ namespace CvnetClient.ViewModels
             DspItem.DspBrand = string.Format("{0} {1}", value.BrandCD, value.BrandName);
             DspItem.DspItem = string.Format("{0} {1}", value.ItemCD, value.ItemName);
             DspItem.DspCustDeliDate = value.CustDeliDate;
-            DspItem.DspImage = string.Format("{0}{1}{2}{3}",AppData.AspxPath, "Data/", AppData.DataAddPath, value.ImgName);
+            DspItem.DspImage = string.Format("{0}{1}{2}{3}",AppData.Url, "Data/", AppData.DataAddPath, value.ImgName);
         }
 
         [RelayCommand]

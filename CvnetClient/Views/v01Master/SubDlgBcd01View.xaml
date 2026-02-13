@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:CvnetClient.ViewModels"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="ﾊﾞｰｺｰﾄﾞ入力" 
+        Title="{Binding Title}" 
 		Style="{StaticResource SmallWindow}">
 	<Window.DataContext>
 		<vm:SubDlgBcd01ViewModel />

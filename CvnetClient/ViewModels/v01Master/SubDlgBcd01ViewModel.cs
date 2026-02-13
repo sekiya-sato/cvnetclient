@@ -25,6 +25,9 @@ namespace CvnetClient.ViewModels
         private string hiduke; /* 売上日 */
         private int kubun;  /* 取引区分 */
 
+        [ObservableProperty]
+        public string? m_Title = "ﾊﾞｰｺｰﾄﾞ入力";
+
         /// <summary>
         /// ﾊﾞｰｺｰﾄﾞ
         /// </summary>

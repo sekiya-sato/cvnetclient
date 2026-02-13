@@ -755,9 +755,9 @@ namespace CvnetClient.ViewModels
             }
             string[] para = new string[1];
             para[0] = Product.Code;
-            var vm = new SubDlgSKU01ViewModel(para);
-            var window = new SubDlgSKU01View { DataContext = vm };
-            window.ShowDialog();
+            //var vm = new SubDlgSKU01ViewModel(para);
+            //var window = new SubDlgSKU01View { DataContext = vm };
+            //window.ShowDialog();
         }
         [RelayCommand]
         public void InpBarcode() 
