@@ -25,7 +25,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "社員マスタ", WindowId=typeof(Views.SubDlg01UsrView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "上代一括変更", WindowId="" },
                 new ButtonConfig { Text = "上代一括変更取込", WindowId="" },
-                new ButtonConfig { Text = "売価一覧印刷", WindowId="" },
+                new ButtonConfig { Text = "売価一覧印刷", WindowId=typeof(Views.SubDlg01PrnSell01View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "原価変更登録", WindowId=typeof(Views.SubDlg01GenhenkouView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "生地付属マスタ", WindowId=typeof(Views.SubDlg01KijiView).FullName },
                 new ButtonConfig { Text = "コンバートマスタ", WindowId="" },
