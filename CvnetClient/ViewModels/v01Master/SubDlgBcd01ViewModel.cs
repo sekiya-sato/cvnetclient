@@ -1,66 +1,79 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
-using CvnetClient.Views;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Windows;
+using System.Windows.Data;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlgBcd01ViewModel : BaseViewModel
     {
+        #region Variables
+        /* バーコード桁数 */
         [ObservableProperty]
-        private KetaClass keta;
+        private KetaClass keta = new KetaClass();
         [ObservableProperty]
-        private BrdConfigClass brdConfig;
-        [ObservableProperty]
-        private string? barcode;
-        [ObservableProperty]
-        private string? baika;
-        private int denp = 0;
-        private string souko;
-        private string hiduke;
-        private int kubun;
+        private BrdConfigClass brdConfig = new BrdConfigClass();
         private int JodaiBrdFlg = AppData.ClassCvnet.config.JodaiBrdFlg;
         private int JodaiConfig = AppData.ClassCvnet.config.JodaiConfig;
-        public bool IsFeatureEnabled { get; set; }
-        public SubDlgBcd01ViewModel(string[] para) 
+          
+        private int denp = 0; /* 伝票処理区分 */
+        private string souko; /* 上からの店舗コード */
+        private string hiduke; /* 売上日 */
+        private int kubun;  /* 取引区分 */
+
+        [ObservableProperty]
+        public string? m_Title = "ﾊﾞｰｺｰﾄﾞ入力";
+
+        /// <summary>
+        /// ﾊﾞｰｺｰﾄﾞ
+        /// </summary>
+        [ObservableProperty]
+        string? m_Barcode;
+
+        [ObservableProperty]
+        public Bcd01ItemDsp m_Bcd01ItemDsp = new Bcd01ItemDsp();
+         
+        [ObservableProperty]
+        public ObservableCollection<Bcd01Item> m_ListBrd01 = new ObservableCollection<Bcd01Item>();
+
+        /// <summary>
+        /// Current Dialog return value
+        /// </summary>
+        public List<BizArray> ret_para;
+        #endregion
+         
+        public void OnInit(string[] para)
         {
             denp = int.Parse(para[0]);
             souko = para[1];
             hiduke = para[2];
-            int X = int.Parse(para[3]) + 290;
-            int Y = int.Parse(para[4]) + 30;
+            //int X = int.Parse(para[3]) + 290;
+            //int Y = int.Parse(para[4]) + 30;
             kubun = int.Parse(para[5]);
-            
+
             if (denp == 5 || denp == 10 || denp == 11 || denp == 61 || denp == 17 || denp == 18)
             {
-                //Form1.Spread1.FlexRecord1.Set01.Set02.Line23.width = 0;
-                //Form1.Spread1.FlexRecord1.Set01.Set03.Line5.width = 0;
-                //Form1.Dsp4.Visible = $false;
+                // Disable 上代 & 上代金額 Columns
+                Bcd01ItemDsp.RetailVisible = Visibility.Collapsed;
+                Bcd01ItemDsp.Dsp4Visible = Visibility.Collapsed;
                 kubun = 10;
             }
 
             /* 仕入 */
             if (denp == 3 || denp == 13)
             {
-                //Form1.Spread1.FlexRecord1.Set01.Set02.Line21.title = "下代";
-                //Form1.Spread1.FlexRecord1.Set01.Set03.Line6.title = "下代金額";
-                //Form1.Label2.Visible =$false;
-                //Form1.Text2.Visible =$false;
+                Bcd01ItemDsp.Amount1Title = "下代";
+                Bcd01ItemDsp.Amount2Title = "下代金額";
+                Bcd01ItemDsp.LblPriceVisible = Visibility.Collapsed;
+                Bcd01ItemDsp.TxtPriceVisible = Visibility.Collapsed;
                 if (AppData.ClassCvnet.config.UserFlg == 50)
                 {
-                    //Form1.Spread1.FlexRecord1.Set01.Set02.Line21.title = "金額";
-                    //Form1.Spread1.FlexRecord1.Set01.Set03.Line6.title = "金額";
+                    Bcd01ItemDsp.Amount1Title = "金額";
+                    Bcd01ItemDsp.Amount2Title = "金額";
                 }
             }
 
@@ -84,10 +97,10 @@ namespace CvnetClient.ViewModels
                     switch (int.Parse(AppData.ClassCvnet.SysHhtMst.Rows[0][i].ToString()))
                     {
                         case 0:
-                            //Form1.CheckBox1.CheckItem1[0].Selected =$false;
+                            Bcd01ItemDsp.IsRead2ndRow = false;
                             break;
                         case 1:
-                            //Form1.CheckBox1.CheckItem1[0].Selected =$true;
+                            Bcd01ItemDsp.IsRead2ndRow = true;
                             break;
                         default:
                             break;
@@ -166,53 +179,35 @@ namespace CvnetClient.ViewModels
                 Keta.Jan_check = 1 + Keta.Jan_check;
                 Keta.Dan1_keta = 2 + Keta.Dan1_keta;
                 Keta.Dan2_keta = 2 + Keta.Dan2_keta;
-                //Form1.CheckBox1.Active = $false;
+                Bcd01ItemDsp.IsRead2ndRow = false;
 
                 //Form1.B_Code.Visible =$false;
                 //Form1.NumberEdit1.Visible =$true;
                 //Form1.Label3.Visible =$true;
-
-                //Form1.Spread1.FlexRecord1.Set01.Set03.dummy1.Width = 380;
-                //Form1.Spread1.FlexRecord1.Set01.Set03.dsp1.Width = 40;
-                //Form1.Spread1.FlexRecord1.Set01.Set03.dsp1.Title = "OFF率";
-
             }
         }
 
-        [RelayCommand]
-        private void BarcodeEnter(KeyEventArgs e)
+        #region Events 
+
+        partial void OnBarcodeChanged(string? value)
         {
-            if (e.Key != Key.Enter)
+            if (string.IsNullOrWhiteSpace(value))
                 return;
 
-            ProcessBarcode();
-        }
-
-        [RelayCommand]
-        private void BarcodeLostFocus()
-        {
-            ProcessBarcode();
-        }
-
-        private void ProcessBarcode()
-        {
-            if (string.IsNullOrWhiteSpace(Barcode))
-                return;
-
-            var lngt = Barcode.Length;
+            var lngt = value.Length;
             if (lngt != Keta.Dan1_keta)
             {
-                ClientLib.MessageBoxError(this,"読込バーコードが違います " + lngt.ToString() + " " + Keta.Dan1_keta.ToString(), "注意");
-                Barcode = string.Empty;
+                ClientLib.MessageBoxError(this, "読込バーコードが違います " + lngt.ToString() + " " + Keta.Dan1_keta.ToString(), "注意");
+                value = string.Empty;
                 return;
             }
-            if (Barcode.Substring(0, Keta.Jan_check).ToUpper() != Keta.Jan_sento)
+            if (value.Substring(0, Keta.Jan_check).ToUpper() != Keta.Jan_sento)
             {
                 ClientLib.MessageBoxError(this, "読込バーコードが違います", "注意");
-                Barcode = string.Empty;
+                value = string.Empty;
                 return;
             }
-            if (IsFeatureEnabled)
+            if (Bcd01ItemDsp.IsRead2ndRow)
             {
                 OnSetFocus();
             }
@@ -221,14 +216,16 @@ namespace CvnetClient.ViewModels
                 var v_wkpara = new BizArray();
                 if (AppData.ClassCvnet.UserFlg == 13)
                 {
-                    v_wkpara[0] = (Barcode.Substring(1,lngt - 2)).ToString();
+                    v_wkpara[0] = (value.Substring(1, lngt - 2)).ToString();
                 }
                 else
                 {
-                    v_wkpara[0] = new string(Barcode);
+                    v_wkpara[0] = new string(value);
                 }
 
                 var ret_csv = OnQuery(v_wkpara);
+
+                GlobalFunc.ChkDataTableColType(ret_csv);
 
                 if (ret_csv.Rows.Count == 0)
                 {
@@ -236,8 +233,8 @@ namespace CvnetClient.ViewModels
                     Barcode = string.Empty;
                     return;
                 }
-                var v_sirne = ret_csv.Rows[0][13];
-                var v_gflg = ret_csv.Rows[0][14];
+                int v_sirne = int.TryParse(ret_csv.Rows[0][13].ToString(), out int sirne) ? sirne : 0;
+                int v_gflg = int.TryParse(ret_csv.Rows[0][14].ToString(), out int gflg) ? gflg : 0;
                 if (denp == 1 && AppData.ClassCvnet.config.UserFlg == 20)
                 {
                     if (int.Parse(ret_csv.Rows[0][12].ToString()) < 0)
@@ -247,7 +244,7 @@ namespace CvnetClient.ViewModels
                         return;
                     }
                     else
-                    {                        
+                    {
                         ret_csv.Columns.RemoveAt(14);
                         ret_csv.Columns.RemoveAt(13);
                         ret_csv.Columns.RemoveAt(12);
@@ -265,12 +262,12 @@ namespace CvnetClient.ViewModels
                 {
                     if (BrdConfig.Jodai_dan == 1)
                     {
-                        brdjodai = int.Parse(Barcode.Substring(BrdConfig.Jodai_pos - 1, BrdConfig.Jodai_keta));
+                        brdjodai = int.Parse(value.Substring(BrdConfig.Jodai_pos - 1, BrdConfig.Jodai_keta));
                         OnSetSpread(ret_csv, brdjodai, v_sirne, v_gflg);
                     }
                     else
                     {
-                        brdjodai = int.Parse(Baika.Substring(BrdConfig.Jodai_pos - 1, BrdConfig.Jodai_keta));
+                        brdjodai = int.Parse(Bcd01ItemDsp.SellPrice.Substring(BrdConfig.Jodai_pos - 1, BrdConfig.Jodai_keta));
                         OnSetSpread(ret_csv, brdjodai, v_sirne, v_gflg);
                     }
                 }
@@ -283,13 +280,100 @@ namespace CvnetClient.ViewModels
             Barcode = string.Empty;
         }
 
+        [RelayCommand]
+        private void Cost1Changed(Bcd01Item item)
+        { 
+            item.WholesalesAmt = item.Quantity * item.Cost1;
+        }
+
+        [RelayCommand]
+        public void DoConfirmJAN()
+        {
+            var vm_result = AppData.DlgService.GetJan00New();
+            if (vm_result != null)
+            {
+                Barcode = vm_result.ret_para[0].ToString();
+            }
+        }
+
+        [RelayCommand]
+        public void DoExecute()
+        {
+            if (ListBrd01.Count == 0) return;
+            ret_para = new List<BizArray>();
+            foreach (var item in ListBrd01)
+            {
+                var para = new BizArray();
+                para[0] = item.ProdCD; /* 品番 */
+                para[1] = item.ProdName; /* 商品名 */
+                para[2] = (item.Cost1 * item.Quantity).ToString(); /* 実売価*数量 */
+                para[3] = string.Empty; /* 絵型 */
+                para[4] = string.Empty; /* 大分類 */
+                para[5] = string.Empty; /* 中分類 */
+                para[6] = string.Empty; /* 小分類 */
+                para[7] = string.Empty; /* 発売日 */
+                para[8] = (item.Cost * item.Quantity).ToString(); /* 仕入単価*数量 */  /* ここでは原価*数量 */
+                para[9] = item.TaxCalcMethod.ToString(); /* 消費税計算方法 */
+                para[10] = string.Empty; /* カテゴリー */
+                para[11] = string.Empty; /* セットFLG */
+                para[12] = string.Empty; /* 延長保証FLG 05.08.26*/
+                para[13] = item.ColorCD; /* 状態CD */ /* 色CD */
+                para[14] = item.SizeCD; /* 保証書CD */ /* サイズCD */
+                para[15] = item.ColorName; /* 色名 */
+                para[16] = item.SizeName; /* サイズ名 */
+                para[17] = string.Empty; /* 単品管理FLG */
+                para[18] = item.Quantity.ToString(); /* 数量 */
+
+                para[19] = (item.Cost1 * item.Quantity).ToString(); /* 実売価*数量 */
+                para[20] = "0";
+                para[21] = (item.Cost * item.Quantity).ToString(); /* 仕入単価*数量 */ /* ここでは原価*数量 */
+                para[22] = "0";
+                /* 仕入対応 */
+                if (denp == 3 || denp == 13)
+                    para[23] = item.MasterRetail.ToString(); /* 上代 */
+                else
+                    para[23] = item.Cost1.ToString(); /* 販売単価 */ /* 売上では実売価 */
+                para[24] = item.Cost.ToString();  /* 仕入単価 */ /* ここでは原価 */
+                para[25] = item.MasterRetail.ToString(); /* マスタ上代 */ /* ここではマスタ上代 */
+                /* 在庫数、引当数追加 */
+                para[26] = string.Empty;
+                para[27] = string.Empty;
+                /* 掛率追加、下代掛率 */
+                para[28] = item.Rate.ToString();
+                /* 仕入対応 */
+                if (denp == 3 || denp == 13)
+                    para[29] = item.Cost1.ToString();
+                else
+                    para[29] = item.StaffRate;
+                para[30] = string.Empty;
+                para[31] = string.Empty;
+                para[32] = item.DeliverDate; /* 納品日 */
+                para[33] = string.Empty;
+                /* 原価FLG */
+                para[34] = item.CostFlg.ToString();
+
+                ret_para.Add(para);
+            }
+            ClientLib.ExitDialogResult(this, true);
+        }
+
+        [RelayCommand]
+        public void DoExit()
+        {
+            ClientLib.ExitDialogResult(this, true);
+        }
+        #endregion
+
+        #region Functions
+        /* 商品ＭＳ検索 */
         private DataTable OnQuery(BizArray v_para) 
         {
             var sql_query = "";
-
+            /* ＪＡＮ読込 */
             sql_query = "select j.商品CD, NVL(s.商品名,'') 商品名, j.色CD, j.サイズCD, get_colorname(j.色CD) 色名, get_sizename(j.商品CD,j.サイズCD) サイズ名";
             if (denp == 1)
             {
+                /* さらにジャコモ専用処理　社員販売は掛率を掛ける */
                 if (kubun == 14 || kubun == 24 || kubun == 17 || kubun == 27 || kubun == 18 || kubun == 28 || kubun == 19 || kubun == 29)
                 {
                     sql_query += ",trunc(get_jodai(j.商品CD, j.色CD, j.サイズCD, '" + hiduke + "', '" + souko + "')*get_kakeritu('" + souko + "','" + kubun + "',s.商品CD,1)/100,0) 上代";
@@ -304,6 +388,7 @@ namespace CvnetClient.ViewModels
                 if (AppData.ClassCvnet.config.jodaihyjflg == 0) hiduke = new string("19000101");
                 if (denp == 0 || denp == 12)
                 {
+                    /* 出荷売上・受注時は、標準倉庫CDをセット */
                     sql_query += ",get_jodai(j.商品CD, j.色CD, j.サイズCD, '" + hiduke + "', nvl((select 標準倉庫CD from HC$MASTER_SYSKANRI),'')) 上代";
                 }
                 else
@@ -311,7 +396,7 @@ namespace CvnetClient.ViewModels
                     sql_query += ",get_jodai(j.商品CD, j.色CD, j.サイズCD, '" + hiduke + "', '" + souko + "') 上代";
                 }
             }
-
+            /* 原価FLG */
             if (AppData.ClassCvnet.config.usegenka == 1)
             {
                 sql_query += ", get_genka(j.商品CD,substr(:1" + "," + BrdConfig.Genka_pos.ToString() + "," + BrdConfig.Genka_keta.ToString() + "),'" + hiduke + "',j.色CD,j.サイズCD) 原価";
@@ -329,6 +414,7 @@ namespace CvnetClient.ViewModels
             {
                 sql_query += ",get_jodai(j.商品CD, j.色CD, j.サイズCD, '" + hiduke + "', '" + souko + "') マスタ上代";
             }
+            /* ジャコモ専用掛率 */
             if (AppData.ClassCvnet.config.UserFlg == 13)
             {
                 sql_query += " ,0 掛率,0 社員掛率";
@@ -336,9 +422,11 @@ namespace CvnetClient.ViewModels
             else sql_query += " ,get_kakeritu('" + souko + "','" + kubun + "',s.商品CD) 掛率,get_kakeritu('" + souko + "','" + kubun + "',s.商品CD,1) 社員掛率";
             sql_query += ",nvl((select 0 from hc$master_convert where 区分='HBN' and 一意CD01='" + souko + "' and 一意CD02=s.ブランドCD),-1) ブランド判定";
 
+            /* 原価FLG */
             sql_query += " , CASE WHEN (SELECT 仕入価格 FROM hc$master_shohin_jan WHERE 商品cd = j.商品cd AND 色cd = j.色cd AND サイズcd = j.サイズcd ) IS NULL OR ( (SELECT 仕入価格 FROM hc$master_shohin_jan WHERE 商品cd = j.商品cd AND 色cd = j.色cd AND サイズcd = j.サイズcd ) = 0 ) THEN (SELECT 仕入価格 FROM HC$MASTER_SHOHIN WHERE 商品CD=j.商品CD) ELSE (SELECT 仕入価格 FROM hc$master_shohin_jan WHERE 商品cd = j.商品cd AND 色cd = j.色cd AND サイズcd = j.サイズcd) END AS 原価";
             if (AppData.ClassCvnet.config.usegenka == 1)
             {
+                /* 直参照変更 09.11.20 */
                 if (AppData.ClassCvnet.config.janConvertFlg1 != "")
                 {
                     sql_query += ",decode(j.janコード3,'" + v_para[BrdConfig.Sho_dan - 1].ToString() + "',0,substr(:1" + "," + BrdConfig.Genka_pos.ToString() + "," + BrdConfig.Genka_keta.ToString() + ")) 原価flg";
@@ -352,30 +440,43 @@ namespace CvnetClient.ViewModels
             {
                 sql_query += " ,0 原価flg";
             }
-
+            /* 2009.06.18 納品日追加 */
             sql_query += " ,s.納品日";
 
             sql_query += " from HC$master_shohin_jan j,HC$master_shohin s,HC$master_shohin_GENKA G"
                 + " where j.商品CD=s.商品CD(+) AND J.商品CD=G.商品CD(+)";
 
+            /* ココからJANコードの取得についての設定 */
+            /* 商品固定コードの紐付け */
             var wrk_para = new BizArray();
 
             if (AppData.ClassCvnet.config.UserFlg == 41)
             {
+                /* 商品 */
                 sql_query += " and (j.JANコード1=:1";
                 wrk_para[0] = v_para[BrdConfig.Sho_dan - 1].ToString();
+
+                /* 2009.07.07 JANコード3対応 */
                 sql_query += " or j.JANコード3=:1)";
             }
+            /* 原価有で直参照ルート 09.11.19		 */
             else if (AppData.ClassCvnet.config.usegenka == 1 && AppData.ClassCvnet.config.janConvertFlg1 != "")
             {
                 var v_genka = "0";
                 if (BrdConfig.Genka_keta == 2) v_genka = "00";
+                /* 商品 */
+                /* 2012.08.31 okamoto #696 取置メニューにてJAN検索からの入力ができない  MOD Start  */
                 sql_query += " and ( CDJAN(substr( j.JANコード1,1," + (BrdConfig.Genka_pos - 1).ToString() + ")||NVL(to_char(G.行NO,'FM" + v_genka.ToString() + "'),'00')||substr( j.JANコード1," + (BrdConfig.Genka_pos + BrdConfig.Genka_keta).ToString() + ",(12-" + (BrdConfig.Genka_pos + BrdConfig.Genka_keta - 1).ToString() + ")))=:1";
+                /* 2012.08.31 okamoto #696 取置メニューにてJAN検索からの入力ができない  MOD End */
                 wrk_para[0] = v_para[BrdConfig.Sho_dan - 1].ToString();
+
+                /* 2009.07.07 JANコード3対応 */
                 sql_query += " or j.JANコード3=:1)";
             }
+            /* 原価無で直参照ルート 09.12.15 */
             else if (AppData.ClassCvnet.config.usegenka == 0 && AppData.ClassCvnet.config.janConvertFlg1 != "")
             {
+                /* 商品 */
                 sql_query += " and (j.JANコード1=:1";
                 wrk_para[0] = v_para[BrdConfig.Sho_dan - 1].ToString();
                 sql_query += " or j.JANコード3=:1)";
@@ -383,134 +484,148 @@ namespace CvnetClient.ViewModels
             }
             else
             {
+                /* 商品 */
                 sql_query += " and ((substr(j.JANコード" + BrdConfig.Sho_dan.ToString() + "," + (BrdConfig.Sho_pos).ToString() + "," + (BrdConfig.Sho_keta).ToString() + ")"
                     + " = " + "substr(:1" + "," + (BrdConfig.Sho_pos).ToString() + "," + (BrdConfig.Sho_keta).ToString() + ")";
                 wrk_para[0] = v_para[BrdConfig.Sho_dan - 1].ToString();
+
+                /* 色 */
                 sql_query += " and substr(j.JANコード" + (BrdConfig.Iro_dan).ToString() + "," + (BrdConfig.Iro_pos).ToString() + "," + (BrdConfig.Iro_keta).ToString() + ")"
                     + " = " + "substr(:1" + "," + (BrdConfig.Iro_pos).ToString() + "," + (BrdConfig.Iro_keta).ToString() + ")";
                 wrk_para[1] = v_para[BrdConfig.Iro_dan - 1].ToString();
+
+                /* サイズ */
                 sql_query += " and substr(j.JANコード" + (BrdConfig.Siz_dan).ToString() + "," + (BrdConfig.Siz_pos).ToString() + "," + (BrdConfig.Siz_keta).ToString() + ")"
                     + " = " + "substr(:1" + "," + (BrdConfig.Siz_pos).ToString() + "," + (BrdConfig.Siz_keta).ToString() + ")";
                 wrk_para[2] = v_para[BrdConfig.Siz_dan - 1].ToString();
-                sql_query += ") or j.JANコード3=:1)";
 
+                /* 2009.07.07 JANコード3対応 */
+                sql_query += ") or j.JANコード3=:1)";
             }
             return AppData.Http!.AspxSqlQuery(sql_query, wrk_para.ToArray());
         }
-        void OnSetSpread(DataTable wrk_csv, int? price = 0,object? v_sirne = null,object? v_gflg = null) 
+        void OnSetSpread(DataTable wrk_csv, int? price = 0, int? v_sirne = null, int? v_gflg = null)
         {
-            //wrk_csv.inscol(1);
-            
-            //if (price != null)
-            //{
-            //    wrk_csv.setcell(0, wrk_csv.Columns.Count - 5, price);
-            //    if (cvnet.Config.UserFlg == 13) price = rounddown(price * (100 - Form1.NumberEdit1.Value) / 100);   /* 実売のみOFF率反映 */
-            //    wrk_csv.setcell(0, wrk_csv.columns - 1, price);
-            //}
-            //else wrk_csv.setcell(0, wrk_csv.columns - 1, wrk_csv.getcell(0, 6));
+            wrk_csv.Columns.Add(string.Format("Col{0}", wrk_csv.Columns.Count.ToString("00")), typeof(string));
+            if (price != null)
+            {
+                /* 2009.06.18 納品日追加の為、ズレ調整 */
+                wrk_csv.Rows[0][wrk_csv.Columns.Count - 5] = price;
+                wrk_csv.Rows[0][wrk_csv.Columns.Count - 1] = price;
+            }
+            else wrk_csv.Rows[0][wrk_csv.Columns.Count - 1] = wrk_csv.Rows[0][6];
 
-            //var amount = 0;
-            //long row_num = 999999;
+            int? amount = 0;
+            int row_num = 999999;
 
-            //if (Form1.Spread1.RowCount != 0)
-            //{
-            //    var row1 = Form1.Spread1.GetRow();
-            //    while (!row1.end)
-            //    {
-            //        if (row1.Line7.value == wrk_csv.getcell(0, 0)
-            //            && row1.Line18.value == wrk_csv.getcell(0, 2)
-            //            && row1.Line19.value == wrk_csv.getcell(0, 3)
-            //            && row1.Line21.value == wrk_csv.getcell(0, 13)
-            //            && row1.Line29.value == v_gflg)
-            //        {
-            //            row_num = row1.position;
-            //            amount = row1.Line4.value;
-            //            break;
-            //        }
-            //        row1.movenext();
-            //    }
-            //}
+            /*if (ListBrd01.Count != 0)
+            {
+                foreach (var item in ListBrd01)
+                {
+                    if (item.ProdCD == wrk_csv.Rows[0][0].ToString() &&
+                        item.ColorCD == wrk_csv.Rows[0][2].ToString() &&
+                        item.SizeCD == wrk_csv.Rows[0][3].ToString() &&
+                        item.Cost1.ToString() == wrk_csv.Rows[0][13].ToString() &&
+                        item.CostFlg == v_gflg)
+                    {
+                        amount = item.Quantity;
+                        break;
+                    }
+                }
+            }*/
+              
+            Bcd01Item brd_item = new Bcd01Item();
+            brd_item.ProdCD = wrk_csv.Rows[0][0].ToString();
+            brd_item.ProdName = wrk_csv.Rows[0][1].ToString();
+            brd_item.ColorName = wrk_csv.Rows[0][4].ToString();
+            brd_item.SizeName = wrk_csv.Rows[0][5].ToString();
+            brd_item.Quantity = amount + 1;
+            brd_item.TaxCalcMethod = int.TryParse(wrk_csv.Rows[0][8].ToString(), out int _tax_cal) ? _tax_cal : 0; /* 消費税計算方法 */
+            brd_item.ColorCD = wrk_csv.Rows[0][2].ToString(); /* 色CD */
+            brd_item.SizeCD = wrk_csv.Rows[0][3].ToString(); /* サイズCD */
 
-            //if (row_num == 999999)
-            //{
-            //    Form1.Spread1.InsertRow();
-            //    row_num = Form1.Spread1.RowCount - 1;
-            //}
-            //var row1 = Form1.Spread1.GetRow(row_num);
-            //row1.Line7.value = wrk_csv.getcell(0, 0);
-            //row1.Line1.value = wrk_csv.getcell(0, 1);
-            //row1.Line2.value = wrk_csv.getcell(0, 4);
-            //row1.Line3.value = wrk_csv.getcell(0, 5);
-            //row1.Line4.value = amount + 1;
-            //row1.Line14.value = wrk_csv.getcell(0, 8); 
-            //row1.Line18.value = wrk_csv.getcell(0, 2);  
-            //row1.Line19.value = wrk_csv.getcell(0, 3);  
+            /* 単価追加 */
+            /* 2009.06.18 納品日追加の為、ズレ調整 */
+            /* ↓下1行修正 09.10.01 取得位置修正 */
+            brd_item.Cost1 = int.TryParse(wrk_csv.Rows[0][13].ToString(), out int _cost1) ? _cost1 : 0; /* 販売単価 */
+            brd_item.Cost = int.TryParse(wrk_csv.Rows[0][7].ToString(), out int _cost) ? _cost : 0; /* 原価 */
+            brd_item.MasterRetail = int.TryParse(wrk_csv.Rows[0][9].ToString(), out int _master_retail) ? _master_retail : 0; /* マスタ上代単価 */
 
-            //row1.Line21.value = wrk_csv.getcell(0, 13); 
-            //row1.Line22.value = wrk_csv.getcell(0, 7);
-            //row1.Line23.value = wrk_csv.getcell(0, 9);
+            /* 掛率の設定 */
+            brd_item.Rate = wrk_csv.Rows[0][10].ToString(); /* 掛率 */
+            brd_item.StaffRate = wrk_csv.Rows[0][11].ToString(); /* 掛率 */
 
-            //row1.Line27.value = wrk_csv.getcell(0, 10);
-            //row1.Line28.value = wrk_csv.getcell(0, 11);
+            /* 仕入対応 */
+            if (denp == 3 || denp == 13)
+            {
+                if (kubun != 30)
+                {
+                    brd_item.Cost1 = v_sirne;
+                    if (AppData.ClassCvnet.config.usegenka == 1) {
+                        brd_item.Cost1 = int.TryParse(wrk_csv.Rows[0][7].ToString(), out _cost1) ? _cost1 : 0;
+                    }
+                }
+                else
+                {
+                    brd_item.Cost1 = 0;
+                }
+            }
 
-            //if (denp == 3 || denp == 13)
-            //{
-            //    if (kubun != 30)
-            //    {
-            //        row1.Line21.value = v_sirne;
-            //        if (AppData.ClassCvnet.config.usegenka == 1)
-            //        {
-            //            row1.Line21.value = wrk_csv.Rows[0][7];
-            //        }
-            //    }
-            //    else
-            //    {
-            //        row1.Line21.value = 0;
-            //    }
-            //}
+            /* 原価FLG */
+            brd_item.CostFlg = v_gflg;
 
-            ///* 原価FLG */
-            //row1.Line29.value = v_gflg;
+            /* 金額・上代金額 */
+            brd_item.Amount = (amount + 1) * brd_item.MasterRetail;
+            brd_item.WholesalesAmt = (amount + 1) * brd_item.Cost1;
 
-            ///* 金額・上代金額 */
-            //row1.Line5.value = (amount + 1) * row1.Line23.value;
-            //row1.Line6.value = (amount + 1) * row1.Line21.value;
+            /* 2009.06.18 納品日追加 */
+            brd_item.DeliverDate = wrk_csv.Rows[0][12].ToString();
+             
+            var selected_row = ListBrd01.FirstOrDefault(x => x.ProdCD == wrk_csv.Rows[0][0].ToString() && 
+                                                                x.ColorCD == wrk_csv.Rows[0][2].ToString() && 
+                                                                x.SizeCD == wrk_csv.Rows[0][3].ToString() &&
+                                                                x.Cost1.ToString() == wrk_csv.Rows[0][13].ToString());
+            if (selected_row != null)
+            {
+                selected_row.Quantity = selected_row.Quantity + 1;
+                /* 金額・上代金額 */
+                selected_row.Amount = selected_row.Quantity * brd_item.MasterRetail;
+                selected_row.WholesalesAmt = selected_row.Quantity * brd_item.Cost1; 
 
-            ///* 2009.06.18 納品日追加 */
-            //row1.Line30.value = wrk_csv.getcell(0, 12);
+                var _temp = new ObservableCollection<Bcd01Item>(ListBrd01);
+                ListBrd01 = null;
+                ListBrd01 = new ObservableCollection<Bcd01Item>(_temp);
+            }
+            else ListBrd01.Add(brd_item); 
 
-            //if (AppData.ClassCvnet.config.UserFlg == 13) row1.dsp1.value = Form1.NumberEdit1.Value;
-
-
-            //Form1.Spread1.ChangeTotal();
-            //Form1.Spread1.RowPosition = Form1.Spread1.RowCount - 1;
+            OnChangeTotal();
         }
         void OnSetFocus() 
         {
-            if (Baika == "")
+            if (Bcd01ItemDsp.SellPrice == "")
             {
-                ProcessBarcode();
-                Baika = string.Empty;
+                //ProcessBarcode();
+                Bcd01ItemDsp.SellPrice = string.Empty;
                 return;
             }
 
-            var lngt = Baika.Length;
+            var lngt = Bcd01ItemDsp.SellPrice.Length;
             if (lngt != Keta.Dan2_keta)
             {
                 ClientLib.MessageBoxError(this,"読込バーコードが違います", "注意");
-                Baika = string.Empty;
+                Bcd01ItemDsp.SellPrice = string.Empty;
                 return;
             }
 
             var v_wkpara = new BizArray();
             if (AppData.ClassCvnet.UserFlg == 13)
             {
-                v_wkpara[0] = Barcode.Substring( 1, Baika.Length - 2).ToString();
+                v_wkpara[0] = Barcode.Substring( 1, Bcd01ItemDsp.SellPrice.Length - 2).ToString();
             }
             else
             {
                 v_wkpara[0] = Barcode;
-                v_wkpara[1] = Baika;
+                v_wkpara[1] = Bcd01ItemDsp.SellPrice;
             }
 
             var ret_csv = OnQuery(v_wkpara);
@@ -538,7 +653,7 @@ namespace CvnetClient.ViewModels
                     }
                     else
                     {
-                        brdjodai = int.Parse(Baika.Substring( BrdConfig.Jodai_pos - 1, BrdConfig.Jodai_keta));
+                        brdjodai = int.Parse(Bcd01ItemDsp.SellPrice.Substring( BrdConfig.Jodai_pos - 1, BrdConfig.Jodai_keta));
                         OnSetSpread(ret_csv, brdjodai);
                     }
                 }
@@ -558,21 +673,18 @@ namespace CvnetClient.ViewModels
             }
 
             Barcode = string.Empty;
-            Baika = string.Empty;
-            ProcessBarcode();
+            Bcd01ItemDsp.SellPrice = string.Empty;
+            //ProcessBarcode();
         }
-        [RelayCommand]
-        public void CheckJan() 
+
+        private void OnChangeTotal()
         {
-            var vm = new SubDlg01Jan00NewViewModel();
-            var window = new SubDlg01Jan00NewView { DataContext = vm };
-            window.ShowDialog();
+            Bcd01ItemDsp.Dsp3 = ListBrd01.Sum(x => x.Quantity);
+            Bcd01ItemDsp.Dsp4 = ListBrd01.Sum(x => x.Amount);
+            Bcd01ItemDsp.Dsp5 = ListBrd01.Sum(x => x.WholesalesAmt);
         }
-        [RelayCommand]
-        public void Do() 
-        { 
-        
-        }
+
+        #endregion
 
         public partial class KetaClass : ObservableObject 
         {
@@ -622,6 +734,231 @@ namespace CvnetClient.ViewModels
             [ObservableProperty]
             private int dan = 0;
 
+        }
+    }
+
+    public partial class Bcd01ItemDsp : ObservableObject
+    {
+        /// <summary>
+        /// 実売価 (Line23) & 金額 (Line5) Visibility
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_RetailVisible;
+         
+        /// <summary>
+        /// 売価
+        /// </summary>
+        [ObservableProperty]
+        string? m_SellPrice;
+
+        /// <summary>
+        /// 売価 Label Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_LblPriceVisible;
+
+        /// <summary>
+        /// 売価 Textbox Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_TxtPriceVisible;
+
+        /// <summary>
+        /// 2段目まで読む
+        /// </summary>
+        [ObservableProperty]
+        bool m_IsRead2ndRow;
+
+        /// <summary>
+        /// 上代 / 下代 (Line21 / Line6) Title
+        /// </summary>
+        [ObservableProperty]
+        string m_Amount1Title;
+
+        /// <summary>
+        /// 上代金額 / 下代金額 (Line21 / Line6) Title
+        /// </summary>
+        [ObservableProperty]
+        string m_Amount2Title;
+
+        /// <summary>
+        /// Dsp3 - Total Num
+        /// </summary>
+        [ObservableProperty]
+        int? m_Dsp3;
+
+        /// <summary>
+        /// Dsp4 - Total Amount1
+        /// </summary>
+        [ObservableProperty]
+        int? m_Dsp4;
+
+        [ObservableProperty]
+        Visibility m_Dsp4Visible;
+          
+        /// <summary>
+        /// Dsp5 - Total Amount2
+        /// </summary>
+        [ObservableProperty]
+        int? m_Dsp5;
+
+        public Bcd01ItemDsp()
+        { 
+            RetailVisible = Visibility.Visible; 
+            LblPriceVisible = Visibility.Visible;
+            TxtPriceVisible = Visibility.Visible;
+            Dsp4Visible = Visibility.Visible;
+            Amount1Title = "上代";
+            Amount2Title = "上代金額";
+        }
+    }
+
+    public partial class Bcd01Item : ObservableObject
+    {
+        /// <summary>
+        /// 行
+        /// </summary>
+        [ObservableProperty]
+        int? m_Num;
+
+        /// <summary>
+        /// 商品CD
+        /// </summary>
+        [ObservableProperty]
+        string? m_ProdCD;
+
+        /// <summary>
+        /// 商品名
+        /// </summary>
+        [ObservableProperty]
+        string? m_ProdName;
+
+        /// <summary>
+        /// 色CD
+        /// </summary>
+        [ObservableProperty]
+        string? m_ColorCD;
+
+        /// <summary>
+        /// サイズCD
+        /// </summary>
+        [ObservableProperty]
+        string? m_SizeCD;
+
+        /// <summary>
+        /// 色名
+        /// </summary>
+        [ObservableProperty]
+        string? m_ColorName;
+
+        /// <summary>
+        /// サイズ名
+        /// </summary>
+        [ObservableProperty]
+        string? m_SizeName;
+
+        /// <summary>
+        /// 数量
+        /// </summary>
+        [ObservableProperty]
+        int? m_Quantity; 
+
+        /// <summary>
+        /// 上代
+        /// </summary>
+        [ObservableProperty]
+        int? m_Retail;
+
+        /// <summary>
+        /// 原価
+        /// </summary>
+        [ObservableProperty]
+        int? m_Cost;
+
+        /// <summary>
+        /// 消費税計算方法
+        /// </summary>
+        [ObservableProperty]
+        int? m_TaxCalcMethod;
+
+        /// <summary>
+        /// マスタ上代
+        /// </summary>
+        [ObservableProperty]
+        int? m_MasterRetail;
+
+        /// <summary>
+        /// 掛率
+        /// </summary>
+        [ObservableProperty]
+        string? m_Rate;
+
+        /// <summary>
+        /// 社員掛率
+        /// </summary>
+        [ObservableProperty]
+        string? m_StaffRate;
+
+        /// <summary>
+        /// ブランド判定
+        /// </summary>
+        [ObservableProperty]
+        int? m_BrandDecide;
+
+        /// <summary>
+        /// 原価1
+        /// </summary>
+        [ObservableProperty]
+        int? m_Cost1;
+
+        /// <summary>
+        /// 原価FLG
+        /// </summary>
+        [ObservableProperty]
+        int? m_CostFlg;
+
+        /// <summary>
+        /// 納品日
+        /// </summary>
+        [ObservableProperty]
+        string? m_DeliverDate;
+
+        /// <summary>
+        /// 金額 (Line5)
+        /// </summary>
+        [ObservableProperty]
+        int? m_Amount;
+
+        /// <summary>
+        /// 上代金額 (Line6)
+        /// </summary>
+        [ObservableProperty]
+        int? m_WholesalesAmt;
+
+        public Bcd01Item() { }
+
+        public Bcd01Item(Bcd01Item item)
+        {
+            this.Num = item.Num;
+            this.ProdCD = item.ProdCD;
+            this.ProdName = item.ProdName;
+            this.ColorCD = item.ColorCD;
+            this.SizeCD = item.SizeCD;
+            this.ColorName = item.ColorName;
+            this.SizeName = item.SizeName;
+            this.Quantity = item.Quantity;
+            this.Retail = item.Retail;
+            this.Cost = item.Cost;
+            this.TaxCalcMethod = item.TaxCalcMethod;
+            this.MasterRetail = item.MasterRetail;
+            this.Rate = item.Rate;
+            this.StaffRate = item.StaffRate;
+            this.BrandDecide = item.BrandDecide;
+            this.Cost1 = item.Cost1;
+            this.CostFlg = item.CostFlg;
+            this.DeliverDate = item.DeliverDate;
+            this.Amount = item.Amount;
+            this.WholesalesAmt = item.WholesalesAmt;
         }
     }
 }

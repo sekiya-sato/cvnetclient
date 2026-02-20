@@ -22,6 +22,6 @@ namespace CvnetClient.Views
         public SubDlgBcd01View()
         {
             InitializeComponent();
-        }
+        } 
     }
 }

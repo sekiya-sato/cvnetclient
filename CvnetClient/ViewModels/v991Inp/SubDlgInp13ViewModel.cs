@@ -755,9 +755,9 @@ namespace CvnetClient.ViewModels
             }
             string[] para = new string[1];
             para[0] = Product.Code;
-            var vm = new SubDlgSKU01ViewModel(para);
-            var window = new SubDlgSKU01View { DataContext = vm };
-            window.ShowDialog();
+            //var vm = new SubDlgSKU01ViewModel(para);
+            //var window = new SubDlgSKU01View { DataContext = vm };
+            //window.ShowDialog();
         }
         [RelayCommand]
         public void InpBarcode() 
@@ -777,9 +777,9 @@ namespace CvnetClient.ViewModels
             wrk_para[3] = "0";
             wrk_para[4] = "0";
             wrk_para[5] = SelectedOrderHeader.ToriKubun.ToString();
-            var vm = new SubDlgBcd01ViewModel(wrk_para);
-            var window = new SubDlgBcd01View { DataContext = vm };
-            window.ShowDialog();
+            //var vm = new SubDlgBcd01ViewModel(wrk_para);
+            //var window = new SubDlgBcd01View { DataContext = vm };
+            //window.ShowDialog();
             
         }
         [RelayCommand]

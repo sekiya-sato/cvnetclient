@@ -20,8 +20,16 @@ namespace CvnetClient.Utils
         // 🔹 Indexer for array-like access
         public string this[int index]
         {
-            get => Get(index);
-            set => Set(index, value);
+            get
+            {
+                if (index < 0) return string.Empty;
+                return Get(index);
+            }
+            set
+            {
+                if (index < 0) return; 
+                Set(index, value);
+            }
         }
 
         public BizArray() 
@@ -614,7 +622,8 @@ namespace CvnetClient.Utils
     public class BtListHelper : BaseViewModel
     {
         private string _code;
-        private string _name;
+        private string _name; 
+        public BtListHelper pre_data;
           
         public string Code
         {

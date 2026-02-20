@@ -147,4 +147,25 @@ namespace CvnetClient.Utils
         }
     }
 
+    /// <summary>
+    /// Convert yyyyMMdd to yyyy/MM/dd string date display
+    /// </summary>
+    public class DateDisplayConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string s && s.Length == 8)
+                return $"{s.Substring(0, 4)}/{s.Substring(4, 2)}/{s.Substring(6, 2)}";
+
+            return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is string s)
+                return s.Replace("/", "");
+
+            return value;
+        }
+    }
 }

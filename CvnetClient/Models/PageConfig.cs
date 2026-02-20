@@ -131,7 +131,7 @@ namespace CvnetClient.Models
         }},
         { "展示会", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "受注入力", WindowId="" },
+                new ButtonConfig { Text = "受注入力", WindowId=typeof(Views.SubDlgInp12View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "受注実績表", WindowId="" },
                 new ButtonConfig { Text = "受注残完了設定", WindowId="" },
                 new ButtonConfig { Text = "受注残管理表", WindowId="" },

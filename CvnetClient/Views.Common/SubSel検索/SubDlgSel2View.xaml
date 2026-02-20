@@ -21,11 +21,26 @@
 				  d:ItemsSource="{d:SampleData ItemCount=5}"
 				  FrozenColumnCount="1"
 				  IsReadOnly="True"
+				  AutoGenerateColumns="False"
 				  Style="{StaticResource WinGridData}"
 				  ItemsSource="{Binding ListSel2}"
 				  SelectedItem="{Binding SelectedSel2}" 
 				  IsSynchronizedWithCurrentItem="True">
-            <!--<DataGrid.ColumnHeaderStyle>
+			<DataGrid.Columns>
+				<DataGridTextColumn Width="*"
+                                    Binding="{Binding ProductCD}"
+                                    Header="商品CD" />
+				<DataGridTextColumn Width="2*"
+                                    Binding="{Binding ProductName}"
+                                    Header="商品名" />
+				<DataGridTextColumn Width="*"
+                                    Binding="{Binding Price}"
+                                    Header="上代" />
+				<DataGridTextColumn Width="*"
+                                    Binding="{Binding InvQuantity}"
+                                    Header="在庫" />
+			</DataGrid.Columns>
+			<!--<DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="Black" />
                     <Setter Property="BorderBrush" Value="White" />
