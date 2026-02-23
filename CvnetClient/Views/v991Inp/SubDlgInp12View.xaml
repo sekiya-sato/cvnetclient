@@ -1013,7 +1013,23 @@
 										</Grid>
 									</DataTemplate>
 								</DataGridTemplateColumn.CellTemplate>
-							</DataGridTemplateColumn> 
+							</DataGridTemplateColumn>
+							<DataGridTemplateColumn Width="40">
+								<DataGridTemplateColumn.HeaderTemplate>
+									<DataTemplate>
+										<StackPanel>
+											<TextBlock Text="リフレシュ" FontWeight="Bold" />
+										</StackPanel>
+									</DataTemplate>
+								</DataGridTemplateColumn.HeaderTemplate>
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate>
+										<Button Command="{Binding DataContext.DoRefreshCommand, 
+																  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
+												CommandParameter="{Binding}" Style="{StaticResource RefreshFlexBtn}" />
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
 						</uc:CvnetFlexView.Columns>
 					</uc:CvnetFlexView>
 

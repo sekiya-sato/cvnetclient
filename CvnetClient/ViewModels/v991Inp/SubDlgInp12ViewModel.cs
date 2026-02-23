@@ -1353,6 +1353,48 @@ namespace CvnetClient.ViewModels
             }
             OnChangeValue(selected);
         }
+        [RelayCommand]
+        public void DoRefresh(Inp12DetailItem value)
+        {
+            /* 06.03.16 パラメータ変更 */
+            var v_wkpara = new BizArray();
+            v_wkpara[0] = value.ProdCD; /* 商品CD */
+            v_wkpara[1] = value.ColorCD; /* 色 */
+            v_wkpara[2] = value.SizeCD; /* サイズ */
+            v_wkpara[3] = Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd"); /* 在庫計上日 */
+            v_wkpara[4] = Inp12DetailOpt.StoreCd.Code; /* 倉庫 */
+            if (AppData.ClassCvnet.config.jodaihyjflg == 0)
+                v_wkpara[4] = "19000101";
+            v_wkpara[5] = value.CostFlg.ToString(); /* 原価FLG */
+            v_wkpara[6] = Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd"); /* 在庫計上日 */
+            v_wkpara[7] = Inp12DetailOpt.CustDest.Code; /* 店舗CD */
+            v_wkpara[8] = "10"; /* 取引区分 */
+            v_wkpara[9] = value.ProdCD; /* 商品CD */
+            v_wkpara[10] = Inp12DetailOpt.CustDest.Code; /* 店舗CD */
+            v_wkpara[11] = "10"; /* 取引区分 */
+            v_wkpara[12] = value.ProdCD; /* 商品CD */
+            v_wkpara[13] = value.ProdCD; /* 商品CD */
+            v_wkpara[14] = value.ColorCD; /* 色 */
+
+            var ret_csv = OnQueryTanka(v_wkpara);
+            value.DetailName = string.Empty;
+            value.RetailUnitPrice = 0;
+            value.ColorName = string.Empty;
+            value.SizeName = string.Empty;
+            int[] wrk_cnt = new int[3];
+            wrk_cnt[0] = 0;
+            wrk_cnt[1] = 0;
+            wrk_cnt[2] = 0;
+            for (int i = 0; i < ret_csv.Rows.Count; i++)
+            {
+                int tanka = int.TryParse(ret_csv.Rows[i][0].ToString(), out int _tanka) ? _tanka : 0;
+                if (tanka == 0)
+                {
+                    wrk_cnt[0] = 1;
+                    value.DetailName = ret_csv.Rows[i][1].ToString(); 
+                }
+            }
+        }
         #endregion
 
         #region Function 
@@ -1625,6 +1667,25 @@ namespace CvnetClient.ViewModels
             }
         }
 
+        /*********************/
+        /* 単価検索処理 */
+        /*********************/
+        private DataTable OnQueryTanka(BizArray v_wkpara)
+        {
+            /* 05.03.16 上代、原価、サイズ名変更 */
+            /* 08.09.26 納品日追加 */
+            string sql_query = "select 0,";
+            sql_query += "商品名 商品名,";
+            sql_query += "GET_JODAI(:0,:1,:2,:3,:4) 上代,GET_GENKA(商品CD,:5,:6) 原価,消費税計算方法";
+            sql_query += " ,to_number(get_kakeritu(:7,:8,:9)) 下代掛率,to_number(get_kakeritu(:10,:11,:12,1)) 社販掛率";
+            sql_query += " ,納品日";
+            sql_query += " from HC$MASTER_SHOHIN where 商品CD=:13 ";
+            /* 2012.05.28 USER87は海外名で */
+            sql_query += " union select 1,名称,0,0,0,0,0,'19010101' from (select 名称CD,名称 from HC$Master_MEISHO where 名称区分='COL') where 名称CD=:14 ";
+            sql_query += " union select 2,名称,0,0,0,0,0,'19010101' from (select GET_SIZENAME(:0,:2) 名称 from dual)";
+            var ret_csv = AppData.Http.AspxSqlQuery(sql_query, v_wkpara.ToArray());
+            return ret_csv;
+        }
         #endregion 
     }
 
