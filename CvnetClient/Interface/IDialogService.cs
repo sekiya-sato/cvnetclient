@@ -39,5 +39,7 @@ namespace CvnetClient.Interface
         SubDlgBcd01ViewModel GetBcd01(string[] init_para);
 
         SubDlgSKU01ViewModel GetSku01(string[] init_para, string[] init_para2 = null);
+
+        SubDlgSel13ViewModel GetSel13(string[] init_para);
     }
 }

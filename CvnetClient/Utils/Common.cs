@@ -113,7 +113,8 @@ namespace CvnetClient.Utils
         {
             double factor = Math.Pow(10, decimals);
             if (value >= 0)
-                return Math.Ceiling(value * factor) / factor;   // positive → round up
+                //return Math.Ceiling(value * factor) / factor;   // positive → round up
+                return Math.Floor(value * factor) / factor;
             else
                 return Math.Floor(value * factor) / factor;     // negative → round down (away from zero)
         }

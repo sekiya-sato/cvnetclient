@@ -275,5 +275,19 @@ namespace CvnetClient.Service
             if (ret != true) return null;
             return vm;
         }
+
+        public SubDlgSel13ViewModel GetSel13(string[] init_para)
+        { 
+            var view = new SubDlgSel13View();
+            var vm = view.DataContext as SubDlgSel13ViewModel;
+
+            // Set parameters & init dialog
+            vm.OnInit(init_para);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
     }
 }

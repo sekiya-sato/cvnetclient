@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CvnetClient.ViewModels
 {
@@ -46,10 +45,10 @@ namespace CvnetClient.ViewModels
 
         private BizArray col_list; /* Insert,Update時の項目名リスト */
         private BizArray col_list2; /* 明細の項目名リスト */
-        private string sql_collist = "関連伝票NO,在庫計上日,納品日,取引区分,入力社員CD,倉庫CD," 
+        private string sql_collist = "関連伝票NO,在庫計上日,納品日,取引区分,入力社員CD,倉庫CD,"
                                    + "取引先CD1,掛率1,外税対象金額,数量合計,明細金額合計,"
-	                               + "内税消費税,外税消費税,上代合計,下代合計,メモ,掛率2,伝票処理区分,MOD_SEQ,関連伝票NO2,展示会CD"
-	                               + ",手入力伝票NO,納品先CD,担当者CD";
+                                   + "内税消費税,外税消費税,上代合計,下代合計,メモ,掛率2,伝票処理区分,MOD_SEQ,関連伝票NO2,展示会CD"
+                                   + ",手入力伝票NO,納品先CD,担当者CD";
         /* 完了FLG追加 2007.11.27 */
         /* 納品日追加 2008.09.26 */
         /* 明細承認FLG追加 2014/12/09 */
@@ -77,27 +76,27 @@ namespace CvnetClient.ViewModels
             col_list = new BizArray();
             var wrk_list = sql_collist.Split(",");
             foreach (var wrk in wrk_list)
-            { 
+            {
                 col_list.Add(wrk);
             }
             col_list2 = new BizArray();
             var wrk2_list = sql_collist2.Split(",");
             foreach (var wrk2 in wrk2_list)
-            { 
+            {
                 col_list2.Add(wrk2);
             }
 
             #region Set ComboList
             var comboItem = AppData.ClassCvnet.comboItem00;
 
-            var get_cats =  comboItem.ComboItem_00<string>("商品受注区分");
+            var get_cats = comboItem.ComboItem_00<string>("商品受注区分");
             var set_cats = new Dictionary<string, string>();
             set_cats.Add("00", "00");
             foreach (var cat in get_cats)
             {
                 set_cats.Add(cat.Key, cat.Value);
             }
-            set_cats.Add("99","99");
+            set_cats.Add("99", "99");
             TranCatList = set_cats;
             Inp12SearchOpt.TranStartCat = TranCatList.FirstOrDefault().Key;
             Inp12SearchOpt.TranEndCat = TranCatList.LastOrDefault().Key;
@@ -237,7 +236,7 @@ namespace CvnetClient.ViewModels
 
             /* 20210205 ページ表示機能 */
             SelOrderTran oder_tran = OrderList.FirstOrDefault();
-            if (oder_tran != null) 
+            if (oder_tran != null)
                 OnQuery(param1.ToArray(), param2.ToArray(), oder_tran.SeqNo.ToString(), "asc");
         }
 
@@ -264,7 +263,7 @@ namespace CvnetClient.ViewModels
             Inp12DetailOpt.CreatedAt = AppData.ClassSatoo.GetVdate(created).ToString();
             double updated = double.TryParse(item.VdateUpdate.ToString(), out updated) ? updated : 0;
             Inp12DetailOpt.UpdatedAt = AppData.ClassSatoo.GetVdate(updated).ToString(); ;
-            Inp12DetailOpt.RelatedNo = item.RelatedSlipNo.ToString(); 
+            Inp12DetailOpt.RelatedNo = item.RelatedSlipNo.ToString();
             Inp12DetailOpt.OrderDate = DateTime.ParseExact(item.InvCountDate, "yyyyMMdd", CultureInfo.InvariantCulture);
             Inp12DetailOpt.DeliverDate = DateTime.ParseExact(item.DeliverDate, "yyyyMMdd", CultureInfo.InvariantCulture);
             Inp12DetailOpt.TranCate = item.TranCate;
@@ -333,7 +332,8 @@ namespace CvnetClient.ViewModels
                             SwatchPage = dr["スワッチ頁"].ToString() ?? string.Empty,
                             SwatchPosition = dr["スワッチ位置"].ToString() ?? string.Empty,
                             DeliverDestName = dr["納品先名"].ToString() ?? string.Empty,
-                            StaffName = dr["担当者名"].ToString() ?? string.Empty
+                            StaffName = dr["担当者名"].ToString() ?? string.Empty,
+                            BaseRate = int.TryParse(dr["下代掛率"].ToString(), out var _base_rate) ? _base_rate : 0
                         }).OrderBy(x => x.SeqNo);
             Inp12DetailItems = new ObservableCollection<Inp12DetailItem>(list);
 
@@ -350,7 +350,7 @@ namespace CvnetClient.ViewModels
                 row.DM1 = row.DeliverDate;
 
                 /* 明細承認FLGを表示用明細承認FLGにセット */
-                row.DeliverDestName = row.ApproveFlg.ToString(); 
+                row.DeliverDestName = row.ApproveFlg.ToString();
             }
 
             int? kei = 0; /* 数量 */
@@ -385,16 +385,16 @@ namespace CvnetClient.ViewModels
                 return;
             }
             /* 法人連携 10.10.05 */
-            var messbox = System.Windows.MessageBox.Show("削除しますか?", "確認" , System.Windows.MessageBoxButton.YesNo);
+            var messbox = System.Windows.MessageBox.Show("削除しますか?", "確認", System.Windows.MessageBoxButton.YesNo);
             if (messbox == System.Windows.MessageBoxResult.Yes)
             {
                 BizArray col_wrk = new BizArray();
                 BizArray col_wrk2 = new BizArray();
                 col_wrk[0] = "MOD_SEQ";
                 col_wrk2[0] = "0";
-                var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Tran_TORI0", 
-                                                       long.Parse(SelOrderItem.SeqNo.ToString()), 
-                                                       SelOrderItem.VdateUpdate.ToString(), 
+                var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.DELETE, "Tran_TORI0",
+                                                       long.Parse(SelOrderItem.SeqNo.ToString()),
+                                                       SelOrderItem.VdateUpdate.ToString(),
                                                        col_wrk.ToArray(), col_wrk2.ToArray());
                 if (ret.Code == 0)
                 {
@@ -420,10 +420,10 @@ namespace CvnetClient.ViewModels
 
             Mess2 = "スプール中です";
             var ret_csv = "";
-            if (Inp12SearchOpt.SelPrintCond == 0) 
+            if (Inp12SearchOpt.SelPrintCond == 0)
                 /* 一覧 */
-                ret_csv = OnQueryPrint(param1, param2); 
-            else 
+                ret_csv = OnQueryPrint(param1, param2);
+            else
                 /* 明細 */
                 ret_csv = OnQueryDetailPrint(param1, 1, param2);
 
@@ -456,8 +456,8 @@ namespace CvnetClient.ViewModels
 
         [RelayCommand]
         public void DoCSV()
-        { 
-        
+        {
+
         }
         #endregion
 
@@ -546,17 +546,17 @@ namespace CvnetClient.ViewModels
                 sql_query += " AND A.SEQ_NO " + v_hugo + " :" + v_para.Count;
             }
 
-            if (PrdToggle == 1 && (v_sho != null && v_sho.Length > 1)) 
+            if (PrdToggle == 1 && (v_sho != null && v_sho.Length > 1))
             {
                 v_para.Add(v_sho[0]);
                 v_para.Add(v_sho[1]);
                 sql_query = "SELECT A.* FROM (" + sql_query
                 + ") A WHERE EXISTS (SELECT /*+ INDEX(E 	HC$_NK_TORI23) */ 'X' FROM HC$TRAN_TORI1 E WHERE A.SEQ_NO=E.ヘッダNO AND E.商品CD BETWEEN :" + (v_para.Count - 1).ToString() + " AND :" + (v_para.Count).ToString() + ")";
             }
-            sql_query += " ORDER BY A.SEQ_NO " + v_sort; 
-            sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query); 
+            sql_query += " ORDER BY A.SEQ_NO " + v_sort;
+            sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
             ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
-             
+
             var list = (from DataRow dr in ret_csv.Rows
                         select new SelOrderTran
                         {
@@ -602,8 +602,8 @@ namespace CvnetClient.ViewModels
                             ExhibitName = dr["展示会名"].ToString() ?? string.Empty,
                             ShipToName = dr["納品先名"].ToString() ?? string.Empty,
                             StaffName = dr["担当者名"].ToString() ?? string.Empty,
-                        }).OrderByDescending(c => c.SeqNo).ToList(); 
-            OrderList = new ObservableCollection<SelOrderTran>(list);  
+                        }).OrderByDescending(c => c.SeqNo).ToList();
+            OrderList = new ObservableCollection<SelOrderTran>(list);
         }
 
         /*ヘッダ印刷BTN用検索処理 */
@@ -708,7 +708,7 @@ namespace CvnetClient.ViewModels
             sql_query += ",SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時";
             sql_query += ",'受注伝票明細'";		/* Pssタイトル用 */
             for (var i = 0; i < col_list.Count; i++)
-            {   
+            {
                 /* 伝票SQL */
                 sql_query += ",A." + col_list[i];
             }
@@ -717,7 +717,7 @@ namespace CvnetClient.ViewModels
             sql_query += ",(SELECT 得意先名 FROM HC$MASTER_TOKUI WHERE 得意先CD = A.倉庫CD AND (店種区分=0 OR 倉庫区分=9)) 倉庫名";
             sql_query += ",C.掛率,C.セール掛率,C.消費税CD,C.消費税計算方法,C.消費税端数,C.下代桁切指定,C.下代端数区分,C.下代計算FLG";
             for (var i = 0; i < col_list2.Count; i++)
-            {   
+            {
                 /* 明細SQL */
                 sql_query += ",T1." + col_list2[i] + " 明細_" + col_list2[i].ToString();
             }
@@ -901,7 +901,7 @@ namespace CvnetClient.ViewModels
             sql_query += " NVL((select H.名称 from HC$master_meisho H where H.名称区分='COL' and H.名称CD=A.色CD),'.') COL名";
             sql_query += ",GET_SIZENAME(A.商品CD,A.サイズCD) サイズ名";
             sql_query += ", get_jodai(A.商品CD,A.色CD,A.サイズCD,:0,:1) 上代";
-            sql_query += " ,get_kakeritu('" + Inp12DetailOpt.CustDest + "',10,A.商品CD) 下代掛率";
+            sql_query += " ,get_kakeritu('" + Inp12DetailOpt.CustDest.Code + "',10,A.商品CD) 下代掛率";
 
             sql_query += " ,'' DM1,NVL((SELECT MAX(TO_CHAR(W.PAGE)) FROM HC$TRAN_TENSWT W,HC$TRAN_TORI0 T0 WHERE A.ヘッダNO=T0.SEQ_NO AND W.展示会CD=T0.展示会CD AND W.商品CD=A.商品CD),'.') スワッチ頁";
             sql_query += " ,NVL((SELECT MAX(TO_CHAR(W.POS)) FROM HC$TRAN_TENSWT W,HC$TRAN_TORI0 T0 WHERE A.ヘッダNO=T0.SEQ_NO AND W.展示会CD=T0.展示会CD AND W.商品CD=A.商品CD),'.') スワッチ位置";
@@ -913,8 +913,8 @@ namespace CvnetClient.ViewModels
             sql_query += " from HC$tran_tori1 A, HC$tran_tori0 T0";
             sql_query += " where A.ヘッダNO=:2 and A.明細取引区分=:3 and T0.SEQ_NO = A.ヘッダNO";
             sql_query += " order by A.ヘッダNO, A.行NO";
-             
-            var ret_data = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray()); 
+
+            var ret_data = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
             return ret_data;
         }
         #endregion
@@ -930,7 +930,10 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Text Variable
+        private int Text11 = 0;
+        private int Text13 = 0;
         private int Text20 = 12;
+        private long Text21 = 0;
         /* ｾｰﾙ掛率区分 */
         private int Text19;
         /* 得意先、掛率 */
@@ -963,7 +966,7 @@ namespace CvnetClient.ViewModels
             var get_sel00 = (SelValueModel)value;
             if (get_sel00 != null && Inp12DetailOpt != null)
             {
-                Inp12DetailOpt.CustDest = new BtListHelper(get_sel00.Code, get_sel00.Name); 
+                Inp12DetailOpt.CustDest = new BtListHelper(get_sel00.Code, get_sel00.Name);
             }
         }
         [RelayCommand]
@@ -1075,9 +1078,9 @@ namespace CvnetClient.ViewModels
                 Inp12DetailOpt.CustDest.pre_data = new BtListHelper("", "");
 
                 Inp12DetailOpt.InpCd = new BtListHelper(AppData.ClassSatoo.SHAIN_CD, AppData.ClassSatoo.SHAIN_Name);
-                Text20 = 12; 
-                Text19 = 0; 
-                Text30 = 0; 
+                Text20 = 12;
+                Text19 = 0;
+                Text30 = 0;
                 Text31 = 0;
                 Text32 = 0;
                 Text33 = 0;
@@ -1113,9 +1116,9 @@ namespace CvnetClient.ViewModels
             v_para2[1] = Inp12DetailOpt.StoreCd.Code;
             v_para2[2] = Text20.ToString();
             if (AppData.ClassCvnet.config.jodaihyjflg == 0) v_para2[0] = "19000101";
-             
+
             var vm_result = AppData.DlgService.GetSku01(v_para.ToArray(), v_para2.ToArray());
-            if (vm_result != null && vm_result.ret_para != null) 
+            if (vm_result != null && vm_result.ret_para != null)
             {
                 OnSetMultiRow(vm_result.ret_para, "2");
             }
@@ -1151,7 +1154,7 @@ namespace CvnetClient.ViewModels
         {
             var ar2 = new BizArray();
             /* セールマスタ参照用 色、サイズ、在庫計上日、店舗 */
-            if (string.IsNullOrEmpty(value.ColorCD)) 
+            if (string.IsNullOrEmpty(value.ColorCD))
                 ar2[0] = ".";
             else ar2[0] = value.ColorCD;
             if (string.IsNullOrEmpty(value.SizeCD))
@@ -1177,9 +1180,9 @@ namespace CvnetClient.ViewModels
                 var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, wrk_para.ToArray(), ar.ToArray(), null, ar2.ToArray());
                 if (vm != null)
                 {
-                    var data = vm.SelShoResult0; 
-                    OnZoomRet(value, vm.SelShoResult0,  1);
-                } 
+                    var data = vm.SelShoResult0;
+                    OnZoomRet(value, vm.SelShoResult0, 1);
+                }
                 return;
             }
             else
@@ -1208,10 +1211,10 @@ namespace CvnetClient.ViewModels
             var wrk_para2 = new BizArray();
             wrk_para2[0] = Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd");
             wrk_para2[1] = Inp12DetailOpt.StoreCd.Code;
-            if (AppData.ClassCvnet.config.jodaihyjflg == 0) wrk_para2[0] = "19000101"; 
+            if (AppData.ClassCvnet.config.jodaihyjflg == 0) wrk_para2[0] = "19000101";
             var vm_result = AppData.DlgService.GetSelclsz0(wrk_para.ToArray(), wrk_para2.ToArray());
             if (vm_result != null)
-            { 
+            {
                 OnZoomRet(value, vm_result.ret_para, 2);
             }
         }
@@ -1283,7 +1286,7 @@ namespace CvnetClient.ViewModels
             {
                 selected.ProdCD = para[0];
                 selected.DetailName = para[1];
-                /* 2012.05.28 USER87は商品名にメーカー品番を表示 */ 
+                /* 2012.05.28 USER87は商品名にメーカー品番を表示 */
                 selected.RetailUnitPrice = int.TryParse(para[2], out int retail_unit) ? retail_unit : 0;
                 selected.Retail = selected.RetailUnitPrice;
                 selected.DeliverDate = para[16]; /* 納品日追加 2008.09.26 */
@@ -1303,7 +1306,7 @@ namespace CvnetClient.ViewModels
                 var rit_csv = AppData.Http?.AspxSqlQuery(sql_str, wrk_para.ToArray());
                 int wrk_ritu = 0;
                 if (rit_csv?.Rows.Count == 0)
-                { 
+                {
                     selected.BaseRate = int.TryParse(rit_csv.Rows[0][0].ToString(), out var _base_rate) ? _base_rate : 0;
                     selected.Rate = int.TryParse(rit_csv.Rows[0][1].ToString(), out var _rate) ? _rate : 0;
                     wrk_ritu = _base_rate;
@@ -1349,7 +1352,7 @@ namespace CvnetClient.ViewModels
                 else {
                     int total_size = int.TryParse(selected.SizeName.ToString(), out var _size) ? _size : 0;
                     selected.WholesalesUnit = total_size;
-                } 
+                }
             }
             OnChangeValue(selected);
         }
@@ -1391,9 +1394,487 @@ namespace CvnetClient.ViewModels
                 if (tanka == 0)
                 {
                     wrk_cnt[0] = 1;
-                    value.DetailName = ret_csv.Rows[i][1].ToString(); 
+                    value.DetailName = ret_csv.Rows[i][1].ToString();
+                    value.RetailUnitPrice = int.TryParse(ret_csv.Rows[i][2].ToString(), out int retail_unit) ? retail_unit : 0;
+                    value.Retail = value.RetailUnitPrice;
+                    value.DeliverDate = ret_csv.Rows[i][7].ToString(); /* 納品日 */
+                    value.DM1 = value.DeliverDate;  /* 納品日（表示用） */
+                    if (ret_csv.Columns.Count == 9)
+                    {
+                        value.ApproveFlg = int.TryParse(ret_csv.Rows[i][8].ToString(), out int approve_flg) ? approve_flg : 0; /* 明細承認FLG 2014/12/09 D*/
+                        value.DeliverDestName = value.ApproveFlg.ToString(); /* 明細承認FLG（表示用） 2014/12/09 D*/
+                    }
+
+                    /* マスタ掛率 */
+                    value.BaseRate = int.TryParse(ret_csv.Rows[i][5].ToString(), out int base_rate) ? base_rate : 0;
+                    /* 明細行の計算掛率を使用する */
+                    int ritu = base_rate;
+                    if (ritu <= 0)
+                        ritu = int.TryParse(Inp12DetailOpt.MarkupRate.ToString(), out int _ritu) ? _ritu : 0;
+                    SetKakeRitu(value, ritu);
+                    if (ritu >= 0 && ritu != 100)
+                    {
+                        if (Text37 == 0)
+                        {
+                            int unit_price = int.TryParse(value.RetailUnitPrice.ToString(), out int _jod) ? _jod : 0;
+                            value.WholesalesUnit = int.TryParse(OnGetGedai(unit_price, ritu).ToString(), out int _gedai) ? _gedai : 0;
+                        }
+                        else
+                        {
+                            int unit_price = int.TryParse(value.Retail.ToString(), out int _jod) ? _jod : 0;
+                            value.WholesalesUnit = int.TryParse(OnGetGedai(unit_price, ritu).ToString(), out int _gedai) ? _gedai : 0;
+                        }
+                    }
+                    else if (Text37 == 0)
+                        value.WholesalesUnit = value.RetailUnitPrice;
+                    else
+                        value.WholesalesUnit = int.TryParse(value.Retail.ToString(), out int _retail) ? _retail : 0;
+
+                    /* 明細合計計算 */
+                    value.UnitPrice = value.WholesalesUnit;
+                    value.RetailAmount = value.Num * value.RetailUnitPrice;
+                    value.WholesalesAmount = value.Num * value.WholesalesUnit;
+                    value.TotalAmount = value.Num * value.UnitPrice;
+                    OnChangeTotal();
+                }
+                else if (tanka == 1)
+                {
+                    wrk_cnt[1] = 1;
+                    value.ColorName = ret_csv.Rows[i][1].ToString();
+                }
+                else if (tanka == 2)
+                {
+                    wrk_cnt[2] = 1;
+                    value.SizeName = ret_csv.Rows[i][1].ToString();
                 }
             }
+
+            string wrk_str = string.Empty;
+            if (wrk_cnt[0] == 0)
+                wrk_str += "商品マスタ ";
+            if (wrk_cnt[1] == 0)
+                wrk_str += "カラーマスタ ";
+            if (wrk_cnt[2] == 0)
+                wrk_str += "サイズマスタ ";
+            if (wrk_str.Length > 0)
+            {
+                wrk_str += "がありませんでした";
+                Mess2 = wrk_str;
+            }
+        }
+
+        [RelayCommand]
+        public void DoRefreshAll()
+        {
+            var messbox = System.Windows.MessageBox.Show("全ての明細行をRefreshします", "確認", System.Windows.MessageBoxButton.OKCancel);
+            if (messbox == System.Windows.MessageBoxResult.OK)
+            {
+                foreach (var row in Inp12DetailItems)
+                {
+                    DoRefresh(row);
+                }
+                Mess2 = "Refreshしました";
+            }
+        }
+
+
+        [RelayCommand]
+        public void DoGridQntChanges(Inp12DetailItem value)
+        {
+            //Kirisute08
+            OnChangeValue(value);
+            OnChangeTotal(value);
+        }
+
+        [RelayCommand]
+        public void DoGridRetailChanges(Inp12DetailItem value)
+        {
+            //Kirisute13
+            OnCalcKakeRitu(value);
+            OnChangeValue(value);
+        }
+
+        [RelayCommand]
+        public void DoGridWholesChanges(Inp12DetailItem value)
+        {
+            //Kirisute15
+            OnCalcKakeRitu(value);
+            OnChangeValue(value);
+        }
+
+        [RelayCommand]
+        public void DoGridWholeDClick(Inp12DetailItem value)
+        {
+            var wrk_para = new BizArray();
+            wrk_para[0] = value.ProdCD;
+            wrk_para[1] = Inp12DetailOpt.CustDest.Code;
+            DateTime wrk00 = Inp12DetailOpt.OrderDate ?? DateTime.Now;
+            wrk_para[2] = wrk00.AddDays(-7).ToString("yyyyMMdd");
+
+            var vm_result = AppData.DlgService.GetSel13(wrk_para.ToArray());
+            if (vm_result != null && vm_result.ret_para != null && vm_result.ret_para.Count == 1)
+            {
+                string select_cost = vm_result.ret_para[0];
+                value.WholesalesUnit = int.TryParse(select_cost, out int wholesales) ? wholesales : 0;
+            }
+        }
+
+        [RelayCommand]
+        public async Task DoPrintProdDClick(Inp12DetailItem value)
+        {
+            /* 品番印刷 */
+            var wrk_para = new BizArray();
+            wrk_para[0] = value.ProdCD;
+            Mess2 = "スプール中です";
+             
+            string ret_csv = AppData.ClassCvnet.OnQueryPrintShohinCsv(wrk_para.ToArray(), 2);
+            var lines = ret_csv.Split('\n');
+
+            if (lines.Length < 2 || lines[1] == "0") 
+                return;
+
+            string pdfPath = lines[0];
+            string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "Data生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
+            var win = new WebpdfView();
+            if (win.DataContext is WebpdfViewModel vm)
+            {
+                vm.Pdfdata = url;
+            }
+            Mess2 = "印刷しました";
+            ClientLib.CursorToNormal();
+            ClientLib.ShowDialogView(win, this); 
+        }
+
+        /// <summary>
+        /// 修正(F6)
+        /// </summary>
+        [RelayCommand]
+        public void DoUpdate()
+        {
+            /* 入力エラーチェック */
+            if (OnCheckMst() < 0) return;
+
+            /* 修正可能or不可能チェックに伝票NO追加 */
+            if (Inp12DetailOpt == null || string.IsNullOrEmpty(Inp12DetailOpt.SlipNo)) return;
+            if (SelOrderItem == null) return;
+            DateTime sir_day = DateTime.ParseExact(SelOrderItem.InvCountDate, "yyyyMMdd", CultureInfo.InvariantCulture);
+            if (AppData.ClassCvnet.CheckImpDate(sir_day) < 0)
+            {
+                Mess2 = "修正可能な伝票ではありません。";
+                return;
+            }
+            sir_day = Inp12DetailOpt.OrderDate ?? DateTime.Now;
+            if (AppData.ClassCvnet.CheckImpDate(sir_day) < 0)
+            {
+                Mess2 = "修正可能な日付ではありません。";
+                return;
+            }
+
+            /* 明細色クリア */
+            //OnCellStdColor();
+            long now_mod_seq = long.TryParse(SelOrderItem.SeqNo.ToString(), out long mod_seq) ? mod_seq : 0;
+            string? now_mod_vdate = SelOrderItem.VdateUpdate.ToString() ?? string.Empty;
+            var col01 = new BizArray();
+            var col02 = new BizArray();
+            col01[0] = "MOD_SEQ";
+            col02[0] = "10";
+            var ret_val = AppData.Http!.AspxSqlExe(DBDef.DB_DML.LOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, col01.ToArray(), col02.ToArray());
+            if (ret_val.Code == -1)
+            {
+                Mess2 = "ロックエラーです";
+                return;
+            }
+            else if (ret_val.Code == -2)
+            {
+                Mess2 = "他で更新されていますので、登録されていません";
+                return;
+            }
+            else if (ret_val.Code < 0)
+            {
+                Mess2 = "ロックエラー !";
+                return;
+            }
+            long new_seq = ret_val.NewSeq;
+            DateTime v_start = DateTime.Now;
+            /* 明細チェック用 */
+            var err_wrk = new BizArray();
+            /* 各明細の登録処理 */
+            Text20 = 12;
+            var ret_detail = AspxParaGetDetail(Inp12DetailItems, col_list2, new_seq, Text20, 
+                                               Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd"), err_wrk);
+            /* テスト：2004/11/10 140明細=7sec */
+            if (ret_detail < 0)
+            {
+                AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, null, null);
+                Mess2 = "明細登録エラー ! 赤い項目の[一覧]から選択して下さい｡";
+                //OnErrCells(err_wrk);
+                return;
+            }
+            Text21 = new_seq;
+            if (string.IsNullOrEmpty(Inp12DetailOpt.InpCd.Code))
+                Inp12DetailOpt.InpCd = new BtListHelper(AppData.ClassSatoo.SHAIN_CD, AppData.ClassSatoo.SHAIN_Name);
+
+            //AspxParaGet
+            col02[0]  = Inp12DetailOpt.RelatedNo; // 関連No1
+            col02[1]  = Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd"); // 受注日
+            col02[2]  = Inp12DetailOpt.DeliverDate?.ToString("yyyyMMdd"); // 納品日
+            col02[3]  = Inp12DetailOpt.TranCate; // 取引区分
+            col02[4]  = Inp12DetailOpt.InpCd.Code; // 入力者
+            col02[5]  = Inp12DetailOpt.StoreCd.Code; // 倉庫
+            col02[6]  = Inp12DetailOpt.CustDest.Code; // 得意先
+            col02[7]  = Inp12DetailOpt.MarkupRate.ToString(); // 掛率
+            col02[8]  = Text11.ToString(); // 外税対象金額
+            col02[9]  = Inp12DetailOpt.Num.ToString(); // 数量合計
+            col02[10] = Text13.ToString(); // 明細金額合計
+            col02[11] = ""; // 内税消費税
+            col02[12] = ""; // 外税消費税
+            col02[13] = Inp12DetailOpt.RetailPrice.ToString(); // 上代合計
+            col02[14] = Inp12DetailOpt.WholesalePrice.ToString(); // 下代合計
+            col02[15] = Inp12DetailOpt.Memo; // 備考
+            col02[16] = Text19.ToString(); // 掛率2
+            col02[17] = Text20.ToString(); // 伝票処理区分
+            col02[18] = Text21.ToString(); // MOD_SEQ
+            col02[19] = Inp12DetailOpt.RelatedNo2; // 関連No2
+            col02[20] = Inp12DetailOpt.ExhibitCd.Code; // 展示会CD
+            col02[21] = Inp12DetailOpt.ManualInpNo; // 手入力No
+            col02[22] = ""; // 納品先CD
+            col02[23] = Inp12DetailOpt.SalesRep.Code; // 営業担当
+            ret_val = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "TRAN_TORI0", now_mod_seq, now_mod_vdate, 
+                                               col_list.ToArray(), col02.ToArray());
+            if (ret_val.Code == 0)
+            {
+                if (SelOrderItem != null)
+                {
+                    int idx = OrderList.IndexOf(SelOrderItem);
+                    OrderList[idx].VdateUpdate = double.TryParse(ret_val.VDate.ToString(), out var _update) ? _update : 0;
+                    double updatedAt = double.TryParse(ret_val.VDate, out var _updatedAt) ? _updatedAt : 0;
+                    Inp12DetailOpt.UpdatedAt = AppData.ClassSatoo.GetVdate(updatedAt).ToString();
+
+                    OrderList[idx].RelatedSlipNo = long.TryParse(col02[0], out var _slipNo) ? _slipNo : 0;
+                    OrderList[idx].InvCountDate = DateTime.ParseExact(col02[1], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+                    OrderList[idx].DeliverDate = DateTime.ParseExact(col02[2], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+                    OrderList[idx].TranCate = col02[3];
+                    OrderList[idx].InpStaffCD = col02[4];
+                    OrderList[idx].StoreCD = col02[5];
+                    OrderList[idx].ClientCD1 = col02[6];
+                    OrderList[idx].MarkupRate1 = float.TryParse(col02[7], out var _mark_rate) ? _mark_rate : 0;
+                    OrderList[idx].TaxableAmount = long.TryParse(col02[8], out var _taxable) ? _taxable : 0;
+                    OrderList[idx].TotalNum = double.TryParse(col02[9], out var _total_num) ? _total_num : 0;
+                    OrderList[idx].TotalDetailAmt = long.TryParse(col02[10], out var _detail_amt) ? _detail_amt : 0;
+                    OrderList[idx].TaxIncluded = long.TryParse(col02[11], out var _tax_include) ? _tax_include : 0;
+                    OrderList[idx].TaxExcluded = long.TryParse(col02[12], out var _tax_exclude) ? _tax_exclude : 0;
+                    OrderList[idx].TotalRetail = long.TryParse(col02[13], out var _total_retail) ? _total_retail : 0;
+                    OrderList[idx].TotalWholesale = long.TryParse(col02[14], out var _wholesales) ? _wholesales : 0;
+                    OrderList[idx].Memo = col02[15];
+                    OrderList[idx].MarkupRate2 = float.TryParse(col02[16], out var _mark_rate2) ? _mark_rate2 : 0;
+                    OrderList[idx].SlipCate = short.TryParse(col02[17], out var _slipcate) ? _slipcate : (short)0;
+                    OrderList[idx].ModSeq = long.TryParse(col02[18], out var _mod) ? _mod : 0;
+                    OrderList[idx].RelatedSlipNo2 = long.TryParse(col02[19], out var _slipNo2) ? _slipNo : 0;
+                    OrderList[idx].ExhibitCD = col02[20];
+                    OrderList[idx].ManualInpNo = col02[21];
+                    OrderList[idx].ShipToCD = col02[22];
+                    OrderList[idx].StaffCD = col02[23];
+
+                    OrderList[idx].InpStaffName = Inp12DetailOpt.InpCd.Name;
+                    OrderList[idx].TradeName = Inp12DetailOpt.CustDest.Name;
+                    OrderList[idx].StoreName = Inp12DetailOpt.StoreCd.Name;
+
+                    /* 2015.08.25 #22106対応追加（下代の端数処理の不具合）*/
+                    OrderList[idx].MarkupRate = Text30;
+                    OrderList[idx].SalesRate = Text31;
+                    OrderList[idx].TaxCD = Text32;
+                    OrderList[idx].TaxCalcMethod = short.TryParse(Text32.ToString(), out var _calc_method) ? _calc_method : (short)0;
+                    OrderList[idx].TaxRound = short.TryParse(Text33.ToString(), out var _tax_round) ? _tax_round : (short)0;
+                    OrderList[idx].CostDigitCut = short.TryParse(Text34.ToString(), out var _cost_digit) ? _cost_digit : (short)0;
+                    OrderList[idx].CostRoundType = short.TryParse(Text35.ToString(), out var _cost_round) ? _cost_round : (short)0;
+                    OrderList[idx].CostCalcFlg = short.TryParse(Text36.ToString(), out var _cost_flg) ? _cost_flg : (short)0;
+                    OrderList[idx].CompleteFlg = short.TryParse(Text37.ToString(), out var _complete_flg) ? _complete_flg : (short)0;
+
+                    /* 2015.08.25 #22106対応追加（下代の端数処理の不具合）*/
+                    OrderList[idx].ExhibitName = Inp12DetailOpt.ExhibitCd.Name;
+                    OrderList[idx].ShipToName = "";
+                    OrderList[idx].StaffName = Inp12DetailOpt.SalesRep.Name;
+                    SelectedTabIndex = 0;
+                    System.Windows.MessageBox.Show("データ修正しました(" + AppData.ClassSatoo.GetDateDiff(v_start, DateTime.Now) + ")",
+                                                   "確認", System.Windows.MessageBoxButton.OK);
+                }
+            }
+            else if (ret_val.Code == -1) Mess2 = "ロックエラーです";
+            else if (ret_val.Code == -2) Mess2 = "他で更新されていますので、登録されていません";
+            else {
+                ret_val = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, null, null);
+                Mess2 = "データ修正できませんでした";
+            }
+        }
+
+        /// <summary>
+        /// 追加(F8)
+        /// </summary>
+        [RelayCommand]
+        public void DoAdd()
+        {
+            /* 入力エラーチェック */
+            if (OnCheckMst() < 0) return;
+            var sir_day = Inp12DetailOpt.OrderDate ?? DateTime.Now;
+            if (AppData.ClassCvnet.CheckImpDate(sir_day) < 0)
+            {
+                Mess2 = "登録可能な日付ではありません。";
+                return;
+            }
+            /* 明細色クリア */
+            //OnCellStdColor
+            var col01 = new BizArray();
+            var col02 = new BizArray();
+            col01[0] = "SESS_ID";
+            col01[1] = "MOD_SEQ";
+            col02[0] = AppData.ClassSatoo.AspxGetSESS_ID().ToString();
+            col02[1] = "-1";
+
+            var ret_val = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "WORK_TORIWRK0", 0, "0",
+                                               col01.ToArray(), col02.ToArray());
+            if (ret_val.Code < 0)
+            {
+                Mess2 = "NO取得エラー !";
+                return;
+            }
+            var v_start = DateTime.Now;
+            long new_seq = ret_val.NewSeq;
+            /* 明細チェック用 */
+            var err_wrk = new BizArray();
+            /* 各明細の登録処理 */
+            Text20 = 12;
+            foreach (var row in Inp12DetailItems)
+            {
+                row.ApproveFlg = 0;
+            }
+            var ret_detail = AspxParaGetDetail(Inp12DetailItems, col_list2, new_seq, Text20,
+                                               Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd"), err_wrk);
+            /* テスト：2004/11/10 140明細=7sec */
+            if (ret_detail < 0)
+            {
+                Mess2 = "明細登録エラー ! 赤い項目の[一覧]から選択して下さい｡";
+                //OnErrCells
+                return;
+            }
+            Text21 = new_seq;
+            if (string.IsNullOrEmpty(Inp12DetailOpt.InpCd.Code))
+                Inp12DetailOpt.InpCd = new BtListHelper(AppData.ClassSatoo.SHAIN_CD, AppData.ClassSatoo.SHAIN_Name);
+
+            //AspxParaGet
+            col02[0] = Inp12DetailOpt.RelatedNo; // 関連No1
+            col02[1] = Inp12DetailOpt.OrderDate?.ToString("yyyyMMdd"); // 受注日
+            col02[2] = Inp12DetailOpt.DeliverDate?.ToString("yyyyMMdd"); // 納品日
+            col02[3] = Inp12DetailOpt.TranCate; // 取引区分
+            col02[4] = Inp12DetailOpt.InpCd.Code; // 入力者
+            col02[5] = Inp12DetailOpt.StoreCd.Code; // 倉庫
+            col02[6] = Inp12DetailOpt.CustDest.Code; // 得意先
+            col02[7] = Inp12DetailOpt.MarkupRate.ToString(); // 掛率
+            col02[8] = Text11.ToString(); // 外税対象金額
+            col02[9] = Inp12DetailOpt.Num.ToString(); // 数量合計
+            col02[10] = Text13.ToString(); // 明細金額合計
+            col02[11] = ""; // 内税消費税
+            col02[12] = ""; // 外税消費税
+            col02[13] = Inp12DetailOpt.RetailPrice.ToString(); // 上代合計
+            col02[14] = Inp12DetailOpt.WholesalePrice.ToString(); // 下代合計
+            col02[15] = Inp12DetailOpt.Memo; // 備考
+            col02[16] = Text19.ToString(); // 掛率2
+            col02[17] = Text20.ToString(); // 伝票処理区分
+            col02[18] = Text21.ToString(); // MOD_SEQ
+            col02[19] = Inp12DetailOpt.RelatedNo2; // 関連No2
+            col02[20] = Inp12DetailOpt.ExhibitCd.Code; // 展示会CD
+            col02[21] = Inp12DetailOpt.ManualInpNo; // 手入力No
+            col02[22] = ""; // 納品先CD
+            col02[23] = Inp12DetailOpt.SalesRep.Code; // 営業担当
+            ret_val = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "TRAN_TORI0", 0, "0",
+                                               col_list.ToArray(), col02.ToArray());
+            if (ret_val.Code == 0)
+            {
+                SelOrderTran new_tran = new SelOrderTran();
+                new_tran.SeqNo = int.TryParse(ret_val.NewSeq.ToString(), out var _seqno) ? _seqno : 0;
+                double vdate = double.TryParse(ret_val.VDate.ToString(), out var _vdate) ? _vdate : 0;
+                new_tran.VdateCreate = vdate;
+                new_tran.VdateUpdate = vdate;
+
+                new_tran.RelatedSlipNo = long.TryParse(col02[0], out var _slipNo) ? _slipNo : 0;
+                new_tran.InvCountDate = DateTime.ParseExact(col02[1], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+                new_tran.DeliverDate = DateTime.ParseExact(col02[2], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+                new_tran.TranCate = col02[3];
+                new_tran.InpStaffCD = col02[4];
+                new_tran.StoreCD = col02[5];
+                new_tran.ClientCD1 = col02[6];
+                new_tran.MarkupRate1 = float.TryParse(col02[7], out var _mark_rate) ? _mark_rate : 0;
+                new_tran.TaxableAmount = long.TryParse(col02[8], out var _taxable) ? _taxable : 0;
+                new_tran.TotalNum = double.TryParse(col02[9], out var _total_num) ? _total_num : 0;
+                new_tran.TotalDetailAmt = long.TryParse(col02[10], out var _detail_amt) ? _detail_amt : 0;
+                new_tran.TaxIncluded = long.TryParse(col02[11], out var _tax_include) ? _tax_include : 0;
+                new_tran.TaxExcluded = long.TryParse(col02[12], out var _tax_exclude) ? _tax_exclude : 0;
+                new_tran.TotalRetail = long.TryParse(col02[13], out var _total_retail) ? _total_retail : 0;
+                new_tran.TotalWholesale = long.TryParse(col02[14], out var _wholesales) ? _wholesales : 0;
+                new_tran.Memo = col02[15];
+                new_tran.MarkupRate2 = float.TryParse(col02[16], out var _mark_rate2) ? _mark_rate2 : 0;
+                new_tran.SlipCate = short.TryParse(col02[17], out var _slipcate) ? _slipcate : (short)0;
+                new_tran.ModSeq = long.TryParse(col02[18], out var _mod) ? _mod : 0;
+                new_tran.RelatedSlipNo2 = long.TryParse(col02[19], out var _slipNo2) ? _slipNo : 0;
+                new_tran.ExhibitCD = col02[20];
+                new_tran.ManualInpNo = col02[21];
+                new_tran.ShipToCD = col02[22];
+                new_tran.StaffCD = col02[23];
+
+                new_tran.InpStaffName = Inp12DetailOpt.InpCd.Name;
+                new_tran.TradeName = Inp12DetailOpt.CustDest.Name;
+                new_tran.StoreName = Inp12DetailOpt.StoreCd.Name;
+
+                /* 2015.08.25 #22106対応追加（下代の端数処理の不具合）*/
+                new_tran.MarkupRate = Text30;
+                new_tran.SalesRate = Text31;
+                new_tran.TaxCD = Text32;
+                new_tran.TaxCalcMethod = short.TryParse(Text32.ToString(), out var _calc_method) ? _calc_method : (short)0;
+                new_tran.TaxRound = short.TryParse(Text33.ToString(), out var _tax_round) ? _tax_round : (short)0;
+                new_tran.CostDigitCut = short.TryParse(Text34.ToString(), out var _cost_digit) ? _cost_digit : (short)0;
+                new_tran.CostRoundType = short.TryParse(Text35.ToString(), out var _cost_round) ? _cost_round : (short)0;
+                new_tran.CostCalcFlg = short.TryParse(Text36.ToString(), out var _cost_flg) ? _cost_flg : (short)0;
+                new_tran.CompleteFlg = short.TryParse(Text37.ToString(), out var _complete_flg) ? _complete_flg : (short)0;
+
+                /* 2015.08.25 #22106対応追加（下代の端数処理の不具合）*/
+                new_tran.ExhibitName = Inp12DetailOpt.ExhibitCd.Name;
+                new_tran.ShipToName = "";
+                new_tran.StaffName = Inp12DetailOpt.SalesRep.Name; 
+                OrderList.Add(new_tran);
+
+                Inp12DetailOpt.SlipNo = ret_val.NewSeq.ToString(); 
+                SelectedTabIndex = 0;
+                System.Windows.MessageBox.Show("データ追加しました(" + AppData.ClassSatoo.GetDateDiff(v_start, DateTime.Now) + ")",
+                                                   "確認", System.Windows.MessageBoxButton.OK); 
+            }
+            else if (ret_val.Code == -1) Mess2 = "ロックエラーです";
+            else if (ret_val.Code == -2) Mess2 = "他で更新されていますので、登録されていません";
+            else Mess2 = "データ追加できませんでした"; 
+        }
+
+        /// <summary>
+        /// 印刷(F9)
+        /// </summary>
+        [RelayCommand]
+        public void DoDetailPrint()
+        { 
+            
+        }
+
+        /// <summary>
+        /// 一覧へ(ESC)
+        /// </summary>
+        [RelayCommand]
+        public void DoExit()
+        {
+            SelectedTabIndex = 0;
         }
         #endregion
 
@@ -1403,7 +1884,7 @@ namespace CvnetClient.ViewModels
             row.RetailAmount = row.Num * row.RetailUnitPrice;
             row.WholesalesAmount = row.Num * row.WholesalesUnit;
             OnChangeTotal(row);
-        } 
+        }
 
         private void OnChangeTotal(Inp12DetailItem row)
         {
@@ -1417,10 +1898,10 @@ namespace CvnetClient.ViewModels
 
             int? total_su = 0;
             int? total_kin1 = 0;
-            int? total_kin2 = 0; 
+            int? total_kin2 = 0;
             total_su = Inp12DetailItems.Sum(x => x.Num);
             total_kin1 = Inp12DetailItems.Sum(x => x.RetailAmount);
-            total_kin2 = Inp12DetailItems.Sum(x => x.WholesalesAmount); 
+            total_kin2 = Inp12DetailItems.Sum(x => x.WholesalesAmount);
             foreach (var item in Inp12DetailItems)
             {
                 item.UnitPrice = item.WholesalesUnit;
@@ -1432,8 +1913,8 @@ namespace CvnetClient.ViewModels
         }
 
         private double OnGetGedai(int? jod, int? kake = null)
-        { 
-            int keta = int.TryParse( (SelOrderItem.CostDigitCut * -1).ToString(), out var _keta) ? _keta : 0;
+        {
+            int keta = int.TryParse((SelOrderItem.CostDigitCut * -1).ToString(), out var _keta) ? _keta : 0;
             var sritu = Inp12DetailOpt.MarkupRate;
             if (kake != null) {
                 sritu = kake;
@@ -1459,19 +1940,21 @@ namespace CvnetClient.ViewModels
                 else
                     return Math.Round((double)(jod * sritu) / 100, keta);
             }
-        } 
+        }
 
         private void OnCalcKakeRitu(Inp12DetailItem p_row)
         {
-            var jodai = p_row.RetailUnitPrice; //上代単価
-            var gedai = p_row.WholesalesUnit;  //下代単価
+            int jodai = int.TryParse(p_row.RetailUnitPrice.ToString(), out int _jodai) ? _jodai : 0; //上代単価
+            int gedai = int.TryParse(p_row.WholesalesUnit.ToString(), out int _gedai) ? _gedai : 0;  //下代単価
 
             int ritu = 0;
 
             if (jodai > 0)
             {
-                double value = (double)(gedai / jodai) + 0.009;
-                ritu = (int)Math.Truncate((value) * 100) / 100;
+                double dai = (double)gedai / jodai + 0.009;
+                //ritu = (int)Math.Truncate((dai) * 100) / 100; 
+                double round = GlobalFunc.RoundDown(dai, 2);
+                ritu = int.TryParse((GlobalFunc.RoundDown(dai, 2) * 100).ToString(), out int _rite) ? _rite : 0;
             }
             SetKakeRitu(p_row, ritu);
         }
@@ -1479,7 +1962,7 @@ namespace CvnetClient.ViewModels
         private void SetKakeRitu(Inp12DetailItem p_row, int p_ritu)
         {
             p_row.CalcRate = p_ritu;
-            var a = decimal.TryParse(p_row.BaseRate.ToString(), out var valueA) ? valueA : 0; 
+            var a = decimal.TryParse(p_row.BaseRate.ToString(), out var valueA) ? valueA : 0;
             var b = decimal.TryParse(p_ritu.ToString(), out var valueB) ? valueB : 0;
 
             if (Math.Truncate(a) == Math.Truncate(b))
@@ -1499,9 +1982,9 @@ namespace CvnetClient.ViewModels
         private int OnCheckMst()
         {
             if (Inp12DetailOpt == null) return -1;
-            /* 倉庫チェック */ 
+            /* 倉庫チェック */
             if (Inp12DetailOpt.StoreCd.Display != "" && Inp12DetailOpt.StoreCd.pre_data != null && Inp12DetailOpt.StoreCd.pre_data.Code != Inp12DetailOpt.StoreCd.Code)
-            { 
+            {
                 string v_sqlstr = "select 得意先CD,得意先名 from HC$MASTER_TOKUI ";
                 v_sqlstr += " where 得意先CD =:1 and (店種区分=0 OR 倉庫区分=9)";
                 v_sqlstr += AppData.ClassCvnet.GetQueryStrHoujin();	/* 2010.09.22　法人CD対応 */
@@ -1526,7 +2009,7 @@ namespace CvnetClient.ViewModels
             {
                 /* 20161206 チェックが一覧ボタンと同じものになるよう変更 */
                 string v_sqlstr = "select 得意先CD,得意先名,掛率,セール掛率,消費税CD,消費税計算方法,消費税端数,下代桁切指定,下代端数区分,下代計算FLG"
-                    + ", 営業担当CD||' '||NVL((select S.名前 from HC$MASTER_SHAIN S where S.社員CD=営業担当CD),'') 営業担当 from HC$master_TOKUI where 得意先CD=:1 and 店種区分 >0 " + 
+                    + ", 営業担当CD||' '||NVL((select S.名前 from HC$MASTER_SHAIN S where S.社員CD=営業担当CD),'') 営業担当 from HC$master_TOKUI where 得意先CD=:1 and 店種区分 >0 " +
                     AppData.ClassCvnet.GetQueryStrHoujin();
                 var v_array = new BizArray();
                 v_array[0] = Inp12DetailOpt.CustDest.Code;
@@ -1555,13 +2038,13 @@ namespace CvnetClient.ViewModels
                 }
                 else
                 {
-                    Inp12DetailOpt.CustDest = new BtListHelper("","");
+                    Inp12DetailOpt.CustDest = new BtListHelper("", "");
                     System.Windows.MessageBox.Show("得意先CDがマスタに存在しません｡", "確認", System.Windows.MessageBoxButton.OK);
                     return -1;
                 }
             }
             /* 入力者チェック 21.10.13 */
-            if (Inp12DetailOpt.InpCd.Code.Trim() != "" && Inp12DetailOpt.InpCd.Code != "." && 
+            if (Inp12DetailOpt.InpCd.Code.Trim() != "" && Inp12DetailOpt.InpCd.Code != "." &&
                 Inp12DetailOpt.InpCd.pre_data != null && Inp12DetailOpt.InpCd.pre_data.Code != Inp12DetailOpt.InpCd.Code)
             {
                 string v_sqlstr = "select 社員CD,名前 from HC$MASTER_SHAIN where 社員CD=:1";
@@ -1581,7 +2064,7 @@ namespace CvnetClient.ViewModels
                 }
             }
             /* 営業担当チェック 21.10.13 */
-            if (Inp12DetailOpt.SalesRep.Code.Trim() != "" && Inp12DetailOpt.SalesRep.Code != "." && 
+            if (Inp12DetailOpt.SalesRep.Code.Trim() != "" && Inp12DetailOpt.SalesRep.Code != "." &&
                 Inp12DetailOpt.SalesRep.pre_data != null && Inp12DetailOpt.SalesRep.pre_data.Code != Inp12DetailOpt.SalesRep.Code)
             {
                 string v_sqlstr = "select 社員CD,名前 from HC$MASTER_SHAIN where 社員CD=:1";
@@ -1662,7 +2145,7 @@ namespace CvnetClient.ViewModels
 
                 item.CompleteFlg = 0;
 
-                OnChangeTotal(item); 
+                OnChangeTotal(item);
                 Inp12DetailItems.Add(item);
             }
         }
@@ -1686,7 +2169,108 @@ namespace CvnetClient.ViewModels
             var ret_csv = AppData.Http.AspxSqlQuery(sql_query, v_wkpara.ToArray());
             return ret_csv;
         }
-        #endregion 
+
+        private void OnChangeTotal()
+        {
+            if (Inp12DetailItems.Count == 0)
+            {
+                Inp12DetailOpt.Num = 0;
+                Inp12DetailOpt.RetailPrice = 0;
+                Inp12DetailOpt.WholesalePrice = 0;
+                Text13 = 0;
+                Text11 = 0;
+                return;
+            }
+
+            int? total_su = 0;
+            int? total_kin1 = 0;
+            int? total_kin2 = 0;
+            foreach (var row in Inp12DetailItems)
+            {
+                total_su += row.Num;
+                total_kin1 += row.RetailAmount;
+                total_kin2 += row.WholesalesAmount;
+                row.UnitPrice = row.WholesalesUnit;
+                row.TotalAmount = row.WholesalesAmount;
+            }
+            Inp12DetailOpt.Num = total_su;
+            Inp12DetailOpt.RetailPrice = total_kin1;
+            Inp12DetailOpt.WholesalePrice = total_kin2;
+            Text13 = int.Parse(total_kin2.ToString());
+            Text11 = int.Parse(total_kin2.ToString());
+        }
+
+        private int AspxParaGetDetail(ObservableCollection<Inp12DetailItem> v_obj, 
+                                       BizArray v_collist, long v_headno, int v_kubun, string v_date, BizArray err_wrk)
+        {
+            string header = "ヘッダNO,伝票処理区分,在庫計上日,行NO,";
+            for (int i = 0; i < v_collist.Count; i++)
+            {
+                header += v_collist[i];
+                if (i < (v_collist.Count-1)) header += ",";
+            }
+            header += "\n";
+
+            int line_no = 1;
+            string csv_data = string.Empty;
+            for (int i = 0; i < v_obj.Count; i++)
+            {
+                csv_data += v_headno + ","; // ヘッダNO
+                csv_data += v_kubun + ","; // 伝票処理区分
+                csv_data += v_date + ","; // 在庫計上日
+                csv_data += line_no + ","; // 行NO
+                csv_data += v_obj[i].TranCate + ","; // 明細取引区分
+                csv_data += v_obj[i].ProdCD + ","; // 商品CD
+                csv_data += v_obj[i].ColorCD + ","; // 色CD
+                csv_data += v_obj[i].SizeCD + ","; // サイズCD
+                csv_data += v_obj[i].DetailName + ","; // 明細名称
+                csv_data += v_obj[i].Num + ","; // 数量
+                csv_data += v_obj[i].UnitPrice + ","; // 単価
+                csv_data += v_obj[i].TotalAmount + ","; // 金額
+                csv_data += v_obj[i].TaxIncluded + ","; // 内税消費税
+                csv_data += v_obj[i].TaxExcluded + ","; // 外税消費税
+                csv_data += v_obj[i].RetailUnitPrice + ","; // 上代単価
+                csv_data += v_obj[i].RetailAmount + ","; // 上代金額
+                csv_data += v_obj[i].WholesalesUnit + ","; // 下代単価
+                csv_data += v_obj[i].WholesalesAmount + ","; //下代金額
+                csv_data += v_obj[i].DetailMemo + ","; // 明細メモ
+                csv_data += v_obj[i].TaxCalcMethod + ","; // 消費税計算方法
+                csv_data += v_obj[i].ProdSerial + ","; // 商品シリアル
+                csv_data += v_obj[i].RelatedSlipNo + ","; // 関連伝票NO
+                csv_data += v_obj[i].RelatedSlipLineNo + ","; // 関連伝票行NO
+                csv_data += v_obj[i].Jancode + ","; // JANCODE
+                csv_data += v_obj[i].CostFlg + ","; // 原価FLG
+                csv_data += v_obj[i].CompleteFlg + ","; // 完了FLG
+                csv_data += v_obj[i].DeliverDate + ","; // 納品日
+                csv_data += v_obj[i].ApproveFlg; // 明細承認FLG
+                if (i < (v_obj.Count - 1)) csv_data += "\n";
+                line_no++;
+            }
+
+            var v_para = new BizArray();
+            v_para[0] = "WORK_TORIWRK1";
+            v_para[1] = header + csv_data;
+            var ret_csv2 = AppData.Http!.AspxSqlQuery2("mi", v_para.ToArray());
+            /* 06.03.29 エラーチェック追加 */
+            if (!string.IsNullOrEmpty(ret_csv2))
+            {
+                string[] line_csv2 = ret_csv2.Split('\n');
+                if (line_csv2[0] != "0")
+                {
+                    if (err_wrk != null)
+                    {
+                        for (int i = 2; i < line_csv2.Length; i++)
+                        {
+                            err_wrk[i - 2] = line_csv2[i];
+                        }
+                    }
+                    return -1;
+                }
+            }
+            return 0;
+        }
+
+        #endregion
     }
 
     public partial class Inp12SearchOpt : ObservableObject

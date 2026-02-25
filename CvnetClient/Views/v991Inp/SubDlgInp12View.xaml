@@ -717,6 +717,7 @@
 							<Button Grid.Column="0" 
 									Margin="0,0,5,0"
 									Content="一括Refresh⇔"
+									Command="{Binding DoRefreshAllCommand}"
 									Style="{DynamicResource BackBtn}"/>
 							<Button Grid.Column="1" 
 									Margin="0,0,5,0"
@@ -765,7 +766,18 @@
 																	  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
 													CommandParameter="{Binding}" />
 											<Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-												<TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding DetailName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+												<TextBox Grid.Row="1" Grid.ColumnSpan="2" 
+														 Text="{Binding DetailName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+														 Margin="0" Style="{StaticResource DataGridTextBox}">
+													<i:Interaction.Triggers>
+														<i:EventTrigger EventName="MouseDoubleClick">
+															<i:InvokeCommandAction
+																	Command="{Binding DataContext.DoPrintProdDClickCommand,
+																			  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+																	CommandParameter="{Binding}" />
+														</i:EventTrigger>
+													</i:Interaction.Triggers>
+												</TextBox>
 											</Border>
 										</Grid>
 									</DataTemplate>
@@ -799,7 +811,10 @@
 															  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
 													CommandParameter="{Binding}" />
 											<Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-												<TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ColorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+												<TextBox Grid.Row="1" Grid.ColumnSpan="2" 
+														 IsEnabled="False"
+														 Text="{Binding ColorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+														 Margin="0" Style="{StaticResource DataGridTextBox}"/>
 											</Border>
 										</Grid>
 									</DataTemplate>
@@ -833,7 +848,10 @@
 													RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
 													CommandParameter="{Binding}" />
 											<Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
-												<TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding SizeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+												<TextBox Grid.Row="1" Grid.ColumnSpan="2"
+														 IsEnabled="False"
+														 Text="{Binding SizeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+														 Margin="0" Style="{StaticResource DataGridTextBox}"/>
 											</Border>
 										</Grid>
 									</DataTemplate>
@@ -852,7 +870,15 @@
 									<DataTemplate>
 										<TextBox Text="{Binding Num, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 												 HorizontalContentAlignment="Right"
-												 Style="{StaticResource DataGridTextBox}"/>
+												 Style="{StaticResource DataGridTextBox}">
+											<i:Interaction.Triggers>
+												<i:EventTrigger EventName="TextChanged">
+													<i:InvokeCommandAction 
+														Command="{Binding DataContext.DoGridQntChangesCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+														CommandParameter="{Binding}" />
+												</i:EventTrigger>
+											</i:Interaction.Triggers>
+										</TextBox>
 									</DataTemplate>
 								</DataGridTemplateColumn.CellTemplate>
 							</DataGridTemplateColumn>
@@ -876,10 +902,67 @@
 											<TextBox Grid.Column="0" 
 													 HorizontalContentAlignment="Right"
 													 Text="{Binding RetailUnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-													 Style="{StaticResource DataGridTextBox}"/>
+													 Style="{StaticResource DataGridTextBox}">
+												<i:Interaction.Triggers>
+													<i:EventTrigger EventName="TextChanged">
+														<i:InvokeCommandAction 
+															Command="{Binding DataContext.DoGridRetailChangesCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															CommandParameter="{Binding}" />
+													</i:EventTrigger>
+												</i:Interaction.Triggers>
+											</TextBox>
 											<TextBox Grid.Row="1"
+													 IsEnabled="False"
 													 HorizontalContentAlignment="Right"
 													 Text="{Binding RetailAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													 Style="{StaticResource DataGridTextBox}"/>
+										</Grid>
+									</DataTemplate>
+								</DataGridTemplateColumn.CellTemplate>
+							</DataGridTemplateColumn>
+
+							<DataGridTemplateColumn Width="*">
+								<DataGridTemplateColumn.HeaderTemplate>
+									<DataTemplate>
+										<StackPanel>
+											<TextBlock Text="下代単価" FontWeight="Bold"/>
+											<TextBlock Text="下代金額" FontWeight="Bold"/>
+										</StackPanel>
+									</DataTemplate>
+								</DataGridTemplateColumn.HeaderTemplate>
+								<DataGridTemplateColumn.CellTemplate>
+									<DataTemplate>
+										<Grid>
+											<Grid.RowDefinitions>
+												<RowDefinition/>
+												<RowDefinition/>
+											</Grid.RowDefinitions>
+											<TextBox Grid.Column="0" 
+													 HorizontalContentAlignment="Right"
+													 Text="{Binding WholesalesUnit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													 Style="{StaticResource DataGridTextBox}">
+												<i:Interaction.Triggers>
+
+													<!-- TextChanged -->
+													<i:EventTrigger EventName="TextChanged">
+														<i:InvokeCommandAction 
+															Command="{Binding DataContext.DoGridWholesChangesCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															CommandParameter="{Binding}" />		
+													</i:EventTrigger>
+
+													<!-- DoubleClick -->
+													<i:EventTrigger EventName="MouseDoubleClick">
+														<i:InvokeCommandAction
+															Command="{Binding DataContext.DoGridWholeDClickCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															CommandParameter="{Binding}" />
+													</i:EventTrigger>
+
+												</i:Interaction.Triggers>
+											</TextBox>
+											<TextBox Grid.Row="1"
+													 IsEnabled="False"
+													 HorizontalContentAlignment="Right"
+													 Text="{Binding WholesalesAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Style="{StaticResource DataGridTextBox}"/>
 										</Grid>
 									</DataTemplate>
@@ -902,8 +985,10 @@
 												<RowDefinition/>
 												<RowDefinition/>
 											</Grid.RowDefinitions>
-											<TextBox Grid.Column="0"
-													 HorizontalContentAlignment="Right">
+											<TextBox Grid.Row="0"
+													 Height="30"
+													 HorizontalContentAlignment="Right"
+													 VerticalContentAlignment="Center">
 												<TextBox.Style>
 													<Style TargetType="TextBox">
 														<!-- Display format -->
@@ -930,7 +1015,10 @@
 												</TextBox.Style>
 											</TextBox>
 											<TextBox Grid.Row="1"
+													 IsEnabled="False"
+													 Text="{Binding BaseRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 HorizontalContentAlignment="Right"
+													 VerticalContentAlignment="Center"
 													 Style="{StaticResource DataGridTextBox}"/>
 										</Grid>
 									</DataTemplate>
@@ -947,10 +1035,10 @@
 													<RowDefinition Height="*" />
 												</Grid.RowDefinitions>
 												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="*" />
-													<ColumnDefinition Width="*" />
-													<ColumnDefinition Width="*" />
-													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="50" />
+													<ColumnDefinition Width="50" />
+													<ColumnDefinition Width="50" />
+													<ColumnDefinition Width="50" />
 												</Grid.ColumnDefinitions>
 												<TextBlock Grid.Row="0" 
 														   HorizontalAlignment="Center"
@@ -1005,9 +1093,11 @@
 													  SelectedValue="{Binding CompleteFlg, Mode=TwoWay}"
 													  Style="{StaticResource SearchableComboBox1}"/>
 											<TextBox Grid.Row="1" Grid.Column="2"
+													 IsEnabled="False"
 													 Text="{Binding SwatchPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 Style="{StaticResource DataGridTextBox}"/>
 											<TextBox Grid.Row="1" Grid.Column="3" 
+													 IsEnabled="False"
 													 Text="{Binding SwatchPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 Style="{StaticResource DataGridTextBox}"/>
 										</Grid>
@@ -1070,18 +1160,22 @@
 						<Button Grid.Column="6" 
 								Margin="0,0,5,0"
 								Content="修正(F6)"
+								Command="{Binding DoUpdateCommand}"
 								Style="{DynamicResource BackBtn}"/>
 						<Button Grid.Column="7" 
 								Margin="0,0,5,0"
 								Content="追加(F8)"
+								Command="{Binding DoAddCommand}"
 								Style="{DynamicResource BackBtn}"/>
 						<Button Grid.Column="8" 
 								Margin="0,0,5,0"
 								Content="印刷(F9)"
+								Command="{Binding DoDetailPrintCommand}"
 								Style="{DynamicResource BackBtn}"/>
 						<Button Grid.Column="9" 
 								Margin="0,0,5,0"
 								Content="一覧へ(ESC)"
+								Command="{Binding DoExitCommand}"
 								Style="{DynamicResource BackBtn}"/>
 					</Grid>
 				</Grid>
