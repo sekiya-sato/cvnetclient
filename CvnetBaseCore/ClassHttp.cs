@@ -651,6 +651,7 @@ namespace CvnetBaseCore {
 				item2.SHAIN_CD = v_infologin.Rows[0]["SHAIN_CD"].ToString();
                 item2.SHAIN_Name = v_infologin.Rows[0]["SHAIN_NAME"].ToString();
                 item2.SHAIN_Tenpo = v_infologin.Rows[0]["SHAIN_TENPO"].ToString();
+				item2.AspxRandId = v_randid;
                 ret_code = 0;
 				return Tuple.Create<int, dynamic>(ret_code, item2);
 			}

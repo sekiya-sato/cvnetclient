@@ -759,7 +759,19 @@
 												<ColumnDefinition Width="6*"/>
 												<ColumnDefinition Width="4*"/>
 											</Grid.ColumnDefinitions>
-											<TextBox Grid.Column="0" Text="{Binding ProdCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+											<TextBox Grid.Column="0" 
+													 Background="{Binding ProdBgColor}"
+													 Text="{Binding ProdCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													 Margin="0" Style="{StaticResource DataGridTextBox}">
+												<i:Interaction.Triggers>
+													<i:EventTrigger EventName="TextChanged">
+														<i:InvokeCommandAction 
+															Command="{Binding DataContext.DoProdChangedCommand,
+																	  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															CommandParameter="{Binding}" />
+													</i:EventTrigger>
+												</i:Interaction.Triggers>
+											</TextBox>
 											<Button Grid.Column="1" Content="一覧" 
 													Margin="0" Padding="6" 
 													Command="{Binding DataContext.DoProdRowSearchCommand,
@@ -841,7 +853,19 @@
 												<ColumnDefinition Width="6*"/>
 												<ColumnDefinition Width="4*"/>
 											</Grid.ColumnDefinitions>
-											<TextBox Grid.Column="0" Text="{Binding SizeCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+											<TextBox Grid.Column="0" 
+													 Text="{Binding SizeCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													 Margin="0" 
+													 Style="{StaticResource DataGridTextBox}">
+												<i:Interaction.Triggers>
+													<i:EventTrigger EventName="TextChanged">
+														<i:InvokeCommandAction 
+																Command="{Binding DataContext.DoGridSizeChangedCommand,
+																		  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+																CommandParameter="{Binding}" />
+													</i:EventTrigger>
+												</i:Interaction.Triggers>
+											</TextBox>
 											<Button Grid.Column="1" Content="一覧" 
 													Margin="0" Padding="6" 
 													Command="{Binding DataContext.DoSizeRowSearchCommand,
@@ -874,7 +898,7 @@
 											<i:Interaction.Triggers>
 												<i:EventTrigger EventName="TextChanged">
 													<i:InvokeCommandAction 
-														Command="{Binding DataContext.DoGridQntChangesCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+														Command="{Binding DataContext.DoGridQntChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
 														CommandParameter="{Binding}" />
 												</i:EventTrigger>
 											</i:Interaction.Triggers>
@@ -906,7 +930,7 @@
 												<i:Interaction.Triggers>
 													<i:EventTrigger EventName="TextChanged">
 														<i:InvokeCommandAction 
-															Command="{Binding DataContext.DoGridRetailChangesCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															Command="{Binding DataContext.DoGridRetailChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
 															CommandParameter="{Binding}" />
 													</i:EventTrigger>
 												</i:Interaction.Triggers>
@@ -946,7 +970,7 @@
 													<!-- TextChanged -->
 													<i:EventTrigger EventName="TextChanged">
 														<i:InvokeCommandAction 
-															Command="{Binding DataContext.DoGridWholesChangesCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															Command="{Binding DataContext.DoGridWholesChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
 															CommandParameter="{Binding}" />		
 													</i:EventTrigger>
 
@@ -1083,7 +1107,16 @@
 													 Foreground="{Binding CalcRateFgColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 Background="{Binding CalcRateBgColor,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 Text="{Binding CalcRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 Style="{StaticResource DataGridTextBox}"/>
+													 Style="{StaticResource DataGridTextBox}">
+												<i:Interaction.Triggers>
+													<i:EventTrigger EventName="TextChanged">
+														<i:InvokeCommandAction 
+																Command="{Binding DataContext.DoGridCalcRateChangedCommand,
+																		  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+																CommandParameter="{Binding}" />
+													</i:EventTrigger>
+												</i:Interaction.Triggers>
+											</TextBox>
 											<ComboBox Grid.Row="1" Grid.Column="1"
 													  VerticalAlignment="Top"
 													  VerticalContentAlignment="Center"
@@ -1152,6 +1185,7 @@
 						<Button Grid.Column="3" 
 								Margin="0,0,5,0"
 								Content="商品CD検索"
+								Command="{Binding DoSearchProdCommand}"
 								Style="{DynamicResource BackBtn}"/>
 						<Button Grid.Column="4" 
 								Margin="0,0,5,0"

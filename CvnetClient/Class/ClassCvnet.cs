@@ -56,6 +56,8 @@ namespace CvnetBaseCore
         /* CRSを起動する場合には必ずこのエントリに登録し、かつユーザ毎の起動設定をしなければならない */
         public OrgMenuDef orgMenuDef = new OrgMenuDef();
 
+        public int MeickFlg = 0; /* 伝票明細チェックフラグ 0=しない, 1=する .*/
+
         public ComboItem00 comboItem00 = new ComboItem00();
 
         /// <summary>

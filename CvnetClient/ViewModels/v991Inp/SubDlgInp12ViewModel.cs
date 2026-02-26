@@ -8,6 +8,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Media;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace CvnetClient.ViewModels
 {
@@ -281,6 +284,10 @@ namespace CvnetClient.ViewModels
             Inp12DetailOpt.SalesRep = new BtListHelper(item.StaffCD, item.StaffName);
             Inp12DetailOpt.SlipNo = item.SeqNo.ToString();
             SelectedTabIndex = 1;
+
+            Text11 = int.TryParse(item.TaxableAmount.ToString(), out var tax_amt) ? tax_amt : 0;
+            Text13 = int.TryParse(item.TotalDetailAmt.ToString(), out var detail_amt) ? detail_amt : 0;
+            Text19 = int.TryParse(item.MarkupRate2.ToString(), out var mark_rate) ? mark_rate : 0;
 
             /* 伝票NOが無い場合 */
             if (string.IsNullOrEmpty(item.SeqNo.ToString())) return;
@@ -1244,7 +1251,6 @@ namespace CvnetClient.ViewModels
             // 2 色CD, 3 サイズCD
             if (mode == 2 || mode == 3)
             {
-
                 /* 色CD,サイズCD,色名,サイズ名,上代 */
                 selected.ColorCD = para[0];
                 selected.SizeCD = para[1];
@@ -1478,27 +1484,91 @@ namespace CvnetClient.ViewModels
         }
 
 
+        // 数量 DataGrid TextChanged
         [RelayCommand]
-        public void DoGridQntChanges(Inp12DetailItem value)
+        public void DoGridQntChanged(Inp12DetailItem value)
         {
             //Kirisute08
             OnChangeValue(value);
             OnChangeTotal(value);
         }
 
+        // 上代単価 DataGrid TextChanged
         [RelayCommand]
-        public void DoGridRetailChanges(Inp12DetailItem value)
+        public void DoGridRetailChanged(Inp12DetailItem value)
         {
             //Kirisute13
             OnCalcKakeRitu(value);
             OnChangeValue(value);
         }
 
+        // 下代単価 DataGrid TextChanged
         [RelayCommand]
-        public void DoGridWholesChanges(Inp12DetailItem value)
+        public void DoGridWholesChanged(Inp12DetailItem value)
         {
             //Kirisute15
             OnCalcKakeRitu(value);
+            OnChangeValue(value);
+        }
+
+        // 商品CD DataGrid TextChanged
+        [RelayCommand]
+        public void DoProdChanged(Inp12DetailItem value)
+        {
+            if (AppData.ClassCvnet.MeickFlg == 0) return;
+            var v_para = new BizArray();
+            v_para[0] = value.ProdCD;
+            var ret_para = AppData.ClassCvnet.GetShohin(v_para.ToArray());
+            if (ret_para.Length == 0)
+            {
+                value.DetailName = string.Empty;
+                Mess2 = "商品マスタに存在しません";
+            }
+            else
+            {
+                BizArray para = new BizArray(ret_para);
+                OnZoomRet(value, para, 1);
+                Mess2 = "";
+            }
+        }
+
+        // サイズ DataGrid TextChanged
+        [RelayCommand]
+        public void DoGridSizeChanged(Inp12DetailItem value)
+        {
+            if (AppData.ClassCvnet.MeickFlg == 0) return;
+            var v_para = new BizArray();
+            v_para[0] = value.ProdCD; // 商品CD
+            v_para[1] = value.ColorCD; // 色CD
+            v_para[2] = value.SizeCD; // サイズCD
+            var ret_para = (AppData.ClassCvnet.config.UserFlg == 87) ?
+                            AppData.ClassCvnet.GetColSiz87(v_para.ToArray()) : AppData.ClassCvnet.GetColSiz(v_para.ToArray());
+            if (ret_para.Length == 0)
+            {
+                value.ColorName = string.Empty;
+                value.SizeName = string.Empty;
+                Mess2 = "商品色サイズマスタに存在しません";
+            }
+            else
+            {
+                BizArray para = new BizArray(ret_para);
+                OnZoomRet(value, para, 3);
+                Mess2 = "";
+            }
+        }
+
+        // 計算掛率 DataGrid TextChanged
+        [RelayCommand]
+        public void DoGridCalcRateChanged(Inp12DetailItem value)
+        {
+            int jodai_tan = value.RetailUnitPrice ?? 0;
+            int calc_ritu = value.CalcRate ?? 0;
+
+            /* 小数点以下切り上げ */
+            /* 2009.04.21 下代端数計算方法使用に修正 */
+            var gedai_tan = OnGetGedai(jodai_tan, calc_ritu);
+            value.WholesalesUnit = int.TryParse(gedai_tan.ToString(), out int _wholesales) ? _wholesales : 0;
+            SetKakeRitu(value, calc_ritu);
             OnChangeValue(value);
         }
 
@@ -1553,6 +1623,46 @@ namespace CvnetClient.ViewModels
             ClientLib.ShowDialogView(win, this); 
         }
 
+        [RelayCommand]
+        public void DoSearchProd()
+        {
+            var vm = new SubDlgSyoKenSakuViewModel();
+            var window = new SubDlgSyoKenSakuView { DataContext = vm };
+            window.ShowDialog();
+            var result = vm.Result;
+            if (result != null)
+            {
+                foreach (var row in Inp12DetailItems)
+                {
+                    if (row.ProdCD == result[0])
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor1"];
+                        row.ProdBgColor = brush.Color.ToString();
+                    }
+                    if (row.ProdCD == result[1])
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor2"];
+                        row.ProdBgColor = brush.Color.ToString();
+                    }
+                    if (row.ProdCD == result[2])
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor3"];
+                        row.ProdBgColor = brush.Color.ToString();
+                    }
+                    if (row.ProdCD == result[3])
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor4"];
+                        row.ProdBgColor = brush.Color.ToString();
+                    }
+                    if (row.ProdCD == result[4])
+                    {
+                        var brush = (SolidColorBrush)Application.Current.Resources["SearchColor5"];
+                        row.ProdBgColor = brush.Color.ToString();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 修正(F6)
         /// </summary>
@@ -1560,6 +1670,7 @@ namespace CvnetClient.ViewModels
         public void DoUpdate()
         {
             /* 入力エラーチェック */
+            if (OnCheckError() < 0) return;
             if (OnCheckMst() < 0) return;
 
             /* 修正可能or不可能チェックに伝票NO追加 */
@@ -1576,7 +1687,7 @@ namespace CvnetClient.ViewModels
             {
                 Mess2 = "修正可能な日付ではありません。";
                 return;
-            }
+            } 
 
             /* 明細色クリア */
             //OnCellStdColor();
@@ -1586,6 +1697,7 @@ namespace CvnetClient.ViewModels
             var col02 = new BizArray();
             col01[0] = "MOD_SEQ";
             col02[0] = "10";
+            AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, null, null);
             var ret_val = AppData.Http!.AspxSqlExe(DBDef.DB_DML.LOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, col01.ToArray(), col02.ToArray());
             if (ret_val.Code == -1)
             {
@@ -1634,8 +1746,8 @@ namespace CvnetClient.ViewModels
             col02[8]  = Text11.ToString(); // 外税対象金額
             col02[9]  = Inp12DetailOpt.Num.ToString(); // 数量合計
             col02[10] = Text13.ToString(); // 明細金額合計
-            col02[11] = ""; // 内税消費税
-            col02[12] = ""; // 外税消費税
+            col02[11] = "0"; // 内税消費税
+            col02[12] = "0"; // 外税消費税
             col02[13] = Inp12DetailOpt.RetailPrice.ToString(); // 上代合計
             col02[14] = Inp12DetailOpt.WholesalePrice.ToString(); // 下代合計
             col02[15] = Inp12DetailOpt.Memo; // 備考
@@ -1659,8 +1771,8 @@ namespace CvnetClient.ViewModels
                     Inp12DetailOpt.UpdatedAt = AppData.ClassSatoo.GetVdate(updatedAt).ToString();
 
                     OrderList[idx].RelatedSlipNo = long.TryParse(col02[0], out var _slipNo) ? _slipNo : 0;
-                    OrderList[idx].InvCountDate = DateTime.ParseExact(col02[1], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
-                    OrderList[idx].DeliverDate = DateTime.ParseExact(col02[2], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+                    OrderList[idx].InvCountDate = col02[1];
+                    OrderList[idx].DeliverDate = col02[2];
                     OrderList[idx].TranCate = col02[3];
                     OrderList[idx].InpStaffCD = col02[4];
                     OrderList[idx].StoreCD = col02[5];
@@ -1722,6 +1834,7 @@ namespace CvnetClient.ViewModels
         public void DoAdd()
         {
             /* 入力エラーチェック */
+            if (OnCheckError() < 0) return;
             if (OnCheckMst() < 0) return;
             var sir_day = Inp12DetailOpt.OrderDate ?? DateTime.Now;
             if (AppData.ClassCvnet.CheckImpDate(sir_day) < 0)
@@ -1780,8 +1893,8 @@ namespace CvnetClient.ViewModels
             col02[8] = Text11.ToString(); // 外税対象金額
             col02[9] = Inp12DetailOpt.Num.ToString(); // 数量合計
             col02[10] = Text13.ToString(); // 明細金額合計
-            col02[11] = ""; // 内税消費税
-            col02[12] = ""; // 外税消費税
+            col02[11] = "0"; // 内税消費税
+            col02[12] = "0"; // 外税消費税
             col02[13] = Inp12DetailOpt.RetailPrice.ToString(); // 上代合計
             col02[14] = Inp12DetailOpt.WholesalePrice.ToString(); // 下代合計
             col02[15] = Inp12DetailOpt.Memo; // 備考
@@ -1804,8 +1917,9 @@ namespace CvnetClient.ViewModels
                 new_tran.VdateUpdate = vdate;
 
                 new_tran.RelatedSlipNo = long.TryParse(col02[0], out var _slipNo) ? _slipNo : 0;
-                new_tran.InvCountDate = DateTime.ParseExact(col02[1], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
-                new_tran.DeliverDate = DateTime.ParseExact(col02[2], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+                new_tran.InvCountDate = col02[1];
+                //DateTime.ParseExact(col02[2], "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+                new_tran.DeliverDate = col02[2];
                 new_tran.TranCate = col02[3];
                 new_tran.InpStaffCD = col02[4];
                 new_tran.StoreCD = col02[5];
@@ -1968,13 +2082,13 @@ namespace CvnetClient.ViewModels
             if (Math.Truncate(a) == Math.Truncate(b))
             {
                 /* マスタ掛率と計算掛率が違う場合は背景色を変更 */
-                p_row.CalcRateBgColor = Brushes.White;
-                p_row.CalcRateFgColor = Brushes.Black;
+                p_row.CalcRateBgColor = System.Drawing.Brushes.White;
+                p_row.CalcRateFgColor = System.Drawing.Brushes.Black;
             }
             else
             {
-                p_row.CalcRateFgColor = Brushes.White;
-                p_row.CalcRateBgColor = Brushes.Red;
+                p_row.CalcRateFgColor = System.Drawing.Brushes.White;
+                p_row.CalcRateBgColor = System.Drawing.Brushes.Red;
             }
         }
 
@@ -2270,6 +2384,65 @@ namespace CvnetClient.ViewModels
             return 0;
         }
 
+        private int OnCheckError()
+        {
+            if (Inp12DetailItems.Count <= 0)
+            {
+                System.Windows.MessageBox.Show("明細レコードがありません！", "確認", System.Windows.MessageBoxButton.OK);
+                return -1;
+            }
+            if (Inp12DetailOpt?.CustDest?.Code == "")
+            {
+                System.Windows.MessageBox.Show("得意先を入力して下さい！", "確認", System.Windows.MessageBoxButton.OK);
+                return -1;
+            }
+            /* 展示会追加 2008.09.26 */
+            if (AppData.ClassCvnet.config.TenjiShoki == 1)
+            {
+                if (Inp12DetailOpt?.ExhibitCd?.Code == "")
+                {
+                    System.Windows.MessageBox.Show("展示会を入力して下さい！", "確認", System.Windows.MessageBoxButton.OK);
+                    return -1;
+                }       
+            }
+
+            foreach (var row in Inp12DetailItems)
+            {
+                int tranCate = int.TryParse(Inp12DetailOpt.TranCate, out var _tran_code) ? _tran_code : 0;
+                if (tranCate < 30)
+                {
+                    if (row.ProdCD == "")
+                    {
+                        System.Windows.MessageBox.Show("商品CDを入力して下さい！", "確認", System.Windows.MessageBoxButton.OK);
+                        return -1;
+                    }
+
+                    if (row.ColorCD == "" && AppData.ClassCvnet.config.SKUFlg != 1)
+                    {
+                        System.Windows.MessageBox.Show("色CDを入力して下さい！", "確認", System.Windows.MessageBoxButton.OK);
+                        return -1;
+                    }
+                    if (row.SizeCD == "" && AppData.ClassCvnet.config.SKUFlg != 1)
+                    {
+                        System.Windows.MessageBox.Show("サイズCDを入力して下さい！", "確認", System.Windows.MessageBoxButton.OK);
+                        return -1;
+                    }
+                    /* 数量０チェック 12.03.21 */
+                    if (row.Num == 0)
+                    {
+                        System.Windows.MessageBox.Show("数量を入力して下さい！", "確認", System.Windows.MessageBoxButton.OK);
+                        return -1;
+                    }
+                }
+                row.TranCate = short.TryParse(Inp12DetailOpt.TranCate, out var _tran_cate) ? _tran_cate : (short)0;
+            }
+            var wrk_11 = 0;
+            if (wrk_11 == 0)
+                Text19 = 100;
+            else
+                Text19 = wrk_11;
+            return 0;
+        }
         #endregion
     }
 
@@ -2849,6 +3022,12 @@ namespace CvnetClient.ViewModels
         string? m_ProdCD;
 
         /// <summary>
+        /// 商品CD Background Color
+        /// </summary>
+        [ObservableProperty]
+        string? m_ProdBgColor;
+
+        /// <summary>
         /// 色CD
         /// </summary>
         [ObservableProperty]
@@ -3056,21 +3235,22 @@ namespace CvnetClient.ViewModels
         /// 計算掛率 Dsp82 BackgroundColor
         /// </summary>
         [ObservableProperty]
-        Brush? m_CalcRateBgColor;
+        System.Drawing.Brush? m_CalcRateBgColor;
 
         /// <summary>
         /// 計算掛率 Dsp82 ForegroundColor
         /// </summary>
         [ObservableProperty]
-        Brush? m_CalcRateFgColor;
+        System.Drawing.Brush? m_CalcRateFgColor;
 
         [ObservableProperty]
         bool? m_IsReadOnly;
 
         public Inp12DetailItem()
         {
-            CalcRateBgColor = Brushes.White;
-            CalcRateFgColor = Brushes.Black;
+            ProdBgColor = string.Empty;
+            CalcRateBgColor = System.Drawing.Brushes.White;
+            CalcRateFgColor = System.Drawing.Brushes.Black;
             IsReadOnly = true;
         }
     }
