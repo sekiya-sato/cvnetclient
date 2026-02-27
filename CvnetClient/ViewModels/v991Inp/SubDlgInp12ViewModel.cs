@@ -6,11 +6,9 @@ using CvnetClient.Utils;
 using CvnetClient.Views;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace CvnetClient.ViewModels
 {
@@ -272,7 +270,9 @@ namespace CvnetClient.ViewModels
             Inp12DetailOpt.TranCate = item.TranCate;
             Inp12DetailOpt.InpCd = new BtListHelper(item.InpStaffCD, item.InpStaffName);
             Inp12DetailOpt.StoreCd = new BtListHelper(item.StoreCD, item.StoreName);
+            Inp12DetailOpt.StoreCd.pre_data = new BtListHelper(item.StoreCD, item.StoreName);
             Inp12DetailOpt.CustDest = new BtListHelper(item.ClientCD1, item.TradeName);
+            Inp12DetailOpt.CustDest.pre_data = new BtListHelper(item.ClientCD1, item.TradeName);
             Inp12DetailOpt.MarkupRate = item.MarkupRate1;
             Inp12DetailOpt.Num = int.TryParse(item.TotalNum.ToString(), out var num) ? num : 0;
             Inp12DetailOpt.RetailPrice = int.TryParse(item.TotalRetail.ToString(), out var retail) ? retail : 0;
@@ -280,6 +280,7 @@ namespace CvnetClient.ViewModels
             Inp12DetailOpt.Memo = item.Memo;
             Inp12DetailOpt.RelatedNo2 = item.RelatedSlipNo2.ToString();
             Inp12DetailOpt.ExhibitCd = new BtListHelper(item.ExhibitCD, item.ExhibitName);
+            Inp12DetailOpt.ExhibitCd.pre_data = new BtListHelper(item.ExhibitCD, item.ExhibitName);
             Inp12DetailOpt.ManualInpNo = item.ManualInpNo;
             Inp12DetailOpt.SalesRep = new BtListHelper(item.StaffCD, item.StaffName);
             Inp12DetailOpt.SlipNo = item.SeqNo.ToString();
@@ -462,9 +463,132 @@ namespace CvnetClient.ViewModels
         }
 
         [RelayCommand]
-        public void DoCSV()
+        public async Task DoCSV()
         {
+            CSV_flg = 1;
+            /* パラメータ生成 */
+            CreatePara();
+            Mess2 = "出力中です";
+            var ret_csv = "";
+            if (Inp12SearchOpt.SelPrintCond == 0)
+                /* 一覧 */
+                ret_csv = OnQueryPrint(param1, param2);
+            else
+                /* 明細 */
+                ret_csv = OnQueryDetailPrint(param1, 1, param2);
+            var lines = ret_csv.Split('\n');
+            if (lines.Length < 2 || lines[1] == "0")
+            {
+                ClientLib.MessageBoxError(this, "PDFデータがありません");
+                return;
+            }
 
+            string pdfPath = lines[0];
+            string url = AppData.Http!.URLroot + pdfPath + "/data.pdf";
+
+            var ret_name = AppData.Http!.AspxSqlQuery("select m.名称 from HC$MASTER_MEISHO m where m.名称区分='IDX' and m.名称CD between 'B01' and 'B10' order by m.名称CD");
+            var name_cnt = 0;
+            var name_flg = 0;
+
+            string datapath = AppData.Http.URLroot + pdfPath + "/data.txt";
+            string headpath = AppData.Http.URLroot + pdfPath + "/d_sql.txt";
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(datapath, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "Data生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
+            ready = await Utils.GlobalFunc.WaitForPdfAsync(headpath, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "Header生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
+            var header_csv = new BizCsvDocument();
+            await header_csv.LoadHeaderFromUrl(headpath);
+            var get_csv = new BizCsvDocument();
+            await get_csv.LoadFromUrlAsync(datapath, headpath);
+            var dt = get_csv.GetTable();
+            var dt_header = header_csv.GetTable();
+            dt.Rows.InsertAt(dt.NewRow(), 0);
+
+            for (var i = 0; i < dt.Columns.Count; i++)
+            {
+                /* 2021.04.27 商品名称CDのラベル付け */
+
+                string header_substr = dt_header.Rows[0][i].ToString();
+                if (header_substr.Length > 3)
+                {
+                    header_substr = dt_header.Rows[0][i].ToString().Substring(0, 4);
+                }
+                if (Inp12SearchOpt.SelPrintCond == 1 && header_substr == "名称CD" && ret_name.Rows.Count == 10)
+                {
+                    if (name_flg == 0)
+                    {
+                        dt.Rows[0][i] = ret_name.Rows[name_cnt][0].ToString() + "CD";
+                        name_flg = 1;
+                    }
+                    else
+                    {
+                        dt.Rows[0][i] = ret_name.Rows[name_cnt][0].ToString() + "名";
+                        name_cnt++;
+                        name_flg = 0;
+                    }
+                }
+                else
+                {
+                    dt.Rows[0][i] = dt_header.Rows[0][i];
+                }
+            }
+            get_csv = new BizCsvDocument(dt);
+            var str = get_csv.SaveStr(1);
+            get_csv = new BizCsvDocument(str, 1);
+
+            /* 2021.02.18 #56430対応修正  */
+            if (AppData.ClassCvnet.config.ExcelOutFlg == 1)
+            {
+                var dtCSVFlNm = "";
+                var ExcelFlNm = "";
+
+                try
+                {
+
+                    if (Inp12SearchOpt.SelPrintCond == 0)
+                    {
+                        dtCSVFlNm = "DataIchiran.csv";
+                        ExcelFlNm = "Ichiran_macro.xlsm";
+                    }
+                    else if (Inp12SearchOpt.SelPrintCond == 1)
+                    {
+                        dtCSVFlNm = "DataMeisai.csv";
+                        ExcelFlNm = "Meisai_macro.xlsm";
+                    }
+
+                    get_csv.SaveCsv(dtCSVFlNm);
+                    Mess2 = "データを保存しました";
+                }
+                catch (Exception ex)
+                {
+                    Mess2 = "保存を中止しました";
+                }
+            }
+            else
+            {
+
+                var v_title = "受注伝票"; 
+                try
+                {
+                    string f_name = (Inp12SearchOpt.SelPrintCond == 0) ? "一覧" : "明細";
+                    get_csv.SaveCsv(v_title + f_name);
+                    Mess2 = "データを保存しました";
+                }
+                catch (Exception ex)
+                {
+                    Mess2 = "保存を中止しました";
+                }
+            }
         }
         #endregion
 
@@ -1248,6 +1372,8 @@ namespace CvnetClient.ViewModels
         /// <param name="mode">1 商品CD, 2 色CD, 3 サイズCD</param>
         private void OnZoomRet(Inp12DetailItem selected, BizArray para, int mode)
         {
+            if (selected == null || para == null) return;
+
             // 2 色CD, 3 サイズCD
             if (mode == 2 || mode == 3)
             {
@@ -1663,6 +1789,33 @@ namespace CvnetClient.ViewModels
             }
         }
 
+        [RelayCommand]
+        public void DoSearchPage()
+        { 
+            var vm = new SubDlgSwkensakuViewModel();
+            var window = new SubDlgSwkensakuView { DataContext = vm };
+            window.ShowDialog();
+            var result = vm.ret_para;
+            if (result != null)
+            {
+                foreach (var row in Inp12DetailItems)
+                {
+                    if (result[0] == row.SwatchPage && result[1] == row.SwatchPosition)
+                    {
+                        row.ProdBgColor = Brushes.Red.Color.ToString();
+                        row.SwatchPgBgColor = Brushes.Red;
+                        row.SwatchPsBgColor = Brushes.Red;
+                    }
+                    else 
+                    {
+                        row.ProdBgColor = Brushes.White.Color.ToString();
+                        row.SwatchPgBgColor = Brushes.White;
+                        row.SwatchPsBgColor = Brushes.White;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 修正(F6)
         /// </summary>
@@ -1690,7 +1843,7 @@ namespace CvnetClient.ViewModels
             } 
 
             /* 明細色クリア */
-            //OnCellStdColor();
+            OnCellStdColor();
             long now_mod_seq = long.TryParse(SelOrderItem.SeqNo.ToString(), out long mod_seq) ? mod_seq : 0;
             string? now_mod_vdate = SelOrderItem.VdateUpdate.ToString() ?? string.Empty;
             var col01 = new BizArray();
@@ -1843,7 +1996,7 @@ namespace CvnetClient.ViewModels
                 return;
             }
             /* 明細色クリア */
-            //OnCellStdColor
+            OnCellStdColor();
             var col01 = new BizArray();
             var col02 = new BizArray();
             col01[0] = "SESS_ID";
@@ -1993,6 +2146,16 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Function 
+        private void OnCellStdColor()
+        {
+            foreach (var row in Inp12DetailItems)
+            {
+                row.ProdBgColor = Brushes.White.Color.ToString();
+                row.ColorBgColor = Brushes.White;
+                row.SizeBgColor = Brushes.White;
+            }
+        }
+
         private void OnChangeValue(Inp12DetailItem row)
         {
             row.RetailAmount = row.Num * row.RetailUnitPrice;
@@ -2082,13 +2245,13 @@ namespace CvnetClient.ViewModels
             if (Math.Truncate(a) == Math.Truncate(b))
             {
                 /* マスタ掛率と計算掛率が違う場合は背景色を変更 */
-                p_row.CalcRateBgColor = System.Drawing.Brushes.White;
-                p_row.CalcRateFgColor = System.Drawing.Brushes.Black;
+                p_row.CalcRateBgColor = Brushes.White;
+                p_row.CalcRateFgColor = Brushes.Black;
             }
             else
             {
-                p_row.CalcRateFgColor = System.Drawing.Brushes.White;
-                p_row.CalcRateBgColor = System.Drawing.Brushes.Red;
+                p_row.CalcRateFgColor = Brushes.White;
+                p_row.CalcRateBgColor = Brushes.Red;
             }
         }
 
@@ -3034,10 +3197,22 @@ namespace CvnetClient.ViewModels
         string? m_ColorCD;
 
         /// <summary>
+        /// 色CD Background Color
+        /// </summary>
+        [ObservableProperty]
+        Brush? m_ColorBgColor;
+
+        /// <summary>
         /// サイズCD
         /// </summary>
         [ObservableProperty]
         string? m_SizeCD;
+
+        /// <summary>
+        /// サイズCD Background Color
+        /// </summary>
+        [ObservableProperty]
+        Brush? m_SizeBgColor;
 
         /// <summary>
         /// 明細名称
@@ -3140,7 +3315,7 @@ namespace CvnetClient.ViewModels
         /// </summary>
         [ObservableProperty]
         int? m_CostFlg;
-
+          
         /// <summary>
         /// 完了FLG
         /// </summary>
@@ -3196,10 +3371,22 @@ namespace CvnetClient.ViewModels
         string? m_SwatchPage;
 
         /// <summary>
+        /// スワッチ頁 BackgroundColor
+        /// </summary>
+        [ObservableProperty]
+        Brush? m_SwatchPgBgColor;
+
+        /// <summary>
         /// スワッチ位置
         /// </summary>
         [ObservableProperty]
         string? m_SwatchPosition;
+
+        /// <summary>
+        /// スワッチ位置 BackgroundColor
+        /// </summary>
+        [ObservableProperty]
+        Brush? m_SwatchPsBgColor;
 
         /// <summary>
         /// 納品先名
@@ -3235,13 +3422,13 @@ namespace CvnetClient.ViewModels
         /// 計算掛率 Dsp82 BackgroundColor
         /// </summary>
         [ObservableProperty]
-        System.Drawing.Brush? m_CalcRateBgColor;
+        Brush? m_CalcRateBgColor;
 
         /// <summary>
         /// 計算掛率 Dsp82 ForegroundColor
         /// </summary>
         [ObservableProperty]
-        System.Drawing.Brush? m_CalcRateFgColor;
+        Brush? m_CalcRateFgColor;
 
         [ObservableProperty]
         bool? m_IsReadOnly;
@@ -3249,8 +3436,12 @@ namespace CvnetClient.ViewModels
         public Inp12DetailItem()
         {
             ProdBgColor = string.Empty;
-            CalcRateBgColor = System.Drawing.Brushes.White;
-            CalcRateFgColor = System.Drawing.Brushes.Black;
+            ColorBgColor = Brushes.White;
+            SizeBgColor = Brushes.White;
+            CalcRateBgColor = Brushes.White;
+            CalcRateFgColor = Brushes.Black;
+            SwatchPgBgColor = Brushes.White;
+            SwatchPsBgColor = Brushes.White;
             IsReadOnly = true;
         }
     }

@@ -347,6 +347,7 @@
 
 					<DataGrid Grid.Row="4"
 							  x:Name="MyDataGrid1"
+							  FrozenColumnCount="2"
 							  d:ItemsSource="{d:SampleData ItemCount=5}" 
 							  Style="{DynamicResource WinGridData}"
 							  IsReadOnly="True"
@@ -363,9 +364,15 @@
 													   CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
 							</i:EventTrigger>
 						</i:Interaction.Triggers>
-						<DataGrid.Columns>
+						<DataGrid.Columns> 
 							<DataGridTextColumn Width="*" Binding="{Binding SeqNo}" Header="伝票No" />
-							<DataGridTextColumn Width="*" Binding="{Binding InvCountDate}" Header="受注日" />
+							<DataGridTextColumn Width="*" Header="受注日" >
+								<DataGridTextColumn.Binding>
+									<Binding Path="InvCountDate"
+											 Mode="OneWay"
+											 Converter="{StaticResource DateDisplayConverter}" />
+								</DataGridTextColumn.Binding>
+							</DataGridTextColumn>
 							<DataGridTextColumn Width="*" Binding="{Binding ClientCD1}" Header="得意先" />
 							<DataGridTextColumn Width="*" Binding="{Binding TradeName}" Header="得意先名" />
 							<DataGridTextColumn Width="*" Binding="{Binding StoreCD}" Header="倉庫" />
@@ -373,8 +380,20 @@
 							<DataGridTextColumn Width="*" Binding="{Binding ExhibitCD}" Header="展示会" />
 							<DataGridTextColumn Width="*" Binding="{Binding ExhibitName}" Header="展示会名" />
 							<DataGridTextColumn Width="*" Binding="{Binding TranCate}" Header="取引区分" />
-							<DataGridTextColumn Width="*" Binding="{Binding TotalNum}" Header="数量計" />
-							<DataGridTextColumn Width="*" Binding="{Binding TotalDetailAmt}" Header="金額計" />
+							<DataGridTextColumn Width="*" Binding="{Binding TotalNum}" Header="数量計">
+								<DataGridTextColumn.ElementStyle>
+									<Style TargetType="TextBlock">
+										<Setter Property="TextAlignment" Value="Right" />
+									</Style>
+								</DataGridTextColumn.ElementStyle>
+							</DataGridTextColumn>
+							<DataGridTextColumn Width="*" Binding="{Binding TotalDetailAmt}" Header="金額計">
+								<DataGridTextColumn.ElementStyle>
+									<Style TargetType="TextBlock">
+										<Setter Property="TextAlignment" Value="Right" />
+									</Style>
+								</DataGridTextColumn.ElementStyle>
+							</DataGridTextColumn>
 						</DataGrid.Columns>
 					</DataGrid>
 					 
@@ -816,7 +835,10 @@
 												<ColumnDefinition Width="6*"/>
 												<ColumnDefinition Width="4*"/>
 											</Grid.ColumnDefinitions>
-											<TextBox Grid.Column="0" Text="{Binding ColorCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0" Style="{StaticResource DataGridTextBox}"/>
+											<TextBox Grid.Column="0" 
+													 Background="{Binding ColorBgColor}"
+													 Text="{Binding ColorCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													 Margin="0" Style="{StaticResource DataGridTextBox}"/>
 											<Button Grid.Column="1" Content="一覧" 
 													Margin="0" Padding="6" 
 													Command="{Binding DataContext.DoColorRowSearchCommand,
@@ -824,7 +846,7 @@
 													CommandParameter="{Binding}" />
 											<Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
 												<TextBox Grid.Row="1" Grid.ColumnSpan="2" 
-														 IsEnabled="False"
+														 IsReadOnly="True"
 														 Text="{Binding ColorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 														 Margin="0" Style="{StaticResource DataGridTextBox}"/>
 											</Border>
@@ -854,6 +876,7 @@
 												<ColumnDefinition Width="4*"/>
 											</Grid.ColumnDefinitions>
 											<TextBox Grid.Column="0" 
+													 Background="{Binding SizeBgColor}"
 													 Text="{Binding SizeCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Margin="0" 
 													 Style="{StaticResource DataGridTextBox}">
@@ -873,7 +896,7 @@
 													CommandParameter="{Binding}" />
 											<Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
 												<TextBox Grid.Row="1" Grid.ColumnSpan="2"
-														 IsEnabled="False"
+														 IsReadOnly="True"
 														 Text="{Binding SizeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 														 Margin="0" Style="{StaticResource DataGridTextBox}"/>
 											</Border>
@@ -936,7 +959,7 @@
 												</i:Interaction.Triggers>
 											</TextBox>
 											<TextBox Grid.Row="1"
-													 IsEnabled="False"
+													 IsReadOnly="True"
 													 HorizontalContentAlignment="Right"
 													 Text="{Binding RetailAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Style="{StaticResource DataGridTextBox}"/>
@@ -984,7 +1007,7 @@
 												</i:Interaction.Triggers>
 											</TextBox>
 											<TextBox Grid.Row="1"
-													 IsEnabled="False"
+													 IsReadOnly="True"
 													 HorizontalContentAlignment="Right"
 													 Text="{Binding WholesalesAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Style="{StaticResource DataGridTextBox}"/>
@@ -1039,7 +1062,7 @@
 												</TextBox.Style>
 											</TextBox>
 											<TextBox Grid.Row="1"
-													 IsEnabled="False"
+													 IsReadOnly="True"
 													 Text="{Binding BaseRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 HorizontalContentAlignment="Right"
 													 VerticalContentAlignment="Center"
@@ -1126,11 +1149,13 @@
 													  SelectedValue="{Binding CompleteFlg, Mode=TwoWay}"
 													  Style="{StaticResource SearchableComboBox1}"/>
 											<TextBox Grid.Row="1" Grid.Column="2"
-													 IsEnabled="False"
+													 IsReadOnly="True"
+													 Background="{Binding SwatchPgBgColor}"
 													 Text="{Binding SwatchPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 Style="{StaticResource DataGridTextBox}"/>
 											<TextBox Grid.Row="1" Grid.Column="3" 
-													 IsEnabled="False"
+													 IsReadOnly="True"
+													 Background="{Binding SwatchPsBgColor}"
 													 Text="{Binding SwatchPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 													 Style="{StaticResource DataGridTextBox}"/>
 										</Grid>
@@ -1189,7 +1214,8 @@
 								Style="{DynamicResource BackBtn}"/>
 						<Button Grid.Column="4" 
 								Margin="0,0,5,0"
-								Content="ｽﾜｯﾁ検索"
+								Content="ｽﾜｯﾁ検索" 
+								Command="{Binding DoSearchPageCommand}"
 								Style="{DynamicResource BackBtn}"/>
 						<Button Grid.Column="6" 
 								Margin="0,0,5,0"
