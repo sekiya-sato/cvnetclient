@@ -1,17 +1,17 @@
-﻿<Window x:Class="CvnetClient.Views.SubDlgInp12View"
+﻿<Window x:Class="CvnetClient.Views.SubDlgInp72View"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		mc:Ignorable="d"
-		xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:vm="clr-namespace:CvnetClient.ViewModels" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
 		xmlns:uc="clr-namespace:CvnetClient.Views"
-		xmlns:util="clr-namespace:CvnetClient.Utils"
-		WindowStartupLocation="CenterScreen"
+        xmlns:util="clr-namespace:CvnetClient.Utils"
+        WindowStartupLocation="CenterScreen"
         Style="{StaticResource MasterWindowStyle2}">
 	<Window.DataContext>
-		<vm:SubDlgInp12ViewModel />
+		<vm:SubDlgInp72ViewModel />
 	</Window.DataContext>
 	<Window.Resources>
 		<util:DateDisplayConverter x:Key="DateDisplayConverter" />
@@ -24,10 +24,10 @@
 		</Grid.RowDefinitions>
 
 		<TabControl Grid.Row="0"
-					d:DataContext="{d:DesignInstance Type=vm:SubDlgInp12ViewModel, IsDesignTimeCreatable=True}"
+					d:DataContext="{d:DesignInstance Type=vm:SubDlgInp72ViewModel, IsDesignTimeCreatable=True}"
 					VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-					BorderThickness="1" 
+					HorizontalAlignment="Stretch"
+					BorderThickness="1"
 					SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
 			<TabItem Header="検索画面(Shift+F1)">
 				<Grid>
@@ -36,7 +36,7 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="340"/>
+						<RowDefinition Height="390"/>
 						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 
@@ -59,28 +59,28 @@
 							   VerticalContentAlignment="Center"
 							   Content="伝票No" />
 						<TextBox Grid.Row="0" Grid.Column="1"  
+								 Text="{Binding Inp72SearchOpt.SlipStartNo}"
 								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.SlipStartNo}"/>
+								 VerticalContentAlignment="Center"/>
 						<TextBlock Grid.Row="0" Grid.Column="2"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
 						<TextBox Grid.Row="0" Grid.Column="3"
+								 Text="{Binding Inp72SearchOpt.SlipEndNo}"
 								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.SlipEndNo}"/>
+								 VerticalContentAlignment="Center"/>
 						<Label Grid.Row="0" Grid.Column="4"   
 							   VerticalContentAlignment="Center"
-							   Content="受注日" />
+							   Content="納品日" />
 						<DatePicker Grid.Row="0" Grid.Column="5"
-									SelectedDate="{Binding Inp12SearchOpt.OrderStartDate}"/>
+									SelectedDate="{Binding Inp72SearchOpt.DeliverStartDate}"/>
 						<TextBlock Grid.Row="0" Grid.Column="6"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
 						<DatePicker Grid.Row="0" Grid.Column="7"
-									SelectedDate="{Binding Inp12SearchOpt.OrderEndDate}"/>
+									SelectedDate="{Binding Inp72SearchOpt.DeliverEndDate}"/>
 						<Label Grid.Row="0" Grid.Column="8"   
 							   VerticalContentAlignment="Center"
 							   Content="取引区分" />
@@ -89,8 +89,8 @@
 								  VerticalContentAlignment="Center"
 								  ItemsSource="{Binding TranCatList}"
 								  DisplayMemberPath="Value"
-								  SelectedValuePath="Key"
-								  SelectedValue="{Binding Inp12SearchOpt.TranStartCat}"
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding Inp72SearchOpt.TranStartCat}"
 								  Style="{StaticResource SearchableComboBox1}"/>
 						<TextBlock Grid.Row="0" Grid.Column="10"
 								   Text="～"
@@ -102,7 +102,7 @@
 								  ItemsSource="{Binding TranCatList}"
 								  DisplayMemberPath="Value"
 								  SelectedValuePath="Key"
-								  SelectedValue="{Binding Inp12SearchOpt.TranEndCat}"
+								  SelectedValue="{Binding Inp72SearchOpt.TranEndCat}"
 								  Style="{StaticResource SearchableComboBox1}"/>
 					</Grid>
 
@@ -125,53 +125,51 @@
 							   VerticalContentAlignment="Center"
 							   Content="関連No1" />
 						<TextBox Grid.Row="0" Grid.Column="1"  
+								 Text="{Binding Inp72SearchOpt.RelatedStartNo}"
 								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.RelatedStartNo}"/>
+								 VerticalContentAlignment="Center"/>
 						<TextBlock Grid.Row="0" Grid.Column="2"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
 						<TextBox Grid.Row="0" Grid.Column="3"
+								 Text="{Binding Inp72SearchOpt.RelatedEndNo}"
 								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.RelatedEndNo}"/>
+								 VerticalContentAlignment="Center"/>
 						<Label Grid.Row="0" Grid.Column="4"   
 							   VerticalContentAlignment="Center"
 							   Content="関連No2" />
-						<TextBox Grid.Row="0" Grid.Column="5"  
+						<TextBox Grid.Row="0" Grid.Column="5"
+								 Text="{Binding Inp72SearchOpt.RelatedStartNo2}"
 								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.RelatedStartNo2}"/>
+								 VerticalContentAlignment="Center"/>
 						<TextBlock Grid.Row="0" Grid.Column="6"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
-						<TextBox Grid.Row="0" Grid.Column="7"  
+						<TextBox Grid.Row="0" Grid.Column="7"
+								 Text="{Binding Inp72SearchOpt.RelatedEndNo2}"
 								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.RelatedEndNo2}"/>
+								 VerticalContentAlignment="Center"/>
 						<Label Grid.Row="0" Grid.Column="8"   
 							   VerticalContentAlignment="Center"
 							   Content="手入力No" />
-						<TextBox Grid.Row="0" Grid.Column="9"  
+						<TextBox Grid.Row="0" Grid.Column="9"
+								 Text="{Binding Inp72SearchOpt.ManualInpStartNo}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.ManualInpStartNo}"/>
+								 VerticalContentAlignment="Center"/>
 						<TextBlock Grid.Row="0" Grid.Column="10"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
 						<TextBox Grid.Row="0" Grid.Column="11"  
+								 Text="{Binding Inp72SearchOpt.ManualInpEndNo}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.ManualInpEndNo}"/>
+								 VerticalContentAlignment="Center"/>
 					</Grid>
 
 					<Grid Grid.Row="2" Margin="0,0,0,5">
 						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto" />
-							<RowDefinition Height="5" />
 							<RowDefinition Height="Auto" />
 							<RowDefinition Height="5" />
 							<RowDefinition Height="Auto" />
@@ -191,134 +189,108 @@
 						</Grid.ColumnDefinitions>
 						<Label Grid.Row="0" Grid.Column="0"   
 							   VerticalContentAlignment="Center"
-							   Content="得意先" />
-						<TextBox Grid.Row="0" Grid.Column="1"  
+							   Content="仕入先" />
+						<TextBox Grid.Row="0" Grid.Column="1"
+								 Text="{Binding Inp72SearchOpt.SupplierStartCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.CustStartDest.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="0" Grid.Column="2"
 											StyleDesign="2" 
-											MstName="全得意先"
-											SelectedValue="{Binding Inp12SearchOpt.CustStartDest.Code}"
-											Command="{Binding SelCustDest01Command}"/>
+											MstName="仕入先"
+											SelectedValue="{Binding Inp72SearchOpt.SupplierStartCd.Code}"
+											Command="{Binding SelSupplierCD01Command}"/>
 						<TextBlock Grid.Row="0" Grid.Column="3"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
 						<TextBox Grid.Row="0" Grid.Column="4"
+								 Text="{Binding Inp72SearchOpt.SupplierEndCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.CustEndDest.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="0" Grid.Column="5"
-											StyleDesign="2"
-											MstName="全得意先"
-											SelectedValue="{Binding Inp12SearchOpt.CustEndDest.Code}"
-											Command="{Binding SelCustDest02Command}"/>
+								StyleDesign="2"
+								MstName="仕入先"
+								SelectedValue="{Binding Inp72SearchOpt.SupplierEndCd.Code}"
+								Command="{Binding SelSupplierCD02Command}"/>
 
 						<Label Grid.Row="2" Grid.Column="0"   
 							   VerticalContentAlignment="Center"
-							   Content="倉庫" />
+							   Content="入庫先" />
 						<TextBox Grid.Row="2" Grid.Column="1"
+								 Text="{Binding Inp72SearchOpt.RecDestStartCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.StoreStartCd.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="2" Grid.Column="2"
-											StyleDesign="2"
-											MstName="倉庫"
-											SelectedValue="{Binding Inp12SearchOpt.StoreStartCd.Code}"
-											Command="{Binding SelStoreCd01Command}" />
+											StyleDesign="2" 
+											MstName="移動倉庫"
+											SelectedValue="{Binding Inp72SearchOpt.RecDestStartCd.Code}"
+											Command="{Binding SelRecDestCD01Command}" />
 						<TextBlock Grid.Row="2" Grid.Column="3"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
-						<TextBox Grid.Row="2" Grid.Column="4"  
+						<TextBox Grid.Row="2" Grid.Column="4"
+								 Text="{Binding Inp72SearchOpt.RecDestEndCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.StoreEndCd.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="2" Grid.Column="5"
 											StyleDesign="2"
-											MstName="倉庫"
-											SelectedValue="{Binding Inp12SearchOpt.StoreEndCd.Code}"
-											Command="{Binding SelStoreCd02Command}" />
+											MstName="移動倉庫"
+											SelectedValue="{Binding Inp72SearchOpt.RecDestEndCd.Code}"
+											Command="{Binding SelRecDestCD02Command}"/>
 
 						<Button Grid.Row="4" Grid.Column="0"   
 							   VerticalContentAlignment="Center"
 							   Content="商品"
 							   Command="{Binding SelPrdToggleCommand}"/>
-						<TextBox Grid.Row="4" Grid.Column="1"  
+						<TextBox Grid.Row="4" Grid.Column="1"
+								 Text="{Binding Inp72SearchOpt.ProdStartCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.ProdStartCd.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="4" Grid.Column="2"
 											StyleDesign="2"
 											MstName="商品"
-											SelectedValue="{Binding Inp12SearchOpt.ProdStartCd.Code}"
-											Command="{Binding SelProdCd01Command}" />
+											SelectedValue="{Binding Inp72SearchOpt.ProdStartCd.Code}"
+											Command="{Binding SelProdCD01Command}"/>
 						<TextBlock Grid.Row="4" Grid.Column="3"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
-						<TextBox Grid.Row="4" Grid.Column="4"  
+						<TextBox Grid.Row="4" Grid.Column="4"
+								 Text="{Binding Inp72SearchOpt.ProdEndCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.ProdEndCd.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="4" Grid.Column="5"
 											StyleDesign="2"
 											MstName="商品"
-											SelectedValue="{Binding Inp12SearchOpt.ProdEndCd.Code}" 
-											Command="{Binding SelProdCd02Command}"/>
+											SelectedValue="{Binding Inp72SearchOpt.ProdEndCd.Code}"
+											Command="{Binding SelProdCD02Command}"/>
 
 						<Label Grid.Row="6" Grid.Column="0"   
 							   VerticalContentAlignment="Center"
-							   Content="展示会" />
-						<TextBox Grid.Row="6" Grid.Column="1"  
+							   Content="入力者" />
+						<TextBox Grid.Row="6" Grid.Column="1"
+								 Text="{Binding Inp72SearchOpt.InpStartCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.ExhibitStartCd.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="6" Grid.Column="2"
-											StyleDesign="2"
-											MstName="展示会"
-											SelectedValue="{Binding Inp12SearchOpt.ExhibitStartCd.Code}"
-											Command="{Binding SelExhibitCd01Command}"/>
+											StyleDesign="2" 
+											MstName="担当"
+											SelectedValue="{Binding Inp72SearchOpt.InpStartCd.Code}"
+											Command="{Binding SelInpStaffCD01Command}"/>
 						<TextBlock Grid.Row="6" Grid.Column="3"
 								   Text="～"
 								   Foreground="Black"
 								   VerticalAlignment="Center"/>
-						<TextBox Grid.Row="6" Grid.Column="4"  
+						<TextBox Grid.Row="6" Grid.Column="4"
+								 Text="{Binding Inp72SearchOpt.InpEndCd.Display}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.ExhibitEndCd.Display}"/>
+								 VerticalContentAlignment="Center"/>
 						<uc:CvnetBtListView Grid.Row="6" Grid.Column="5"
 											StyleDesign="2"
-											MstName="展示会"
-											SelectedValue="{Binding Inp12SearchOpt.ExhibitEndCd.Code}"
-											Command="{Binding SelExhibitCd02Command}"/>
-
-						<Label Grid.Row="8" Grid.Column="0"   
-							   VerticalContentAlignment="Center"
-							   Content="入力者" />
-						<TextBox Grid.Row="8" Grid.Column="1"  
-								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.InpStartCd.Display}"/>
-						<uc:CvnetBtListView Grid.Row="8" Grid.Column="2"
-											StyleDesign="2"
 											MstName="担当"
-											SelectedValue="{Binding Inp12SearchOpt.InpStartCd.Code}"
-											Command="{Binding SelInpCd01Command}"/>
-						<TextBlock Grid.Row="8" Grid.Column="3"
-								   Text="～"
-								   Foreground="Black"
-								   VerticalAlignment="Center"/>
-						<TextBox Grid.Row="8" Grid.Column="4"  
-								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12SearchOpt.InpEndCd.Display}"/>
-						<uc:CvnetBtListView Grid.Row="8" Grid.Column="5"
-											StyleDesign="2"
-											MstName="担当"
-											SelectedValue="{Binding Inp12SearchOpt.InpEndCd.Code}"
-											Command="{Binding SelInpCd02Command}"/>
+											SelectedValue="{Binding Inp72SearchOpt.InpEndCd.Code}"
+											Command="{Binding SelInpStaffCD02Command}"/>
 					</Grid>
 
 					<Grid Grid.Row="3" Margin="0,0,0,5">
@@ -341,12 +313,12 @@
 								Content="一覧取得(F5)" 
 								HorizontalAlignment="Right" 
 								BorderBrush="Black" BorderThickness="10"
-								Style="{DynamicResource ExecButton}"
-								Command="{Binding DoSearchCommand}"/>
+								Command="{Binding DoSearchCommand}"
+								Style="{DynamicResource ExecButton}"/>
 					</Grid>
 
 					<DataGrid Grid.Row="4"
-							  x:Name="MyDataGrid1"
+							  x:Name="MyDataGrid2"
 							  FrozenColumnCount="2"
 							  d:ItemsSource="{d:SampleData ItemCount=5}" 
 							  Style="{DynamicResource WinGridData}"
@@ -356,29 +328,27 @@
 							  ScrollViewer.VerticalScrollBarVisibility="Auto"
 							  VerticalAlignment="Stretch"
 							  HorizontalAlignment="Stretch"
-							  ItemsSource="{Binding OrderList}"
-							  SelectedItem="{Binding SelOrderItem}">
+							  ItemsSource="{Binding Inp72TranHeads}"
+							  SelectedItem="{Binding Inp72TranHeadItem}">
 						<i:Interaction.Triggers>
 							<i:EventTrigger EventName="PreviewMouseDoubleClick">
-								<i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}" 
-													   CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid1, FallbackValue={x:Null}}" />
+								<i:InvokeCommandAction Command="{Binding RowDoubleClickCommand}"
+													   CommandParameter="{Binding SelectedItem, ElementName=MyDataGrid2, FallbackValue={x:Null}}" />
 							</i:EventTrigger>
 						</i:Interaction.Triggers>
-						<DataGrid.Columns> 
+						<DataGrid.Columns>
 							<DataGridTextColumn Width="*" Binding="{Binding SeqNo}" Header="伝票No" />
-							<DataGridTextColumn Width="*" Header="受注日" >
+							<DataGridTextColumn Width="*" Header="納品日" >
 								<DataGridTextColumn.Binding>
-									<Binding Path="InvCountDate"
-											 Mode="OneWay"
-											 Converter="{StaticResource DateDisplayConverter}" />
+									<Binding Path="DeliverDate"
+										 Mode="OneWay"
+										 Converter="{StaticResource DateDisplayConverter}" />
 								</DataGridTextColumn.Binding>
 							</DataGridTextColumn>
-							<DataGridTextColumn Width="*" Binding="{Binding ClientCD1}" Header="得意先" />
-							<DataGridTextColumn Width="*" Binding="{Binding TradeName}" Header="得意先名" />
-							<DataGridTextColumn Width="*" Binding="{Binding StoreCD}" Header="倉庫" />
-							<DataGridTextColumn Width="*" Binding="{Binding StoreName}" Header="倉庫先名" />
-							<DataGridTextColumn Width="*" Binding="{Binding ExhibitCD}" Header="展示会" />
-							<DataGridTextColumn Width="*" Binding="{Binding ExhibitName}" Header="展示会名" />
+							<DataGridTextColumn Width="*" Binding="{Binding ClientCD1}" Header="仕入先" />
+							<DataGridTextColumn Width="*" Binding="{Binding SupplierName}" Header="仕入先名" />
+							<DataGridTextColumn Width="*" Binding="{Binding ClientCD2}" Header="入庫先" />
+							<DataGridTextColumn Width="*" Binding="{Binding CustomerName}" Header="入庫先名" />
 							<DataGridTextColumn Width="*" Binding="{Binding TranCate}" Header="取引区分" />
 							<DataGridTextColumn Width="*" Binding="{Binding TotalNum}" Header="数量計">
 								<DataGridTextColumn.ElementStyle>
@@ -394,9 +364,12 @@
 									</Style>
 								</DataGridTextColumn.ElementStyle>
 							</DataGridTextColumn>
+							<DataGridTextColumn Width="*" Binding="{Binding RelatedSlipNo}" Header="関連No1" />
+							<DataGridTextColumn Width="*" Binding="{Binding RelatedSlipNo2}" Header="関連No2" />
+							<DataGridTextColumn Width="*" Binding="{Binding ManualInpNo}" Header="手入力No" />
 						</DataGrid.Columns>
 					</DataGrid>
-					 
+
 					<Grid Grid.Row="5">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>
@@ -409,40 +382,42 @@
 							<ColumnDefinition Width="Auto"/>
 						</Grid.ColumnDefinitions>
 
-						<RadioButton Grid.Column="0" Content="一覧"
+						<RadioButton Grid.Column="0" 
+									 Content="一覧"
 								     Margin="0,0,10,0"
-									 IsChecked="{Binding Inp12SearchOpt.SelPrintCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}"
-									 GroupName="OutPutType"/>
-						<RadioButton Grid.Column="1" Content="明細"
+									 GroupName="OutPutType"
+									 IsChecked="{Binding Inp72SearchOpt.SelPrintCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=0}" />
+						<RadioButton Grid.Column="1" 
+									 Content="明細"
 									 Margin="0,0,10,0"
-									 IsChecked="{Binding Inp12SearchOpt.SelPrintCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"
-									 GroupName="OutPutType"/>
+									 GroupName="OutPutType"
+									 IsChecked="{Binding Inp72SearchOpt.SelPrintCond, Converter={StaticResource RdIntToBoolConverter}, ConverterParameter=1}"/>
 						<Button Grid.Column="2" 
 								Margin="0,0,10,0"
-								Style="{DynamicResource PrintIconBtn}"
-								Command="{Binding DoPrintCommand}"/>
+								Command="{Binding DoPrintCommand}"
+								Style="{DynamicResource PrintIconBtn}"/>
 						<Button Grid.Column="3"
 								Margin="0,0,10,0"
-								Content="CSV出力"
-								Style="{DynamicResource PrintIconBtn}"
-								Command="{Binding DoCSVCommand}"/>
+								Content="{Binding Inp72SearchOpt.CsvExportTitle}"
+								Command="{Binding DoCSVCommand}"
+								Style="{DynamicResource PrintIconBtn}"/>
 
 						<Button Grid.Column="5"
 								Margin="0,0,10,0"
 								Content="修正・照会(F6)" 
-								Style="{DynamicResource UpdateIconBtn}" 
-								Command="{Binding RowDoubleClickCommand}"/>
+								Command="{Binding RowDoubleClickCommand}"
+								Style="{DynamicResource UpdateIconBtn}"/>
 						<Button Grid.Column="6"
 								Margin="0,0,10,0"
-								Style="{DynamicResource DeleteIconBtn}"
-								Command="{Binding DoDeleteCommand}"/>
+								Command="{Binding DoDeleteCommand}"
+								Style="{DynamicResource DeleteIconBtn}"/>
 						<Button Grid.Column="7"
-								Style="{DynamicResource BackBtn}" 
+								Style="{DynamicResource BackBtn}"
 								Command="{Binding ExitCommand}"/>
-					</Grid> 
+					</Grid>
 				</Grid>
 			</TabItem>
-			<TabItem Header="修正・登録画面(Shift+F2)">
+			<TabItem Header="修正・登録画面 (Shift+F2)">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -461,53 +436,50 @@
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
 						<Label Grid.Row="0" Grid.Column="0"   
 							   VerticalContentAlignment="Center"
 							   MinWidth="62" 
 							   Content="伝票No" />
-						<TextBox Grid.Row="0" Grid.Column="1"   
+						<TextBox Grid.Row="0" Grid.Column="1"
+								 Text="{Binding Inp72DetailOpt.SlipNo}"
 								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12DetailOpt.SlipNo}"/>
+								 VerticalContentAlignment="Center"/>
 						<Label Grid.Row="0" Grid.Column="2"   
 							   VerticalContentAlignment="Center"
-							   Content="受注日" />
-						<DatePicker Grid.Row="0" Grid.Column="3"
-									Margin="0,0,5,0"
-									SelectedDate="{Binding Inp12DetailOpt.OrderDate}"/>
+							   MinWidth="62" 
+							   Content="発注日" />
+						<DatePicker Grid.Row="0" Grid.Column="3" 
+									SelectedDate="{Binding Inp72DetailOpt.OrderDate}"/>
 						<Label Grid.Row="0" Grid.Column="4"   
 							   VerticalContentAlignment="Center"
+							   MinWidth="62" 
 							   Content="納品日" />
-						<DatePicker Grid.Row="0" Grid.Column="5"
-									Margin="0,0,5,0"
-									SelectedDate="{Binding Inp12DetailOpt.DeliverDate}"/>
-						<Button Grid.Row="0" Grid.Column="6"  
-								Content="一括設定"
-								Command="{Binding DoBatchSetCommand}"
-								Style="{DynamicResource BackBtn}"/>
-						<Label Grid.Row="0" Grid.Column="7"   
+						<DatePicker Grid.Row="0" Grid.Column="5" 
+									SelectedDate="{Binding Inp72DetailOpt.DeliverDate}"/>
+						<Label Grid.Row="0" Grid.Column="6"   
 							   VerticalContentAlignment="Center"
 							   Content="取引区分" />
-						<ComboBox Grid.Row="0" Grid.Column="8"
+						<ComboBox Grid.Row="0" Grid.Column="7"
 								  VerticalAlignment="Top"
-								  VerticalContentAlignment="Center"
+								  VerticalContentAlignment="Center" 
 								  ItemsSource="{Binding TranCatList}"
-								  DisplayMemberPath="Key"
+								  DisplayMemberPath="Value"
 								  SelectedValuePath="Key"
-								  SelectedValue="{Binding Inp12DetailOpt.TranCate, Mode=TwoWay}"
+								  SelectedValue="{Binding Inp72DetailOpt.TranCate}"
 								  Style="{StaticResource SearchableComboBox1}"/>
-						<Label Grid.Row="0" Grid.Column="9"   
-							   VerticalContentAlignment="Center"
-							   Content="掛率" />
-						<TextBox Grid.Row="0" Grid.Column="10"  
-								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12DetailOpt.MarkupRate}"/> 
+						<Button Grid.Row="0" Grid.Column="9"  
+								Content="ｵｰﾙｸﾘｱ"
+								Command="{Binding DoAllClearCommand}"
+								Style="{DynamicResource BackBtn}"/>
+						<Button Grid.Row="0" Grid.Column="10"  
+								Content="明細チェック(OFF)"
+								Visibility="Collapsed"
+								Style="{DynamicResource BackBtn}"/>
 					</Grid>
 
 					<Grid Grid.Row="1" Margin="0,0,0,5">
@@ -529,18 +501,18 @@
 							<Label Grid.Row="0" Grid.Column="0" 
 								   VerticalContentAlignment="Center"
 								   MinWidth="62"
-								   Content="得意先" />
+								   Content="仕入先" />
 							<TextBox Grid.Row="0" Grid.Column="1"
+									 Text="{Binding Inp72DetailOpt.SupplierCd.Display}"
 									 HorizontalContentAlignment="Left"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.CustDest.Display}"/>
+									 VerticalContentAlignment="Center"/>
 							<uc:CvnetBtListView Grid.Row="0" Grid.Column="2" 
-												MstName="全得意先"
+												MstName="仕入先"
 												StyleDesign="2"
-												SelectedValue="{Binding Inp12DetailOpt.CustDest.Code}"
-												Command="{Binding SelCustDestCommand}"/>
+												SelectedValue="{Binding Inp72DetailOpt.SupplierCd.Code}"
+												Command="{Binding SelSupplierCDCommand}"/>
 						</Grid>
-						<Grid Grid.Row="0" Grid.Column="1" Margin="0,0,0,5">
+						<Grid Grid.Row="0" Grid.Column="1" Margin="5,0,0,5">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
@@ -548,43 +520,31 @@
 								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
 							<Label Grid.Row="0" Grid.Column="0" 
 								   VerticalContentAlignment="Center"
 								   MinWidth="62"
-								   Content="関連No1" />
+								   Content="手入力No" />
 							<TextBox Grid.Row="0" Grid.Column="1"
-									 Text="{Binding Inp12DetailOpt.RelatedNo}"
-									 HorizontalContentAlignment="Right"
+									 Text="{Binding Inp72DetailOpt.ManualInpNo}"
+									 HorizontalContentAlignment="Left"
 									 VerticalContentAlignment="Center"/>
 							<Label Grid.Row="0" Grid.Column="2" 
 								   VerticalContentAlignment="Center"
 								   MinWidth="62"
-								   Content="関連No2" />
+								   Content="関連No1" />
 							<TextBox Grid.Row="0" Grid.Column="3"
-									 Text="{Binding Inp12DetailOpt.RelatedNo2}"
-									 HorizontalContentAlignment="Right"
+									 Text="{Binding Inp72DetailOpt.RelatedNo}"
+									 HorizontalContentAlignment="Left"
 									 VerticalContentAlignment="Center"/>
 							<Label Grid.Row="0" Grid.Column="4" 
 								   VerticalContentAlignment="Center"
 								   MinWidth="62"
-								   Content="手入力No" />
+								   Content="関連No2" />
 							<TextBox Grid.Row="0" Grid.Column="5"
-									 Margin="0,0,5,0"
-									 Text="{Binding Inp12DetailOpt.ManualInpNo}"
-									 HorizontalContentAlignment="Right"
-									 VerticalContentAlignment="Center"/>
-							<Button Grid.Row="0" Grid.Column="6"  
-									Margin="0,0,5,0"
-									Content="掛率一括展開"
-									Command="{Binding DoExpandRateCommand}"
-									Style="{DynamicResource BackBtn}"/>
-							<Button Grid.Row="0" Grid.Column="7"  
-									Content="ｵｰﾙｸﾘｱ"
-									Command="{Binding DoAllClearCommand}"
-									Style="{DynamicResource BackBtn}"/>
+									 Text="{Binding Inp72DetailOpt.RelatedNo2}"
+									 HorizontalContentAlignment="Left"
+									 VerticalContentAlignment="Center"/> 
 						</Grid>
 
 						<Grid Grid.Row="1" Grid.Column="0" Margin="0,0,0,5">
@@ -596,104 +556,74 @@
 							<Label Grid.Row="0" Grid.Column="0" 
 								   VerticalContentAlignment="Center"
 								   MinWidth="62"
-								   Content="倉庫" />
+								   Content="入庫先" />
 							<TextBox Grid.Row="0" Grid.Column="1"
+									 Text="{Binding Inp72DetailOpt.RecDestCd.Display}"
 									 HorizontalContentAlignment="Left"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.StoreCd.Display}"/>
-							<uc:CvnetBtListView Grid.Row="0" Grid.Column="2"
-												MstName="倉庫"
+									 VerticalContentAlignment="Center"/>
+							<uc:CvnetBtListView Grid.Row="0" Grid.Column="2" 
+												MstName="移動倉庫"
 												StyleDesign="2"
-												SelectedValue="{Binding Inp12DetailOpt.StoreCd.Code}"
-												Command="{Binding SelStoreCdCommand}"/>
+												SelectedValue="{Binding Inp72DetailOpt.RecDestCd.Code}"
+												Command="{Binding SelRecDestCDCommand}"/>
 						</Grid>
-						<Grid Grid.Row="1" Grid.Column="1" Margin="0,0,0,5">
+						<Grid Grid.Row="1" Grid.Column="1" Margin="5,0,0,5">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="3*" />
+								<ColumnDefinition Width="*" />
 								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="3*" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="1.8*" />
+								<ColumnDefinition Width="2*" />
 							</Grid.ColumnDefinitions>
 							<Label Grid.Row="0" Grid.Column="0" 
 								   VerticalContentAlignment="Center"
 								   MinWidth="62"
 								   Content="入力者" />
 							<TextBox Grid.Row="0" Grid.Column="1"
+									 Text="{Binding Inp72DetailOpt.InpCd.Display}"
 									 HorizontalContentAlignment="Left"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.InpCd.Display}"/>
-							<uc:CvnetBtListView Grid.Row="0" Grid.Column="2"
+									 VerticalContentAlignment="Center"/>
+							<uc:CvnetBtListView Grid.Row="0" Grid.Column="2" 
+												MstName="担当"
 												StyleDesign="2"
-												SelectedValue="{Binding Inp12DetailOpt.InpCd.Code}"
-												Command="{Binding SelInpCdCommand}"/>
-							<Label Grid.Row="0" Grid.Column="3" 
-								   VerticalContentAlignment="Center"
-								   Content="展示会" />
-							<TextBox Grid.Row="0" Grid.Column="4"
-									 HorizontalContentAlignment="Left"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.ExhibitCd.Display}"/>
-							<uc:CvnetBtListView Grid.Row="0" Grid.Column="5"
-												StyleDesign="2"
-												MstName="展示会"
-												SelectedValue="{Binding Inp12DetailOpt.ExhibitCd.Code}"
-												Command="{Binding SelExhibitCdCommand}"/>
+												SelectedValue="{Binding Inp72DetailOpt.InpCd.Code}"
+												Command="{Binding SelInpCDCommand}"/>
 						</Grid>
 
 						<Grid Grid.Row="2" Grid.Column="0" Margin="0,0,0,5">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="*" /> 
+								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
 							<Label Grid.Row="0" Grid.Column="0" 
 								   VerticalContentAlignment="Center"
 								   MinWidth="62"
 								   Content="備考" />
 							<TextBox Grid.Row="0" Grid.Column="1"
+									 Text="{Binding Inp72DetailOpt.Memo}"
 									 HorizontalContentAlignment="Left"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.Memo}"/>
+									 VerticalContentAlignment="Center"/>  
 						</Grid>
-						<Grid Grid.Row="2" Grid.Column="1" Margin="0,0,0,5">
+						<Grid Grid.Row="2" Grid.Column="1" Margin="5,0,0,5">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="3*" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="3*" />
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="2*" />
 							</Grid.ColumnDefinitions>
-							<Label Grid.Row="0" Grid.Column="0"
-								   VerticalContentAlignment="Center"
-								   Content="営業担当" />
-							<TextBox Grid.Row="0" Grid.Column="1"
+							<TextBox Grid.Row="0" Grid.Column="0"
+									 Text="{Binding Inp72DetailOpt.ProdCd.Display}"
 									 HorizontalContentAlignment="Left"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.SalesRep.Display}"/>
-							<uc:CvnetBtListView Grid.Row="0" Grid.Column="2"
-												Margin="0,0,5,0"
-												StyleDesign="2"
-												MstName="営業担当"
-												SelectedValue="{Binding Inp12DetailOpt.SalesRep.Code}"
-												Command="{Binding SelSalesRepCommand}" />
-							<TextBox Grid.Row="0" Grid.Column="3"
-									 HorizontalContentAlignment="Left"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.ProdCd.Display}"/>
-							<uc:CvnetBtListView Grid.Row="0" Grid.Column="4"
+									 VerticalContentAlignment="Center"/>
+							<uc:CvnetBtListView Grid.Row="0" Grid.Column="1"
 												Margin="0,0,5,0"
 												StyleDesign="2"
 												MstName="商品"
-												SelectedValue="{Binding Inp12DetailOpt.ProdCd.Code}"
-												Command="{Binding SelProdCdCommand}"/>
-							<Button Grid.Row="0" Grid.Column="5"   
+												SelectedValue="{Binding Inp72DetailOpt.ProdCd.Code}"
+												Command="{Binding SelProdCDCommand}"/>
+							<Button Grid.Row="0" Grid.Column="2"
 									Content="展開商品CD"
-									Command="{Binding DoAvailProdCommand}"
-									Style="{DynamicResource BackBtn}"/>
+									Style="{DynamicResource BackBtn}"
+									Command="{Binding DoAvailProdCommand}"/>
 						</Grid>
 					</Grid>
 
@@ -712,17 +642,17 @@
 								   VerticalContentAlignment="Center" 
 								   Content="計" />
 							<TextBox Grid.Row="0" Grid.Column="1"
+									 Text="{Binding Inp72DetailOpt.Num}"
 									 HorizontalContentAlignment="Right"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.Num}"/>
+									 VerticalContentAlignment="Center"/>
 							<TextBox Grid.Row="0" Grid.Column="2"
+									 Text="{Binding Inp72DetailOpt.RetailPrice}"
 									 HorizontalContentAlignment="Right"
-									 VerticalContentAlignment="Center"
-									 Text="{Binding Inp12DetailOpt.RetailPrice}"/>
+									 VerticalContentAlignment="Center"/>
 							<TextBox Grid.Row="0" Grid.Column="3"
-								 HorizontalContentAlignment="Right"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12DetailOpt.WholesalePrice}"/>
+									 Text="{Binding Inp72DetailOpt.WholesalePrice}"
+									 HorizontalContentAlignment="Right"
+									 VerticalContentAlignment="Center"/>
 						</Grid>
 					</StackPanel>
 					<StackPanel Grid.Row="2" 
@@ -747,9 +677,10 @@
 					</StackPanel>
 
 					<uc:CvnetFlexView Grid.Row="3"
-									  x:Name="Inp12DetailGrid"
+									  x:Name="Inp72DetailGrid"
 									  d:ItemsSource="{d:SampleData ItemCount=5}"
-									  ItemsSource="{Binding Inp12DetailItems}"
+									  SelectedIndex="{Binding Inp72DetailSelIdx}"
+									  ItemsSource="{Binding Inp72TranDetails}" 
 									  IsSynchronizedWithCurrentItem="True"
 									  HeadersVisibility="Column"
 									  GridLinesVisibility="All"
@@ -758,7 +689,7 @@
 									  BorderBrush="#707070"
 									  BorderThickness="1">
 						<uc:CvnetFlexView.Columns>
-							<DataGridTemplateColumn Width="*">
+							<DataGridTemplateColumn Width="2*">
 								<DataGridTemplateColumn.HeaderTemplate>
 									<DataTemplate>
 										<StackPanel>
@@ -778,7 +709,7 @@
 												<ColumnDefinition Width="6*"/>
 												<ColumnDefinition Width="4*"/>
 											</Grid.ColumnDefinitions>
-											<TextBox Grid.Column="0" 
+											<TextBox Grid.Column="0"  
 													 Background="{Binding ProdBgColor}"
 													 Text="{Binding ProdCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Margin="0" Style="{StaticResource DataGridTextBox}">
@@ -786,7 +717,7 @@
 													<i:EventTrigger EventName="TextChanged">
 														<i:InvokeCommandAction 
 															Command="{Binding DataContext.DoProdChangedCommand,
-																	  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+																			  RelativeSource={RelativeSource AncestorType=DataGrid}}"
 															CommandParameter="{Binding}" />
 													</i:EventTrigger>
 												</i:Interaction.Triggers>
@@ -802,10 +733,10 @@
 														 Margin="0" Style="{StaticResource DataGridTextBox}">
 													<i:Interaction.Triggers>
 														<i:EventTrigger EventName="MouseDoubleClick">
-															<i:InvokeCommandAction
-																	Command="{Binding DataContext.DoPrintProdDClickCommand,
-																			  RelativeSource={RelativeSource AncestorType=DataGrid}}"
-																	CommandParameter="{Binding}" />
+															<i:InvokeCommandAction 
+																Command="{Binding DataContext.DoPrintProdDClickCommand,
+																		  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+																CommandParameter="{Binding}" />
 														</i:EventTrigger>
 													</i:Interaction.Triggers>
 												</TextBox>
@@ -835,14 +766,14 @@
 												<ColumnDefinition Width="6*"/>
 												<ColumnDefinition Width="4*"/>
 											</Grid.ColumnDefinitions>
-											<TextBox Grid.Column="0" 
+											<TextBox Grid.Column="0"
 													 Background="{Binding ColorBgColor}"
 													 Text="{Binding ColorCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Margin="0" Style="{StaticResource DataGridTextBox}"/>
 											<Button Grid.Column="1" Content="一覧" 
 													Margin="0" Padding="6" 
 													Command="{Binding DataContext.DoColorRowSearchCommand,
-															  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
+																	  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
 													CommandParameter="{Binding}" />
 											<Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
 												<TextBox Grid.Row="1" Grid.ColumnSpan="2" 
@@ -875,7 +806,7 @@
 												<ColumnDefinition Width="6*"/>
 												<ColumnDefinition Width="4*"/>
 											</Grid.ColumnDefinitions>
-											<TextBox Grid.Column="0" 
+											<TextBox Grid.Column="0"
 													 Background="{Binding SizeBgColor}"
 													 Text="{Binding SizeCD, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Margin="0" 
@@ -883,17 +814,17 @@
 												<i:Interaction.Triggers>
 													<i:EventTrigger EventName="TextChanged">
 														<i:InvokeCommandAction 
-																Command="{Binding DataContext.DoGridSizeChangedCommand,
-																		  RelativeSource={RelativeSource AncestorType=DataGrid}}"
-																CommandParameter="{Binding}" />
+															Command="{Binding DataContext.DoProdSizChangedCommand,
+																			  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															CommandParameter="{Binding}" />
 													</i:EventTrigger>
 												</i:Interaction.Triggers>
 											</TextBox>
 											<Button Grid.Column="1" Content="一覧" 
 													Margin="0" Padding="6" 
 													Command="{Binding DataContext.DoSizeRowSearchCommand,
-													RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
-													CommandParameter="{Binding}" />
+																	  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
+													CommandParameter="{Binding}"/>
 											<Border Grid.Row="1" Grid.ColumnSpan="2"  BorderBrush="DarkGray" BorderThickness="0,1,0,0">
 												<TextBox Grid.Row="1" Grid.ColumnSpan="2"
 														 IsReadOnly="True"
@@ -921,7 +852,7 @@
 											<i:Interaction.Triggers>
 												<i:EventTrigger EventName="TextChanged">
 													<i:InvokeCommandAction 
-														Command="{Binding DataContext.DoGridQntChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+														Command="{Binding DataContext.DoProdQntChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
 														CommandParameter="{Binding}" />
 												</i:EventTrigger>
 											</i:Interaction.Triggers>
@@ -948,12 +879,12 @@
 											</Grid.RowDefinitions>
 											<TextBox Grid.Column="0" 
 													 HorizontalContentAlignment="Right"
-													 Text="{Binding RetailUnitPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+													 Text="{Binding RetailUnit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Style="{StaticResource DataGridTextBox}">
 												<i:Interaction.Triggers>
 													<i:EventTrigger EventName="TextChanged">
 														<i:InvokeCommandAction 
-															Command="{Binding DataContext.DoGridRetailChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															Command="{Binding DataContext.DoRetailChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
 															CommandParameter="{Binding}" />
 													</i:EventTrigger>
 												</i:Interaction.Triggers>
@@ -989,21 +920,11 @@
 													 Text="{Binding WholesalesUnit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 													 Style="{StaticResource DataGridTextBox}">
 												<i:Interaction.Triggers>
-
-													<!-- TextChanged -->
 													<i:EventTrigger EventName="TextChanged">
 														<i:InvokeCommandAction 
-															Command="{Binding DataContext.DoGridWholesChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
-															CommandParameter="{Binding}" />		
-													</i:EventTrigger>
-
-													<!-- DoubleClick -->
-													<i:EventTrigger EventName="MouseDoubleClick">
-														<i:InvokeCommandAction
-															Command="{Binding DataContext.DoGridWholeDClickCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
+															Command="{Binding DataContext.DoWholesaleChangedCommand,RelativeSource={RelativeSource AncestorType=DataGrid}}"
 															CommandParameter="{Binding}" />
-													</i:EventTrigger>
-
+													</i:EventTrigger>  
 												</i:Interaction.Triggers>
 											</TextBox>
 											<TextBox Grid.Row="1"
@@ -1016,63 +937,7 @@
 								</DataGridTemplateColumn.CellTemplate>
 							</DataGridTemplateColumn>
 
-							<DataGridTemplateColumn Width="*">
-								<DataGridTemplateColumn.HeaderTemplate>
-									<DataTemplate>
-										<StackPanel>
-											<TextBlock Text="納品日" FontWeight="Bold"/>
-											<TextBlock Text="マスタ掛率" FontWeight="Bold"/>
-										</StackPanel>
-									</DataTemplate>
-								</DataGridTemplateColumn.HeaderTemplate>
-								<DataGridTemplateColumn.CellTemplate>
-									<DataTemplate>
-										<Grid>
-											<Grid.RowDefinitions>
-												<RowDefinition/>
-												<RowDefinition/>
-											</Grid.RowDefinitions>
-											<TextBox Grid.Row="0"
-													 Height="30"
-													 HorizontalContentAlignment="Right"
-													 VerticalContentAlignment="Center">
-												<TextBox.Style>
-													<Style TargetType="TextBox">
-														<!-- Display format -->
-														<Setter Property="Text">
-															<Setter.Value>
-																<Binding Path="DeliverDate" 
-																		 Mode="OneWay"
-																		 Converter="{StaticResource DateDisplayConverter}" />
-															</Setter.Value>
-														</Setter>
-														<!-- Edit format -->
-														<Style.Triggers>
-															<Trigger Property="IsKeyboardFocusWithin" Value="True">
-																<Setter Property="Text">
-																	<Setter.Value>
-																		<Binding Path="DeliverDate"
-																				 Mode="TwoWay"
-																				 UpdateSourceTrigger="PropertyChanged" />
-																	</Setter.Value>
-																</Setter> 
-															</Trigger>
-														</Style.Triggers>
-													</Style>
-												</TextBox.Style>
-											</TextBox>
-											<TextBox Grid.Row="1"
-													 IsReadOnly="True"
-													 Text="{Binding BaseRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 HorizontalContentAlignment="Right"
-													 VerticalContentAlignment="Center"
-													 Style="{StaticResource DataGridTextBox}"/>
-										</Grid>
-									</DataTemplate>
-								</DataGridTemplateColumn.CellTemplate>
-							</DataGridTemplateColumn>
-
-							<DataGridTemplateColumn Width="230">
+							<DataGridTemplateColumn Width="200">
 								<DataGridTemplateColumn.HeaderTemplate>
 									<DataTemplate>
 										<StackPanel>
@@ -1082,31 +947,17 @@
 													<RowDefinition Height="*" />
 												</Grid.RowDefinitions>
 												<Grid.ColumnDefinitions>
-													<ColumnDefinition Width="50" />
-													<ColumnDefinition Width="80" />
-													<ColumnDefinition Width="50" />
-													<ColumnDefinition Width="50" />
+													<ColumnDefinition Width="100" />
+													<ColumnDefinition Width="100" />
 												</Grid.ColumnDefinitions>
 												<TextBlock Grid.Row="0" 
 														   HorizontalAlignment="Center"
-														   Grid.ColumnSpan="4" 
+														   Grid.ColumnSpan="2" 
 														   Text="摘要"
 														   FontWeight="Bold"/>
-												<TextBlock Grid.Row="1" Grid.Column="0" 
-														   HorizontalAlignment="Center"
-														   Text="計算掛率"
-														   FontWeight="Bold"/>
-												<TextBlock Grid.Row="1" Grid.Column="1"
+												<TextBlock Grid.Row="1" Grid.Column="0"
 														   HorizontalAlignment="Center"
 														   Text="完了FLG"
-														   FontWeight="Bold"/>
-												<TextBlock Grid.Row="1" Grid.Column="2"
-														   HorizontalAlignment="Center"
-														   Text="頁"
-														   FontWeight="Bold"/>
-												<TextBlock Grid.Row="1" Grid.Column="3" 
-														   HorizontalAlignment="Center"
-														   Text="位置"
 														   FontWeight="Bold"/>
 											</Grid>
 										</StackPanel>
@@ -1120,132 +971,85 @@
 												<RowDefinition Height="*" />
 											</Grid.RowDefinitions>
 											<Grid.ColumnDefinitions>
-												<ColumnDefinition Width="50" />
-												<ColumnDefinition Width="80" />
-												<ColumnDefinition Width="50" />
-												<ColumnDefinition Width="50" />
+												<ColumnDefinition Width="100" />
+												<ColumnDefinition Width="100" />
 											</Grid.ColumnDefinitions>
-											<TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+											<TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
 													 HorizontalContentAlignment="Left"
 													 Text="{Binding DetailMemo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 Style="{StaticResource DataGridTextBox}"/>
-											<TextBox Grid.Row="1" Grid.Column="0"
-													 HorizontalContentAlignment="Right"
-													 Foreground="{Binding CalcRateFgColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 Background="{Binding CalcRateBgColor,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 Text="{Binding CalcRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 Style="{StaticResource DataGridTextBox}">
-												<i:Interaction.Triggers>
-													<i:EventTrigger EventName="TextChanged">
-														<i:InvokeCommandAction 
-																Command="{Binding DataContext.DoGridCalcRateChangedCommand,
-																		  RelativeSource={RelativeSource AncestorType=DataGrid}}"
-																CommandParameter="{Binding}" />
-													</i:EventTrigger>
-												</i:Interaction.Triggers>
-											</TextBox>
-											<ComboBox Grid.Row="1" Grid.Column="1"
+													 Style="{StaticResource DataGridTextBox}"/> 
+											<ComboBox Grid.Row="1" Grid.Column="0"
 													  VerticalAlignment="Top"
 													  VerticalContentAlignment="Center"
 													  ItemsSource="{Binding DataContext.StatusList, RelativeSource={RelativeSource AncestorType=TabControl}}"
 													  DisplayMemberPath="Value"
 													  SelectedValuePath="Key"
 													  SelectedValue="{Binding CompleteFlg, Mode=TwoWay}"
-													  Style="{StaticResource SearchableComboBox1}"/>
-											<TextBox Grid.Row="1" Grid.Column="2"
-													 IsReadOnly="True"
-													 Background="{Binding SwatchPgBgColor}"
-													 Text="{Binding SwatchPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 Style="{StaticResource DataGridTextBox}"/>
-											<TextBox Grid.Row="1" Grid.Column="3" 
-													 IsReadOnly="True"
-													 Background="{Binding SwatchPsBgColor}"
-													 Text="{Binding SwatchPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-													 Style="{StaticResource DataGridTextBox}"/>
+													  Style="{StaticResource SearchableComboBox1}"/> 
 										</Grid>
 									</DataTemplate>
 								</DataGridTemplateColumn.CellTemplate>
 							</DataGridTemplateColumn>
-							<DataGridTemplateColumn Width="40">
-								<DataGridTemplateColumn.HeaderTemplate>
-									<DataTemplate>
-										<StackPanel>
-											<TextBlock Text="リフレシュ" FontWeight="Bold" />
-										</StackPanel>
-									</DataTemplate>
-								</DataGridTemplateColumn.HeaderTemplate>
-								<DataGridTemplateColumn.CellTemplate>
-									<DataTemplate>
-										<Button Command="{Binding DataContext.DoRefreshCommand, 
-																  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
-												CommandParameter="{Binding}" Style="{StaticResource RefreshFlexBtn}" />
-									</DataTemplate>
-								</DataGridTemplateColumn.CellTemplate>
-							</DataGridTemplateColumn>
+
 						</uc:CvnetFlexView.Columns>
 					</uc:CvnetFlexView>
 
-					<Grid Grid.Row="4" Margin="0,0,0,5">
+					<Grid Grid.Row="4" Margin="0,5,0,5">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="Auto" /> 
 							<ColumnDefinition Width="*" />
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="Auto" />
 							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
-
 						<Label Grid.Row="0" Grid.Column="0" 
-								   VerticalContentAlignment="Center"
-								   MinWidth="62"
-								   Content="作成/修正日" />
+							   VerticalContentAlignment="Center"
+							   MinWidth="62"
+							   Content="作成/修正日" />
 						<TextBox Grid.Row="0" Grid.Column="1"
+								 IsReadOnly="True"
+								 Text="{Binding Inp72DetailOpt.CreatedAt}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12DetailOpt.CreatedAt}"/>
+								 VerticalContentAlignment="Center"/>
 						<TextBox Grid.Row="0" Grid.Column="2"
+								 IsReadOnly="True"
+								 Text="{Binding Inp72DetailOpt.UpdatedAt}"
 								 HorizontalContentAlignment="Left"
-								 VerticalContentAlignment="Center"
-								 Text="{Binding Inp12DetailOpt.UpdatedAt}"/>
+								 VerticalContentAlignment="Center"/>
 						<Button Grid.Column="3" 
 								Margin="0,0,5,0"
 								Content="商品CD検索"
 								Command="{Binding DoSearchProdCommand}"
 								Style="{DynamicResource BackBtn}"/>
-						<Button Grid.Column="4" 
-								Margin="0,0,5,0"
-								Content="ｽﾜｯﾁ検索" 
-								Command="{Binding DoSearchPageCommand}"
-								Style="{DynamicResource BackBtn}"/>
-						<Button Grid.Column="6" 
+						<Button Grid.Column="5" 
 								Margin="0,0,5,0"
 								Content="修正(F6)"
 								Command="{Binding DoUpdateCommand}"
 								Style="{DynamicResource BackBtn}"/>
-						<Button Grid.Column="7" 
+						<Button Grid.Column="6" 
 								Margin="0,0,5,0"
 								Content="追加(F8)"
 								Command="{Binding DoAddCommand}"
 								Style="{DynamicResource BackBtn}"/>
-						<Button Grid.Column="8" 
+						<Button Grid.Column="7" 
 								Margin="0,0,5,0"
 								Content="印刷(F9)"
 								Command="{Binding DoDetailPrintCommand}"
 								Style="{DynamicResource BackBtn}"/>
-						<Button Grid.Column="9" 
+						<Button Grid.Column="8" 
 								Margin="0,0,5,0"
 								Content="一覧へ(ESC)"
 								Command="{Binding DoExitCommand}"
 								Style="{DynamicResource BackBtn}"/>
 					</Grid>
-				</Grid>
-			</TabItem>
-		</TabControl>
 
+				</Grid>
+			</TabItem> 
+		</TabControl>
 		<Grid Grid.Row="1" VerticalAlignment="Bottom">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
@@ -1257,7 +1061,7 @@
 				   Content="{Binding Mess1}" />
 			<Label Grid.Column="1"
 				   VerticalContentAlignment="Center"
-				   HorizontalContentAlignment="Left"
+				   HorizontalContentAlignment="Left" 
 				   Content="{Binding Mess2}" />
 		</Grid>
 	</Grid>

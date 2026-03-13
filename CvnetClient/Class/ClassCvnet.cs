@@ -27,7 +27,7 @@ namespace CvnetBaseCore
 
         /* 初期設定フラグレコード */
         public Config config = new Config();
-        public int ImpDateDiff = 7; /* 範囲指定時に補正する日付の日数 .*/
+        public ImpDateDiff ImpDateDiff = new ImpDateDiff(); /* 範囲指定時に補正する日付の日数 .*/
         public int LoginDialogFlag = 1;
         public int VerClear = 0; /* 起動時にキャッシュクリアしたかどうか .*/
         public SysMstTb SysMst; /* システムﾏｽﾀDATA .*/
@@ -2587,7 +2587,7 @@ namespace CvnetBaseCore
                     AppData.ClassCvnet.config.SetChild("ManageMonthly", conf4);
                 }
                 /* 初期値を再セットする */
-                AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
+                AppData.ClassCvnet.ImpDateDiff.value = AppData.ClassCvnet.config.DefDateRange;
                 /* PDF出力FLGを再セットする */
                 AppData.ClassSatoo.PrintPDFFlg = AppData.ClassCvnet.config.PrintPDFFlg;
             }
@@ -2690,10 +2690,10 @@ namespace CvnetBaseCore
             {
                 int _impDateDiff = 0;
                 int.TryParse(SysMst._data.Rows[0][15].ToString(), out _impDateDiff);
-                AppData.ClassCvnet.ImpDateDiff = _impDateDiff;
+                AppData.ClassCvnet.ImpDateDiff.value = _impDateDiff;
             }
             /* 初期値はDefDateとする */
-            AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
+            AppData.ClassCvnet.ImpDateDiff.value = AppData.ClassCvnet.config.DefDateRange;
         }
 
         /// <summary> 
@@ -5438,6 +5438,28 @@ namespace CvnetBaseCore
             // Example: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
             string privateRoot = Path.Combine(Environment.CurrentDirectory, "hht");
             Directory.CreateDirectory(privateRoot);
+        }
+    }
+
+    public class ImpDateDiff
+    {
+        /* 範囲指定時に補正する日付の日数 .*/ 
+        public int value = 7;
+
+        /// <summary>
+        /// ImpDateDiff:補正日付を求める
+        /// </summary>
+        public DateTime OnGetDay()
+        {
+            var wrk = DateTime.Now;
+            wrk = wrk.AddDays(-value);
+            return wrk;
+        }
+
+        public DateTime OnGetMonth()
+        { 
+            DateTime wrk = DateTime.Now.AddDays(-value);
+            return AppData.ClassSatoo.GetDateVal2(wrk, 0);
         }
     }
 }

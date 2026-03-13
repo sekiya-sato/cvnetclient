@@ -263,7 +263,7 @@ namespace CvnetClient.ViewModels
             double created = double.TryParse(item.VdateCreate.ToString(), out created) ? created : 0;
             Inp12DetailOpt.CreatedAt = AppData.ClassSatoo.GetVdate(created).ToString();
             double updated = double.TryParse(item.VdateUpdate.ToString(), out updated) ? updated : 0;
-            Inp12DetailOpt.UpdatedAt = AppData.ClassSatoo.GetVdate(updated).ToString(); ;
+            Inp12DetailOpt.UpdatedAt = AppData.ClassSatoo.GetVdate(updated).ToString();
             Inp12DetailOpt.RelatedNo = item.RelatedSlipNo.ToString();
             Inp12DetailOpt.OrderDate = DateTime.ParseExact(item.InvCountDate, "yyyyMMdd", CultureInfo.InvariantCulture);
             Inp12DetailOpt.DeliverDate = DateTime.ParseExact(item.DeliverDate, "yyyyMMdd", CultureInfo.InvariantCulture);
@@ -682,7 +682,7 @@ namespace CvnetClient.ViewModels
                 v_para.Add(v_sho[0]);
                 v_para.Add(v_sho[1]);
                 sql_query = "SELECT A.* FROM (" + sql_query
-                + ") A WHERE EXISTS (SELECT /*+ INDEX(E 	HC$_NK_TORI23) */ 'X' FROM HC$TRAN_TORI1 E WHERE A.SEQ_NO=E.ヘッダNO AND E.商品CD BETWEEN :" + (v_para.Count - 1).ToString() + " AND :" + (v_para.Count).ToString() + ")";
+                + ") A WHERE EXISTS (SELECT /*+ INDEX(E HC$_NK_TORI23) */ 'X' FROM HC$TRAN_TORI1 E WHERE A.SEQ_NO=E.ヘッダNO AND E.商品CD BETWEEN :" + (v_para.Count - 1).ToString() + " AND :" + (v_para.Count).ToString() + ")";
             }
             sql_query += " ORDER BY A.SEQ_NO " + v_sort;
             sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
@@ -1850,7 +1850,7 @@ namespace CvnetClient.ViewModels
             var col02 = new BizArray();
             col01[0] = "MOD_SEQ";
             col02[0] = "10";
-            AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, null, null);
+            //AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, null, null);
             var ret_val = AppData.Http!.AspxSqlExe(DBDef.DB_DML.LOCK, "TRAN_TORI0", now_mod_seq, now_mod_vdate, col01.ToArray(), col02.ToArray());
             if (ret_val.Code == -1)
             {
@@ -1968,7 +1968,7 @@ namespace CvnetClient.ViewModels
                     OrderList[idx].ShipToName = "";
                     OrderList[idx].StaffName = Inp12DetailOpt.SalesRep.Name;
                     SelectedTabIndex = 0;
-                    System.Windows.MessageBox.Show("データ修正しました(" + AppData.ClassSatoo.GetDateDiff(v_start, DateTime.Now) + ")",
+                    System.Windows.MessageBox.Show("データ修正しました (" + AppData.ClassSatoo.GetDateDiff(v_start, DateTime.Now) + ")",
                                                    "確認", System.Windows.MessageBoxButton.OK);
                 }
             }
@@ -2118,7 +2118,7 @@ namespace CvnetClient.ViewModels
 
                 Inp12DetailOpt.SlipNo = ret_val.NewSeq.ToString(); 
                 SelectedTabIndex = 0;
-                System.Windows.MessageBox.Show("データ追加しました(" + AppData.ClassSatoo.GetDateDiff(v_start, DateTime.Now) + ")",
+                System.Windows.MessageBox.Show("データ追加しました (" + AppData.ClassSatoo.GetDateDiff(v_start, DateTime.Now) + ")",
                                                    "確認", System.Windows.MessageBoxButton.OK); 
             }
             else if (ret_val.Code == -1) Mess2 = "ロックエラーです";
