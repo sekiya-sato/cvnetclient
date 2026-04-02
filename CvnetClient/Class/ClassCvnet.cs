@@ -27,7 +27,7 @@ namespace CvnetBaseCore
 
         /* 初期設定フラグレコード */
         public Config config = new Config();
-        public int ImpDateDiff = 7; /* 範囲指定時に補正する日付の日数 .*/
+        public ImpDateDiff ImpDateDiff = new ImpDateDiff(); /* 範囲指定時に補正する日付の日数 .*/
         public int LoginDialogFlag = 1;
         public int VerClear = 0; /* 起動時にキャッシュクリアしたかどうか .*/
         public SysMstTb SysMst; /* システムﾏｽﾀDATA .*/
@@ -55,6 +55,8 @@ namespace CvnetBaseCore
         public string[] OrgMenuSub; 	/* オリジナルサブメニュー定義 .*/
         /* CRSを起動する場合には必ずこのエントリに登録し、かつユーザ毎の起動設定をしなければならない */
         public OrgMenuDef orgMenuDef = new OrgMenuDef();
+
+        public int MeickFlg = 0; /* 伝票明細チェックフラグ 0=しない, 1=する .*/
 
         public ComboItem00 comboItem00 = new ComboItem00();
 
@@ -2585,7 +2587,7 @@ namespace CvnetBaseCore
                     AppData.ClassCvnet.config.SetChild("ManageMonthly", conf4);
                 }
                 /* 初期値を再セットする */
-                AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
+                AppData.ClassCvnet.ImpDateDiff.value = AppData.ClassCvnet.config.DefDateRange;
                 /* PDF出力FLGを再セットする */
                 AppData.ClassSatoo.PrintPDFFlg = AppData.ClassCvnet.config.PrintPDFFlg;
             }
@@ -2688,10 +2690,10 @@ namespace CvnetBaseCore
             {
                 int _impDateDiff = 0;
                 int.TryParse(SysMst._data.Rows[0][15].ToString(), out _impDateDiff);
-                AppData.ClassCvnet.ImpDateDiff = _impDateDiff;
+                AppData.ClassCvnet.ImpDateDiff.value = _impDateDiff;
             }
             /* 初期値はDefDateとする */
-            AppData.ClassCvnet.ImpDateDiff = AppData.ClassCvnet.config.DefDateRange;
+            AppData.ClassCvnet.ImpDateDiff.value = AppData.ClassCvnet.config.DefDateRange;
         }
 
         /// <summary> 
@@ -3625,6 +3627,33 @@ namespace CvnetBaseCore
         public DataTable OnQueryPrintShohin(string[] wrk_para, int flg)
         {
             var cvnet_config = AppData.ClassCvnet.config;
+            string sql_query = OnQueryPrintShohinQuery(wrk_para, flg);
+
+            var qfm_file = "cvnet_shouhin_v2.qfm";
+            if (cvnet_config.oroshi >= 1) qfm_file = "cvnet_shouhin_w.qfm"; /* 卸対応 */
+            if (cvnet_config.UserFlg == 43) qfm_file = "cvnet_shouhin_43.qfm"; 
+            return AppData.Http?.AspxSqlQuery(sql_query, wrk_para, qfm_file);
+        }
+
+        /// <summary>
+        /// 商品マスタ印刷処理 2009.12.09 共通化
+        /// </summary>
+        /// <param name="wrk_para">印刷条件</param>
+        /// <param name="flg">（呼び元判別FLG） 0=商品マスタ、1=各種マスタ印刷、2=各伝票入力画面</param> 
+        public string OnQueryPrintShohinCsv(string[] wrk_para, int flg)
+        {
+            var cvnet_config = AppData.ClassCvnet.config;
+            string sql_query = OnQueryPrintShohinQuery(wrk_para, flg);
+
+            var qfm_file = "cvnet_shouhin_v2.qfm";
+            if (cvnet_config.oroshi >= 1) qfm_file = "cvnet_shouhin_w.qfm"; /* 卸対応 */
+            if (cvnet_config.UserFlg == 43) qfm_file = "cvnet_shouhin_43.qfm";
+            return AppData.Http?.AspxSqlQueryCsv(sql_query, wrk_para, qfm_file);
+        }
+
+        public string OnQueryPrintShohinQuery(string[] wrk_para, int flg)
+        {
+            var cvnet_config = AppData.ClassCvnet.config;
             /* JAN先頭桁取得処理 */
             int janlength3 = 0;
             if (cvnet_config.janlength1 - cvnet_config.janlength2 > 0)
@@ -3642,7 +3671,8 @@ namespace CvnetBaseCore
             wrk_para2.Set(0, "Data/img");
             var ret_csv = AppData.Http?.AspxSqlQuery2("get_img_path", wrk_para2.ToArray(), "", -1);
             string image_path = string.Empty;
-            if (string.IsNullOrEmpty(ret_csv)) {
+            if (string.IsNullOrEmpty(ret_csv))
+            {
                 image_path = ret_csv?.Split('\n')[0] + "\\";
             }
 
@@ -3669,10 +3699,12 @@ namespace CvnetBaseCore
             sql_query += ",A.商品CD,A.商品名,A.略称,A.旧コード";
 
             /* 卸対応 */
-            if (cvnet_config.oroshi >= 1) {
+            if (cvnet_config.oroshi >= 1)
+            {
                 sql_query += ",A.名称CD11,A.名称CD12,A.名称CD13,A.名称CD14,A.名称CD15,A.名称CD16,A.名称CD17,A.名称CD18";
             }
-            else {
+            else
+            {
                 sql_query += ",A.展示会CD,A.ブランドCD,A.アイテムCD,A.シーズンCD,A.素材CD,A.デザイナーCD,A.メーカーCD,A.原産国CD";
             }
 
@@ -3865,10 +3897,7 @@ namespace CvnetBaseCore
             sql_query += " AND aa.商品CD=h9.商品CD(+)";
             sql_query += " AND aa.商品CD=h10.商品CD(+)";
 
-            var qfm_file = "cvnet_shouhin_v2.qfm";
-            if (cvnet_config.oroshi >= 1) qfm_file = "cvnet_shouhin_w.qfm"; /* 卸対応 */
-            if (cvnet_config.UserFlg == 43) qfm_file = "cvnet_shouhin_43.qfm"; 
-            return AppData.Http?.AspxSqlQuery(sql_query, wrk_para, qfm_file);
+            return sql_query;
         }
 
         /// <summary>
@@ -5409,6 +5438,28 @@ namespace CvnetBaseCore
             // Example: Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
             string privateRoot = Path.Combine(Environment.CurrentDirectory, "hht");
             Directory.CreateDirectory(privateRoot);
+        }
+    }
+
+    public class ImpDateDiff
+    {
+        /* 範囲指定時に補正する日付の日数 .*/ 
+        public int value = 7;
+
+        /// <summary>
+        /// ImpDateDiff:補正日付を求める
+        /// </summary>
+        public DateTime OnGetDay()
+        {
+            var wrk = DateTime.Now;
+            wrk = wrk.AddDays(-value);
+            return wrk;
+        }
+
+        public DateTime OnGetMonth()
+        { 
+            DateTime wrk = DateTime.Now.AddDays(-value);
+            return AppData.ClassSatoo.GetDateVal2(wrk, 0);
         }
     }
 }

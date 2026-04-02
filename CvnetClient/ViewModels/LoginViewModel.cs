@@ -39,6 +39,7 @@ namespace CvnetClient.ViewModels {
                 AppData.ClassSatoo.SHAIN_CD = ret.Item2.SHAIN_CD;
                 AppData.ClassSatoo.SHAIN_Name = ret.Item2.SHAIN_Name;
                 AppData.ClassSatoo.SHAIN_Tenpo = ret.Item2.SHAIN_Tenpo;
+                AppData.ClassSatoo.AspxRandId = ret.Item2.AspxRandId;
                 AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
 
@@ -69,6 +70,7 @@ namespace CvnetClient.ViewModels {
 				AppData.ClassSatoo.SHAIN_CD = ret.Item2.SHAIN_CD;
                 AppData.ClassSatoo.SHAIN_Name = ret.Item2.SHAIN_Name;
 				AppData.ClassSatoo.SHAIN_Tenpo = ret.Item2.SHAIN_Tenpo;
+				AppData.ClassSatoo.AspxRandId = ret.Item2.AspxRandId;
                 AppData.MasterSysKanri = http.AspxSqlQuery("select * from HC$MASTER_SYSKANRI", new string[0]);
 				AppData.MasterSysTax = http.AspxSqlQuery("select * from HC$MASTER_SYSTAX", new string[0]);
 			}

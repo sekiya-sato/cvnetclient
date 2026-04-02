@@ -88,7 +88,7 @@ namespace CvnetClient.Models
         }},
         { "本発注", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "本発注入力", WindowId="" },
+                new ButtonConfig { Text = "本発注入力", WindowId=typeof(Views.SubDlgInp72View).FullName, Parameter="0" },
                 new ButtonConfig { Text = "本発注配分入力", WindowId="" },
                 new ButtonConfig { Text = "入荷予定入力", WindowId="" },
                 new ButtonConfig { Text = "本発注実績表", WindowId=typeof(Views.SubDlg13HachujissekiView).FullName,Parameter="0" },

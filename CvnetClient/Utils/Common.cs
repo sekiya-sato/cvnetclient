@@ -97,7 +97,7 @@ namespace CvnetClient.Utils
                 object firstRowValue = hasRow ? csv_data.Rows[0][column] : null;
                 string firstRowText = (firstRowValue == DBNull.Value || firstRowValue == null) ? "NULL" : firstRowValue.ToString();
 
-                Debug.WriteLine(string.Format("Index: {0} | ColumnName: {1} | DataType: {2} | RecommendType: {3} | FirtRowValue: {4}", 
+                Debug.WriteLine(string.Format("Index: {0} | ColumnName: {1} | DataType: {2} | RecommendType: {3} | FirtRowValue: {4} |", 
                                                index, column.ColumnName, column.DataType, recommend_type, firstRowText));
                 index++;
             }
@@ -113,7 +113,8 @@ namespace CvnetClient.Utils
         {
             double factor = Math.Pow(10, decimals);
             if (value >= 0)
-                return Math.Ceiling(value * factor) / factor;   // positive → round up
+                //return Math.Ceiling(value * factor) / factor;   // positive → round up
+                return Math.Floor(value * factor) / factor;
             else
                 return Math.Floor(value * factor) / factor;     // negative → round down (away from zero)
         }
