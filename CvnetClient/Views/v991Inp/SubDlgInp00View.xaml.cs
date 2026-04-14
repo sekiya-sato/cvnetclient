@@ -15,14 +15,13 @@ using System.Windows.Shapes;
 namespace CvnetClient.Views
 {
     /// <summary>
-    /// Interaction logic for SubDlg01TokView.xaml
+    /// Interaction logic for SubDlgInp00View.xaml
     /// </summary>
-    public partial class SubDlg01TokView : Window
+    public partial class SubDlgInp00View : Window
     {
-        public SubDlg01TokView()
+        public SubDlgInp00View()
         {
             InitializeComponent();
         }
-
     }
 }

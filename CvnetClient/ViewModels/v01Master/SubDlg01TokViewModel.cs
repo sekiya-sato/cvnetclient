@@ -6,12 +6,13 @@ using CvnetClient.Utils;
 using CvnetClient.Views;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Windows;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg01TokViewModel : BaseViewModel
     {
-        #region Declare
+        #region Declaration
         [ObservableProperty]
         ObservableCollection<MasterShop>? listShop;
         [ObservableProperty]
@@ -19,29 +20,29 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         MasterShop? editShop;
         [ObservableProperty]
-        public string day1;
+        private string day1;
         [ObservableProperty]
-        public string day2;
+        private string day2;
         [ObservableProperty]
-        public string day3;
+        private string day3;
         [ObservableProperty]
-        public string day4;
+        private string day4;
         [ObservableProperty]
-        public string day5;
+        private string day5;
         [ObservableProperty]
-        public string day6;
+        private string day6;
         [ObservableProperty]
-        public string hour1;
+        private string hour1;
         [ObservableProperty]
-        public string hour2;
+        private string hour2;
         [ObservableProperty]
-        public string min1;
+        private string min1;
         [ObservableProperty]
-        public string min2;
+        private string min2;
         [ObservableProperty]
-        public string sec1;
+        private string sec1;
         [ObservableProperty]
-        public string sec2;
+        private string sec2;
         [ObservableProperty]
         string? selShopCD;
         [ObservableProperty]
@@ -51,9 +52,19 @@ namespace CvnetClient.ViewModels
         private BizArray col_list;
         [ObservableProperty]
         string? startCode;
-        #region ComboBox
         [ObservableProperty]
-        public Dictionary<string, string> comboListBumon;
+        Visibility showJido;
+        [ObservableProperty]
+        int? selectedJido;
+        [ObservableProperty]
+        Visibility show1;
+        [ObservableProperty]
+        Visibility show2;
+        [ObservableProperty]
+        Visibility show3;
+        [ObservableProperty]
+        int? selectedInvoice;
+        #region ComboBox
         [ObservableProperty]
         public Dictionary<string, string> comboListTanto;
         [ObservableProperty]
@@ -91,69 +102,43 @@ namespace CvnetClient.ViewModels
         [ObservableProperty]
         public Dictionary<string, string> comboListShoHasu;
         [ObservableProperty]
-        public Dictionary<string, string> comboListNohin;
+        public Dictionary<int, string> comboListNohin;
         [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui01;
+        public Dictionary<int, string> comboListStdWareFLG;
         [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui02;
+        public Dictionary<int, string> comboListAllocMethodFLG;
         [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui03;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui04;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui05;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui06;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui07;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui08;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui09;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui10;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui11;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui12;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui13;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui14;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui15;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui16;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui17;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui18;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui19;
-        [ObservableProperty]
-        public Dictionary<string, string> comboListBunrui20;
+        public Dictionary<int, string> comboListShippingFLG;
         #endregion 
-        string sql_collist = """
+        private string sql_collist = """
                得意先CD,得意先名,カナ,旧コード,略称,郵便番号,住所1,住所2,住所3,TEL,FAX,
         宛名FLG1,宛名FLG2,宛名FLG3,宛名名称1,宛名名称2,営業担当CD,店種区分,坪数,在庫管理FLG,
         掛率,セール掛率,店頭セール掛率,請求先CD,請求印刷,締日,入金予定月,入金予定日,入金方法,下代桁切指定,
         下代端数区分,下代計算FLG,消費税CD,消費税計算方法,消費税端数,与信限度額,入金率,出荷停止FLG,
         伝票発行区分,備考,伝票印字1,伝票印字2,伝票印字3,伝票印字4
         ,倉庫区分,営業時間1,営業時間2,営業時間3,施工業者情報,デベロッパ,開始時刻,終了時刻,端末ID,営業時間,棚卸日END
-        ,部門,為替区分,為替桁切指定,為替端数区分,名称CD07,名称CD08,名称CD09,名称CD10,配分ランク01,配分ランク02
+        ,部門,為替区分,為替桁切指定,為替端数区分,名称CD01,名称CD02,名称CD03,名称CD04,名称CD05,名称CD06
+        ,名称CD07,名称CD08,名称CD09,名称CD10,配分ランク01,配分ランク02
         ,基準倉庫FLG,基準倉庫CD,出荷FLG,POS区分,配分方法FLG,伝票印字5,伝票印字6,伝票印字7,伝票印字8
         ,店舗売場コード,ECFLG,締日2,締日3,入金予定月2,入金予定日2,入金予定月3,入金予定日3
         ,伝票社名,伝票店名,移動区分,法人CD,連携先法人CD,連携CD,振込先1,振込先2,振込先3,期日,下限額
         ,名称CD11,名称CD12,名称CD13,名称CD14,名称CD15,名称CD16,名称CD17,名称CD18,名称CD19,名称CD20
-        ,得意先MAIL,登録番号
+        ,得意先MAIL,登録番号,開始日,終了日,棚卸日,自動配分FLG,APP営業時間,元店舗画像名,表示順
         """;
+        private string sql_list = "";
         #endregion
-
-
+        #region Initialization
         public void OnInit(object? init_para = null, string? init_flg = null) 
         {
             OnInitBase(init_para, init_flg);
+            SelectedShop = new MasterShop();
             EditShop = new MasterShop();
+            SelectedJido = 0;
+            SelectedInvoice = 0;
+            ShowJido = Visibility.Hidden;
+            Show1 = Visibility.Hidden;
+            Show2 = Visibility.Hidden;
+            Show3 = Visibility.Hidden;
             #region ComboList Init
             ComboListDay = new Dictionary<string, string>
             {
@@ -194,7 +179,6 @@ namespace CvnetClient.ViewModels
             Day4 = ComboListDay.FirstOrDefault(x => x.Key == "99").Key;
             Day5 = ComboListDay.FirstOrDefault().Key;
             Day6 = ComboListDay.FirstOrDefault().Key;
-
             ComboListHour = new Dictionary<string, string>
             {
                 { "00","00" },
@@ -224,7 +208,6 @@ namespace CvnetClient.ViewModels
             };
             Hour1 = ComboListHour.FirstOrDefault().Key;
             Hour2 = ComboListHour.FirstOrDefault().Key;
-
             ComboListMinSec = new Dictionary<string, string>
             {
                 { "00","00" },
@@ -292,7 +275,6 @@ namespace CvnetClient.ViewModels
             Min2 = ComboListMinSec.FirstOrDefault().Key;
             Sec1 = ComboListMinSec.FirstOrDefault().Key;
             Sec2 = ComboListMinSec.FirstOrDefault().Key;
-
             ComboListTenshu = new Dictionary<string, string> 
             {
                 { "0","0 倉庫" },
@@ -380,273 +362,36 @@ namespace CvnetClient.ViewModels
                 { "1","1 切り上げ" },
                 { "2","2 切り捨て" }
             };
-            ComboListNohin = new Dictionary<string, string> 
+            ComboListNohin = new Dictionary<int, string> 
             {
-                { "0","0 印刷しない" },
-                { "1","1 自社伝票" },
-                { "2","2 百貨店伝票" },
-                { "3","3 チェーンストア統一伝票1型" },
-                { "4","4 チェーンストア統一伝票" },
-                { "5","5 百貨店伝票（丸井用）" },
-                { "6","6 チェーンストア統一伝票（ターンアラウンド用2型）" },
-                { "7","7 チェーンストア統一伝票（ターンアラウンド用1型）" },
-                { "8","8 百貨店伝票Ⅱ型" }
+                { 0,"0 印刷しない" },
+                { 1,"1 自社伝票" },
+                { 2,"2 百貨店伝票" },
+                { 3,"3 チェーンストア統一伝票1型" },
+                { 4,"4 チェーンストア統一伝票" },
+                { 5,"5 百貨店伝票（丸井用）" },
+                { 6,"6 チェーンストア統一伝票（ターンアラウンド用2型）" },
+                { 7,"7 チェーンストア統一伝票（ターンアラウンド用1型）" },
+                { 8,"8 百貨店伝票Ⅱ型" }
             };
-
-            var comboList = new Dictionary<string, string>();
-            string sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='BMN' order by a.名称CD";
-            var get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
+            ComboListStdWareFLG = new Dictionary<int, string>
             {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBumon = comboList;
-            EditShop.Department = ComboListBumon.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C01' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
+                { 0,"0 商品マスタの基準倉庫" },
+                { 1,"1 得意先マスタの基準倉庫" },                
+            };
+            ComboListAllocMethodFLG = new Dictionary<int, string>
             {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui01 = comboList;
-            EditShop.NameCD01 = ComboListBunrui01.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C02' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
+                { 0,"0 売上順" },
+                { 1,"1 ランク順" },
+                { 2,"2 均等配分" },
+                { 3,"3 在庫無視" },
+            };                                 
+            ComboListShippingFLG = new Dictionary<int, string>
             {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui02 = comboList;
-            EditShop.NameCD02 = ComboListBunrui02.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C03' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui03 = comboList;
-            EditShop.NameCD03 = ComboListBunrui03   .FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C04' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui04 = comboList;
-            EditShop.NameCD04 = ComboListBunrui04.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C05' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui05 = comboList;
-            EditShop.NameCD05 = ComboListBunrui05.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C06' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui06 = comboList;
-            EditShop.NameCD06 = ComboListBunrui06.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C07' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui07 = comboList;
-            EditShop.NameCD07 = ComboListBunrui07.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C08' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui08 = comboList;
-            EditShop.NameCD08 = ComboListBunrui08.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C09' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui09 = comboList;
-            EditShop.NameCD09 = ComboListBunrui09.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C10' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui10 = comboList;
-            EditShop.NameCD10 = ComboListBunrui10.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C11' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui11 = comboList;
-            EditShop.NameCD11 = ComboListBunrui11.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C12' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui12 = comboList;
-            EditShop.NameCD12 = ComboListBunrui12.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C13' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui13 = comboList;
-            EditShop.NameCD13 = ComboListBunrui13.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C14' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui14 = comboList;
-            EditShop.NameCD14 = ComboListBunrui14.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C15' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui15 = comboList;
-            EditShop.NameCD15 = ComboListBunrui15.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C16' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui16 = comboList;
-            EditShop.NameCD16 = ComboListBunrui16.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C17' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui17 = comboList;
-            EditShop.NameCD17 = ComboListBunrui17.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C18' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui18 = comboList;
-            EditShop.NameCD18 = ComboListBunrui18.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C19' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui19 = comboList;
-            EditShop.NameCD19 = ComboListBunrui19.FirstOrDefault().Key;
-
-            comboList = new Dictionary<string, string>();
-            sql_query = "select A.名称CD,A.名称 from HC$Master_MEISHO a  where  a.名称区分='C20' order by a.名称CD";
-            get_combolist = AppData.Http?.AspxSqlQuery(sql_query, null);
-            foreach (DataRow row in get_combolist.Rows)
-            {
-                string? key = row[0] != DBNull.Value ? row[0].ToString() : string.Empty;
-                string? value = row[1] != DBNull.Value ? row[1].ToString() : string.Empty;
-                comboList.Add(key, string.Format("{0} {1}", key, value));
-            }
-            ComboListBunrui20 = comboList;
-            EditShop.NameCD20 = ComboListBunrui20.FirstOrDefault().Key;
-
+                { 0,"0 出荷予定" },
+                { 1,"1 出荷確定" },
+            };            
             #endregion
-
             sql_collist = sql_collist.Replace("\r", "").Replace("\n", "").Trim();
             string[] wrk_list = sql_collist.Trim().Split(',');
             for (int i = 0; i < wrk_list.Length; i++)
@@ -655,12 +400,13 @@ namespace CvnetClient.ViewModels
             }
             col_list = (wrk_list.Length > 0) ? new BizArray(wrk_list) : new BizArray();
         }
-
         partial void OnSelectedShopChanged(MasterShop? value)
         {
             if (value != null)
             {
                 EditShop = CvnetBaseCore.Common.CloneObject(value);
+                SelectedJido = EditShop.AllocMethodFLG;
+                SelectedInvoice = EditShop.InvoiceIssueCate;
                 if (EditShop.StartTime != null && EditShop.StartTime != ".") { 
                     Hour1 = EditShop.StartTime.Substring(0,2);
                     Min1 = EditShop.StartTime.Substring(2, 2);
@@ -676,7 +422,218 @@ namespace CvnetClient.ViewModels
             else
                 EditShop = null;
         }
+        partial void OnSelectedJidoChanged(int? value)
+        {
+            if (value != null)
+            {
+                if (value == 0)
+                {
+                    ShowJido = Visibility.Hidden;
+                }
+                else if (value == 1)
+                {
+                    ShowJido = Visibility.Visible;
+                }
+            }
+            else
+            {
+                ShowJido = Visibility.Hidden;
+            }
+            EditShop.AllocMethodFLG = value;
+        }
+        partial void OnSelectedInvoiceChanged(int? value) 
+        { 
+            if(value != null)
+            {
+                if (value == 0 || value == 1)
+                {
+                    Show1 = Visibility.Hidden;
+                    Show2 = Visibility.Hidden;
+                    Show3 = Visibility.Hidden;
+                }
+                else if (value == 2 || value == 8) 
+                {
+                    Show1 = Visibility.Visible;
+                    Show2 = Visibility.Visible;
+                    Show3 = Visibility.Visible;
+                }
+                else if (value == 3 || value == 4 || value == 6 || value == 7)
+                {
+                    Show1 = Visibility.Visible;
+                    Show2 = Visibility.Hidden;
+                    Show3 = Visibility.Hidden;
+                }
+                else if (value == 5)
+                {
+                    Show1 = Visibility.Visible;
+                    Show2 = Visibility.Visible;
+                    Show3 = Visibility.Hidden;
+                }
+            }
+            else
+            {
+                Show1 = Visibility.Hidden;
+                Show2 = Visibility.Hidden;
+                Show3 = Visibility.Hidden;
+            }
+            EditShop.InvoiceIssueCate = value;
+        }
+        #endregion
+        #region ComboBox Function
+        [RelayCommand]
+        public void SelDept(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditShop != null)
+            {
+                EditShop.Department = get_sel00.Code;
+                EditShop.DepartmentName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelSalesRep(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditShop != null)
+            {
+                EditShop.SalesRepCD = get_sel00.Code;
+                EditShop.SalesRepName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelBaseWare(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditShop != null)
+            {
+                EditShop.BaseWarehouseCD = get_sel00.Code;
+                EditShop.BaseWarehouseName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelInvoice(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditShop != null)
+            {
+                EditShop.InvoiceAddrCD = get_sel00.Code;
+                EditShop.InvoiceAddrName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelName((object Result1, object Result2) value)
+        {
+            var (result1, result2) = value;
+            var get_sel00 = (SelValueModel)result1;
+            string kubun = string.Empty;
+            if (result2 is string res2) kubun = res2;
 
+            if (get_sel00 != null && EditShop != null)
+            {
+                if (kubun == "C01")
+                {
+                    EditShop.NameCD01 = get_sel00.Code;
+                    EditShop.NameCD01Name = get_sel00.Name;
+                }
+                if (kubun == "C02")
+                {
+                    EditShop.NameCD02 = get_sel00.Code;
+                    EditShop.NameCD02Name = get_sel00.Name;
+                }
+                if (kubun == "C03")
+                {
+                    EditShop.NameCD03 = get_sel00.Code;
+                    EditShop.NameCD03Name = get_sel00.Name;
+                }
+                if (kubun == "C04")
+                {
+                    EditShop.NameCD04 = get_sel00.Code;
+                    EditShop.NameCD04Name = get_sel00.Name;
+                }
+                if (kubun == "C05")
+                {
+                    EditShop.NameCD05 = get_sel00.Code;
+                    EditShop.NameCD05Name = get_sel00.Name;
+                }
+                if (kubun == "C06")
+                {
+                    EditShop.NameCD06 = get_sel00.Code;
+                    EditShop.NameCD06Name = get_sel00.Name;
+                }
+                if (kubun == "C07")
+                {
+                    EditShop.NameCD07 = get_sel00.Code;
+                    EditShop.NameCD07Name = get_sel00.Name;
+                }
+                if (kubun == "C08")
+                {
+                    EditShop.NameCD08 = get_sel00.Code;
+                    EditShop.NameCD08Name = get_sel00.Name;
+                }
+                if (kubun == "C09")
+                {
+                    EditShop.NameCD09 = get_sel00.Code;
+                    EditShop.NameCD09Name = get_sel00.Name;
+                }
+                if (kubun == "C10")
+                {
+                    EditShop.NameCD10 = get_sel00.Code;
+                    EditShop.NameCD10Name = get_sel00.Name;
+                }
+                if (kubun == "C11")
+                {
+                    EditShop.NameCD11 = get_sel00.Code;
+                    EditShop.NameCD11Name = get_sel00.Name;
+                }
+                if (kubun == "C12")
+                {
+                    EditShop.NameCD12 = get_sel00.Code;
+                    EditShop.NameCD12Name = get_sel00.Name;
+                }
+                if (kubun == "C13")
+                {
+                    EditShop.NameCD13 = get_sel00.Code;
+                    EditShop.NameCD13Name = get_sel00.Name;
+                }
+                if (kubun == "C14")
+                {
+                    EditShop.NameCD14 = get_sel00.Code;
+                    EditShop.NameCD14Name = get_sel00.Name;
+                }
+                if (kubun == "C15")
+                {
+                    EditShop.NameCD15 = get_sel00.Code;
+                    EditShop.NameCD15Name = get_sel00.Name;
+                }
+                if (kubun == "C16")
+                {
+                    EditShop.NameCD16 = get_sel00.Code;
+                    EditShop.NameCD16Name = get_sel00.Name;
+                }
+                if (kubun == "C17")
+                {
+                    EditShop.NameCD17 = get_sel00.Code;
+                    EditShop.NameCD17Name = get_sel00.Name;
+                }
+                if (kubun == "C18")
+                {
+                    EditShop.NameCD18 = get_sel00.Code;
+                    EditShop.NameCD18Name = get_sel00.Name;
+                }
+                if (kubun == "C19")
+                {
+                    EditShop.NameCD19 = get_sel00.Code;
+                    EditShop.NameCD19Name = get_sel00.Name;
+                }
+                if (kubun == "C20")
+                {
+                    EditShop.NameCD20 = get_sel00.Code;
+                    EditShop.NameCD20Name = get_sel00.Name;
+                }
+            }
+        }
+        #endregion
+        #region Data Acquisition
         [RelayCommand]
         void DoList() 
         {
@@ -686,158 +643,55 @@ namespace CvnetClient.ViewModels
                 var vm = AppData.DlgService.GetSelTok(AppData.ClassCvnet.MstDialog["得意先"].v_mstname, null, ar);
                 if (vm != null)
                 {
-                    //vm.SelShoResult0 
-                    //PageView(vm.SelTokResult1.Item2, 0, vm.SelTokResult1.Item1);
-                    //SubList(string.IsNullOrEmpty(StartCode) ? "." : StartCode, ">=", "asc", AppData.maxQueryCnt,vm.SelTokResult1.Item2, vm.SelTokResult1.Item1, );
+                    OnQuery(vm.SelTokResult1.Item2.ToArray(), vm.SelTokResult1.Item1, null);
                 }
                 return;
             }
-            var v_para = new string[] { SelShopCD };
-        }
-        string sql_list = "";
-        void SubList(string startCD,string sql_P1, string sql_P2, int sql_P3, BizArray v_para, string param = "")
-        {
-
-            OnQuery(v_para, param, startCD);
-            //var sql = string.Format(sql_list, sql_P1, sql_P2, sql_P3);
-            //var retData = AppData.Http?.AspxSqlQuery(sql, new string[] { startCd });
-            //if (retData == null || retData.Rows.Count == 0) return;
-            //var list = (from DataRow dr in retData.Rows
-            //            select new MasterShop
-            //            {
-            //                SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
-            //                VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
-            //                VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"]),
-                            
-            //            }).OrderBy(c => c.TradingCD).ToList();
-            //Common.ConvertDotStringDel(list);
-            //ListShop = new ObservableCollection<MasterShop>(list);
-            //if (ListShop.Count > 0)
-            //{
-            //    SelectedShop = ListShop[0];
-            //}
-        }
-
+            var v_para = new string[] { StartCode };
+        }                          
         [RelayCommand]
         void BackList()
         {
-            var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
             if (ListShop != null && ListShop.Count > 0)
             {
-                startcd = ListShop.Min(c => c.TradingCD);
+                StartCode = ListShop.Min(c => c.TradingCD);
             }
-            //SubList(startcd!, "<=", "desc", AppData.maxQueryCnt);
+            else
+            {
+                DoList();
+            }
+            OnQuery(null, null, "<=");
             if (ListShop == null || ListShop.Count == 0)
                 ClientLib.MessageBoxOk(this, "データがありません");
         }
-
         [RelayCommand]
         void NextList()
         {
-            var startcd = string.IsNullOrEmpty(StartCode) ? "." : StartCode;
             if (ListShop != null && ListShop.Count > 0)
             {
-                startcd = ListShop.Max(c => c.TradingCD);
+                StartCode = ListShop.Max(c => c.TradingCD);
             }
-            //SubList(startcd!, ">=", "asc", AppData.maxQueryCnt);
-            if (ListShop == null || ListShop.Count == 0)
-                ClientLib.MessageBoxOk(this, string.Empty);
-        }
-        /// <summary>
-        /// 20210104 ページ表示機能
-        /// </summary>
-        /// <param name="v_para"></param>
-        /// <param name="action">[0 Refresh, 1 Next, 2 Prev, 3 Page]</param>
-        /// <param name="param"></param>
-        public void PageView(BizArray v_para, int action, string param = "")
-        {
-            int colNum = 0;
-
-            string sql_query = " select A.得意先CD ";
-            sql_query += " from HC$Master_TOKUI A ";
-            if (string.IsNullOrEmpty(param))
-                sql_query += " where A.得意先CD >= :1";
             else
-                sql_query += " where A.得意先CD in (" + param + ")";
-            sql_query += " order by A.得意先CD asc ";
-
-            var wrk_csv2 = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
-
-            if (wrk_csv2 == null || wrk_csv2.Rows.Count == 0) return;
-
-            /* get total page count */
-            string para_seq;
-            BizArray arrPageSEQ = new BizArray();
-            int totalRow = wrk_csv2.Rows.Count;
-            int maxDsp = AppData.ClassCvnet.MaxCntDisp;
-            int pageCnt = (totalRow / maxDsp);
-            int modpageCnt = totalRow % maxDsp;
-            if (modpageCnt > 0) pageCnt = pageCnt + 1;
-
-            /* create array of first seq NO of each page*/
-            for (int i = 0; i < pageCnt; i++)
-                arrPageSEQ[i] = wrk_csv2.Rows[i * maxDsp][colNum].ToString();
-
-            // Refresh
-            if (action == 0)
             {
-                /* update page number indicator */
-                if (arrPageSEQ.Count > 0)
-                {
-                    PageNow = 1;
-                    PageTotal = arrPageSEQ.Count;
-                }
-                /* get csv first page */
-                para_seq = arrPageSEQ[0];
-                OnQuery(v_para, param, para_seq);
+                DoList();
             }
-            // Next
-            else if (action == 1)
-            {
-                if (PageNow > 0 && PageNow < arrPageSEQ.Count)
-                {
-                    /* update page indicator */
-                    PageNow = (int)PageNow + 1;
-                    /* get csv next page */
-                    para_seq = arrPageSEQ[(int)PageNow - 1];
-                }
-                else return;
-                OnQuery(v_para, param, para_seq);
-            }
-            // Prev
-            else if (action == 2)
-            {
-                if (PageNow > 1 && PageNow <= arrPageSEQ.Count)
-                {
-                    /* update page indicator */
-                    PageNow = (PageNow) - 1;
-                    /* get csv prev page */
-                    para_seq = arrPageSEQ[(int)PageNow - 1];
-                }
-                else return;
-                OnQuery(v_para, param, para_seq);
-            }
-            // Page
-            else if (action == 3)
-            {
-                if (PageNow >= 1 && PageNow <= arrPageSEQ.Count)
-                {
-                    /* get csv number page */
-                    para_seq = arrPageSEQ[(int)PageNow - 1];
-                }
-                else return;
-                OnQuery(v_para, param, para_seq);
-            }
+            OnQuery(null, null, null);
+            if (ListShop == null || ListShop.Count == 0)
+                ClientLib.MessageBoxOk(this, "データがありません");
         }
-
-        /// <summary>
-        /// 画面表示更新用検索処理 
-        /// </summary>
-        /// <param name="v_para"></param>
-        /// <param name="qs"></param>
-        /// <param name="para_seq"></param>
-        private void OnQuery(BizArray v_para, string qs, string para_seq)
+        private void OnQuery(string[]? v_para = null, string? qs = null, string? p_sort = null)
         {
+            if (qs != null)
+            {
+                qs += " order by 得意先CD";
+                var ret_Data = AppData.Http!.AspxSqlQuery(qs, v_para);
+
+                qs = string.Join(",",
+                    ret_Data.AsEnumerable()
+                           .Take(40)
+                           .Select(r => $"'{r[0]}'"));
+            }
+
             var sql_query = "select A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE";
             for (int i = 0; i < col_list.Count; i++)
                 sql_query += ",A." + col_list[i];
@@ -875,13 +729,14 @@ namespace CvnetClient.ViewModels
 
             sql_query += " from HC$Master_TOKUI A";
 
-            if (qs == null) sql_query += " where A.得意先CD >= :1";
+            if (qs == null || qs == "") sql_query += " where A.得意先CD >= :1";
             else sql_query += " where A.得意先CD in (" + qs + ")";
 
-            if (para_seq != null)
-                sql_query += " and A.得意先CD >= '" + para_seq + "' ";
+            if (StartCode != null)
+                sql_query += " and A.得意先CD >= '" + StartCode + "' ";
             sql_query += " order by A.得意先CD asc ";
-            if (para_seq != null) sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
+
+            sql_query = "select * from (" + sql_query + ") where rownum <= " + AppData.maxQueryCnt;
 
             var retData = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
             if (retData == null || retData.Rows.Count == 0) return;
@@ -891,7 +746,7 @@ namespace CvnetClient.ViewModels
                             select new MasterShop
                             {
                                 SeqNo = long.TryParse(dr["SEQ_NO"].ToString(), out var _seqNo) ? _seqNo : 0,
-                                VdateCreate = decimal.TryParse(dr["VDATE_CREATE"].ToString(),out var _dateC) ? _dateC : 0,
+                                VdateCreate = decimal.TryParse(dr["VDATE_CREATE"].ToString(), out var _dateC) ? _dateC : 0,
                                 VdateUpdate = decimal.TryParse(dr["VDATE_UPDATE"].ToString(), out var _dateU) ? _dateU : 0,
                                 TradingCD = dr["得意先CD"].ToString() ?? string.Empty,
                                 TradingName = dr["得意先名"].ToString() ?? string.Empty,
@@ -911,10 +766,11 @@ namespace CvnetClient.ViewModels
                                 SaleCommRate = double.TryParse(dr["セール掛率"].ToString(), out var _scomm) ? _scomm : 0.0,
                                 InStoreSaleRate = double.TryParse(dr["店頭セール掛率"].ToString(), out var _icomm) ? _icomm : 0.0,
                                 InvoiceAddrCD = dr["請求先CD"].ToString() ?? string.Empty,
-                                InvoicePrint = int.TryParse(dr["請求印刷"].ToString(), out var _invoicePrint) ? _invoicePrint: 0,
+                                InvoiceAddrName = dr["請求名"].ToString() ?? string.Empty,
+                                InvoicePrint = int.TryParse(dr["請求印刷"].ToString(), out var _invoicePrint) ? _invoicePrint : 0,
                                 ClosingDate = int.TryParse(dr["締日"].ToString(), out var _closeDate) ? _closeDate : 0,
-                                ExpectedPayMonth = int.TryParse(dr["入金予定月"].ToString(), out var _expectedPayMonth) ? _expectedPayMonth : 0,                               
-                                ExpectedPayDate = int.TryParse(dr["入金予定日"].ToString(), out var _expectedPayDate) ? _expectedPayDate : 0,                               
+                                ExpectedPayMonth = int.TryParse(dr["入金予定月"].ToString(), out var _expectedPayMonth) ? _expectedPayMonth : 0,
+                                ExpectedPayDate = int.TryParse(dr["入金予定日"].ToString(), out var _expectedPayDate) ? _expectedPayDate : 0,
                                 PayMethod = dr["入金方法"].ToString() ?? string.Empty,
                                 LowerPriceCutoffSpec = int.TryParse(dr["下代桁切指定"].ToString(), out var _lowerPriceCutoffSpec) ? _lowerPriceCutoffSpec : 0,
                                 LowerPriceFracCate = int.TryParse(dr["下代端数区分"].ToString(), out var _lowerPriceFracCate) ? _lowerPriceFracCate : 0,
@@ -929,6 +785,7 @@ namespace CvnetClient.ViewModels
                                 AddressName2 = dr["宛名名称2"].ToString() ?? string.Empty,
                                 InvoiceIssueCate = int.TryParse(dr["伝票発行区分"].ToString(), out var _invoiceIssueCate) ? _invoiceIssueCate : 0,
                                 Department = dr["部門"].ToString() ?? string.Empty,
+                                DepartmentName = dr["部門名"].ToString() ?? string.Empty,
                                 Notes = dr["備考"].ToString() ?? string.Empty,
                                 InvManageFLG = int.TryParse(dr["在庫管理FLG"].ToString(), out var _invManageFLG) ? _invManageFLG : 0,
                                 AutoAllocFLG = int.TryParse(dr["自動配分FLG"].ToString(), out var _autoAllocFLG) ? _autoAllocFLG : 0,
@@ -944,6 +801,16 @@ namespace CvnetClient.ViewModels
                                 NameCD08 = dr["名称CD08"].ToString() ?? string.Empty,
                                 NameCD09 = dr["名称CD09"].ToString() ?? string.Empty,
                                 NameCD10 = dr["名称CD10"].ToString() ?? string.Empty,
+                                NameCD01Name = dr["補足01名"].ToString() ?? string.Empty,
+                                NameCD02Name = dr["補足02名"].ToString() ?? string.Empty,
+                                NameCD03Name = dr["補足03名"].ToString() ?? string.Empty,
+                                NameCD04Name = dr["補足04名"].ToString() ?? string.Empty,
+                                NameCD05Name = dr["補足05名"].ToString() ?? string.Empty,
+                                NameCD06Name = dr["補足06名"].ToString() ?? string.Empty,
+                                NameCD07Name = dr["補足07名"].ToString() ?? string.Empty,
+                                NameCD08Name = dr["補足08名"].ToString() ?? string.Empty,
+                                NameCD09Name = dr["補足09名"].ToString() ?? string.Empty,
+                                NameCD10Name = dr["補足10名"].ToString() ?? string.Empty,
                                 InvDate = dr["棚卸日"].ToString() ?? string.Empty,
                                 StartTime = dr["開始時刻"].ToString() ?? string.Empty,
                                 EndTime = dr["終了時刻"].ToString() ?? string.Empty,
@@ -964,6 +831,7 @@ namespace CvnetClient.ViewModels
                                 ShippingFLG = int.TryParse(dr["出荷FLG"].ToString(), out var _shippingFLG) ? _shippingFLG : 0,
                                 BaseWarehouseFLG = int.TryParse(dr["基準倉庫FLG"].ToString(), out var _baseWarehouseFLG) ? _baseWarehouseFLG : 0,
                                 BaseWarehouseCD = dr["基準倉庫CD"].ToString() ?? string.Empty,
+                                BaseWarehouseName = dr["基準倉庫名"].ToString() ?? string.Empty,
                                 AllocMethodFLG = int.TryParse(dr["配分方法FLG"].ToString(), out var _allocMethodFLG) ? _allocMethodFLG : 0,
                                 PosCate = int.TryParse(dr["POS区分"].ToString(), out var _posCate) ? _posCate : 0,
                                 SlipPrint5 = dr["伝票印字5"].ToString() ?? string.Empty,
@@ -983,6 +851,16 @@ namespace CvnetClient.ViewModels
                                 NameCD18 = dr["名称CD18"].ToString() ?? string.Empty,
                                 NameCD19 = dr["名称CD19"].ToString() ?? string.Empty,
                                 NameCD20 = dr["名称CD20"].ToString() ?? string.Empty,
+                                NameCD11Name = dr["補足11名"].ToString() ?? string.Empty,
+                                NameCD12Name = dr["補足12名"].ToString() ?? string.Empty,
+                                NameCD13Name = dr["補足13名"].ToString() ?? string.Empty,
+                                NameCD14Name = dr["補足14名"].ToString() ?? string.Empty,
+                                NameCD15Name = dr["補足15名"].ToString() ?? string.Empty,
+                                NameCD16Name = dr["補足16名"].ToString() ?? string.Empty,
+                                NameCD17Name = dr["補足17名"].ToString() ?? string.Empty,
+                                NameCD18Name = dr["補足18名"].ToString() ?? string.Empty,
+                                NameCD19Name = dr["補足19名"].ToString() ?? string.Empty,
+                                NameCD20Name = dr["補足20名"].ToString() ?? string.Empty,
                                 CloseDate2 = int.TryParse(dr["締日2"].ToString(), out var _closeDate2) ? _closeDate2 : 0,
                                 CloseDate3 = int.TryParse(dr["締日3"].ToString(), out var _closeDate3) ? _closeDate3 : 0,
                                 XpPayMon2 = int.TryParse(dr["入金予定月2"].ToString(), out var _xpPayMon2) ? _xpPayMon2 : 0,
@@ -1002,9 +880,9 @@ namespace CvnetClient.ViewModels
                                 MinAm = int.TryParse(dr["下限額"].ToString(), out var _minAm) ? _minAm : 0,
                                 CustEmail = dr["得意先MAIL"].ToString() ?? string.Empty,
                                 RegistNum = dr["登録番号"].ToString() ?? string.Empty,
-                                //APPBusHours = dr["APP営業時間"].ToString() ?? string.Empty,
-                                //OriStoreImgName = dr["元店舗画像名"].ToString() ?? string.Empty,
-                                //DispOrder = int.TryParse(dr["表示順"].ToString(), out var _dispOrder) ? _dispOrder : 0,
+                                APPBusHours = dr["APP営業時間"].ToString() ?? string.Empty,
+                                OriStoreImgName = dr["元店舗画像名"].ToString() ?? string.Empty,
+                                DispOrder = int.TryParse(dr["表示順"].ToString(), out var _dispOrder) ? _dispOrder : 0,
 
                             }).OrderBy(c => c.TradingCD).ToList();
                 ListShop = new ObservableCollection<MasterShop>(list);
@@ -1015,7 +893,8 @@ namespace CvnetClient.ViewModels
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-
+        #endregion
+        #region CRUD
         [RelayCommand]
         void DoInsert()
         {
@@ -1023,16 +902,15 @@ namespace CvnetClient.ViewModels
             var item = Common.CloneObject(EditShop);
             Common.ConvertDotStringAdd(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "MASTER_TOKUI", 0, "0",
-                new string[] { "得意先CD", "得意先名", "部門", "郵便番号", "住所1","住所2","住所3","旧コード","略称","カナ",
+            var columns = new List<string> {"得意先CD", "得意先名", "部門", "郵便番号", "住所1","住所2","住所3","旧コード","略称","カナ",
                     "TEL","FAX","営業担当CD","店種区分","坪数","掛率","セール掛率","店頭セール掛率","請求先CD","請求印刷","締日","入金予定月","入金予定日","入金方法",
                     "下代桁切指定","下代端数区分","下代計算FLG","消費税CD","消費税計算方法","消費税端数","与信限度額","入金率","出荷停止FLG",
                     "宛名名称1","宛名名称2","伝票発行区分","備考","在庫管理FLG","自動配分FLG","開始日","終了日","名称CD01","名称CD02","名称CD03","名称CD04","名称CD05","名称CD06","名称CD07","名称CD08","名称CD09","名称CD10",
                     "棚卸日","開始時刻","終了時刻","端末ID","倉庫区分","営業時間1","営業時間2","営業時間3","施工業者情報","デベロッパ","営業時間","棚卸日END","為替区分","為替桁切指定","為替端数区分","配分ランク01","配分ランク02","出荷FLG",
                     "基準倉庫FLG","基準倉庫CD","配分方法FLG","POS区分","伝票印字5","伝票印字6","伝票印字7","伝票印字8","入力社員CD","店舗売場コード","ECFLG","名称CD11","名称CD12","名称CD13","名称CD14","名称CD15","名称CD16","名称CD17",
                     "名称CD18","名称CD19","名称CD20","締日2","締日3","入金予定月2","入金予定日2","入金予定月3","入金予定日3","伝票社名","伝票店名","移動区分","法人CD","連携CD","連携先法人CD","振込先1","振込先2",
-                    "振込先3","期日","下限額","得意先MAIL","登録番号"},
-                new string[] { item.TradingCD!, item.TradingName!, item.Department!, item.Postal,item.Address1!,item.Address2,item.Address3,item.OldCD,item.Abbr,item.Katakana,
+                    "振込先3","期日","下限額","得意先MAIL","登録番号","振込先1","振込先2","振込先1" };
+            var values = new List<string> { item.TradingCD!, item.TradingName!, item.Department!, item.Postal,item.Address1!,item.Address2,item.Address3,item.OldCD,item.Abbr,item.Katakana,
                     item.TelNo,item.FaxNo,item.SalesRepCD,item.StoreCate.ToString(),item.Area.ToString(),item.CommissionRate.ToString(),item.SaleCommRate.ToString(),item.InStoreSaleRate.ToString(),
                     item.InvoiceAddrCD.ToString(),item.InvoicePrint.ToString(),item.ClosingDate.ToString(),item.ExpectedPayMonth.ToString(),item.ExpectedPayDate.ToString(),item.PayMethod,
                     item.LowerPriceCutoffSpec.ToString(),item.LowerPriceFracCate.ToString(),item.LowerPriceCalcFLG.ToString(),item.ConsumpTaxCD.ToString(),
@@ -1045,7 +923,55 @@ namespace CvnetClient.ViewModels
                     item.EnterEmployeeCD,item.StoreSalesFloorCode,item.EcFLG.ToString(),item.NameCD11,item.NameCD12,item.NameCD13,item.NameCD14,item.NameCD15,item.NameCD16,item.NameCD17,
                     item.NameCD18,item.NameCD19,item.NameCD20,item.CloseDate2.ToString(),item.CloseDate3.ToString(),item.XpPayMon2.ToString(),item.XpPayDate2.ToString(),item.XpPayMon3.ToString(),
                     item.XpPayDate3.ToString(),item.InvoCompName,item.InvoStoreName,item.TransCate.ToString(),item.CorpCD,item.AffiCD,item.AffiCorpCD,item.PayDesti1,item.PayDesti2,
-                    item.PayDesti3,item.DueDate.ToString(),item.MinAm.ToString(),item.CustEmail,item.RegistNum});
+                    item.PayDesti3,item.DueDate.ToString(),item.MinAm.ToString(),item.CustEmail,item.RegistNum,item.PayDesti1,item.PayDesti2,item.PayDesti3};
+
+            if (ShowJido == Visibility.Visible) 
+            {
+                columns.Add("基準倉庫FLG");
+                values.Add(item.BaseWarehouseFLG.ToString());
+
+                columns.Add("基準倉庫CD");
+                values.Add(item.BaseWarehouseCD.ToString());
+
+                columns.Add("配分方法FLG");
+                values.Add(item.AllocMethodFLG.ToString());
+
+                columns.Add("出荷FLG");
+                values.Add(item.ShippingFLG.ToString());
+            }
+
+            if (Show1 == Visibility.Visible)
+            {
+                columns.Add("伝票印字1");
+                values.Add(item.InvoicePrint1.ToString());
+                columns.Add("伝票印字2");
+                values.Add(item.InvoicePrint2.ToString());
+                columns.Add("伝票印字3");
+                values.Add(item.InvoicePrint3.ToString());
+                columns.Add("伝票印字4");
+                values.Add(item.InvoicePrint4.ToString());               
+
+                columns.Add("伝票社名");
+                values.Add(item.InvoCompName.ToString());
+                columns.Add("伝票店名");
+                values.Add(item.InvoStoreName.ToString());
+            }
+            if (Show2 == Visibility.Visible)
+            {
+                columns.Add("伝票印字5");
+                values.Add(item.SlipPrint5.ToString());
+            }
+            if (Show3 == Visibility.Visible)
+            {
+                columns.Add("伝票印字6");
+                values.Add(item.SlipPrint6.ToString());
+                columns.Add("伝票印字7");
+                values.Add(item.SlipPrint7.ToString());
+                columns.Add("伝票印字8");
+                values.Add(item.SlipPrint8.ToString());
+            }
+
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.INSERT, "MASTER_TOKUI", 0, "0",columns.ToArray(),values.ToArray());
             if (ret.Code == 0)
             {
                 item.SeqNo = ret.NewSeq;
@@ -1060,7 +986,6 @@ namespace CvnetClient.ViewModels
                 ClientLib.MessageBoxError(this, ret.Code.ToString());
             }
         }
-
         [RelayCommand]
         void DoUpdate()
         {
@@ -1068,21 +993,20 @@ namespace CvnetClient.ViewModels
             var item = Common.CloneObject(EditShop);
             Common.ConvertDotStringAdd(item);
             if (item == null) return;
-            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "MASTER_TOKUI", item.SeqNo, item.VdateUpdate.ToString(),
-                new string[] { "得意先CD", "得意先名", "部門", "郵便番号", "住所1","住所2","住所3","旧コード","略称","カナ",
+            var columns = new List<string> { "得意先CD", "得意先名", "部門", "郵便番号", "住所1","住所2","住所3","旧コード","略称","カナ",
                     "TEL","FAX","営業担当CD","店種区分","坪数","掛率","セール掛率","店頭セール掛率","請求先CD","請求印刷","締日","入金予定月","入金予定日","入金方法",
                     "下代桁切指定","下代端数区分","下代計算FLG","消費税CD","消費税計算方法","消費税端数","与信限度額","入金率","出荷停止FLG",
                     "宛名名称1","宛名名称2","伝票発行区分","備考","在庫管理FLG","自動配分FLG","開始日","終了日","名称CD01","名称CD02","名称CD03","名称CD04","名称CD05","名称CD06","名称CD07","名称CD08","名称CD09","名称CD10",
                     "棚卸日","開始時刻","終了時刻","端末ID","倉庫区分","営業時間1","営業時間2","営業時間3","施工業者情報","デベロッパ","営業時間","棚卸日END","為替区分","為替桁切指定","為替端数区分","配分ランク01","配分ランク02","出荷FLG",
                     "基準倉庫FLG","基準倉庫CD","配分方法FLG","POS区分","伝票印字5","伝票印字6","伝票印字7","伝票印字8","入力社員CD","店舗売場コード","ECFLG","名称CD11","名称CD12","名称CD13","名称CD14","名称CD15","名称CD16","名称CD17",
                     "名称CD18","名称CD19","名称CD20","締日2","締日3","入金予定月2","入金予定日2","入金予定月3","入金予定日3","伝票社名","伝票店名","移動区分","法人CD","連携CD","連携先法人CD","振込先1","振込先2",
-                    "振込先3","期日","下限額","得意先MAIL","登録番号"},
-                new string[] { item.TradingCD!, item.TradingName!, item.Department!, item.Postal,item.Address1!,item.Address2,item.Address3,item.OldCD,item.Abbr,item.Katakana,
+                    "振込先3","期日","下限額","得意先MAIL","登録番号","振込先1","振込先2","振込先3"};
+            var values = new List<string> {item.TradingCD!, item.TradingName!, item.Department!, item.Postal,item.Address1!,item.Address2,item.Address3,item.OldCD,item.Abbr,item.Katakana,
                     item.TelNo,item.FaxNo,item.SalesRepCD,item.StoreCate.ToString(),item.Area.ToString(),item.CommissionRate.ToString(),item.SaleCommRate.ToString(),item.InStoreSaleRate.ToString(),
                     item.InvoiceAddrCD.ToString(),item.InvoicePrint.ToString(),item.ClosingDate.ToString(),item.ExpectedPayMonth.ToString(),item.ExpectedPayDate.ToString(),item.PayMethod,
                     item.LowerPriceCutoffSpec.ToString(),item.LowerPriceFracCate.ToString(),item.LowerPriceCalcFLG.ToString(),item.ConsumpTaxCD.ToString(),
                     item.ConsumpTaxCalc.ToString(),item.ConsumpTaxFrac.ToString(),item.CreditLimit.ToString(),item.PaymentRate.ToString(),item.ShipmentStopFlg.ToString(),
-                    item.AddressName1,item.AddressName2,item.InvoiceIssueCate.ToString(),item.Department,item.Notes,item.InvManageFLG.ToString(),item.AutoAllocFLG.ToString(),
+                    item.AddressName1,item.AddressName2,item.InvoiceIssueCate.ToString(),item.Notes,item.InvManageFLG.ToString(),item.AutoAllocFLG.ToString(),
                     item.StartDate,item.EndDate,item.NameCD01,item.NameCD02,item.NameCD03,item.NameCD04,item.NameCD05,item.NameCD06,item.NameCD07,item.NameCD08,item.NameCD09,item.NameCD10,
                     item.InvDate,item.StartTime,item.EndTime,item.TerminalID,item.WarehouseCate.ToString(),item.BusinHours1,item.BusinHours2,item.BusinHours3,item.ContractInfo,item.Developer,
                     item.BusinessHours.ToString(),item.InvDateEND,item.ExchangeCate,item.ExDeciCutoff.ToString(),item.ExFracCate.ToString(),item.AllocRank01,item.AllocRank02,item.ShippingFLG.ToString(),
@@ -1090,7 +1014,54 @@ namespace CvnetClient.ViewModels
                     item.EnterEmployeeCD,item.StoreSalesFloorCode,item.EcFLG.ToString(),item.NameCD11,item.NameCD12,item.NameCD13,item.NameCD14,item.NameCD15,item.NameCD16,item.NameCD17,
                     item.NameCD18,item.NameCD19,item.NameCD20,item.CloseDate2.ToString(),item.CloseDate3.ToString(),item.XpPayMon2.ToString(),item.XpPayDate2.ToString(),item.XpPayMon3.ToString(),
                     item.XpPayDate3.ToString(),item.InvoCompName,item.InvoStoreName,item.TransCate.ToString(),item.CorpCD,item.AffiCD,item.AffiCorpCD,item.PayDesti1,item.PayDesti2,
-                    item.PayDesti3,item.DueDate.ToString(),item.MinAm.ToString(),item.CustEmail,item.RegistNum });
+                    item.PayDesti3,item.DueDate.ToString(),item.MinAm.ToString(),item.CustEmail,item.RegistNum,item.PayDesti1,item.PayDesti2,item.PayDesti3};
+            
+            if (ShowJido == Visibility.Visible)
+            {
+                columns.Add("基準倉庫FLG");
+                values.Add(item.BaseWarehouseFLG.ToString());
+
+                columns.Add("基準倉庫CD");
+                values.Add(item.BaseWarehouseCD.ToString());
+
+                columns.Add("配分方法FLG");
+                values.Add(item.AllocMethodFLG.ToString());
+
+                columns.Add("出荷FLG");
+                values.Add(item.ShippingFLG.ToString());
+            }
+
+            if (Show1 == Visibility.Visible)
+            {
+                columns.Add("伝票印字1");
+                values.Add(item.InvoicePrint1.ToString());
+                columns.Add("伝票印字2");
+                values.Add(item.InvoicePrint2.ToString());
+                columns.Add("伝票印字3");
+                values.Add(item.InvoicePrint3.ToString());
+                columns.Add("伝票印字4");
+                values.Add(item.InvoicePrint4.ToString());
+
+                columns.Add("伝票社名");
+                values.Add(item.InvoCompName.ToString());
+                columns.Add("伝票店名");
+                values.Add(item.InvoStoreName.ToString());
+            }
+            if (Show2 == Visibility.Visible)
+            {
+                columns.Add("伝票印字5");
+                values.Add(item.SlipPrint5.ToString());
+            }
+            if (Show3 == Visibility.Visible)
+            {
+                columns.Add("伝票印字6");
+                values.Add(item.SlipPrint6.ToString());
+                columns.Add("伝票印字7");
+                values.Add(item.SlipPrint7.ToString());
+                columns.Add("伝票印字8");
+                values.Add(item.SlipPrint8.ToString());
+            }
+            var ret = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UPDATE, "MASTER_TOKUI", item.SeqNo, item.VdateUpdate.ToString(),columns.ToArray(),values.ToArray());
             if (ret.Code == 0)
             {
                 Common.ConvertDotStringDel(item);
@@ -1214,7 +1185,6 @@ namespace CvnetClient.ViewModels
                 ClientLib.MessageBoxError(this, ret.Code.ToString());
             }
         }
-
         [RelayCommand]
         void DoDelete()
         {
@@ -1236,35 +1206,182 @@ namespace CvnetClient.ViewModels
                 ClientLib.MessageBoxError(this, ret.Code.ToString());
             }
         }
-
+        #endregion
+        #region Function
         [RelayCommand]
         async Task DoPrintAsync()
         {
             if (!ClientLib.MessageBox(this, "印刷しますか？")) return;
             ClientLib.CursorToWait();
-            if (ListShop == null || ListShop.Count == 0) return;
+            if (ListShop == null || ListShop.Count == 0) { ClientLib.CursorToNormal(); return; }
             var paramNames = ListShop.Select((c, i) => $":p{i}||''").ToList();
-            // Build parameter values
-            var parameters = ListShop.Select(c => c.TradingCD).ToArray();
-            var joined = string.Join(",", parameters.Select(p => $"'{p}'"));
-            string[] param = new string[1];
-            param[0] = joined;
-            var ret = AppData.ClassCvnet.OnQueryPrintTokui(param, 0);
 
-            if (ret.Split('\n').Length < 2)
+            int max_col = 103;
+
+            var sql_query = "select A.SEQ_NO";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_CREATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_CREATE),10,6) 作成日時";
+            sql_query += ",SUBSTR(GET_VDATE(a.VDATE_UPDATE),0,8)||SUBSTR(GET_VDATE(a.VDATE_UPDATE),10,6) 更新日時";
+            sql_query += ",A.得意先CD,A.得意先名,A.カナ,A.旧コード,A.略称,A.郵便番号,A.住所1,A.住所2,A.住所3,A.TEL,A.FAX";
+            sql_query += ",A.宛名FLG1,A.宛名FLG2,A.宛名FLG3,A.宛名名称1,A.宛名名称2,A.営業担当CD,A.店種区分,A.坪数,A.在庫管理FLG";
+            sql_query += ",A.掛率,A.セール掛率,A.店頭セール掛率,A.請求先CD,A.請求印刷,A.締日,A.入金予定月,A.入金予定日,A.入金方法,A.下代桁切指定";
+            sql_query += ",A.下代端数区分,A.下代計算FLG,A.消費税CD,A.消費税計算方法,A.消費税端数,A.与信限度額,A.入金率,A.出荷停止FLG";
+            sql_query += ",A.伝票発行区分,A.備考,A.伝票印字1,A.伝票印字2,A.伝票印字3,A.伝票印字4";
+            sql_query += ",A.自動配分FLG,A.開始日,A.終了日,A.棚卸日,A.名称CD01,A.名称CD02,A.名称CD03,A.名称CD04,A.名称CD05,A.名称CD06";
+            sql_query += ",A.倉庫区分,A.営業時間1,A.営業時間2,A.営業時間3,A.施工業者情報,A.デベロッパ,A.開始時刻,A.終了時刻,A.端末ID,A.営業時間,A.棚卸日END";
+            sql_query += ",A.部門,A.為替区分,A.為替桁切指定,A.為替端数区分,A.名称CD07,A.名称CD08,A.名称CD09,A.名称CD10,A.配分ランク01,A.配分ランク02";
+            sql_query += ",A.基準倉庫FLG,A.基準倉庫CD,A.出荷FLG,A.POS区分,A.配分方法FLG,A.伝票印字5,A.伝票印字6,A.伝票印字7,A.伝票印字8";
+            sql_query += ",A.店舗売場コード,A.ECFLG,A.締日2,A.締日3,入金予定月2,入金予定日2,入金予定月3,入金予定日3";
+            sql_query += ",A.伝票社名,A.伝票店名";
+            sql_query += ",移動区分";
+            sql_query += ",A.振込先1,A.振込先2,A.振込先3";
+            sql_query += ",A.得意先MAIL";
+            sql_query += ",A.登録番号";
+
+            for (var i = max_col; i < 150; i++)
+            {
+                sql_query += " ,'' DummyCD" + i.ToString("000");
+            }
+
+            sql_query += ",NVL((select H.名前 from HC$MASTER_SHAIN H where H.社員CD=A.営業担当CD),'.') 担当名";
+            sql_query += ",NVL((select H.得意先名 from HC$MASTER_TOKUI H where  H.得意先CD=A.請求先CD),'.') 請求名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C01' and H.名称CD=A.名称CD01),'.') 補足01名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C02' and H.名称CD=A.名称CD02),'.') 補足02名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C03' and H.名称CD=A.名称CD03),'.') 補足03名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C04' and H.名称CD=A.名称CD04),'.') 補足04名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C05' and H.名称CD=A.名称CD05),'.') 補足05名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C06' and H.名称CD=A.名称CD06),'.') 補足06名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C07' and H.名称CD=A.名称CD07),'.') 補足07名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C08' and H.名称CD=A.名称CD08),'.') 補足08名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C09' and H.名称CD=A.名称CD09),'.') 補足09名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C10' and H.名称CD=A.名称CD10),'.') 補足10名";
+            sql_query += ",(A.入力社員CD ||' '|| (select B.名前 from HC$MASTER_SHAIN B where B.社員CD=A.入力社員CD)) 最終修正者";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='BMN' and H.名称CD=A.部門),'.') 部門名";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C01'),'.') title1";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C02'),'.') title2";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C03'),'.') title3";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C04'),'.') title4";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C05'),'.') title5";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C06'),'.') title6";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C07'),'.') title7";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C08'),'.') title8";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C09'),'.') title9";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C10'),'.') title10";
+            sql_query += ",NVL((select H.名称 from HC$master_meisho H where H.名称区分='RAT' and H.名称CD=A.為替区分),'.') 為替区分名";
+            sql_query += ",NVL((select H.得意先名 from HC$MASTER_TOKUI H where H.得意先CD=A.基準倉庫CD),'.') 倉庫名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("する", "A.在庫管理FLG") + " 在庫管理名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("する", "A.請求印刷") + " 請求印刷名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("予定月", "A.入金予定月") + " 入金予定月名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("入金区分2", "A.入金方法") + " 入金方法名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("桁切", "A.下代桁切指定") + " 下代桁切名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("端数", "A.下代端数区分") + " 下代端数名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("下代計算", "A.下代計算FLG") + " 下代計算名";
+
+            if (AppData.ClassCvnet.config.oroshi == 0)
+            {
+                sql_query += ",CASE WHEN (A.消費税CD=0) THEN '0 非課税' WHEN (A.消費税CD=1) THEN '1 課税' ELSE '.' END  消費税CD名";
+            }
+            else
+            {
+                sql_query += ",CASE WHEN (A.消費税CD=0) THEN '0 非課税' WHEN (A.消費税CD=1) THEN '1 外税' WHEN (A.消費税CD=2) THEN '2 内税' ELSE '.' END  消費税CD名";
+            }
+
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("端数", "A.消費税端数") + " 消費税端数名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("消費税計算", "A.消費税計算方法") + " 消費税計算名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("する", "A.出荷停止FLG") + " 出荷停止名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("為替桁切", "A.為替桁切指定") + " 為替桁切名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("端数", "A.為替端数区分") + " 為替端数名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("倉庫区分02", "A.倉庫区分") + " 倉庫区分名";
+
+            sql_query += ",CASE WHEN (A.店種区分='0') THEN '0 倉庫' WHEN (A.店種区分='1') THEN '1 卸先' WHEN (A.店種区分='3') THEN '3 売仕店' WHEN (A.店種区分='6') THEN '6 直営店' ELSE '.' END  店種区分名";
+            sql_query += ",CASE WHEN (A.POS区分='0') THEN '0 通常' WHEN (A.POS区分='1') THEN '9 POSﾏｽﾀ削除指示' WHEN (A.POS区分='2') THEN '10 出力しない' ELSE '.' END  POS区分名";
+            sql_query += ",CASE WHEN (A.ECFLG='0') THEN '0 通常店舗' WHEN (A.ECFLG='1') THEN '1 EC店舗' ELSE '.' END  ECFLG名";
+
+            sql_query += ",CASE WHEN (A.自動配分FLG='0') THEN '0 自動補充しない' WHEN (A.自動配分FLG='1') THEN '1 補充（毎日）' ELSE '.' END  自動配分名";
+            sql_query += ",CASE WHEN (A.基準倉庫FLG='0') THEN '0 商品マスタの基準倉庫' WHEN (A.基準倉庫FLG='1') THEN '1 得意先マスタの基準倉庫' ELSE '.' END  基準倉庫名";
+            sql_query += ",CASE WHEN (A.出荷FLG='0') THEN '0 出荷予定' WHEN (A.出荷FLG=1) THEN '1 出荷確定' ELSE '.' END  出荷FLG名";
+            sql_query += ",CASE WHEN (A.配分方法FLG='0') THEN '0 売上順' WHEN (A.配分方法FLG='1') THEN '1 ランク順' WHEN (A.配分方法FLG='2') THEN '2 均等配分' ELSE '.' END  配分方法名";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=5 OR A.伝票発行区分=8) THEN '店別' WHEN (A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '社･店コード' ELSE '.' END  伝票印字ラベル1";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=5 OR A.伝票発行区分=8) THEN '品別番号' WHEN (A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '分類コード' ELSE '.' END  伝票印字ラベル2";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7 OR A.伝票発行区分=8) THEN '取引先コード' ELSE '.' END  伝票印字ラベル3";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=5 OR A.伝票発行区分=8) THEN '納品場所' WHEN (A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '伝票区分' ELSE '.' END  伝票印字ラベル4";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '店出場所' WHEN (A.伝票発行区分=5) THEN '売場名' ELSE '.' END  伝票印字ラベル5";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '売場名' ELSE '.' END  伝票印字ラベル6";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '内線番号' ELSE '.' END  伝票印字ラベル7";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=8) THEN '担当者' ELSE '.' END  伝票印字ラベル8";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("伝票", "A.伝票発行区分") + " 伝票発行区分名";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("予定月", "A.入金予定月2") + " 入金予定月名2";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("予定月", "A.入金予定月2") + " 入金予定月名3";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7 OR A.伝票発行区分=8) THEN '伝票社名' ELSE '.' END 伝票社名ラベル";
+            sql_query += ",CASE WHEN (A.伝票発行区分=0 OR A.伝票発行区分=1) THEN '' WHEN (A.伝票発行区分=2 OR A.伝票発行区分=3 OR A.伝票発行区分=4 OR A.伝票発行区分=5 OR A.伝票発行区分=6 OR A.伝票発行区分=7 OR A.伝票発行区分=8) THEN '伝票店名' ELSE '.' END 伝票店名ラベル";
+            sql_query += "," + AppData.ClassCvnet.comboItem00.GetCaseStr("得意先移動区分", "A.移動区分") + " 移動区分名";
+            sql_query += ",A.名称CD11,A.名称CD12,A.名称CD13,A.名称CD14,A.名称CD15";
+            sql_query += ",A.名称CD16,A.名称CD17,A.名称CD18,A.名称CD19,A.名称CD20";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C11'),'.') title11";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C12'),'.') title12";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C13'),'.') title13";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C14'),'.') title14";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C15'),'.') title15";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C16'),'.') title16";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C17'),'.') title17";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C18'),'.') title18";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C19'),'.') title19";
+            sql_query += ",NVL((select 名称 from HC$master_meisho where 名称区分='IDX' and 名称CD='C20'),'.') title20";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C11' and H.名称CD=A.名称CD11),'.') 補足11名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C12' and H.名称CD=A.名称CD12),'.') 補足12名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C13' and H.名称CD=A.名称CD13),'.') 補足13名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C14' and H.名称CD=A.名称CD14),'.') 補足14名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C15' and H.名称CD=A.名称CD15),'.') 補足15名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C16' and H.名称CD=A.名称CD16),'.') 補足16名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C17' and H.名称CD=A.名称CD17),'.') 補足17名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C18' and H.名称CD=A.名称CD18),'.') 補足18名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C19' and H.名称CD=A.名称CD19),'.') 補足19名";
+            sql_query += ",NVL((select H.名称 from HC$MASTER_MEISHO H where H.名称区分='C20' and H.名称CD=A.名称CD20),'.') 補足20名";
+            sql_query += " from HC$Master_TOKUI A ";
+
+            var sql = sql_query +
+                      $" where TO_CHAR(A.得意先CD) in ({string.Join(",", paramNames)}) order by A.得意先CD";
+
+            var parameters = ListShop.Select(c => c.TradingCD).ToArray();
+
+            var qfm_name = "cvnet_tokuisaki.qfm";
+            if (AppData.ClassCvnet.config.smtflg == 1) qfm_name = "cvnet_tokuisaki_r.qfm";
+            if (AppData.ClassCvnet.config.oroshi != 0) qfm_name = "cvnet_tokuisaki_w.qfm";
+
+            var ret = AppData.Http!.AspxSqlQueryCsv(sql, parameters, qfm_name);
+            var lines = ret.Split('\n');
+
+            if (lines.Length < 2 || lines[1] == "0")
             {
                 ClientLib.MessageBoxError(this, "PDFデータがありません");
                 return;
             }
-            var ret1 = ret.Split('\n');
-            var url = AppData.Http.URLroot + ret1[0] + "/data.pdf";
-            await Task.Delay(1500); // PDF生成待ち
+
+            string pdfPath = lines[0];
+            string url = AppData.Http.URLroot + pdfPath + "/data.pdf";
+
+            bool ready = await Utils.GlobalFunc.WaitForPdfAsync(url, TimeSpan.FromSeconds(30));
+            if (!ready)
+            {
+                ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                return;
+            }
+
             var win = new WebpdfView();
-            var vm = win.DataContext as WebpdfViewModel;
-            if (vm == null) return;
-            vm.Pdfdata = url;
+            if (win.DataContext is WebpdfViewModel vm)
+            {
+                vm.Pdfdata = url;
+            }
             ClientLib.CursorToNormal();
             ClientLib.ShowDialogView(win, this);
         }
+        [RelayCommand]
+        void GetUUID() 
+        {
+            if (string.IsNullOrEmpty(SelectedShop.TerminalID)) 
+            { 
+                EditShop.TerminalID = Guid.NewGuid().ToString().ToUpper();
+            }
+        }
+        #endregion
     }
 }

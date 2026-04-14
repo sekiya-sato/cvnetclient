@@ -148,7 +148,7 @@ namespace CvnetClient.Models
         }},
         { "売上", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "出荷・売上入力", WindowId="" },
+                new ButtonConfig { Text = "出荷・売上入力", WindowId=typeof(Views.SubDlgInp00View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "店舗売上入力", WindowId="" },
                 new ButtonConfig { Text = "精算入力", WindowId="" },
                 new ButtonConfig { Text = "出荷売上実績表", WindowId="" },
