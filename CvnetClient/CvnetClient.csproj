@@ -90,6 +90,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ConvertText\ConvertText.csproj" />
     <ProjectReference Include="..\CvnetBaseCore\CvnetBaseCore.csproj" />
   </ItemGroup>
 

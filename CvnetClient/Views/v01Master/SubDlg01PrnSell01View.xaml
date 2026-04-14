@@ -35,7 +35,7 @@
         CornerRadius="12"
         Padding="20,10"
         BorderBrush="#dcdde1"
-        BorderThickness="1">
+        BorderThickness="1" Margin="0,53,0,66" Grid.RowSpan="3">
 
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
@@ -216,7 +216,7 @@ GroupName="OutputType" FontStyle="Normal" Margin="10,0,0,0"
             </Grid>
         </Border>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

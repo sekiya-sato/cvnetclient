@@ -79,7 +79,7 @@ namespace CvnetClient.Models
                 new ButtonConfig { Text = "販売員別予算マスタ", WindowId="" },
                 new ButtonConfig { Text = "営業担当別予算マスタ", WindowId=typeof(Views.SubDlg01yo3View).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "月別ﾌﾞﾗﾝﾄﾞｱｲﾃﾑ仕入予算マスタ", WindowId=typeof(Views.SubDlg30InpMbiView).FullName,Parameter="0",Flag="0" },
-                new ButtonConfig { Text = "店舗予算表", WindowId="" },
+                new ButtonConfig { Text = "店舗予算表",WindowId=typeof(Views.SubDlg30PrnYosanView).FullName,Parameter="0",Flag="0" },
                 new ButtonConfig { Text = "店舗別予算実績対比", WindowId="" },
                 new ButtonConfig { Text = "販売員予算表", WindowId="" },
                 new ButtonConfig { Text = "担当別売上予算実績半期報", WindowId=typeof(Views.SubDlg23PrnTantouhankiView).FullName,Parameter="0",Flag="0" },
@@ -88,7 +88,7 @@ namespace CvnetClient.Models
         }},
         { "本発注", new PageData {
             Buttons = new List<ButtonConfig> {
-                new ButtonConfig { Text = "本発注入力", WindowId="" },
+                new ButtonConfig { Text = "本発注入力", WindowId=typeof(Views.SubDlgInp72View).FullName, Parameter="0" },
                 new ButtonConfig { Text = "本発注配分入力", WindowId="" },
                 new ButtonConfig { Text = "入荷予定入力", WindowId="" },
                 new ButtonConfig { Text = "本発注実績表", WindowId=typeof(Views.SubDlg13HachujissekiView).FullName,Parameter="0" },

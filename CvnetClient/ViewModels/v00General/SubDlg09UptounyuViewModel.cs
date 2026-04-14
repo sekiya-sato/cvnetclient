@@ -30,8 +30,9 @@ namespace CvnetClient.ViewModels
             OnInitBase(init_para, init_flg);
 
             para = new BizArray();
-            findWarehouse1.Code = ".";
-            findWarehouse2.Code = "99999999";
+            FindWarehouse1 = new BtListHelper(".","");
+            FindWarehouse2 = new BtListHelper("99999999", "");
+            
         }
 
         [RelayCommand]

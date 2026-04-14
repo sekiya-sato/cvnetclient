@@ -9,7 +9,7 @@
         xmlns:uc="clr-namespace:CvnetClient.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="SubDlg90Jidou08View" Height="350" Width="650">
+        Title="SubDlg09UptounyuView" Height="350" Width="650">
     <Window.DataContext>
         <vm:SubDlg09UptounyuViewModel/>
     </Window.DataContext>
@@ -35,26 +35,9 @@
             <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="※初期在庫から投入数を作成します" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Content="更新対象年月:"/>
-            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Status}" IsReadOnly="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
-                <TextBox.Style>
-                    <Style TargetType="TextBox">
-                        <Setter Property="Background" Value="LightGray"/>
+            <DatePicker Grid.Row="1" Grid.Column="2" SelectedDate="{Binding DateStart}" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
 
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Status}" Value="実行中">
-                                <Setter Property="Background" Value="LightGray"/>
-                            </DataTrigger>
 
-                            <DataTrigger Binding="{Binding Status}" Value="停止中">
-                                <Setter Property="Background" Value="Red"/> 
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-
-            
-            
             <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Label VerticalAlignment="Center" HorizontalAlignment="Right" Content="倉庫"/>
                 <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">

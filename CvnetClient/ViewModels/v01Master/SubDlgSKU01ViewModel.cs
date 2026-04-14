@@ -147,8 +147,16 @@ namespace CvnetClient.ViewModels
                 }
 
                 Sku01Dsp.ProdCD01 = init_para[0];
-                gedaihasu = int.TryParse(init_para[4], out int _gedaihasu) ? _gedaihasu : 0;
-                gedaiketa = int.TryParse(init_para[3], out int _gedaiketa) ? _gedaiketa : 0;
+                if (init_para.Length > 1)
+                {
+                    gedaihasu = int.TryParse(init_para[4], out int _gedaihasu) ? _gedaihasu : 0;
+                    gedaiketa = int.TryParse(init_para[3], out int _gedaiketa) ? _gedaiketa : 0;
+                }
+                else
+                {
+                    gedaihasu = 0;
+                    gedaiketa = 0;
+                }
 
                 v_para = new BizArray();
                 v_para[0] = init_para[0];   /* 商品CD */

@@ -1,0 +1,55 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlgSwkensakuView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        mc:Ignorable="d"
+        Title="{Binding Title}" 
+		Style="{StaticResource SmallWindow}"
+		Width="300" Height="130">
+	<Window.DataContext>
+		<vm:SubDlgSwkensakuViewModel />
+	</Window.DataContext>
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Margin="5,0,5,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions> 
+			<Label Grid.Column="0"
+				   Content="頁" /> 
+			<TextBox Grid.Column="1" 
+					 Text="{Binding SwatchPage,UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True}"
+					 MaxLength="10"/> 
+			<Label Grid.Column="2"
+				   Content="位置" /> 
+			<TextBox Grid.Column="3"
+					 Text="{Binding SwatchPosition,UpdateSourceTrigger=PropertyChanged,ValidatesOnExceptions=True}"
+					 MaxLength="10"/>
+		</Grid>
+
+		<Grid Grid.Row="1" Margin="5,5,5,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0" 
+					Margin="0,0,5,0"
+					Content="選択実行"
+					Command="{Binding DoExecuteCommand}"/>
+			<Button Grid.Column="1" 
+					Margin="5,0,0,0"
+					Content="戻る(ESC)" 
+					Command="{Binding DoExitCommand}"/>
+		</Grid>
+		
+    </Grid>
+</Window>
