@@ -160,6 +160,21 @@ namespace CvnetClient.Service
             return vm;
         }
 
+        public SubDlgSelybnViewModel GetSelybn(string[] init_para = null)
+        {
+            var view = new SubDlgSelybnView();
+            var vm = view.DataContext as SubDlgSelybnViewModel;
+            if (view == null || vm == null) return null;
+
+            // Set parameters & init dialog
+            vm.OnInit(init_para);
+
+            // Show dialog and wait return value
+            var ret = ClientLib.ShowDialogView(view, null);
+            if (ret != true) return null;
+            return vm;
+        }
+
         public SubDlgSel10ViewModel GetSel10(string qs, string para2 = "", string[] para3 = null, string ken_cd = "", string ken_jyun = "")
         { 
             var view = new SubDlgSel10View();
