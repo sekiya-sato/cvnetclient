@@ -149,7 +149,7 @@
                                     <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.AddressName2}"/>
                                 </Grid>
 
-                            <uc:CvnetBtListView Grid.Row="8" Title="部門" Margin="0,0,4,0"
+                            <uc:CvnetBtListView Grid.Row="8" Title="部門" Margin="0,8"
                                 MstName="部門" StyleDesign="1"
                                 SelectedValue ="{Binding EditShop.Department}" Command="{Binding SelDeptCommand}" />
                             <TextBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" d:Text="部門：Data"  TextWrapping="Wrap" >
@@ -161,7 +161,7 @@
                                 </TextBox.Text>
                             </TextBox>
 
-                            <uc:CvnetBtListView Grid.Row="8" Grid.Column="2" Title="営業担当" Margin="0,0,4,0"
+                            <uc:CvnetBtListView Grid.Row="8" Grid.Column="2" Title="営業担当" Margin="0,8"
                             MstName="営業担当" StyleDesign="1"
                             SelectedValue ="{Binding EditShop.SalesRepCD}" Command="{Binding SelSalesRepCommand}" />
                             <TextBox Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" d:Text="部門：Data"  TextWrapping="Wrap" >
@@ -198,7 +198,7 @@
                             <Label Grid.Row="13" Content="基準倉庫" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding ShowJido}"/>
                             <ComboBox Grid.Row="13" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListStdWareFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.BaseWarehouseFLG}" Visibility="{Binding ShowJido}"/>
 
-                            <uc:CvnetBtListView Grid.Row="13" Grid.Column="2" Title="基準倉庫CD" Margin="0,0,4,0"
+                            <uc:CvnetBtListView Grid.Row="13" Grid.Column="2" Title="基準倉庫CD" Margin="0,8"
                             MstName="倉庫" StyleDesign="1" Visibility="{Binding ShowJido}"
                             SelectedValue ="{Binding EditShop.BaseWarehouseCD}" Command="{Binding SelBaseWareCommand}" />
                             <TextBox Grid.Row="13" Grid.Column="3" Grid.ColumnSpan="3" d:Text="基準倉庫CD：Data"  TextWrapping="Wrap" Visibility="{Binding ShowJido}">
@@ -288,7 +288,7 @@
                             <TextBox  Grid.Column="3" Margin="0,8" Text="{Binding EditShop.SaleCommRate}"/>
 
 
-                            <uc:CvnetBtListView Title="請求先" Margin="0,0,4,0"
+                            <uc:CvnetBtListView Title="請求先" Margin="0,8"
                             MstName="請求" StyleDesign="1" 
                             SelectedValue ="{Binding EditShop.InvoiceAddrCD}" Command="{Binding SelInvoiceCommand}" />
                             <TextBox Grid.Column="1" d:Text="請求先：Data"  TextWrapping="Wrap">
@@ -452,7 +452,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="得意先分類01" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="得意先分類01" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C01"
                                             SelectedValue ="{Binding EditShop.NameCD01}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類01：Data"  TextWrapping="Wrap">
@@ -472,7 +472,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="得意先分類02" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="得意先分類02" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C02"
                                             SelectedValue ="{Binding EditShop.NameCD02}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類02：Data"  TextWrapping="Wrap">
@@ -498,7 +498,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類03" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類03" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C03"
                                             SelectedValue ="{Binding EditShop.NameCD03}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類03：Data"  TextWrapping="Wrap">
@@ -518,7 +518,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類04" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類04" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C04"
                                             SelectedValue ="{Binding EditShop.NameCD04}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類04：Data"  TextWrapping="Wrap">
@@ -544,7 +544,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類05" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類05" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C05"
                                             SelectedValue ="{Binding EditShop.NameCD05}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類05：Data"  TextWrapping="Wrap">
@@ -564,7 +564,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類06" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類06" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C06"
                                             SelectedValue ="{Binding EditShop.NameCD06}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類06：Data"  TextWrapping="Wrap">
@@ -590,7 +590,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類07" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類07" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C07"
                                             SelectedValue ="{Binding EditShop.NameCD07}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類07：Data"  TextWrapping="Wrap">
@@ -610,7 +610,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類08" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類08" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C08"
                                             SelectedValue ="{Binding EditShop.NameCD08}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類08：Data"  TextWrapping="Wrap">
@@ -636,7 +636,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類09" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類09" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C09"
                                             SelectedValue ="{Binding EditShop.NameCD09}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類09：Data"  TextWrapping="Wrap">
@@ -656,7 +656,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="得意先分類10" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="得意先分類10" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C10"
                                             SelectedValue ="{Binding EditShop.NameCD10}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類10：Data"  TextWrapping="Wrap">
@@ -682,7 +682,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類11" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類11" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C11"
                                             SelectedValue ="{Binding EditShop.NameCD11}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類11：Data"  TextWrapping="Wrap">
@@ -702,7 +702,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類12" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類12" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C12"
                                             SelectedValue ="{Binding EditShop.NameCD12}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類12：Data"  TextWrapping="Wrap">
@@ -727,7 +727,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類13" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類13" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C13"
                                             SelectedValue ="{Binding EditShop.NameCD13}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類13：Data"  TextWrapping="Wrap">
@@ -748,7 +748,7 @@
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <uc:CvnetBtListView Title="分類14" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類14" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C14"
                                             SelectedValue ="{Binding EditShop.NameCD14}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類14：Data"  TextWrapping="Wrap">
@@ -774,7 +774,7 @@
                                                 <ColumnDefinition Width="2.5*"/>
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <uc:CvnetBtListView Title="分類15" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類15" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C15"
                                             SelectedValue ="{Binding EditShop.NameCD15}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類15：Data"  TextWrapping="Wrap">
@@ -795,7 +795,7 @@
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <uc:CvnetBtListView Title="分類16" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類16" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C16"
                                             SelectedValue ="{Binding EditShop.NameCD16}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類16：Data"  TextWrapping="Wrap">
@@ -823,7 +823,7 @@
                                             </Grid.ColumnDefinitions>
 
 
-                                            <uc:CvnetBtListView Title="分類17" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類17" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C17"
                                             SelectedValue ="{Binding EditShop.NameCD17}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類17：Data"  TextWrapping="Wrap">
@@ -844,7 +844,7 @@
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <uc:CvnetBtListView Title="分類18" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類18" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C18"
                                             SelectedValue ="{Binding EditShop.NameCD18}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類18：Data"  TextWrapping="Wrap">
@@ -871,7 +871,7 @@
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <uc:CvnetBtListView Title="分類19" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類19" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C19"
                                             SelectedValue ="{Binding EditShop.NameCD19}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類19：Data"  TextWrapping="Wrap">
@@ -892,7 +892,7 @@
                                                 <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <uc:CvnetBtListView Title="分類20" Margin="0,0,4,0"
+                                            <uc:CvnetBtListView Title="分類20" Margin="0,8"
                                             MstName="名称" StyleDesign="1" Param2="C20"
                                             SelectedValue ="{Binding EditShop.NameCD11}" Command="{Binding SelNameCommand}" />
                                             <TextBox Grid.Column="1" d:Text="分類20：Data"  TextWrapping="Wrap">

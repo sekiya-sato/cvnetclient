@@ -342,7 +342,9 @@ namespace CvnetClient.Models
 		string? name;   //名前
 		[ObservableProperty]
 		string? department; //部門
-		[ObservableProperty]
+        [ObservableProperty]
+        string? departmentName; //部門名
+        [ObservableProperty]
 		string? shopCD; //店舗CD
 		[ObservableProperty]
 		string? shopName;
@@ -358,7 +360,9 @@ namespace CvnetClient.Models
 		string? furigana;   //フリガナ
 		[ObservableProperty]
 		string? positionCD; //役職CD
-		[ObservableProperty]
+        [ObservableProperty]
+        string? positionName; //役職CD
+        [ObservableProperty]
 		string? employmentFLG;  //就業FLG
 		[ObservableProperty]
 		int? outputFLG; //出力FLG
@@ -380,7 +384,9 @@ namespace CvnetClient.Models
 		int? transExpAmount;    //交通費支給額
 		[ObservableProperty]
 		string? sectionCD;  //部課CD
-		[ObservableProperty]
+        [ObservableProperty]
+        string? sectionName;  //部課CD
+        [ObservableProperty]
 		string? nameCD01;   //名称CD01
 		[ObservableProperty]
 		string? nameCD02;   //名称CD02
@@ -390,7 +396,17 @@ namespace CvnetClient.Models
 		string? nameCD04;   //名称CD04
 		[ObservableProperty]
 		string? nameCD05;   //名称CD05
-		[ObservableProperty]
+        [ObservableProperty]
+        string? nameCD01Name;   //名称CD01名
+        [ObservableProperty]
+        string? nameCD02Name;   //名称CD02名
+        [ObservableProperty]
+        string? nameCD03Name;   //名称CD03名
+        [ObservableProperty]
+        string? nameCD04Name;   //名称CD04名
+        [ObservableProperty]
+        string? nameCD05Name;   //名称CD05名
+        [ObservableProperty]
 		int? posCate;   //POS区分
 		[ObservableProperty]
 		int? emailFLG;  //メールFLG

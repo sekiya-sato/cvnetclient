@@ -243,7 +243,63 @@ namespace CvnetClient.ViewModels
                 EditWorker.ShopName = get_sel00.Name;
             }
         }
+        [RelayCommand]
+        public void SelDept(object value)
+        {
+            var get_sel00 = (SelValueModel)value;
+            if (get_sel00 != null && EditWorker != null)
+            {
+                EditWorker.Department = get_sel00.Code;
+                EditWorker.DepartmentName = get_sel00.Name;
+            }
+        }
+        [RelayCommand]
+        public void SelName((object Result1, object Result2) value)
+        {
+            var (result1, result2) = value;
+            var get_sel00 = (SelValueModel)result1;
+            string kubun = string.Empty;
+            if (result2 is string res2) kubun = res2;
 
+            if (get_sel00 != null && EditWorker != null)
+            {
+                if (kubun == "BKA")
+                {
+                    EditWorker.SectionCD = get_sel00.Code;
+                    EditWorker.SectionName = get_sel00.Name;
+                }
+                if (kubun == "YAK")
+                {
+                    EditWorker.PositionCD = get_sel00.Code;
+                    EditWorker.PositionName = get_sel00.Name;
+                }
+                if (kubun == "E01")
+                {
+                    EditWorker.NameCD01 = get_sel00.Code;
+                    EditWorker.NameCD01Name = get_sel00.Name;
+                }
+                if (kubun == "E02")
+                {
+                    EditWorker.NameCD02 = get_sel00.Code;
+                    EditWorker.NameCD02Name = get_sel00.Name;
+                }
+                if (kubun == "E03")
+                {
+                    EditWorker.NameCD03 = get_sel00.Code;
+                    EditWorker.NameCD03Name = get_sel00.Name;
+                }
+                if (kubun == "E04")
+                {
+                    EditWorker.NameCD04 = get_sel00.Code;
+                    EditWorker.NameCD04Name = get_sel00.Name;
+                }
+                if (kubun == "E05")
+                {
+                    EditWorker.NameCD05 = get_sel00.Code;
+                    EditWorker.NameCD05Name = get_sel00.Name;
+                }
+            }
+        }
         [RelayCommand]
         void DoList() {
 
@@ -537,6 +593,7 @@ namespace CvnetClient.ViewModels
             if (lines.Length < 2 || lines[1] == "0")
             {
                 ClientLib.MessageBoxError(this, "PDFデータがありません");
+                ClientLib.CursorToNormal();
                 return;
             }
 
@@ -547,6 +604,7 @@ namespace CvnetClient.ViewModels
             if (!ready)
             {
                 ClientLib.MessageBoxError(this, "PDF生成に時間がかかりすぎています。\n 条件を絞ってください。");
+                ClientLib.CursorToNormal();
                 return;
             }
 
