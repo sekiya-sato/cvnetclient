@@ -41,5 +41,15 @@ namespace CvnetClient.Interface
         SubDlgSKU01ViewModel GetSku01(string[] init_para, string[] init_para2 = null);
 
         SubDlgSel13ViewModel GetSel13(string[] init_para);
+
+        SubDlg01ShoSh2ViewModel GetShoSh2(string[] init_para, int flg);
+
+        SubDlgSelViewModel GetSel(string[] init_para);
+
+        SubDlgSelghnViewModel GetSelghn(string[] init_para);
+
+        SubDlg01ShoSh3ViewModel GetShoSh3(string[] init_para, int? flg = null);
+
+        SubDlg01ShoSh5v2ViewModel GetShoSh5v2(string[] init_para, int? flg = null);
     }
 }

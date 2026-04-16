@@ -1,0 +1,66 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlgSelView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        mc:Ignorable="d"
+        Title="選択画面"
+        Height="450" 
+        Width="540"
+        Style="{StaticResource MasterWindowStyle}">
+	<Window.DataContext>
+		<vm:SubDlgSelViewModel />
+	</Window.DataContext>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="5" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="*"  />
+			<ColumnDefinition Width="10" />
+		</Grid.ColumnDefinitions>
+
+		<DataGrid Grid.Row="0" Grid.Column="1"
+				  d:ItemsSource="{d:SampleData ItemCount= 5}"
+				  IsReadOnly="True" 
+                  ColumnWidth="*" 
+				  HeadersVisibility="Column"
+				  IsSynchronizedWithCurrentItem="True"
+				  ItemsSource="{Binding Spread1}"
+				  SelectedItem="{Binding SelectedRow}"
+                  Style="{StaticResource WinGridData}"
+				  SelectionMode="Single"> 
+		</DataGrid>
+
+		<Grid Grid.Row="1" Grid.Column="1"
+			  Margin="0, 5, 0, 0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="60" />
+				<ColumnDefinition Width="80" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0"  
+					Command="{Binding NextListCommand}"
+					Content="&gt;&gt;" 
+					Margin="0,0,5,0"/>
+			<Button Grid.Column="1" 
+					Command="{Binding TopListCommand}"
+					Content="Top"
+					Margin="0,0,15,0"/>
+			<Button Grid.Column="3" 
+					Command="{Binding DoSearchCommand}"
+					Content="選択実行 (Enter)" 
+					Margin="0,0,5,0"
+                    Style="{StaticResource ExecButton}"/>
+			<Button Grid.Column="4" 
+					Command="{Binding DoExitCommand}"
+					Content="戻る (ESC)" />
+		</Grid> 
+	</Grid>
+</Window>

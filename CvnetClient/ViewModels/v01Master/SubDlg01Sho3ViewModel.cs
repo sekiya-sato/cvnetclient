@@ -3,14 +3,20 @@ using CommunityToolkit.Mvvm.Input;
 using CvnetBaseCore;
 using CvnetClient.Models;
 using CvnetClient.Utils;
+using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.Windows;
 
 namespace CvnetClient.ViewModels
 {
     public partial class SubDlg01Sho3ViewModel : BaseViewModel
     {
+        #region Binding Variable
+        [ObservableProperty]
+        Shohin3Opt? shohin3Opt;
 
         [ObservableProperty]
         ObservableCollection<MasterShohin>? listProduct;
@@ -26,18 +32,30 @@ namespace CvnetClient.ViewModels
 
         [ObservableProperty]
         string? selProductCd;
+        #endregion
 
-        [ObservableProperty]
-        int? pageNow;
+        #region Class Variable 
+        private long V_SEQ;
+        private double V_UPDATE;
+        private JanStyleRec JanStyleRec;
+        private string nendo_format;
 
-        [ObservableProperty]
-        int? pageTotal;
+        /*照会モードFLG*/
+        private int shokai_flg = 0;
+
+        private BizArray sv_para;
+        private string sv_sql;
 
         private BizArray col_list;
+
+        private BizCsvDocument Ryakusho;
+        #endregion
 
         [RelayCommand]
         void Init(object? init_para)
         {
+            OnInitBase(init_para);
+            Shohin3Opt = new Shohin3Opt();
             EditProduct = new MasterShohin();
 
             var comboItem = AppData.ClassCvnet.comboItem00;
@@ -166,6 +184,273 @@ namespace CvnetClient.ViewModels
                 wrk_list[i] = wrk_list[i].Trim();
             }
             col_list = (wrk_list.Length > 0) ? new BizArray(wrk_list) : new BizArray();
+
+            var p_len = para.Count;
+
+            JanStyleRec = new JanStyleRec();
+            JanStyleRec.equalFlg = AppData.ClassCvnet.config.equalFlg;
+            JanStyleRec.janlength1 = AppData.ClassCvnet.config.janlength1;
+            JanStyleRec.janlength2 = AppData.ClassCvnet.config.janlength2;
+            JanStyleRec.pttrnStyle = AppData.ClassCvnet.config.pttrnStyle;
+            JanStyleRec.makejan = AppData.ClassCvnet.config.makejan;
+            JanStyleRec.renbanflg = AppData.ClassCvnet.config.renbanflg;
+            /* 20070215追加 */
+            JanStyleRec.danflg = AppData.ClassCvnet.config.danflg;
+
+            int addCol = 0;
+            /* janpatternのセット */
+            JanStyleRec.janPattern = new DataTable();
+            if (!string.IsNullOrEmpty(AppData.ClassCvnet.config.janpattern))
+            {
+                addCol = 10;
+                for (int i = 0; i < addCol; i++)
+                {
+                    JanStyleRec.janPattern.Columns.Add("COL" + i.ToString("00"), typeof(string));
+                }
+                var janrows = AppData.ClassCvnet.config.janpattern.Split("\n");
+                for (int i = 0; i < janrows.Length; i++)
+                {
+                    var jancols = janrows[i].Split("@");
+                    DataRow row = JanStyleRec.janPattern.NewRow();
+                    for (int j = 0; j < jancols.Length; j++)
+                    {
+                        row["COL" + j.ToString("00")] = jancols[j];
+                    }
+                    JanStyleRec.janPattern.Rows.Add(row);
+                }
+            }
+
+            /* Regaxchkのセット */
+            JanStyleRec.Regaxchk = new DataTable();
+            if (!string.IsNullOrEmpty(AppData.ClassCvnet.config.Regaxchk))
+            {
+                addCol = 5;
+                for (int i = 0; i < addCol; i++)
+                {
+                    JanStyleRec.Regaxchk.Columns.Add("COL" + i.ToString("00"), typeof(string));
+                }
+                var regrows = AppData.ClassCvnet.config.Regaxchk.Split("\n");
+                for (int i = 0; i < regrows.Length; i++)
+                {
+                    var regcols = regrows[i].Split("@");
+                    DataRow row = JanStyleRec.Regaxchk.NewRow();
+                    for (int j = 0; j < regcols.Length; j++)
+                    {
+                        row["COL" + j.ToString("00")] = regcols[j];
+                    }
+                    JanStyleRec.Regaxchk.Rows.Add(row);
+                }
+            }
+
+            /* barpatternのセット */
+            if (JanStyleRec.danflg == 1)
+            {
+                JanStyleRec.barPattern = new DataTable();
+                if (!string.IsNullOrEmpty(AppData.ClassCvnet.config.barpattern))
+                {
+                    addCol = 8;
+                    for (int i = 0; i < addCol; i++)
+                    {
+                        JanStyleRec.barPattern.Columns.Add("COL" + i.ToString("00"), typeof(string));
+                    }
+                    var barrows = AppData.ClassCvnet.config.barpattern.Split("\n");
+                    for (int i = 0; i < barrows.Length; i++)
+                    {
+                        var barcols = barrows[i].Split("@");
+                        DataRow row = JanStyleRec.barPattern.NewRow();
+                        for (int j = 0; j < barcols.Length; j++)
+                        {
+                            row["COL" + j.ToString("00")] = barcols[j];
+                        }
+                        JanStyleRec.barPattern.Rows.Add(row);
+                    }
+                }
+            }
+
+            /* janlength1-janlength2の値だけで判断する */
+            if (JanStyleRec.equalFlg == 1)
+            {
+                Shohin3Opt.ProdMaxLen = JanStyleRec.janlength1 - 1;
+            }
+            if (JanStyleRec.janlength1 - JanStyleRec.janlength2 > 0)
+            {
+                Shohin3Opt.JanCode3Vis = Visibility.Visible;
+                Shohin3Opt.Jan1stMaxLen = JanStyleRec.janlength2;
+            }
+            else if (JanStyleRec.janlength1 - JanStyleRec.janlength2 == 0)
+            {
+                Shohin3Opt.Jan1stMaxLen = JanStyleRec.janlength1;
+                Shohin3Opt.JanCode3Vis = Visibility.Collapsed;
+            }
+
+            if (p_len > 0)
+            {
+                if (para[0] == "1")
+                {
+                    /* 追加専用モード */
+                    Shohin3Opt.BtReDispAct = false;
+                    Shohin3Opt.BtReDispNextAct = false;
+                    Shohin3Opt.BtReDispPrevAct = false;
+                    Shohin3Opt.BtUpdateAct = false;
+                    Shohin3Opt.BtUpdateVis = Visibility.Collapsed;
+                    /* 追加ボタン・商品CD修正OK */
+                    Shohin3Opt.ProdReadOnly = false;
+                    Shohin3Opt.BtInsertAct = true;
+                    Shohin3Opt.BtInsertVis = Visibility.Visible;
+                    /* JANキー項目入力不可 */
+                    if (JanStyleRec.makejan == 0 && JanStyleRec.equalFlg == 0)
+                        Shohin3Opt.Jan1stReadOnly = false;
+                    else if (JanStyleRec.makejan == 1 && JanStyleRec.equalFlg == 1)
+                        Shohin3Opt.ProdReadOnly = true;
+
+                    /* 最新の展示会CDをセット 2008.09.25 追加 */
+                    GetTenjikai();
+
+                    /* JANCodeパターンによる画面設定*/
+                    SetMode(para.ToArray());
+                }
+                else if (para[0] == "2")
+                {
+                    /* 追加、修正共用 */
+                    Shohin3Opt.ProdReadOnly = false;
+                    Shohin3Opt.BtInsertAct = true;
+                    Shohin3Opt.BtInsertVis = Visibility.Visible;
+                    /* JANキー項目入力不可 */
+                    if (JanStyleRec.makejan == 0 && JanStyleRec.equalFlg == 0)
+                        Shohin3Opt.Jan1stReadOnly = false;
+                    else if (JanStyleRec.makejan == 1 && JanStyleRec.equalFlg == 1)
+                        Shohin3Opt.ProdReadOnly = true;
+                }
+                else if (para[0] == "3")
+                {
+                    Shohin3Opt.BtInsertAct = false;
+                    Shohin3Opt.BtInsertVis = Visibility.Collapsed;
+                    Shohin3Opt.BtDeleteAct = false;
+                    Shohin3Opt.BtDeleteVis = Visibility.Collapsed;
+                    Shohin3Opt.BtUpdateAct = false;
+                    Shohin3Opt.BtUpdateVis = Visibility.Collapsed;
+
+                    /*全項目日非活性*/
+                    shokai_flg = 1;
+                    Shohin3Opt.ItemListAct = false;
+                }
+            }
+            else SetMode();
+
+            EditProduct.TaxCalcMethod = 1;
+            EditProduct.InvMngmentFLG = 1;
+            EditProduct.TaxCD = 1;
+            EditProduct.PurchaseCate = 0;
+            EditProduct.DgCutOffSpec = 0;
+            EditProduct.ConsignPurcCate = 0;
+            EditProduct.DgCalcCate = 0;
+
+            var wrk_csv = AppData.Http?.AspxSqlQuery("select 名称CD,名称 from HC$master_meisho where 名称区分='IDX' and 名称CD between 'B01' and 'B10' order by 名称CD");
+            if (wrk_csv != null)
+            {
+                for (int i = 0; i < wrk_csv.Rows.Count; i++)
+                {
+                    string name_cd = wrk_csv.Rows[i][0].ToString();
+                    string idx = name_cd.Length > 1 ? name_cd.Substring(1) : "";
+                    var prop = typeof(Shohin3Opt).GetProperty("LabelA" + idx);
+                    if (prop != null)
+                    {
+                        prop.SetValue(Shohin3Opt, wrk_csv.Rows[i][1]);
+                    }
+                }
+            }
+            /* 各名称→JAN生成用のCSV、Ryakushoに保存 */
+            string kbn = "";
+            for (var i = 0; i < JanStyleRec.janPattern.Rows.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(JanStyleRec.janPattern.Rows[i][5].ToString()))
+                    kbn += (kbn == "") ? JanStyleRec.janPattern.Rows[i][5].ToString() : "','" + JanStyleRec.janPattern.Rows[i][5].ToString();
+            }
+            var _ryakusho = AppData.Http?.AspxSqlQuery("select 名称区分,名称CD,略称,名称 from HC$master_meisho where 名称区分 in ('" + kbn + "') order by 名称区分,名称CD");
+            if (_ryakusho != null) Ryakusho = new BizCsvDocument(_ryakusho);
+
+            /* ラベルをセット */
+            wrk_csv = AppData.Http?.AspxSqlQuery("select 名称CD,名称 from HC$master_meisho where 名称区分='IDX' and 名称CD between 'Y01' and 'Y20' order by 名称CD");
+            if (wrk_csv != null)
+            {
+                for (int i = 0; i < wrk_csv.Rows.Count; i++)
+                {
+                    string name_cd = wrk_csv.Rows[i][0].ToString();
+                    string idx = name_cd.Length > 1 ? name_cd.Substring(1) : "";
+                    var prop = typeof(Shohin3Opt).GetProperty("LabelB" + idx);
+                    if (prop != null)
+                    {
+                        prop.SetValue(Shohin3Opt, wrk_csv.Rows[i][1]);
+                    }
+                }
+            }
+
+            /* 年度を指定 */
+            if (AppData.ClassCvnet.config.NendoKeta != 0)
+            {
+                nendo_format = "";
+                for (var i = 0; i < AppData.ClassCvnet.config.NendoKeta; i++)
+                {
+                    nendo_format += "0";
+                }
+                EditProduct.JanCode1 = DateTime.Now.Year.ToString().Substring(DateTime.Now.Year.ToString().Length - AppData.ClassCvnet.config.NendoKeta);
+            }
+
+            /*連携対応　09.01.06 */
+            if (AppData.ClassCvnet.config.PosFlg != 0)
+            {
+                Shohin3Opt.BtRenkeiVis = Visibility.Visible;
+                Shohin3Opt.BtRenkeiAct = true;
+            }
+
+            /*原価FLG対応　09.04.20 */
+            if (AppData.ClassCvnet.config.usegenka == 1)
+            {
+                Shohin3Opt.LblPurchPriceVis = Visibility.Collapsed;
+                Shohin3Opt.TxtPurchPriceVis = Visibility.Collapsed;
+            }
+
+            /* 最終仕入 09.12.08 */
+            if (AppData.ClassCvnet.config.LastSiire != 0 || AppData.ClassCvnet.config.souheikin != 0)
+            {
+                Shohin3Opt.BtGenkaTitle = "原価履歴(S+F11)";
+            }
+
+            /* 照会用 */
+            if (para[0] == "3")
+            {
+                Shohin3Opt.BtInsertAct = false;
+                Shohin3Opt.BtInsertVis = Visibility.Collapsed;
+                Shohin3Opt.BtDeleteAct = false;
+                Shohin3Opt.BtDeleteVis = Visibility.Collapsed;
+                Shohin3Opt.BtUpdateAct = false;
+                Shohin3Opt.BtUpdateVis = Visibility.Collapsed;
+            }
+
+            /* 2010.12.16 外貨単価対応 S */
+            Visibility visibled = Visibility.Collapsed;
+            if (AppData.ClassCvnet.config.dispGaitan == 1) visibled = Visibility.Visible;
+            Shohin3Opt.LblForCurPrVis = visibled;
+            Shohin3Opt.TxtForCurPrVis = visibled;
+
+            /* 2010.12.16 外貨単価対応 E */
+            AppData.ClassCvnet.AspxSqlQueryImp();
+
+            /* 16.02.08 #24937 CD欄消す */
+            if (AppData.ClassCvnet.ComboListFLg == 1)
+            {
+                Shohin3Opt.DspMeicodeVis = Visibility.Collapsed;
+                Shohin3Opt.ImpMeiCodeVis = Visibility.Collapsed;
+            }
+              
+            /* 2021.07.15 ECフラグ S */
+            visibled = Visibility.Collapsed;
+            if (AppData.ClassCvnet.config.ECFLG == 1) visibled = Visibility.Visible;
+            Shohin3Opt.LblEcConnectVis = visibled;
+            Shohin3Opt.TxtEcConnectVis = visibled;
+            Shohin3Opt.LblEcReserveVis = visibled;
+            Shohin3Opt.TxtEcReserveVis = visibled; 
+            /* 2021.07.15 ECフラグ E */
         }
 
         string sql_collist = """
@@ -238,26 +523,6 @@ namespace CvnetClient.ViewModels
         #endregion
 
         #region Dialog Search
-        [RelayCommand]
-        public void SelDspUpdate()
-        {
-            /* ダイアログ検索条件を追加 */
-            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品") && AppData.ClassCvnet.ComboListFLg == 1)
-            {
-                var ar = new string[] { "1" };
-                var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
-                if (vm != null)
-                {
-                    //vm.SelShoResult0 
-                    PageView(vm.SelShoResult1.Item2, 0, vm.SelShoResult1.Item1);
-                }
-
-                return;
-            }
-
-            var v_para = new string[] { SelProductCd };
-        }
-
         [RelayCommand]
         public void SelBrand(object value)
         {
@@ -540,102 +805,303 @@ namespace CvnetClient.ViewModels
         }
         #endregion
 
-        #region Events 
+        #region Button Events
         /// <summary>
-        /// 20210104 ページ表示機能
+        /// 表示更新(F5)
         /// </summary>
-        /// <param name="v_para"></param>
-        /// <param name="action">[0 Refresh, 1 Next, 2 Prev, 3 Page]</param>
-        /// <param name="param"></param>
-        public void PageView(BizArray v_para, int action, string param = "")
+        [RelayCommand]
+        public void DoSearch()
         {
-            int colNum = 0;
+            /* ダイアログ検索条件を追加 */
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品") && AppData.ClassCvnet.ComboListFLg == 1)
+            {
+                var ar = new string[] { "1" };
+                var vm = AppData.DlgService.GetSelSho(AppData.ClassCvnet.MstDialog["商品"].v_mstname, null, ar);
+                if (vm != null)
+                {
+                    if (sv_para == null) sv_para = new BizArray();
+                    else sv_para.Clear();
+                    sv_sql = "";
 
-            string sql_query = " select A.商品CD ";
-            sql_query += " from HC$Master_SHOHIN A ";
-            if (string.IsNullOrEmpty(param))
-                sql_query += " where A.商品CD >= :1";
+                    sv_para = vm.SelShoResult1.Item2;
+                    sv_sql = vm.SelShoResult1.Item1;
+                    OnQuery(vm.SelShoResult1.Item2, vm.SelShoResult1.Item1);
+                }
+                return;
+            }
+            var v_para = new BizArray();
+            v_para[0] = SelProductCd;
+            OnQuery(v_para);
+        }
+
+        /// <summary>
+        /// 表示更新 (<<) Previous Page 
+        /// </summary>
+        [RelayCommand]
+        private void DoPrevSearch()
+        {
+            if (ListProduct?.Count == 0) return;
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品") && AppData.ClassCvnet.ComboListFLg == 1)
+            {
+                if (sv_para?.Count == 0) return;
+
+                /* 元パラメータセーブ */
+                var v_para0 = sv_para[0];
+                var v_para1 = sv_para[1];
+
+                sv_para[0] = sv_para[0];
+                sv_para[1] = ListProduct.FirstOrDefault().ProductCD;
+                OnQuery(sv_para, sv_sql, "desc");
+
+                /* 元パラメータロード */
+                sv_para[0] = v_para0;
+                sv_para[1] = v_para1;
+                return;
+            }
+            var old_pos = new BizArray();
+            old_pos[0] = SelProductCd;
+            if (ListProduct?.Count > 0)
+                SelProductCd = ListProduct[0].ProductCD;
+            var v_para = new BizArray();
+            v_para[0] = SelProductCd;
+            OnQuery(v_para, "", "desc");
+            SelProductCd = old_pos[0];
+        }
+
+        /// <summary>
+        /// 表示更新 (>>) Next Page
+        /// </summary>
+        [RelayCommand]
+        private void DoNextSearch()
+        {
+            if (ListProduct?.Count == 0) return;
+            if (AppData.ClassCvnet.MstDialog.ContainsKey("商品") && AppData.ClassCvnet.ComboListFLg == 1)
+            {
+                if (sv_para?.Count == 0) return;
+
+                /* 元パラメータセーブ */
+                var v_para0 = sv_para[0];
+                var v_para1 = sv_para[1];
+
+                sv_para[0] = ListProduct.LastOrDefault().ProductCD;
+                sv_para[1] = sv_para[1];
+                OnQuery(sv_para, sv_sql);
+
+                /* 元パラメータロード */
+                sv_para[0] = v_para0;
+                sv_para[1] = v_para1;
+                return;
+            }
+            var old_pos = new BizArray();
+            old_pos[0] = SelProductCd;
+            if (ListProduct?.Count > 0)
+                SelProductCd = ListProduct.LastOrDefault().ProductCD;
+            var v_para = new BizArray();
+            v_para[0] = SelProductCd;
+            OnQuery(v_para, "", "");
+            SelProductCd = old_pos[0];
+        }
+
+        /// <summary>
+        /// 品質表示 (S+F10)
+        /// </summary>
+        [RelayCommand]
+        private void DoQualityDsp()
+        {
+            if (EditProduct == null) return;
+            if (!string.IsNullOrEmpty(EditProduct?.ProductCD))
+            {
+                if (SelectedProduct == null)
+                    ClientLib.MessageBoxError(this, "まず商品マスタを修正or追加実行して下さい。");
+                else if (EditProduct?.ProductCD != SelectedProduct.ProductCD)
+                    ClientLib.MessageBoxError(this, "まず商品マスタを修正or追加実行して下さい。");
+                else
+                {
+                    var wrk_para = new BizArray();
+                    wrk_para[0] = EditProduct?.ProductCD;
+                    wrk_para[1] = EditProduct?.ProductName;
+                    wrk_para[2] = EditProduct?.SeqNo.ToString();
+                    wrk_para[3] = EditProduct?.VdateUpdate.ToString();
+                    /* 参照FLG追加 10.10.7 */
+                    var sflg = int.TryParse(para[0], out int _flg) ? _flg : 0;
+
+                    var vm_result = AppData.DlgService.GetShoSh2(wrk_para.ToArray(), sflg);
+                    if (vm_result != null)
+                    {
+                        if (vm_result.resp_code == -1) 
+                            MessageBox.Show("他で商品マスタが更新中です", "エラー", MessageBoxButton.OK);
+                        else if (vm_result.resp_code == -2)
+                            MessageBox.Show("他で更新されていますので、登録されていません", "エラー", MessageBoxButton.OK);
+                        else if (vm_result.resp_code < 0)
+                            MessageBox.Show("商品マスタのロックエラーです", "エラー", MessageBoxButton.OK);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 原価枝番(S+F11)
+        /// </summary>
+        [RelayCommand]
+        private void DoCostBranch()
+        {
+            if (!string.IsNullOrEmpty(EditProduct?.ProductCD))
+            {
+                if (SelectedProduct == null)
+                    MessageBox.Show("まず商品マスタを修正or追加実行して下さい。", "エラー", MessageBoxButton.OK);
+                else if (EditProduct?.ProductCD != SelectedProduct.ProductCD)
+                    MessageBox.Show("まず商品マスタを修正or追加実行して下さい。", "エラー", MessageBoxButton.OK);
+                else
+                {
+                    /* 最終仕入 09.12.09 */
+                    if (AppData.ClassCvnet.config.LastSiire != 0 || AppData.ClassCvnet.config.souheikin != 0)
+                    {
+                        var wrk_para = new BizArray();
+                        wrk_para[0] = EditProduct?.ProductCD;
+                        AppData.DlgService.GetSelghn(wrk_para.ToArray());
+                        return;
+                    }
+
+                    var wrk2_para = new BizArray();
+                    wrk2_para[0] = EditProduct?.ProductCD;
+                    wrk2_para[1] = EditProduct?.OriPrice.ToString();
+                    wrk2_para[2] = EditProduct?.Price.ToString();
+                    wrk2_para[3] = EditProduct?.Cost.ToString();
+                    wrk2_para[4] = EditProduct?.OpCostPrice.ToString();
+                    wrk2_para[5] = EditProduct?.ManufactFee.ToString();
+                    wrk2_para[6] = SelectedProduct.SeqNo.ToString();
+                    wrk2_para[7] = SelectedProduct.VdateUpdate.ToString();
+                    wrk2_para[8] = EditProduct?.PurchasePrice.ToString();
+                    /* 商品CD,元上代,上代,原価,営業原価,加工工賃 */
+                    /* [6][7] SEQ_NO,VDATE_UPDATE */
+                    /* 参照FLG追加 10.10.7 */
+                    int sflg = int.TryParse(para[0], out int _sflg) ? _sflg : 0;
+                    var ret_val = AppData.DlgService.GetShoSh3(wrk2_para.ToArray(), sflg);
+                    if (ret_val.resp_code == -1)
+                        MessageBox.Show("他で商品マスタが更新中です", "エラー", MessageBoxButton.OK);
+                    else if (ret_val.resp_code == -2)
+                        MessageBox.Show("他で更新されていますので、登録されていません", "エラー", MessageBoxButton.OK);
+                    else if (ret_val.resp_code < 0)
+                        MessageBox.Show("商品マスタのロックエラーです", "エラー", MessageBoxButton.OK);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 色サイズ展開(S+F12)
+        /// </summary>
+        [RelayCommand]
+        private void DoColorSiz()
+        {
+            if (!string.IsNullOrEmpty(EditProduct?.ProductCD))
+            {
+                if (SelectedProduct == null)
+                    MessageBox.Show("まず商品マスタを修正or追加実行して下さい。", "エラー", MessageBoxButton.OK);
+                else if (EditProduct?.ProductCD != SelectedProduct.ProductCD)
+                    MessageBox.Show("まず商品マスタを修正or追加実行して下さい。", "エラー", MessageBoxButton.OK);
+                else if (EditProduct?.ProdSizeCate != SelectedProduct.ProdSizeCate)
+                    MessageBox.Show("サイズ区分が変更されています。\n商品マスタを修正or追加実行して下さい。", "エラー", MessageBoxButton.OK);
+                else
+                {
+                    var wrk_para = new BizArray();
+                    wrk_para[0] = EditProduct?.ProductCD;
+                    wrk_para[1] = SelectedProduct.SeqNo.ToString();
+                    wrk_para[2] = SelectedProduct.VdateUpdate.ToString();
+                    wrk_para[3] = EditProduct?.OriPrice.ToString();
+                    wrk_para[4] = EditProduct?.Price.ToString();
+                    wrk_para[5] = EditProduct?.ProdSizeCate;
+                    /* 参照FLG追加 10.10.7 */
+                    int sflg = int.TryParse(para[0], out int _sflg) ? _sflg : 0;
+                    var ret_val = AppData.DlgService.GetShoSh5v2(wrk_para.ToArray(), sflg);
+                    if (ret_val.resp_code == -1)
+                        MessageBox.Show("他で商品マスタが更新中です", "エラー", MessageBoxButton.OK);
+                    else if (ret_val.resp_code == -2)
+                        MessageBox.Show("他で更新されていますので、登録されていません", "エラー", MessageBoxButton.OK);
+                    else if (ret_val.resp_code < 0)
+                        MessageBox.Show("商品マスタのロックエラーです", "エラー", MessageBoxButton.OK);
+                }
+            }
+        }
+        #endregion
+
+        #region Events
+        partial void OnSelectedProductChanged(MasterShohin? value)
+        {
+            if (value != null)
+                EditProduct = Common.CloneObject(value);
             else
-                sql_query += " where A.商品CD in (" + param + ")";
-            sql_query += " order by a.商品CD asc ";
-
-            var wrk_csv2 = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
-
-            if (wrk_csv2 == null || wrk_csv2.Rows.Count == 0) return;
-
-            /* get total page count */
-            string para_seq;
-            BizArray arrPageSEQ = new BizArray();
-            int totalRow = wrk_csv2.Rows.Count;
-            int maxDsp = AppData.ClassCvnet.MaxCntDisp;
-            int pageCnt = (totalRow / maxDsp);
-            int modpageCnt = totalRow % maxDsp;
-            if (modpageCnt > 0) pageCnt = pageCnt + 1;
-
-            /* create array of first seq NO of each page*/
-            for (int i = 0; i < pageCnt; i++)
-                arrPageSEQ[i] = wrk_csv2.Rows[i * maxDsp][colNum].ToString();
-
-            // Refresh
-            if (action == 0)
+                EditProduct = null;
+        }
+        partial void OnEditProductChanged(MasterShohin? value)
+        {
+            if (value != null)
             {
-                /* update page number indicator */
-                if (arrPageSEQ.Count > 0)
-                {
-                    PageNow = 1;
-                    PageTotal = arrPageSEQ.Count;
-                }
-                /* get csv first page */
-                para_seq = arrPageSEQ[0];
-                OnQuery(v_para, param, para_seq);
+                value.PropertyChanged += EditProduct_PropertyChanged; 
             }
-            // Next
-            else if (action == 1)
+        }
+        private void EditProduct_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MasterShohin.BrandName))
             {
-                if (PageNow > 0 && PageNow < arrPageSEQ.Count)
-                {
-                    /* update page indicator */
-                    PageNow = (int)PageNow + 1;
-                    /* get csv next page */
-                    para_seq = arrPageSEQ[(int)PageNow - 1];
-                }
-                else return;
-                OnQuery(v_para, param, para_seq);
+                // Combobox changed
             }
-            // Prev
-            else if (action == 2)
-            {
-                if (PageNow > 1 && PageNow <= arrPageSEQ.Count)
+        }
+        #endregion
+
+        #region Function
+        /// <summary>
+        /// 最新の展示会CDをセット 2008.09.25 追加
+        /// </summary>
+        private void GetTenjikai()
+        {
+            if (AppData.ClassCvnet.config.TenjiShoki == 1)
+            { 
+                string sql_str = "SELECT 名称CD, 名称"
+                                + " FROM HC$master_meisho"
+                                + " WHERE 名称区分='TNJ' AND rownum<=1"
+                                + " ORDER BY 名称CD desc";
+                var wrk_csv = AppData.Http?.AspxSqlQuery(sql_str);
+                if (wrk_csv != null && wrk_csv.Rows.Count == 1)
                 {
-                    /* update page indicator */
-                    PageNow = (PageNow) - 1;
-                    /* get csv prev page */
-                    para_seq = arrPageSEQ[(int)PageNow - 1];
+                    if (EditProduct != null)
+                    {
+                        EditProduct.ExhibitCD = wrk_csv.Rows[0][0].ToString();
+                        EditProduct.ExhibitName = wrk_csv.Rows[0][1].ToString();
+                    }
+                    if (Shohin3Opt != null)
+                    {
+                        Shohin3Opt.TxtExhibitReadOnly = true;
+                        Shohin3Opt.BtExhibitAct = false;
+                    }
                 }
-                else return;
-                OnQuery(v_para, param, para_seq);
             }
-            // Page
-            else if (action == 3)
-            {
-                if (PageNow >= 1 && PageNow <= arrPageSEQ.Count)
-                {
-                    /* get csv number page */
-                    para_seq = arrPageSEQ[(int)PageNow - 1];
-                }
-                else return;
-                OnQuery(v_para, param, para_seq);
-            }
+        }
+
+        private void SetMode(string[] init_para = null)
+        {
+            /* JAN→各名称：False、名称→JAN：スルー */
+            if (init_para != null) { }
         }
 
         /// <summary>
         /// 画面表示更新用検索処理 
         /// </summary>
-        /// <param name="v_para"></param>
-        /// <param name="qs"></param>
-        /// <param name="para_seq"></param>
-        private void OnQuery(BizArray v_para, string qs, string para_seq)
+        private void OnQuery(BizArray v_para1, string qs = "", string p_sort = "")
         {
+            /* 戻り対応 */
+            var v_sort = " asc ";
+            if (!string.IsNullOrEmpty(p_sort)) v_sort = " desc";
+            var v_hugo = ">=";
+            if (!string.IsNullOrEmpty(p_sort)) v_hugo = "<=";
+
+            DataTable ret_csv = new DataTable();
+
+            var v_para = new BizArray();
+            for (int i = 0; i < v_para1.Count; i++)
+            {
+                v_para[i] = v_para1[i];
+            }
+
             var sql_query = "select A.SEQ_NO,A.VDATE_CREATE,A.VDATE_UPDATE";
             for (int i = 0; i < col_list.Count; i++)
                 sql_query += ",A." + col_list[i];
@@ -695,25 +1161,24 @@ namespace CvnetClient.ViewModels
             /* 2017.10.05 ide 予備名 追加対応 E */
             sql_query += " from HC$Master_SHOHIN A";
 
-            if (qs == null) sql_query += " where A.商品CD >= :1";
+            if (string.IsNullOrEmpty(qs))
+            {
+                sql_query += " where A.商品CD " + v_hugo + " :1";
+            }
             else sql_query += " where A.商品CD in (" + qs + ")";
 
-            /* 20210104 ページ表示機能 */
-            if (para_seq != null)
-                sql_query += " and A.商品CD >= '" + para_seq + "' ";
-            sql_query += " order by A.商品CD asc ";
-            /* 20210104 ページ表示機能 */
-            if (para_seq != null) sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
+            sql_query += " order by A.商品CD " + v_sort;
+            sql_query = AppData.ClassCvnet.GetSqlDisp(sql_query);
 
-            var retData = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
-            if (retData == null || retData.Rows.Count == 0) return;
+            ret_csv = AppData.Http?.AspxSqlQuery(sql_query, v_para.ToArray());
+            if (ret_csv == null || ret_csv.Rows.Count == 0) return;
             try
             {
-                var list = (from DataRow dr in retData.Rows
+                var list = (from DataRow dr in ret_csv.Rows
                             select new MasterShohin
                             {
                                 SeqNo = Convert.ToInt64(dr["SEQ_NO"]),
-                                VdateCreate = Convert.ToDecimal(dr["VDATE_CREATE"]),
+                                VdateCreate =  Convert.ToDecimal(dr["VDATE_CREATE"]),
                                 VdateUpdate = Convert.ToDecimal(dr["VDATE_UPDATE"]),
                                 ProductCD = dr["商品CD"].ToString() ?? string.Empty,
                                 ProductName = dr["商品名"].ToString() ?? string.Empty,
@@ -727,14 +1192,14 @@ namespace CvnetClient.ViewModels
                                 DesignCD = dr["デザイナーCD"].ToString() ?? string.Empty,
                                 ManufactCD = dr["メーカーCD"].ToString() ?? string.Empty,
                                 MadeInCD = dr["原産国CD"].ToString() ?? string.Empty,
-                                OriPrice = decimal.TryParse(dr["元上代"].ToString(), out var _oriprice) ? _oriprice : 0,
-                                Price = decimal.TryParse(dr["上代"].ToString(), out var _price) ? _price : 0,
+                                OriPrice = long.TryParse(dr["元上代"].ToString(), out var _oriprice) ? _oriprice : 0,
+                                Price = long.TryParse(dr["上代"].ToString(), out var _price) ? _price : 0,
                                 PriceChgDate = DateTime.TryParseExact(dr["売変日"].ToString(), "yyyyMMdd",
                                                CultureInfo.InvariantCulture, DateTimeStyles.None,
                                                out var _priChgDate) ? _priChgDate : new DateTime(1901, 1, 1),
-                                Cost = decimal.TryParse(dr["原価"].ToString(), out var _cost) ? _cost : 0,
-                                OpCostPrice = decimal.TryParse(dr["営業原価"].ToString(), out var _opcostprice) ? _opcostprice : 0,
-                                ManufactFee = decimal.TryParse(dr["加工工賃"].ToString(), out var _manufactfee) ? _manufactfee : 0,
+                                Cost = long.TryParse(dr["原価"].ToString(), out var _cost) ? _cost : 0,
+                                OpCostPrice = long.TryParse(dr["営業原価"].ToString(), out var _opcostprice) ? _opcostprice : 0,
+                                ManufactFee = long.TryParse(dr["加工工賃"].ToString(), out var _manufactfee) ? _manufactfee : 0,
                                 CustDeliDate = DateTime.TryParseExact(dr["デリバリー日"].ToString(), "yyyyMMdd",
                                                CultureInfo.InvariantCulture, DateTimeStyles.None,
                                                out var _custDeliDate) ? _custDeliDate : new DateTime(1901, 1, 1),
@@ -810,7 +1275,7 @@ namespace CvnetClient.ViewModels
                                 SaleStDate = DateTime.TryParseExact(dr["販売開始日"].ToString(), "yyyyMMdd",
                                              CultureInfo.InvariantCulture, DateTimeStyles.None,
                                              out var _saleStDate) ? _saleStDate : new DateTime(1901, 1, 1),
-                                ForeignCurPrice = decimal.TryParse(dr["外貨単価"].ToString(), out var _foreignprice) ? _foreignprice : 0,
+                                ForeignCurPrice = long.TryParse(dr["外貨単価"].ToString(), out var _foreignprice) ? _foreignprice : 0,
                                 EcConnect = Convert.ToInt32(dr["EC連携"]),
                                 EcReserve = Convert.ToInt32(dr["EC取置"]),
                                 ExhibitName = dr["展示会名"].ToString() ?? string.Empty,
@@ -859,21 +1324,466 @@ namespace CvnetClient.ViewModels
                                 ReserveName20 = dr["予備20名"].ToString() ?? string.Empty,
                             }).OrderBy(c => c.ProductCD).ToList();
                 ListProduct = new ObservableCollection<MasterShohin>(list);
-                if (ListProduct.Count > 0)
-                {
-                    SelectedProduct = ListProduct[0];
-                }
+                if (ListProduct.Count > 0) SelectedProduct = ListProduct[0];
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-
-        partial void OnSelectedProductChanged(MasterShohin? value)
-        {
-            if (value != null)
-                EditProduct = Common.CloneObject(value);
-            else
-                EditProduct = null;
-        }
         #endregion
+    }
+    public class JanStyleRec
+    {
+        public int equalFlg { get; set; }
+        public int janlength1 { get; set; }
+        public int janlength2 { get; set; }
+        public string pttrnStyle { get; set; }
+        public DataTable janPattern { get; set; }
+        public DataTable Regaxchk { get; set; }
+        public DataTable barPattern { get; set; }
+        /* 0：JAN先頭桁→各名称、1：各名称→JAN先頭桁（equalFlg立ってれば商品CDも） */
+        public int makejan { get; set; }
+        public int renbanflg { get; set; }
+        /* 070215追加 */
+        public int danflg { get; set; }
+
+        public JanStyleRec()
+        {
+            equalFlg = 0;
+            janlength1 = 0;
+            janlength2 = 0;
+            pttrnStyle = string.Empty;
+            janPattern = new DataTable();
+            Regaxchk = new DataTable();
+            barPattern = new DataTable();
+            makejan = 0;
+            renbanflg = 0;
+            danflg = 0;
+        }
+    }
+
+    public partial class Shohin3Opt : ObservableObject
+    {
+        /// <summary>
+        /// 商品CD (Text3) MaxLength
+        /// </summary>
+        [ObservableProperty]
+        int m_ProdMaxLen;
+
+        /// <summary>
+        /// 商品CD (Text3) IsReadOnly
+        /// </summary>
+        [ObservableProperty]
+        bool m_ProdReadOnly;
+
+        /// <summary>
+        /// JAN連番 (Text26) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_JanCode3Vis;
+
+        /// <summary>
+        /// JAN連番 (Text49) MaxLength
+        /// </summary>
+        [ObservableProperty]
+        int m_Jan1stMaxLen;
+
+        /// <summary>
+        /// JAN連番 (Text49) IsReadOnly
+        /// </summary>
+        [ObservableProperty]
+        bool m_Jan1stReadOnly;
+
+        /// <summary>
+        /// 表示更新 (BtReDisp) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtReDispAct;
+
+        /// <summary>
+        /// 表示更新 NextBtn (BtReDispNext) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtReDispNextAct;
+
+        /// <summary>
+        /// 表示更新 PrevBtn (BtReDispPrev) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtReDispPrevAct;
+
+        /// <summary>
+        /// 修正 (Bt_Update) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtUpdateAct;
+
+        /// <summary>
+        /// 修正 (Bt_Update) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_BtUpdateVis;
+
+        /// <summary>
+        /// 追加 (Bt_Insert) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtInsertAct;
+
+        /// <summary>
+        /// 追加 (Bt_Insert) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_BtInsertVis;
+
+        /// <summary>
+        /// 削除 (Bt_Update) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtDeleteAct;
+
+        /// <summary>
+        /// 削除 (Bt_Update) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_BtDeleteVis;
+
+        /// <summary>
+        /// 展示会 (Text7) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_TxtExhibitReadOnly;
+
+        /// <summary>
+        /// 展示会 (Button77) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtExhibitAct;
+
+        /// <summary>
+        /// Item (Text4 ~ Text89, Except Text49) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_ItemListAct;
+
+        /// <summary>
+        /// 補足1
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA01;
+
+        /// <summary>
+        /// 補足2
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA02;
+
+        /// <summary>
+        /// 補足3
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA03;
+
+        /// <summary>
+        /// 補足4
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA04;
+
+        /// <summary>
+        /// 補足5
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA05;
+
+        /// <summary>
+        /// 補足6
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA06;
+
+        /// <summary>
+        /// 補足7
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA07;
+
+        /// <summary>
+        /// 補足8
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA08;
+
+        /// <summary>
+        /// 補足9
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA09;
+
+        /// <summary>
+        /// 補足10
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelA10;
+
+        /// <summary>
+        /// 予備01 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB01;
+
+        /// <summary>
+        /// 予備02 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB02;
+
+        /// <summary>
+        /// 予備03 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB03;
+
+        /// <summary>
+        /// 予備04 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB04;
+
+        /// <summary>
+        /// 予備05 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB05;
+
+        /// <summary>
+        /// 予備06 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB06;
+
+        /// <summary>
+        /// 予備07 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB07;
+
+        /// <summary>
+        /// 予備08 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB08;
+
+        /// <summary>
+        /// 予備09 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB09;
+
+        /// <summary>
+        /// 予備10 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB10;
+
+        /// <summary>
+        /// 予備11 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB11;
+
+        /// <summary>
+        /// 予備12 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB12;
+
+        /// <summary>
+        /// 予備13 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB13;
+
+        /// <summary>
+        /// 予備14 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB14;
+
+        /// <summary>
+        /// 予備15 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB15;
+
+        /// <summary>
+        /// 予備16 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB16;
+
+        /// <summary>
+        /// 予備17 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB17;
+
+        /// <summary>
+        /// 予備18 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB18;
+
+        /// <summary>
+        /// 予備19 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB19;
+
+        /// <summary>
+        /// 予備20 Title
+        /// </summary>
+        [ObservableProperty]
+        string m_LabelB20;
+
+        /// <summary>
+        /// 連携表示 (Bt_Renkei) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_BtRenkeiVis;
+
+        /// <summary>
+        /// 連携表示 (Bt_Renkei) IsEnable
+        /// </summary>
+        [ObservableProperty]
+        bool m_BtRenkeiAct;
+
+        /// <summary>
+        /// 仕入価格 (Label27) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_LblPurchPriceVis;
+
+        /// <summary>
+        /// 仕入価格 (Text82) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_TxtPurchPriceVis;
+
+        /// <summary>
+        /// 原価枝番 (Bt_Genka) Title
+        /// </summary>
+        [ObservableProperty]
+        string m_BtGenkaTitle;
+
+        /// <summary>
+        /// 外貨仕入価格 (Label86) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_LblForCurPrVis;
+
+        /// <summary>
+        /// 外貨仕入価格 (Text86) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_TxtForCurPrVis;
+
+        /// <summary>
+        /// 商品CD Label (DspMeicode) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_DspMeicodeVis;
+
+        /// <summary>
+        /// 商品CD Text (ImpMeiCode) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_ImpMeiCodeVis;
+
+        /// <summary>
+        /// EC連携 (Label38) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_LblEcConnectVis;
+
+        /// <summary>
+        /// EC連携 (Text87) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_TxtEcConnectVis;
+
+        /// <summary>
+        /// EC取置 (Label39) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_LblEcReserveVis;
+
+        /// <summary>
+        /// EC取置 (Text88) Visible
+        /// </summary>
+        [ObservableProperty]
+        Visibility m_TxtEcReserveVis;
+
+        public Shohin3Opt()
+        {
+            ProdMaxLen = 0;
+            ProdReadOnly = false;
+            JanCode3Vis = Visibility.Visible;
+            Jan1stMaxLen = 0;
+            Jan1stReadOnly = false;
+            BtReDispAct = true;
+            BtReDispNextAct = true;
+            BtReDispPrevAct = true;
+            BtUpdateAct = true;
+            BtUpdateVis = Visibility.Visible;
+            BtInsertAct = true;
+            BtInsertVis = Visibility.Visible;
+            BtDeleteAct = true;
+            BtDeleteVis = Visibility.Visible;
+            TxtExhibitReadOnly = false;
+            BtExhibitAct = true;
+            ItemListAct = true;
+            LabelA01 = "補足1";
+            LabelA02 = "補足2";
+            LabelA03 = "補足3";
+            LabelA04 = "補足4";
+            LabelA05 = "補足5";
+            LabelA06 = "補足6";
+            LabelA07 = "補足7";
+            LabelA08 = "補足8";
+            LabelA09 = "補足9";
+            LabelA10 = "補足10";
+            LabelB01 = "予備01";
+            LabelB02 = "予備02";
+            LabelB03 = "予備03";
+            LabelB04 = "予備04";
+            LabelB05 = "予備05";
+            LabelB06 = "予備06";
+            LabelB07 = "予備07";
+            LabelB08 = "予備08";
+            LabelB09 = "予備09";
+            LabelB10 = "予備10";
+            LabelB11 = "予備11";
+            LabelB12 = "予備12";
+            LabelB13 = "予備13";
+            LabelB14 = "予備14";
+            LabelB15 = "予備15";
+            LabelB16 = "予備16";
+            LabelB17 = "予備17";
+            LabelB18 = "予備18";
+            LabelB19 = "予備19";
+            LabelB20 = "予備20";
+            BtRenkeiAct = false;
+            BtRenkeiVis = Visibility.Collapsed;
+            LblPurchPriceVis = Visibility.Visible;
+            TxtPurchPriceVis = Visibility.Visible;
+            BtGenkaTitle = "原価枝番(S+F11)";
+            LblForCurPrVis = Visibility.Visible;
+            TxtForCurPrVis = Visibility.Visible;
+            DspMeicodeVis = Visibility.Visible;
+            ImpMeiCodeVis = Visibility.Visible;
+            LblEcConnectVis = Visibility.Visible;
+            TxtEcConnectVis = Visibility.Visible;
+            LblEcReserveVis = Visibility.Visible;
+            TxtEcReserveVis = Visibility.Visible;
+        }
     }
 }

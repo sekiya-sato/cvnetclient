@@ -1,0 +1,142 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg01ShoSh2View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+		Style="{StaticResource MasterWindowStyle}"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+        Title="{Binding DlgTitle}" 
+		Height="600" Width="600">
+	<Window.DataContext>
+		<vm:SubDlg01ShoSh2ViewModel />
+	</Window.DataContext>
+	<Grid Margin="5">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" /> 
+		</Grid.RowDefinitions>
+
+		<Grid Grid.Row="0" Margin="0,0,0,5">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="2*" />
+				<ColumnDefinition Width="6*" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="0"
+				   Content="商品CD"/>
+			<TextBox Grid.Row="0" Grid.Column="1"
+					 Margin="0,0,5,0"
+					 Text="{Binding ProdCD}"
+					 IsReadOnly="True" />
+			<TextBox Grid.Row="0" Grid.Column="2"
+					 Text="{Binding ProdName}"
+					 IsReadOnly="True" />
+			<Label Grid.Row="1" Grid.Column="0"
+				   Margin="0,5,0,0"
+				   Content="最終修正者" />
+			<TextBox Grid.Row="1" Grid.Column="1"
+					 Margin="0,5,5,0"
+					 Text="{Binding LastModifier}"
+					 IsReadOnly="True"/>
+		</Grid>
+
+		<uc:CvnetFlexView Grid.Row="1"
+						  d:ItemsSource="{d:SampleData ItemCount=5}" 
+						  ItemsSource="{Binding FlexList}"
+						  IsSynchronizedWithCurrentItem="True"
+						  HeadersVisibility="Column"
+						  GridLinesVisibility="All"
+						  HorizontalGridLinesBrush="#B0B0B0"
+						  VerticalGridLinesBrush="#B0B0B0"
+						  BorderBrush="#707070"
+						  BorderThickness="1">
+			<uc:CvnetFlexView.Columns>
+				<DataGridTemplateColumn Header="区分" Width="*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ComboBox VerticalAlignment="Top"
+									  VerticalContentAlignment="Center"
+									  ItemsSource="{Binding DataContext.HnkList, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+									  DisplayMemberPath="Value"
+									  SelectedValuePath="Key"
+									  SelectedValue="{Binding FabricCert}"
+									  Style="{StaticResource SearchableComboBox1}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTemplateColumn Header="品質" Width="2*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="6*"/>
+									<ColumnDefinition Width="4*"/>
+								</Grid.ColumnDefinitions>
+								<TextBox Grid.Column="0"
+										 Text="{Binding QualityName}"
+										 Style="{StaticResource DataGridTextBox}" />
+								<Button Grid.Column="1"
+										Content="一覧" 
+										Command="{Binding DataContext.DoQualitySearchCommand,
+												  RelativeSource={RelativeSource AncestorType=DataGrid},FallbackValue={x:Null}}"
+										CommandParameter="{Binding}"
+										Margin="0" Padding="6" />
+							</Grid>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTemplateColumn Header="混率%" Width="0.5*">
+					<!-- Display mode -->
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate> 
+							<TextBlock Text="{Binding Percent, StringFormat={}{0}%}" 
+									   TextAlignment="Right"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					<!-- Edit mode -->
+					<DataGridTemplateColumn.CellEditingTemplate>
+						<DataTemplate>
+							<TextBox Text="{Binding Percent, UpdateSourceTrigger=PropertyChanged}"
+									 HorizontalContentAlignment="Right"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellEditingTemplate>
+				</DataGridTemplateColumn>
+			</uc:CvnetFlexView.Columns>
+		</uc:CvnetFlexView>
+
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="2*" />
+				<ColumnDefinition Width="1.5*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Label Grid.Column="0" Margin="1" 
+				   Content="作成日" />
+			<TextBox Grid.Column="1"
+					 Text="{Binding VdateCreate}"
+					 IsReadOnly="True"/>
+			<Button Grid.Column="2" Margin="1" 
+					Content="最終行追加(F11)"
+					Visibility="{Binding BtAddVis}"
+					Command="{Binding DoNewRowCommand}" />
+			<Button Grid.Column="4" Margin="1" 
+					Content="確定(F6)"
+					Visibility="{Binding BtDesideVis}"
+					Command="{Binding DoConfirmCommand}" />
+			<Button Grid.Column="5" Margin="1" 
+					Content="戻る(ESC)" 
+					Command="{Binding DoExitCommand}" />
+		</Grid>
+	</Grid>
+</Window>
