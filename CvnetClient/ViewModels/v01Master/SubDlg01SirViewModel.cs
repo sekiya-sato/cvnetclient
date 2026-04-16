@@ -55,6 +55,8 @@ namespace CvnetClient.ViewModels
         [ObservableProperty] public Dictionary<string, string>? comboNameCd09;
         [ObservableProperty] public Dictionary<string, string>? comboNameCd10;
 
+        SelybnModel? SelectedValue; /* Return value for CvnetBtListView */
+
         string sql_list = @"
             SELECT * FROM (
                 SELECT
@@ -192,6 +194,29 @@ namespace CvnetClient.ViewModels
             {
                 EditSupplier.SupplierCD = get_sel00.Code;
                 EditSupplier.SupplierName = get_sel00.Name;
+            }
+        }
+
+        [RelayCommand]
+        public void SelPostCode(object value)
+        {
+
+            SubDlgSelybnViewModel vm_result = null;
+            var ar = new string[] { EditSupplier.PostalCode };
+            vm_result = AppData.DlgService.GetSelybn(ar);
+            if (vm_result != null)
+            {
+                //SelectedValue = new SelybnModel(){
+                EditSupplier.PostalCode = (vm_result.SelectedSelybn != null) ? vm_result.SelectedSelybn.Col01 : "";
+                if (EditSupplier.PostalCode.Length == 7)
+                {
+                    EditSupplier.PostalCode = EditSupplier.PostalCode.Insert(3, "-");
+                }
+                EditSupplier.Address1 = (vm_result.SelectedSelybn != null) ? vm_result.SelectedSelybn.Col02 : "";
+                EditSupplier.Address2 = (vm_result.SelectedSelybn != null) ? vm_result.SelectedSelybn.Col03 : "";
+                EditSupplier.Address3 = ".";
+                //};
+                return;
             }
         }
 

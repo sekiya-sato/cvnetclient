@@ -130,7 +130,7 @@
                                 </StackPanel>
 
 
-                                <uc:CvnetBtListView Grid.Row="4" Title="店舗CD" Margin="0,0,4,0"
+                                <uc:CvnetBtListView Grid.Row="4" Title="店舗CD" Margin="0,8"
 				                    MstName="{Binding TenpoFlg}" StyleDesign="1"
 				                    SelectedValue ="{Binding EditWorker.ShopCD}" Command="{Binding SelShopCommand}" />
                                         <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" d:Text="店舗CD：Data"  TextWrapping="Wrap" >
@@ -142,8 +142,20 @@
                                     </TextBox.Text>
                                 </TextBox>
 
-                                <Label    Grid.Row="5" Grid.Column="0" Content="部門"/>
-                                <ComboBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.Department}" Style="{StaticResource SearchableComboBox1}"  />
+                                <uc:CvnetBtListView Grid.Row="5" Title="部門" Margin="0,8"
+                                MstName="部門" StyleDesign="1"
+                                SelectedValue ="{Binding EditWorker.Department}" Command="{Binding SelDeptCommand}" />
+                                <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" d:Text="部門：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.Department" />
+                                            <Binding Path="EditWorker.DepartmentName" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
+
+                                <!--<Label    Grid.Row="5" Grid.Column="0" Content="部門"/>
+                                <ComboBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditWorker.Department}" Style="{StaticResource SearchableComboBox1}"  />-->
 
  
                                 <Label    Grid.Row="6" Grid.Column="0" Content="営業FLG"/>
@@ -198,11 +210,35 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Grid.Row="0" Content="部課" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.SectionCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListBuka}"/>
+                                <uc:CvnetBtListView Grid.Row="0" Title="部課" Margin="0,8"
+                                MstName="名称" StyleDesign="1" Param2="BKA"
+                                SelectedValue ="{Binding EditWorker.SectionCD}" Command="{Binding SelNameCommand}" />
+                                <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" d:Text="部課：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.SectionCD" />
+                                            <Binding Path="EditWorker.SectionName" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
 
-                                <Label Grid.Row="1" Content="役職" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.PositionCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComoListYakuShoku}"/>
+                                <!--<Label Grid.Row="0" Content="部課" VerticalAlignment="Center" Margin="0,8"/>
+                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.SectionCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListBuka}"/>-->
+
+                                <uc:CvnetBtListView Grid.Row="1" Title="役職" Margin="0,8"
+                                MstName="名称" StyleDesign="1" Param2="YAK"
+                                SelectedValue ="{Binding EditWorker.PositionCD}" Command="{Binding SelNameCommand}" />
+                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" d:Text="部課：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.PositionCD" />
+                                            <Binding Path="EditWorker.PositionName" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
+
+                                <!--<Label Grid.Row="1" Content="役職" VerticalAlignment="Center" Margin="0,8"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.PositionCD}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComoListYakuShoku}"/>-->
 
                                 <Label Grid.Row="2" Content="就業FLG" VerticalAlignment="Center" Margin="0,8"/>
                                 <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.EmploymentFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListEmplyomentFLG}"/>
@@ -254,20 +290,65 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <Label Grid.Row="0" Content="社員分類01" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.NameCD01}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListName1}"/>
+                                <uc:CvnetBtListView Grid.Row="0" Title="社員分類01" Margin="0,8"
+                                MstName="名称" StyleDesign="1" Param2="E01"
+                                SelectedValue ="{Binding EditWorker.NameCD01}" Command="{Binding SelNameCommand}" />
+                                <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" d:Text="社員分類01：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.NameCD01" />
+                                            <Binding Path="EditWorker.NameCD01Name" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
 
-                                <Label Grid.Row="1" Content="社員分類02" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.NameCD02}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListName2}"/>
+                                <uc:CvnetBtListView Grid.Row="1" Title="社員分類02" Margin="0,8"
+                                MstName="名称" StyleDesign="1" Param2="E02"
+                                SelectedValue ="{Binding EditWorker.NameCD02}" Command="{Binding SelNameCommand}" />
+                                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" d:Text="社員分類01：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.NameCD02" />
+                                            <Binding Path="EditWorker.NameCD02Name" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
 
-                                <Label Grid.Row="2" Content="社員分類03" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.NameCD03}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListName3}"/>
+                                <uc:CvnetBtListView Grid.Row="2" Title="社員分類03" Margin="0,8"
+                                MstName="名称" StyleDesign="1" Param2="E03"
+                                SelectedValue ="{Binding EditWorker.NameCD03}" Command="{Binding SelNameCommand}" />
+                                <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" d:Text="社員分類01：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.NameCD03" />
+                                            <Binding Path="EditWorker.NameCD03Name" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
 
-                                <Label Grid.Row="3" Content="社員分類04" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.NameCD04}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListName4}"/>
+                                <uc:CvnetBtListView Grid.Row="3" Title="社員分類04" Margin="0,8"
+                                MstName="名称" StyleDesign="1" Param2="E01"
+                                SelectedValue ="{Binding EditWorker.NameCD04}" Command="{Binding SelNameCommand}" />
+                                <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" d:Text="社員分類01：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.NameCD04" />
+                                            <Binding Path="EditWorker.NameCD04Name" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
 
-                                <Label Grid.Row="4" Content="社員分類05" VerticalAlignment="Center" Margin="0,8"/>
-                                <ComboBox Grid.Row="4" Grid.Column="1" Margin="0,8" SelectedValue="{Binding EditWorker.NameCD05}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{StaticResource SearchableComboBox1}" ItemsSource="{Binding ComboListName5}"/>
+                                <uc:CvnetBtListView Grid.Row="4" Title="社員分類05" Margin="0,8"
+                                MstName="名称" StyleDesign="1" Param2="E05"
+                                SelectedValue ="{Binding EditWorker.NameCD05}" Command="{Binding SelNameCommand}" />
+                                <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" d:Text="社員分類01：Data"  TextWrapping="Wrap" >
+                                    <TextBox.Text>
+                                        <MultiBinding StringFormat='{}{0} {1}'>
+                                            <Binding Path="EditWorker.NameCD05" />
+                                            <Binding Path="EditWorker.NameCD05Name" />
+                                        </MultiBinding>
+                                    </TextBox.Text>
+                                </TextBox>
 
 
                             </Grid>

@@ -64,7 +64,6 @@
                 <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
-            <!--<Border Grid.Row="0" Grid.RowSpan="2" Background="White" CornerRadius="6" Padding="8">-->
             <Grid>
 
                 <TabControl BorderThickness="1" Margin="0,0,20,0">
@@ -93,7 +92,10 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
                                 <Label Grid.Row="0" Content="得意先CD" VerticalAlignment="Center" Margin="0,8"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" Text="{Binding EditShop.TradingCD}" />
@@ -147,11 +149,29 @@
                                     <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.AddressName2}"/>
                                 </Grid>
 
-                            <Label Grid.Row="8" Content="部門" VerticalAlignment="Center" Margin="0,8"/>
+                            <uc:CvnetBtListView Grid.Row="8" Title="部門" Margin="0,8"
+                                MstName="部門" StyleDesign="1"
+                                SelectedValue ="{Binding EditShop.Department}" Command="{Binding SelDeptCommand}" />
+                            <TextBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" d:Text="部門：Data"  TextWrapping="Wrap" >
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                        <Binding Path="EditShop.Department" />
+                                        <Binding Path="EditShop.DepartmentName" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
 
-                            <ComboBox Grid.Row="8" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBumon}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.Department}"/>
-                            <Button Grid.Row="8" Grid.Column="2" Content="営業担当" VerticalAlignment="Center" Margin="0,8"/>
-                            <TextBox Grid.Row="8" Grid.Column="3" Margin="0,8" Text="{Binding EditShop.SalesRepCD}"/>
+                            <uc:CvnetBtListView Grid.Row="8" Grid.Column="2" Title="営業担当" Margin="0,8"
+                            MstName="営業担当" StyleDesign="1"
+                            SelectedValue ="{Binding EditShop.SalesRepCD}" Command="{Binding SelSalesRepCommand}" />
+                            <TextBox Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" d:Text="部門：Data"  TextWrapping="Wrap" >
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                        <Binding Path="EditShop.SalesRepCD" />
+                                        <Binding Path="EditShop.SalesRepName" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
 
                             <Label Grid.Row="9" Content="店種区分" VerticalAlignment="Center" Margin="0,8"/>
                             <ComboBox Grid.Row="9" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListTenshu}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding EditShop.StoreCate}" />
@@ -171,17 +191,40 @@
 
 
                             <Label Grid.Row="12" Content="自動補充" VerticalAlignment="Center" Margin="0,8"/>
-                            <ComboBox Grid.Row="12" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListJido}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.AutoAllocFLG}"/>
-                            <Label Grid.Row="12" Grid.Column="2" Content="ECFLG" VerticalAlignment="Center" Margin="0,8"/>
-                            <ComboBox Grid.Row="12" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListEC}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.EcFLG}"/>
+                            <ComboBox Grid.Row="12" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListJido}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding SelectedJido, Mode=TwoWay}"/>
 
-                            <Label Grid.Row="13" Content="POS送信区分" VerticalAlignment="Center" Margin="0,8"/>
-                            <ComboBox Grid.Row="13" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListPOS}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PosCate}"/>
-                            <Label Grid.Row="13" Grid.Column="2" Content="倉庫区分" VerticalAlignment="Center" Margin="0,8"/>
-                            <ComboBox Grid.Row="13" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListSoko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.WarehouseCate}"/>
+                            
 
-                            <Label Grid.Row="14" Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
-                            <Grid Grid.Row="14" Grid.Column="1" Grid.ColumnSpan="3">
+                            <Label Grid.Row="13" Content="基準倉庫" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding ShowJido}"/>
+                            <ComboBox Grid.Row="13" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListStdWareFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.BaseWarehouseFLG}" Visibility="{Binding ShowJido}"/>
+
+                            <uc:CvnetBtListView Grid.Row="13" Grid.Column="2" Title="基準倉庫CD" Margin="0,8"
+                            MstName="倉庫" StyleDesign="1" Visibility="{Binding ShowJido}"
+                            SelectedValue ="{Binding EditShop.BaseWarehouseCD}" Command="{Binding SelBaseWareCommand}" />
+                            <TextBox Grid.Row="13" Grid.Column="3" Grid.ColumnSpan="3" d:Text="基準倉庫CD：Data"  TextWrapping="Wrap" Visibility="{Binding ShowJido}">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                        <Binding Path="EditShop.BaseWarehouseCD" />
+                                        <Binding Path="EditShop.BaseWarehouseName" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <Label Grid.Row="14" Content="配分方法" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding ShowJido}"/>
+                            <ComboBox Grid.Row="14" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListAllocMethodFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.AllocMethodFLG}" Visibility="{Binding ShowJido}"/>
+                            <Label Grid.Row="14" Grid.Column="2" Content="出荷FLG" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding ShowJido}"/>
+                            <ComboBox Grid.Row="14" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListShippingFLG}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.ShippingFLG}" Visibility="{Binding ShowJido}"/>
+
+                            <Label Grid.Row="15" Grid.Column="0" Content="ECFLG" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="15" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListEC}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.EcFLG}"/>
+
+                            <Label Grid.Row="15" Grid.Column="2" Content="POS送信区分" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="15" Grid.Column="3" Margin="0,8" ItemsSource="{Binding ComboListPOS}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.PosCate}"/>
+                            <Label Grid.Row="16" Grid.Column="0" Content="倉庫区分" VerticalAlignment="Center" Margin="0,8"/>
+                            <ComboBox Grid.Row="16" Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListSoko}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.WarehouseCate}"/>
+
+                            <Label Grid.Row="17" Content="作成日" VerticalAlignment="Center" Margin="0,8"/>
+                            <Grid Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="3">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="7.5*"/>
                                     <ColumnDefinition Width="2.5*"/>
@@ -231,6 +274,11 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
 
@@ -239,8 +287,18 @@
                             <Label    Grid.Column="2" Margin="0,8" Content="セール掛率" VerticalAlignment="Center" />
                             <TextBox  Grid.Column="3" Margin="0,8" Text="{Binding EditShop.SaleCommRate}"/>
 
-                            <Button Grid.Row="1" Content="請求先" VerticalAlignment="Center" Margin="0,8"/>
-                            <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" Text="{Binding EditShop.InvoiceAddrCD}"/>
+
+                            <uc:CvnetBtListView Title="請求先" Margin="0,8"
+                            MstName="請求" StyleDesign="1" 
+                            SelectedValue ="{Binding EditShop.InvoiceAddrCD}" Command="{Binding SelInvoiceCommand}" />
+                            <TextBox Grid.Column="1" d:Text="請求先：Data"  TextWrapping="Wrap">
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                        <Binding Path="EditShop.InvoiceAddrCD" />
+                                        <Binding Path="EditShop.InvoiceAddrName" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
 
                             <Label    Grid.Row="2" Content="請求印刷" VerticalAlignment="Center" Margin="0,8"/>
                             <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,8" ItemsSource="{Binding Com}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.InvoicePrint}"/>
@@ -297,11 +355,70 @@
                             <TextBox Grid.Row="8" Grid.Column="5" Margin="0,8"  Text="{Binding EditShop.RegistNum}"/>
 
                             <Label Grid.Row="9" Content="納品伝票" VerticalAlignment="Center" Margin="0,8"/>
-                            <ComboBox Grid.Row="9"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" ItemsSource="{Binding ComboListNohin}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.Postal}"/>
+                            <ComboBox Grid.Row="9"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8" ItemsSource="{Binding ComboListNohin}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" SelectedValue="{Binding SelectedInvoice, Mode=TwoWay}"/>
+
+                            <GroupBox  Grid.Row="10" Grid.RowSpan="5" Grid.ColumnSpan="6" BorderThickness="0.5" BorderBrush="Black" Header="伝票印字項目" Foreground="Black" Visibility="{Binding Show1}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Label   Grid.Row="0" Grid.Column="0" Content="店別" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show1}"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.InvoicePrint1}" Visibility="{Binding Show1}"/>
+                                    <Label   Grid.Row="0" Grid.Column="2" Content="品別番号" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show1}"/>
+                                    <TextBox Grid.Row="0" Grid.Column="3" Margin="0,8"  Text="{Binding EditShop.InvoicePrint2}" Visibility="{Binding Show1}"/>
+                                    <Label   Grid.Row="0" Grid.Column="4" Content="取引先コード" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show1}"/>
+                                    <TextBox Grid.Row="0" Grid.Column="5" Margin="0,8"  Text="{Binding EditShop.InvoicePrint3}" Visibility="{Binding Show1}"/>
+
+                                    <Label   Grid.Row="1" Grid.Column="0" Content="納品場所" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show1}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.InvoicePrint4}" Visibility="{Binding Show1}"/>
+
+                                    <Label   Grid.Row="1" Grid.Column="2" Content="店出場所" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show2}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="3" Margin="0,8"  Text="{Binding EditShop.SlipPrint5}" Visibility="{Binding Show2}"/>
+                                    <Label   Grid.Row="1" Grid.Column="4" Content="売場名" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show3}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="5" Margin="0,8"  Text="{Binding EditShop.SlipPrint6}" Visibility="{Binding Show3}"/>
+
+                                    <Label   Grid.Row="2" Grid.Column="0" Content="内線番号" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show3}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.SlipPrint7}" Visibility="{Binding Show3}"/>
+                                    <Label   Grid.Row="2" Grid.Column="2" Content="担当者" VerticalAlignment="Center" Margin="0,8" Visibility="{Binding Show3}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="3" Margin="0,8"  Text="{Binding EditShop.SlipPrint8}" Visibility="{Binding Show3}"/>
+
+                                    <Label   Grid.Row="3" Grid.Column="0" Content="伝票社名" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8"  Text="{Binding EditShop.InvoCompName}" Visibility="{Binding Show1}"/>
+                                    <Label   Grid.Row="4" Grid.Column="0" Content="伝票店名" VerticalAlignment="Center" Margin="0,8"/>
+                                    <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8"  Text="{Binding EditShop.InvoStoreName}" Visibility="{Binding Show1}"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox  Grid.Row="16" Grid.ColumnSpan="6" BorderThickness="0.5" BorderBrush="Black" Header="振込先(銀行,支店,口座)" Foreground="Black">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Grid.Row="0" Grid.Column="0" Margin="0,8"  Text="{Binding EditShop.PayDesti1}"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="0,8"  Text="{Binding EditShop.PayDesti2}"/>
+                                    <TextBox Grid.Row="0" Grid.Column="2" Margin="0,8"  Text="{Binding EditShop.PayDesti3}"/>
+                                </Grid>
+                            </GroupBox>
 
                         </Grid>
                     </TabItem>
-                    
                     <TabItem Header="拡張情報(Shift+F3)">
                         <StackPanel >
                             <Grid Margin="0,8,0,8">
@@ -324,7 +441,6 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                    
                                 <Grid Grid.Row="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
@@ -333,22 +449,40 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類01" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui01}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD01}"/>
+                                            <uc:CvnetBtListView Title="得意先分類01" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C01"
+                                            SelectedValue ="{Binding EditShop.NameCD01}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類01：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD01" />
+                                                        <Binding Path="EditShop.NameCD01Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類02" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui02}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD02}"/>
+                                            <uc:CvnetBtListView Title="得意先分類02" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C02"
+                                            SelectedValue ="{Binding EditShop.NameCD02}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類02：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD02" />
+                                                        <Binding Path="EditShop.NameCD02Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -361,22 +495,40 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類03" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui03}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD03}"/>
+                                            <uc:CvnetBtListView Title="分類03" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C03"
+                                            SelectedValue ="{Binding EditShop.NameCD03}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類03：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD03" />
+                                                        <Binding Path="EditShop.NameCD03Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類04" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui04}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD04}"/>
+                                            <uc:CvnetBtListView Title="分類04" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C04"
+                                            SelectedValue ="{Binding EditShop.NameCD04}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類04：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD04" />
+                                                        <Binding Path="EditShop.NameCD04Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -389,22 +541,40 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類05" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui05}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD05}"/>
+                                            <uc:CvnetBtListView Title="分類05" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C05"
+                                            SelectedValue ="{Binding EditShop.NameCD05}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類05：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD05" />
+                                                        <Binding Path="EditShop.NameCD05Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類06" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui06}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD06}"/>
+                                            <uc:CvnetBtListView Title="分類06" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C06"
+                                            SelectedValue ="{Binding EditShop.NameCD06}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類06：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD06" />
+                                                        <Binding Path="EditShop.NameCD06Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -417,22 +587,40 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類07" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui07}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD07}"/>
+                                            <uc:CvnetBtListView Title="分類07" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C07"
+                                            SelectedValue ="{Binding EditShop.NameCD07}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類07：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD07" />
+                                                        <Binding Path="EditShop.NameCD07Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類08" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui08}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD08}"/>
+                                            <uc:CvnetBtListView Title="分類08" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C08"
+                                            SelectedValue ="{Binding EditShop.NameCD08}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類08：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD08" />
+                                                        <Binding Path="EditShop.NameCD08Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -445,22 +633,40 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類09" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui09}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD09}"/>
+                                            <uc:CvnetBtListView Title="分類09" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C09"
+                                            SelectedValue ="{Binding EditShop.NameCD09}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類09：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD09" />
+                                                        <Binding Path="EditShop.NameCD09Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類10" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui10}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD10}"/>
+                                            <uc:CvnetBtListView Title="得意先分類10" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C10"
+                                            SelectedValue ="{Binding EditShop.NameCD10}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類10：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD10" />
+                                                        <Binding Path="EditShop.NameCD10Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -473,26 +679,43 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類11" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui11}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD11}"/>
+                                            <uc:CvnetBtListView Title="分類11" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C11"
+                                            SelectedValue ="{Binding EditShop.NameCD11}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類11：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD11" />
+                                                        <Binding Path="EditShop.NameCD11Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類12" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui12}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD12}"/>
+                                            <uc:CvnetBtListView Title="分類12" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C12"
+                                            SelectedValue ="{Binding EditShop.NameCD12}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類12：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD12" />
+                                                        <Binding Path="EditShop.NameCD12Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
-
                                 <Grid Grid.Row="6">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
@@ -501,22 +724,41 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類13" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui13}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD13}"/>
+                                            <uc:CvnetBtListView Title="分類13" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C13"
+                                            SelectedValue ="{Binding EditShop.NameCD13}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類13：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD13" />
+                                                        <Binding Path="EditShop.NameCD13Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類14" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui14}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD14}"/>
+
+                                            <uc:CvnetBtListView Title="分類14" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C14"
+                                            SelectedValue ="{Binding EditShop.NameCD14}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類14：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD14" />
+                                                        <Binding Path="EditShop.NameCD14Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -529,22 +771,41 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類15" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui15}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD15}"/>
+                                            <uc:CvnetBtListView Title="分類15" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C15"
+                                            SelectedValue ="{Binding EditShop.NameCD15}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類15：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD15" />
+                                                        <Binding Path="EditShop.NameCD15Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類16" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui16}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD16}"/>
+
+                                            <uc:CvnetBtListView Title="分類16" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C16"
+                                            SelectedValue ="{Binding EditShop.NameCD16}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類16：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD16" />
+                                                        <Binding Path="EditShop.NameCD16Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -557,22 +818,43 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類17" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui17}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD17}"/>
+
+
+                                            <uc:CvnetBtListView Title="分類17" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C17"
+                                            SelectedValue ="{Binding EditShop.NameCD17}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類17：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD17" />
+                                                        <Binding Path="EditShop.NameCD17Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類18" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui18}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD18}"/>
+
+                                            <uc:CvnetBtListView Title="分類18" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C18"
+                                            SelectedValue ="{Binding EditShop.NameCD18}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類18：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD18" />
+                                                        <Binding Path="EditShop.NameCD18Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -585,22 +867,42 @@
                                     <StackPanel Grid.Column="0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類19" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui19}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD19}"/>
+
+                                            <uc:CvnetBtListView Title="分類19" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C19"
+                                            SelectedValue ="{Binding EditShop.NameCD19}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類19：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD19" />
+                                                        <Binding Path="EditShop.NameCD19Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2.5*"/>
+                                                <ColumnDefinition Width="7.5*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label  Content="分類20" VerticalAlignment="Center" Margin="0,8"/>
-                                            <ComboBox  Grid.Column="1" Margin="0,8" ItemsSource="{Binding ComboListBunrui20}" DisplayMemberPath="Value" SelectedValuePath="Key" Style="{DynamicResource SearchableComboBox1}" Text="{Binding EditShop.NameCD20}"/>
+
+                                            <uc:CvnetBtListView Title="分類20" Margin="0,8"
+                                            MstName="名称" StyleDesign="1" Param2="C20"
+                                            SelectedValue ="{Binding EditShop.NameCD11}" Command="{Binding SelNameCommand}" />
+                                            <TextBox Grid.Column="1" d:Text="分類20：Data"  TextWrapping="Wrap">
+                                                <TextBox.Text>
+                                                    <MultiBinding StringFormat='{}{0} {1}'>
+                                                        <Binding Path="EditShop.NameCD20" />
+                                                        <Binding Path="EditShop.NameCD20Name" />
+                                                    </MultiBinding>
+                                                </TextBox.Text>
+                                            </TextBox>
                                         </Grid>
                                     </StackPanel>
                                 </Grid>
@@ -685,7 +987,7 @@
                                                 <ColumnDefinition Width="2*"/>
                                                 <ColumnDefinition Width="8*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Button  Content="UUID取得" VerticalAlignment="Center" Margin="0,8"/>
+                                            <Button  Content="UUID取得" VerticalAlignment="Center" Margin="0,8" Command="{Binding GetUUIDCommand}"/>
                                             <TextBox Grid.Column="1" Margin="0,8" Text="{Binding EditShop.TerminalID}"/>
                                         </Grid>
                                     </StackPanel>

@@ -342,7 +342,9 @@ namespace CvnetClient.Models
 		string? name;   //名前
 		[ObservableProperty]
 		string? department; //部門
-		[ObservableProperty]
+        [ObservableProperty]
+        string? departmentName; //部門名
+        [ObservableProperty]
 		string? shopCD; //店舗CD
 		[ObservableProperty]
 		string? shopName;
@@ -358,7 +360,9 @@ namespace CvnetClient.Models
 		string? furigana;   //フリガナ
 		[ObservableProperty]
 		string? positionCD; //役職CD
-		[ObservableProperty]
+        [ObservableProperty]
+        string? positionName; //役職CD
+        [ObservableProperty]
 		string? employmentFLG;  //就業FLG
 		[ObservableProperty]
 		int? outputFLG; //出力FLG
@@ -380,7 +384,9 @@ namespace CvnetClient.Models
 		int? transExpAmount;    //交通費支給額
 		[ObservableProperty]
 		string? sectionCD;  //部課CD
-		[ObservableProperty]
+        [ObservableProperty]
+        string? sectionName;  //部課CD
+        [ObservableProperty]
 		string? nameCD01;   //名称CD01
 		[ObservableProperty]
 		string? nameCD02;   //名称CD02
@@ -390,7 +396,17 @@ namespace CvnetClient.Models
 		string? nameCD04;   //名称CD04
 		[ObservableProperty]
 		string? nameCD05;   //名称CD05
-		[ObservableProperty]
+        [ObservableProperty]
+        string? nameCD01Name;   //名称CD01名
+        [ObservableProperty]
+        string? nameCD02Name;   //名称CD02名
+        [ObservableProperty]
+        string? nameCD03Name;   //名称CD03名
+        [ObservableProperty]
+        string? nameCD04Name;   //名称CD04名
+        [ObservableProperty]
+        string? nameCD05Name;   //名称CD05名
+        [ObservableProperty]
 		int? posCate;   //POS区分
 		[ObservableProperty]
 		int? emailFLG;  //メールFLG
@@ -439,6 +455,8 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? salesRepCD; //営業担当CD
 		[ObservableProperty]
+		string? salesRepName;
+		[ObservableProperty]
 		int? storeCate;  //店種区分
 		[ObservableProperty]
 		long? area;   //坪数
@@ -451,6 +469,8 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? invoiceAddrCD;  //請求先CD
 		[ObservableProperty]
+		string? invoiceAddrName;  //請求先名
+        [ObservableProperty]
 		int? invoicePrint;   //請求印刷
 		[ObservableProperty]
 		int? closingDate;    //締日
@@ -501,6 +521,8 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? department; //部門
 		[ObservableProperty]
+		string? departmentName;	//部門名
+		[ObservableProperty]
 		string? notes;  //備考
 		[ObservableProperty]
 		int? invManageFLG;   //在庫管理FLG
@@ -530,7 +552,27 @@ namespace CvnetClient.Models
 		string? nameCD09;   //名称CD09
 		[ObservableProperty]
 		string? nameCD10;   //名称CD10
-		[ObservableProperty]
+        [ObservableProperty]
+        string? nameCD01Name;   //名称CD01名
+        [ObservableProperty]
+        string? nameCD02Name;   //名称CD02名
+        [ObservableProperty]
+        string? nameCD03Name;   //名称CD03名
+        [ObservableProperty]
+        string? nameCD04Name;   //名称CD04名
+        [ObservableProperty]
+        string? nameCD05Name;   //名称CD05名
+        [ObservableProperty]
+        string? nameCD06Name;   //名称CD06名
+        [ObservableProperty]
+        string? nameCD07Name;   //名称CD07名
+        [ObservableProperty]
+        string? nameCD08Name;   //名称CD08名
+        [ObservableProperty]
+        string? nameCD09Name;   //名称CD09名
+        [ObservableProperty]
+        string? nameCD10Name;   //名称CD10名
+        [ObservableProperty]
 		string? invDate;    //棚卸日
 		[ObservableProperty]
 		string? startTime;  //開始時刻
@@ -570,6 +612,8 @@ namespace CvnetClient.Models
 		int? baseWarehouseFLG;   //基準倉庫FLG
 		[ObservableProperty]
 		string? baseWarehouseCD;    //基準倉庫CD
+		[ObservableProperty]
+		string? baseWarehouseName;
 		[ObservableProperty]
 		int? allocMethodFLG; //配分方法FLG
 		[ObservableProperty]
@@ -632,7 +676,27 @@ namespace CvnetClient.Models
 		string? nameCD19;   //名称CD19
 		[ObservableProperty]
 		string? nameCD20;   //名称CD20
-		[ObservableProperty]
+        [ObservableProperty]
+        string? nameCD11Name;   //名称CD11名
+        [ObservableProperty]
+        string? nameCD12Name;   //名称CD12名
+        [ObservableProperty]
+        string? nameCD13Name;   //名称CD13名
+        [ObservableProperty]
+        string? nameCD14Name;   //名称CD14名
+        [ObservableProperty]
+        string? nameCD15Name;   //名称CD15名
+        [ObservableProperty]
+        string? nameCD16Name;   //名称CD16名
+        [ObservableProperty]
+        string? nameCD17Name;   //名称CD17名
+        [ObservableProperty]
+        string? nameCD18Name;   //名称CD18名
+        [ObservableProperty]
+        string? nameCD19Name;   //名称CD19名
+        [ObservableProperty]
+        string? nameCD20Name;   //名称CD20名
+        [ObservableProperty]
 		int? rentCalcFLG;        //賃料計算FLG
 		[ObservableProperty]
 		long? minRent;       //最低保障家賃

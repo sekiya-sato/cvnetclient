@@ -10,19 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views
+namespace CvnetClient.Views.v00General
 {
     /// <summary>
-    /// Interaction logic for SubDlg01TokView.xaml
+    /// Interaction logic for SubDlg00CsvBaihenView.xaml
     /// </summary>
-    public partial class SubDlg01TokView : Window
+    public partial class SubDlg00CsvBaihenView : Page
     {
-        public SubDlg01TokView()
+        public SubDlg00CsvBaihenView()
         {
             InitializeComponent();
         }
-
     }
 }

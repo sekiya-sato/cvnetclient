@@ -134,4 +134,17 @@ namespace CvnetClient.Models
         [ObservableProperty]
         string? name;
     }
+
+    /// <summary>
+    /// View Class - SubDlgSelybnView
+    /// </summary>
+    public partial class SelybnModel : ObservableObject
+    {
+        [ObservableProperty]
+        string? postalCode;
+        [ObservableProperty]
+        string? addres1;
+        [ObservableProperty]
+        string? addres2;
+    }
 }
