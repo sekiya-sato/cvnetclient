@@ -13,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CvnetClient.Views.v00General
+namespace CvnetClient.Views
 {
     /// <summary>
     /// Interaction logic for SubDlg00CsvBaihenView.xaml
     /// </summary>
-    public partial class SubDlg00CsvBaihenView : Page
+    public partial class SubDlg00CsvBaihenView : Window
     {
         public SubDlg00CsvBaihenView()
         {
