@@ -1,0 +1,150 @@
+﻿<Window x:Class="CvnetClient.Views.SubDlg01ShoSh3View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="clr-namespace:CvnetClient.ViewModels"
+		xmlns:uc="clr-namespace:CvnetClient.Views"
+        mc:Ignorable="d"
+        Title="{Binding DgTitle}" 
+		Height="600" Width="600"
+        Style="{StaticResource MasterWindowStyle}">
+	<Window.DataContext>
+		<vm:SubDlg01ShoSh3ViewModel />
+	</Window.DataContext>
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="10" />
+		</Grid.ColumnDefinitions>
+		
+		<Grid Grid.Row="0" Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="2*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="2*" />
+			</Grid.ColumnDefinitions>
+			<Label Grid.Row="0" Grid.Column="0" 
+				   Margin="0,5,0,0"
+				   Content="商品CD" />
+			<TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+					 Margin="0,5,0,0"
+					 IsReadOnly="True"
+					 Text="{Binding ProdCd}"
+					 VerticalAlignment="Center"
+					 HorizontalContentAlignment="Left" />
+			<Label Grid.Row="1" Grid.Column="0"
+				   Margin="0,5,0,0"
+				   Content="元上代" />
+			<TextBox Grid.Row="1" Grid.Column="1"
+					 Margin="0,5,0,0"
+					 IsReadOnly="True"
+					 Text="{Binding OriCost}"
+					 VerticalAlignment="Center"
+					 HorizontalContentAlignment="Right" />
+			<Label Grid.Row="1" Grid.Column="2"
+				   Margin="0,5,0,0"
+				   Content="上代" />
+			<TextBox Grid.Row="1" Grid.Column="3"
+					 Margin="0,5,0,0"
+					 IsReadOnly="True"
+					 Text="{Binding Cost}"
+					 VerticalAlignment="Center"
+					 HorizontalContentAlignment="Right" />
+			<Label Grid.Row="2" Grid.Column="0"
+				   Margin="0,5,0,0"
+				   Content="最終修正者" />
+			<TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+					 Margin="0,5,0,0"
+					 IsReadOnly="True"
+					 Text="{Binding LastModifier}"
+					 VerticalAlignment="Center"
+					 HorizontalContentAlignment="Left" />
+		</Grid>
+
+		<Grid Grid.Row="1" Grid.Column="1" Margin="0,5,0,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<TextBox Grid.Column="1" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding Price1}" HorizontalContentAlignment="Right"/>
+			<TextBox Grid.Column="2" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding Price2}" HorizontalContentAlignment="Right"/>
+			<TextBox Grid.Column="3" Margin="5,0,0,0" IsReadOnly="True" Text="{Binding Price3}" HorizontalContentAlignment="Right"/>
+		</Grid>
+
+		<uc:CvnetFlexView Grid.Row="2" Grid.Column="1"
+						  Margin="0,5,0,0"
+						  d:ItemsSource="{d:SampleData ItemCount=5}"
+						  IsEnabled="{Binding DataGridAct}"
+						  ItemsSource="{Binding ShoSh3List}"
+						  IsSynchronizedWithCurrentItem="True"
+						  AutoGenerateColumns="False"
+						  HeadersVisibility="Column"
+						  GridLinesVisibility="All"
+						  HorizontalGridLinesBrush="#B0B0B0"
+						  VerticalGridLinesBrush="#B0B0B0"
+						  BorderBrush="#707070"
+						  BorderThickness="1">
+			<uc:CvnetFlexView.Columns>
+				<DataGridTextColumn Width="*" Binding="{Binding Cost}" Header="原価">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="TextBlock">
+							<Setter Property="TextAlignment" Value="Right" />
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Width="*" Binding="{Binding OperateCost}" Header="原価">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="TextBlock">
+							<Setter Property="TextAlignment" Value="Right" />
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+				<DataGridTextColumn Width="*" Binding="{Binding ProcessFee}" Header="加工工賃">
+					<DataGridTextColumn.ElementStyle>
+						<Style TargetType="TextBlock">
+							<Setter Property="TextAlignment" Value="Right" />
+						</Style>
+					</DataGridTextColumn.ElementStyle>
+				</DataGridTextColumn>
+			</uc:CvnetFlexView.Columns>
+		</uc:CvnetFlexView>
+
+		<Grid Grid.Row="3" Grid.Column="1" Margin="0,5,0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="2*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0"
+					Content="最終行追加(F11)" 
+					IsEnabled="{Binding btDesideAct}"
+					Command="{Binding DoNewRowCommand}" />
+			<Button Grid.Column="2" 
+					Margin="5,0,0,0"
+					Content="確定(F6)"
+					Command="{Binding DoConfirmCommand}"/>
+			<Button Grid.Column="3"
+					Margin="5,0,0,0"
+					Content="戻る(ESC)"
+					Command="{Binding DoExitCommand}"/>
+		</Grid>
+		
+    </Grid>
+</Window>

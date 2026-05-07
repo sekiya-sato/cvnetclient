@@ -90,17 +90,17 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? madeInCD; //原産国CD 
 		[ObservableProperty]
-		decimal oriPrice; //元上代
+		long oriPrice; //元上代
 		[ObservableProperty]
-		decimal price; //上代
+        long price; //上代
 		[ObservableProperty]
 		DateTime? priceChgDate; //売変日
 		[ObservableProperty]
-		decimal cost; //原価
+        long cost; //原価
 		[ObservableProperty]
-		decimal opCostPrice; //営業原価
+        long opCostPrice; //営業原価
 		[ObservableProperty]
-		decimal manufactFee; //加工工賃
+        long manufactFee; //加工工賃
 		[ObservableProperty]
 		DateTime? custDeliDate; //デリバリー日
 		[ObservableProperty]
@@ -224,7 +224,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		string? makerNo; //メーカー品番
 		[ObservableProperty]
-		decimal purchasePrice; //仕入価格
+		long purchasePrice; //仕入価格
 		[ObservableProperty]
 		int deliveryCate; //納品区分
 		[ObservableProperty]
@@ -232,7 +232,7 @@ namespace CvnetClient.Models
 		[ObservableProperty]
 		DateTime? saleStDate; //販売開始日
 		[ObservableProperty]
-		decimal foreignCurPrice; //外貨単価
+        long foreignCurPrice; //外貨単価
 		[ObservableProperty]
 		int ecConnect; //EC連携
 		[ObservableProperty]

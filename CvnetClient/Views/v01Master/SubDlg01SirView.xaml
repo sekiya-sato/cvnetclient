@@ -226,13 +226,13 @@
                                             Margin="0,5,10,5"
                                             Text="{Binding EditSupplier.Abbreviation}" />
 
-                                        <uc:CvnetBtListView
-                                            Title="〒"
+                                        <Button
+                                            Content="〒"
                                             Grid.Row="3"
                                             Width="70"
                                             HorizontalAlignment="left"
-                                            Command=""
-                                            SelectedValue="{Binding EditSupplier.PostalCode}" />
+                                            Style="{StaticResource ComboLabelBtn}"
+                                            Command="{Binding SelPostCodeCommand}" />
                                         <TextBox
                                             Grid.Row="3"
                                             Grid.Column="1"

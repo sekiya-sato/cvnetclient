@@ -18,7 +18,7 @@
         <utils:VdateConverter x:Key="VdateConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <vm:SubDlg01Sho2ViewModel />
+        <vm:SubDlg01Sho3ViewModel />
     </Window.DataContext>
     <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="ContentRendered">
@@ -51,21 +51,26 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0"  
-				   Margin="5,0,0,0"
-				   VerticalContentAlignment="Center"
-				   Content="商品CD" />
+				       Margin="5,0,0,0"
+				       VerticalContentAlignment="Center"
+				       Content="商品CD" 
+					   Visibility="{Binding Shohin3Opt.DspMeicodeVis}"/>
                 <TextBox Grid.Column="1"
-					 Text="{Binding SelProductCd}"
+					     Text="{Binding SelProductCd}"
+						 Visibility="{Binding Shohin3Opt.ImpMeiCodeVis}"
+						 IsReadOnly="{Binding Shohin3Opt.ProdReadOnly}"
+						 MaxLength="{Binding Shohin3Opt.ProdMaxLen}"
                          HorizontalAlignment="Center"
-					 MinWidth="100"/>
+					     MinWidth="100"/>
                 
                 <Button Grid.Column="4"
-					VerticalAlignment="Center"
-					HorizontalAlignment="Right"
-					Command="{Binding SelDspUpdateCommand}"
-					Content=" 表示更新(F5) "
-                    Style="{StaticResource ExecButton}"
-                    Margin="15,0"/>
+					    VerticalAlignment="Center"
+					    HorizontalAlignment="Right"
+						IsEnabled="{Binding Shohin3Opt.BtReDispAct}"
+					    Command="{Binding DoSearchCommand}"
+					    Content=" 表示更新(F5) "
+                        Style="{StaticResource ExecButton}"
+                        Margin="15,0"/>
 
             </Grid>
 
@@ -84,31 +89,19 @@
                     <DataGridTextColumn Header="商品CD" Binding="{Binding ProductCD}" Width="4*" />
                     <DataGridTextColumn Header="商品名" Binding="{Binding ProductName}" Width="6*" />
                 </DataGrid.Columns>
-            </DataGrid>
-
-            <Grid Grid.Row="2" Margin="10,5" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0"
-					 VerticalAlignment="Center" 
-					 HorizontalAlignment="Right"
-					 Width="50" />
-                <Label Grid.Column="1"
-				   VerticalAlignment="Center"  
-				   Content="/"
-				   VerticalContentAlignment="Center"/>
-                <TextBox Grid.Column="2"
-					 VerticalAlignment="Center" 
-					 HorizontalAlignment="Right"
-					 Width="50" />
-            </Grid>
+            </DataGrid> 
 
             <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10">
-                <Button Margin="1,0" Command="{Binding BackListCommand}" Style="{DynamicResource PrevPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
-                <Button Margin="1,0" Command="{Binding NextListCommand}" Style="{DynamicResource NextPageBtn}" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+				<Button Margin="1,0" 
+						Command="{Binding DoPrevSearchCommand}" 
+						Style="{DynamicResource PrevPageBtn}" 
+						IsEnabled="{Binding Shohin3Opt.BtReDispPrevAct}"
+						HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
+                <Button Margin="1,0" 
+						Command="{Binding DoNextSearchCommand}" 
+						Style="{DynamicResource NextPageBtn}" 
+						IsEnabled="{Binding Shohin3Opt.BtReDispNextAct}"
+						HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="10"/>
             </StackPanel>
         </Grid>
 
@@ -163,35 +156,85 @@
                         <Label   Grid.Row="0" Grid.Column="0" Margin="1" Content="商品CD" />
                         <TextBox Grid.Row="0" Grid.Column="1" Margin="1" Grid.ColumnSpan="2" d:Text="商品CD：Data" Text="{Binding EditProduct.ProductCD}" TextWrapping="Wrap"/>
                         <Label   Grid.Row="0" Grid.Column="3" Margin="1" VerticalContentAlignment="Center" Content="ﾒｰｶｰ品番" />
-                        <TextBox Grid.Row="0" Grid.Column="4" Margin="1" d:Text="ﾒｰｶｰ品番：Data" Text="{Binding EditProduct.MakerNo}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="0" Grid.Column="4" Margin="1" 
+								 d:Text="ﾒｰｶｰ品番：Data" 
+								 Text="{Binding EditProduct.MakerNo}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                                                               
                         <Label   Grid.Row="1" Grid.Column="0" Margin="1" Content="商品名" />
-                        <TextBox Grid.Row="1" Grid.Column="1" Margin="1" Grid.ColumnSpan="4" d:Text="商品名：Data" Text="{Binding EditProduct.ProductName}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="1" Grid.ColumnSpan="4" 
+								 d:Text="商品名：Data" 
+								 Text="{Binding EditProduct.ProductName}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                                                               
                         <Label   Grid.Row="2" Grid.Column="0" Margin="1" Content="略称" />
-                        <TextBox Grid.Row="2" Grid.Column="1" Margin="1" Grid.ColumnSpan="2" d:Text="略称：Data" Text="{Binding EditProduct.Abbreviation}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="1" Grid.ColumnSpan="2" 
+								 d:Text="略称：Data" 
+								 Text="{Binding EditProduct.Abbreviation}" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                         <Button  Grid.Row="2" Grid.Column="3" Margin="1" Style="{StaticResource FileUploadBtn}" Content="絵型名1" />
-                        <TextBox Grid.Row="2" Grid.Column="4" Margin="1" IsEnabled="False" d:Text="abcdefghijklmnopqrstuvwxyz12345678901234" Text="{Binding EditProduct.ImgName}" Style="{StaticResource ReadOnlyTextBox}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="2" Grid.Column="4" Margin="1" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}" 
+								 IsReadOnly="True"
+								 Text="{Binding EditProduct.ImgName}" 
+								 Style="{StaticResource ReadOnlyTextBox}" 
+								 TextWrapping="Wrap" />
                                                               
                         <Label   Grid.Row="3" Grid.Column="0" Margin="1" Content="旧コード" />
-                        <TextBox Grid.Row="3" Grid.Column="1" Margin="1" Grid.ColumnSpan="2" d:Text="旧コード：Data" Text="{Binding EditProduct.OldCode}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="1" Grid.ColumnSpan="2" 
+								 d:Text="旧コード：Data" 
+								 Text="{Binding EditProduct.OldCode}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                         <Button  Grid.Row="3" Grid.Column="3" Margin="1" Style="{StaticResource FileUploadBtn}" Content="絵型名2" />
-                        <TextBox Grid.Row="3" Grid.Column="4" Margin="1" IsEnabled="False" d:Text="abcdefghijklmnopqrstuvwxyz12345678901234" Text="{Binding EditProduct.ImgName2}" Style="{StaticResource ReadOnlyTextBox}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="3" Grid.Column="4" Margin="1" 
+								 IsReadOnly="True" 
+								 Text="{Binding EditProduct.ImgName2}" 
+								 TextWrapping="Wrap" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 Style="{StaticResource ReadOnlyTextBox}" />
                                                               
                         <Label   Grid.Row="4" Grid.Column="0" Margin="1" Content="JAN連番" />
-                        <TextBox Grid.Row="4" Grid.Column="1" Margin="1" Grid.ColumnSpan="2" d:Text="JAN連番：Data" Text="{Binding EditProduct.Jan1stdigit}"  TextWrapping="Wrap" />
-                        <TextBox Grid.Row="4" Grid.Column="3" Margin="1" Grid.ColumnSpan="2" d:Text="JAN連番：Data" Text="{Binding EditProduct.JanCode2}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Margin="1" 
+								 Grid.ColumnSpan="2" 
+								 d:Text="JAN連番：Data" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 Text="{Binding EditProduct.Jan1stdigit}"
+								 MaxLength="{Binding Shohin3Opt.Jan1stMaxLen}"
+								 IsReadOnly="{Binding Shohin3Opt.Jan1stReadOnly}"
+								 TextWrapping="Wrap" />
+                        <TextBox Grid.Row="4" Grid.Column="3" Margin="1" 
+								 Grid.ColumnSpan="2" 
+								 d:Text="JAN連番：Data"
+								 Visibility="{Binding Shohin3Opt.JanCode3Vis}"
+								 Text="{Binding EditProduct.JanCode3}" 
+								 TextWrapping="Wrap" />
                                                               
                         <Label   Grid.Row="5" Grid.Column="0" Margin="1" Content="年度" />
-                        <TextBox Grid.Row="5" Grid.Column="1" Margin="1" d:Text="年度：Data"     Text="{Binding EditProduct.JanCode1}"  TextWrapping="Wrap" />
+                        <TextBox Grid.Row="5" Grid.Column="1" Margin="1" d:Text="年度：Data"     
+								 Text="{Binding EditProduct.JanCode1}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                         <Label   Grid.Row="5" Grid.Column="2" Margin="1" Content="製品番号" />
-                        <TextBox Grid.Row="5" Grid.Column="3" Margin="1" Grid.ColumnSpan="2" d:Text="製品番号：Data" Text="" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="5" Grid.Column="3" Margin="1" Grid.ColumnSpan="2" 
+								 d:Text="製品番号：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 Text="{Binding EditProduct.JanCode2}" 
+								 TextWrapping="Wrap" />
 
 
                         <uc:CvnetBtListView  Grid.Row="6" Grid.Column="0" Margin="1"
-							MstName="ブランド" StyleDesign="1"
-							Title="ブランド"  SelectedValue ="{Binding EditProduct.BrandCD}" Command="{Binding SelBrandCommand}" />
-                        <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" d:Text="ブランド：Data" TextWrapping="Wrap" Margin="1">
+							                 MstName="ブランド" StyleDesign="1"
+							                 Title="ブランド"  
+											 SelectedValue ="{Binding EditProduct.BrandCD}" 
+											 Command="{Binding SelBrandCommand}" />
+                        <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" 
+								 d:Text="ブランド：Data" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" Margin="1">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.BrandCD" />
@@ -200,9 +243,13 @@
                             </TextBox.Text>
                         </TextBox>
                         <uc:CvnetBtListView Grid.Row="6" Grid.Column="4" Margin="1"
-							Title="アイテム"  MstName="アイテム"
-							SelectedValue="{Binding EditProduct.ItemCD}" Command="{Binding SelItemCommand}"/>
-                        <TextBox Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="3" d:Text="アイテム：Data" TextWrapping="Wrap" Margin="1">
+							                Title="アイテム"  MstName="アイテム"
+							                SelectedValue="{Binding EditProduct.ItemCD}" 
+											Command="{Binding SelItemCommand}"/>
+                        <TextBox Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="3" 
+								 d:Text="アイテム：Data" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" Margin="1">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.ItemCD" />
@@ -213,10 +260,13 @@
 
 
                         <uc:CvnetBtListView Grid.Row="7" Grid.Column="0"  Margin="1"
-                            Title="シーズン" MstName="シーズン"
-							SelectedValue="{Binding EditProduct.SeasonCD}" Command="{Binding SelSeasonCommand}" />
+                                            Title="シーズン" MstName="シーズン"
+							                SelectedValue="{Binding EditProduct.SeasonCD}" 
+											Command="{Binding SelSeasonCommand}" />
                         <TextBox Grid.Row="7" Grid.Column="1"  Margin="1" Grid.ColumnSpan="3" 
-                            d:Text="シーズン：Data" TextWrapping="Wrap">
+                                 d:Text="シーズン：Data" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.SeasonCD" />
@@ -225,10 +275,13 @@
                             </TextBox.Text>
                         </TextBox>
                         <uc:CvnetBtListView Grid.Row="7" Grid.Column="4"  Margin="1"
-							Title="素材" MstName="素材"
-							SelectedValue="{Binding EditProduct.MaterialCD}" Command="{Binding SelMaterialCommand}"/>
+							                Title="素材" MstName="素材"
+							                SelectedValue="{Binding EditProduct.MaterialCD}" 
+											Command="{Binding SelMaterialCommand}"/>
                         <TextBox  Grid.Row="7" Grid.Column="5"  Margin="1" Grid.ColumnSpan="3" 
-							 d:Text="素材：Data" TextWrapping="Wrap">
+							      d:Text="素材：Data" 
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.MaterialCD" />
@@ -239,10 +292,13 @@
 
 
                         <uc:CvnetBtListView Grid.Row="8" Grid.Column="0"  Margin="1"
-							Title="ﾃﾞｻﾞｲﾅｰ" MstName="デザイナー"
-							SelectedValue="{Binding EditProduct.DesignCD}" Command="{Binding SelDesignCommand}" />
+							                Title="ﾃﾞｻﾞｲﾅｰ" MstName="デザイナー"
+							                SelectedValue="{Binding EditProduct.DesignCD}" 
+											Command="{Binding SelDesignCommand}" />
                         <TextBox Grid.Row="8" Grid.Column="1"  Margin="1" Grid.ColumnSpan="3" 
-                            d:Text="ﾃﾞｻﾞｲﾅｰ：Data" TextWrapping="Wrap">
+                                 d:Text="ﾃﾞｻﾞｲﾅｰ：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.DesignCD" />
@@ -251,10 +307,13 @@
                             </TextBox.Text>
                         </TextBox>
                         <uc:CvnetBtListView Grid.Row="8" Grid.Column="4"  Margin="1"
-							Title="原産国" MstName="原産国"
-							SelectedValue="{Binding EditProduct.MadeInCD}" Command="{Binding SelMadeInCommand}"/>
+							                Title="原産国" MstName="原産国"
+							                SelectedValue="{Binding EditProduct.MadeInCD}" 
+											Command="{Binding SelMadeInCommand}"/>
                         <TextBox Grid.Row="8" Grid.Column="5"  Margin="1" Grid.ColumnSpan="3" 
-							d:Text="原産国：Data" TextWrapping="Wrap">
+							     d:Text="原産国：Data" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.MadeInCD" />
@@ -264,11 +323,16 @@
                         </TextBox>
 
 
-                        <uc:CvnetBtListView  Grid.Row="9" Grid.Column="0" Margin="1"
-							Title="展示会" MstName="展示会"			
-							SelectedValue="{Binding EditProduct.ExhibitCD}" Command="{Binding SelExhibitCommand}"/>
+                        <uc:CvnetBtListView Grid.Row="9" Grid.Column="0" Margin="1"
+							                Title="展示会" MstName="展示会"		
+											IsEnabled="{Binding Shohin3Opt.BtExhibitAct}"
+							                SelectedValue="{Binding EditProduct.ExhibitCD}" 
+											Command="{Binding SelExhibitCommand}"/>
                         <TextBox  Grid.Row="9" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
-							 d:Text="展示会：Data" TextWrapping="Wrap">
+							      d:Text="展示会：Data"
+								  IsReadOnly="{Binding Shohin3Opt.ExhibitReadOnly}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.ExhibitCD" />
@@ -276,11 +340,14 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView  Grid.Row="9" Grid.Column="4" Margin="1"
-							Title="メーカー" MstName="メーカー"
-							SelectedValue="{Binding EditProduct.ManufactCD}" Command="{Binding SelManufactCommand}"/>
+                        <uc:CvnetBtListView Grid.Row="9" Grid.Column="4" Margin="1"
+							                Title="メーカー" MstName="メーカー"
+							                SelectedValue="{Binding EditProduct.ManufactCD}" 
+											Command="{Binding SelManufactCommand}"/>
                         <TextBox  Grid.Row="9" Grid.Column="5" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="メーカー：Data" TextWrapping="Wrap">
+							      d:Text="メーカー：Data" 
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.ManufactCD" />
@@ -291,10 +358,14 @@
 
 
                         <uc:CvnetBtListView Grid.Row="10" Grid.Column="0" Margin="1"
-							Title="補足1" MstName="名称" Param2="B01"
-							SelectedValue="{Binding EditProduct.NameCD01}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA01}" 
+											MstName="名称" Param2="B01"
+							                SelectedValue="{Binding EditProduct.NameCD01}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="10" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
-                            d:Text="補足1：Data" TextWrapping="Wrap">
+                                 d:Text="補足1：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD01" />
@@ -303,10 +374,14 @@
                             </TextBox.Text>
                         </TextBox>
                         <uc:CvnetBtListView Grid.Row="10" Grid.Column="4" Margin="1"
-							Title="補足2" MstName="名称" Param2="B02"
-							SelectedValue="{Binding EditProduct.NameCD02}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA02}" 
+											MstName="名称" Param2="B02"
+							                SelectedValue="{Binding EditProduct.NameCD02}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="10" Grid.Column="5" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足2：Data" TextWrapping="Wrap">
+							     d:Text="補足2：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD02" />
@@ -317,10 +392,14 @@
 
 
                         <uc:CvnetBtListView Grid.Row="11" Grid.Column="0" Margin="1"
-							Title="補足3" MstName="名称" Param2="B03"
-							SelectedValue="{Binding EditProduct.NameCD03}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA03}"
+											MstName="名称" Param2="B03"
+							                SelectedValue="{Binding EditProduct.NameCD03}"
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="11" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足3：Data" TextWrapping="Wrap">
+							     d:Text="補足3：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD03" />
@@ -329,10 +408,14 @@
                             </TextBox.Text>
                         </TextBox>
                         <uc:CvnetBtListView Grid.Row="11" Grid.Column="4" Margin="1"
-							Title="補足4" MstName="名称" Param2="B04"
-							SelectedValue="{Binding EditProduct.NameCD04}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA04}" 
+											MstName="名称" Param2="B04"
+							                SelectedValue="{Binding EditProduct.NameCD04}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="11" Grid.Column="5" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足4：Data" TextWrapping="Wrap">
+							     d:Text="補足4：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD04" />
@@ -340,13 +423,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-
-
+ 
                         <uc:CvnetBtListView Grid.Row="12" Grid.Column="0" Margin="1"
-							Title="補足5" MstName="名称" Param2="B05"
-							SelectedValue="{Binding EditProduct.NameCD05}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA05}" 
+											MstName="名称" Param2="B05"
+							                SelectedValue="{Binding EditProduct.NameCD05}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="12" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足5：Data" TextWrapping="Wrap">
+							     d:Text="補足5：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD05" />
@@ -355,10 +441,14 @@
                             </TextBox.Text>
                         </TextBox>
                         <uc:CvnetBtListView Grid.Row="12" Grid.Column="4" Margin="1"
-							Title="補足6" MstName="名称" Param2="B06"
-							SelectedValue="{Binding EditProduct.NameCD06}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA06}" 
+											MstName="名称" Param2="B06"
+							                SelectedValue="{Binding EditProduct.NameCD06}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="12" Grid.Column="5" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足6：Data" TextWrapping="Wrap">
+							     d:Text="補足6：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD06" />
@@ -366,13 +456,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-
-
+ 
                         <uc:CvnetBtListView Grid.Row="13" Grid.Column="0" Margin="1"
-							Title="補足7" MstName="名称" Param2="B07"
-							SelectedValue="{Binding EditProduct.NameCD07}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA07}" 
+											MstName="名称" Param2="B07"
+							                SelectedValue="{Binding EditProduct.NameCD07}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="13" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
-                            d:Text="補足7：Data" TextWrapping="Wrap">
+                                 d:Text="補足7：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD07" />
@@ -381,10 +474,14 @@
                             </TextBox.Text>
                         </TextBox>
                         <uc:CvnetBtListView Grid.Row="13" Grid.Column="4" Margin="1"
-							Title="補足8" MstName="名称" Param2="B08"
-							SelectedValue="{Binding EditProduct.NameCD08}" Command="{Binding SelNameCommand}"/>
+							                Title="{Binding Shohin3Opt.LabelA08}" 
+											MstName="名称" Param2="B08"
+							                SelectedValue="{Binding EditProduct.NameCD08}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox Grid.Row="13" Grid.Column="5" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足8：Data" TextWrapping="Wrap">
+							     d:Text="補足8：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD08" />
@@ -392,13 +489,15 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-
-
-                        <uc:CvnetBtListView  Grid.Row="14" Grid.Column="0" Margin="1"
-							Title="補足9" MstName="名称" Param2="B09"
-							SelectedValue="{Binding EditProduct.NameCD09}" Command="{Binding SelNameCommand}"/>
-                        <TextBox  Grid.Row="14" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足9：Data" TextWrapping="Wrap">
+ 
+                        <uc:CvnetBtListView Grid.Row="14" Grid.Column="0" Margin="1"
+							                Title="{Binding Shohin3Opt.LabelA09}" MstName="名称" Param2="B09"
+							                SelectedValue="{Binding EditProduct.NameCD09}" 
+											Command="{Binding SelNameCommand}"/>
+                        <TextBox Grid.Row="14" Grid.Column="1" Margin="1" Grid.ColumnSpan="3" 
+							     d:Text="補足9：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD09" />
@@ -406,11 +505,14 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView  Grid.Row="14" Grid.Column="4" Margin="1"
-							Title="補足10" MstName="名称" Param2="B10"
-							SelectedValue="{Binding EditProduct.NameCD10}" Command="{Binding SelNameCommand}"/>
+                        <uc:CvnetBtListView Grid.Row="14" Grid.Column="4" Margin="1"
+							                Title="{Binding Shohin3Opt.LabelA10}" MstName="名称" Param2="B10"
+							                SelectedValue="{Binding EditProduct.NameCD10}" 
+											Command="{Binding SelNameCommand}"/>
                         <TextBox  Grid.Row="14" Grid.Column="5" Margin="1" Grid.ColumnSpan="3" 
-							d:Text="補足10：Data" TextWrapping="Wrap">
+							      d:Text="補足10：Data"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.NameCD10" />
@@ -421,36 +523,90 @@
 
 
                         <Label   Grid.Row="15" Grid.Column="0"  Margin="1" Content="元上代" />
-                        <TextBox Grid.Row="15" Grid.Column="1"  Margin="1"  d:Text="元上代：Data" Text="{Binding EditProduct.OriPrice}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="15" Grid.Column="1"  Margin="1"  
+								 d:Text="元上代：Data" 
+								 Text="{Binding EditProduct.OriPrice}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                         <Label   Grid.Row="15" Grid.Column="2"  Margin="1" VerticalContentAlignment="Center" Content="上代" />
-                        <TextBox Grid.Row="15" Grid.Column="3"  Margin="1"  d:Text="上代：Data" Text="{Binding EditProduct.Price}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="15" Grid.Column="3"  Margin="1"  
+								 d:Text="上代：Data" 
+								 Text="{Binding EditProduct.Price}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                         <Label   Grid.Row="15" Grid.Column="4"  Margin="1" VerticalContentAlignment="Center" Content="加工工賃" />
-                        <TextBox Grid.Row="15" Grid.Column="5"  Margin="1"  d:Text="加工工賃：Data" Text="{Binding EditProduct.ManufactFee}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="15" Grid.Column="5"  Margin="1"  
+								 d:Text="加工工賃：Data" 
+								 Text="{Binding EditProduct.ManufactFee}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
 
-
-
-                        <Label   Grid.Row="16" Grid.Column="0" Margin="1" Content="仕入価格" />
-                        <TextBox Grid.Row="16" Grid.Column="1" Margin="1"  d:Text="仕入価格：Data" Text="{Binding EditProduct.PurchasePrice}" TextWrapping="Wrap" />
+                        <Label   Grid.Row="16" Grid.Column="0" Margin="1" Content="仕入価格"
+								 Visibility="{Binding Shohin3Opt.LblPurchPriceVis}" />
+                        <TextBox Grid.Row="16" Grid.Column="1" Margin="1"  
+								 d:Text="仕入価格：Data"
+								 Visibility="{Binding Shohin3Opt.TxtPurchPriceVis}"
+								 Text="{Binding EditProduct.PurchasePrice}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                         <Label   Grid.Row="16" Grid.Column="2" Margin="1" Content="原価" />
-                        <TextBox Grid.Row="16" Grid.Column="3" Margin="1" d:Text="原価：Data" Text="{Binding EditProduct.Cost}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="16" Grid.Column="3" Margin="1" 
+								 d:Text="原価：Data" 
+								 Text="{Binding EditProduct.Cost}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
                         <Label   Grid.Row="16" Grid.Column="4" Margin="1" Content="営業原価" />
-                        <TextBox Grid.Row="16" Grid.Column="5" Margin="1"  d:Text="営業原価：Data" Text="{Binding EditProduct.OpCostPrice}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="16" Grid.Column="5" Margin="1"  
+								 d:Text="営業原価：Data" 
+								 Text="{Binding EditProduct.OpCostPrice}"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
 
                         
-                        <Label    Grid.Row="17" Grid.Column="0" Margin="1" Content="外貨仕入価格" />
-                        <TextBox  Grid.Row="17" Grid.Column="1" Margin="1" d:Text="外貨仕入価格：Data"  Text="{Binding EditProduct.ForeignCurPrice}" TextWrapping="Wrap" />
+                        <Label    Grid.Row="17" Grid.Column="0" Margin="1" 
+								  Content="外貨仕入価格" 
+								  Visibility="{Binding Shohin3Opt.LblForCurPrVis}" />
+                        <TextBox  Grid.Row="17" Grid.Column="1" Margin="1" 
+								  d:Text="外貨仕入価格：Data"
+								  Visibility="{Binding Shohin3Opt.TxtForCurPrVis}"
+								  Text="{Binding EditProduct.ForeignCurPrice}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap" />
                         <Label    Grid.Row="17" Grid.Column="2" Margin="1" Content="在庫管理" />
-                        <ComboBox Grid.Row="17" Grid.Column="3" Margin="1" Style="{StaticResource SearchableComboBox1}"
-								                                ItemsSource="{Binding InvMngmentList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.InvMngmentFLG}"/>
+                        <ComboBox Grid.Row="17" Grid.Column="3" Margin="1"
+								  ItemsSource="{Binding InvMngmentList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.InvMngmentFLG}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="17" Grid.Column="4" Margin="1" Content="セール区分" />
-                        <ComboBox Grid.Row="17" Grid.Column="5" Margin="1" Style="{StaticResource SearchableComboBox1}"
-									ItemsSource="{Binding SalesCateList}" DisplayMemberPath="Value"  SelectedValuePath="Key" SelectedValue="{Binding EditProduct.SalesCate}" />
+                        <ComboBox Grid.Row="17" Grid.Column="5" Margin="1"
+								  ItemsSource="{Binding SalesCateList}" 
+								  DisplayMemberPath="Value"  
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.SalesCate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
 
                         <Label    Grid.Row="18" Grid.Column="0" Margin="1" Content="売上基準自動補充" />
-                        <ComboBox Grid.Row="18" Grid.Column="1" Margin="1" Style="{StaticResource SearchableComboBox1}"
-									ItemsSource="{Binding AutoDistList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.AutoDistFLG}"/>
-                        <uc:CvnetBtListView Grid.Row="18" Grid.Column="2" Margin="1" Title="基準倉庫CD" MstName="倉庫" SelectedValue="{Binding EditProduct.StandWareCD}" Command="{Binding SelStandWareCommand}"/>
-                        <TextBox  Grid.Row="18" Grid.Column="3" Margin="1" d:Text="基準倉庫CD：Data"  TextWrapping="Wrap">
+                        <ComboBox Grid.Row="18" Grid.Column="1" Margin="1"
+								  ItemsSource="{Binding AutoDistList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.AutoDistFLG}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
+                        <uc:CvnetBtListView Grid.Row="18" Grid.Column="2" 
+											Margin="1" 
+											Title="基準倉庫CD" 
+											MstName="倉庫" 
+											SelectedValue="{Binding EditProduct.StandWareCD}" 
+											Command="{Binding SelStandWareCommand}"/>
+                        <TextBox  Grid.Row="18" Grid.Column="3" Margin="1" 
+								  d:Text="基準倉庫CD：Data"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.StandWareCD" />
@@ -459,61 +615,158 @@
                             </TextBox.Text>
                         </TextBox>
                         <Label    Grid.Row="18" Grid.Column="4" Margin="1" Content="納品区分" />
-                        <ComboBox Grid.Row="18" Grid.Column="5" Margin="1" ItemsSource="{Binding DeliverCateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.DeliveryCate}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="18" Grid.Column="5" Margin="1" 
+								  ItemsSource="{Binding DeliverCateList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.DeliveryCate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
 
-
-                        <Label    Grid.Row="19" Grid.Column="0" Margin="1" Content="EC連携" />
-                        <ComboBox Grid.Row="19" Grid.Column="1" Margin="1" ItemsSource="{Binding EcConnectList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.EcConnect}" Style="{StaticResource SearchableComboBox1}"/>
-                        <Label    Grid.Row="19" Grid.Column="2" Margin="1" Content="EC取置" />
-                        <ComboBox Grid.Row="19" Grid.Column="3" Margin="1" ItemsSource="{Binding EcReserveList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.EcReserve}" Style="{StaticResource SearchableComboBox1}"/>
+                        <Label    Grid.Row="19" Grid.Column="0" Margin="1" 
+								  Content="EC連携"
+								  Visibility="{Binding Shohin3Opt.LblEcConnectVis}" />
+                        <ComboBox Grid.Row="19" Grid.Column="1" Margin="1"
+								  Visibility="{Binding Shohin3Opt.TxtEcConnectVis}"
+								  ItemsSource="{Binding EcConnectList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.EcConnect}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
+                        <Label    Grid.Row="19" Grid.Column="2" Margin="1" 
+								  Content="EC取置" 
+								  Visibility="{Binding Shohin3Opt.LblEcReserveVis}" />
+                        <ComboBox Grid.Row="19" Grid.Column="3" Margin="1" 
+								  Visibility="{Binding Shohin3Opt.TxtEcReserveVis}"
+								  ItemsSource="{Binding EcReserveList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.EcReserve}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="19" Grid.Column="4" Margin="1" Content="仕入区分" />
-                        <ComboBox Grid.Row="19" Grid.Column="5" Margin="1" ItemsSource="{Binding PurchCateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.PurchaseCate}" Style="{StaticResource SearchableComboBox1}"/>
-
+                        <ComboBox Grid.Row="19" Grid.Column="5" Margin="1" 
+								  ItemsSource="{Binding PurchCateList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.PurchaseCate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
 
                         <Label    Grid.Row="20" Grid.Column="0" Margin="1" Content="消化計算" />
-                        <ComboBox Grid.Row="20" Grid.Column="1" Margin="1" ItemsSource="{Binding DgCalcList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.DgCalcCate}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="20" Grid.Column="1" Margin="1" 
+								  ItemsSource="{Binding DgCalcList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.DgCalcCate, Mode=TwoWay}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}" 
+								  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="20" Grid.Column="2" Margin="1" Content="消化掛率" />
-                        <TextBox  Grid.Row="20" Grid.Column="3" Margin="1" d:Text="消化掛率：Data" Text="{Binding EditProduct.ConsignPurcRate}" TextWrapping="Wrap" />
+                        <TextBox  Grid.Row="20" Grid.Column="3" Margin="1" 
+								  d:Text="消化掛率：Data" 
+								  Text="{Binding EditProduct.ConsignPurcRate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap" />
                         <Label    Grid.Row="20" Grid.Column="4" Margin="1" Content="消化桁切" />
-                        <ComboBox Grid.Row="20" Grid.Column="5" Margin="1" ItemsSource="{Binding DgCutOffList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.DgCutOffSpec}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="20" Grid.Column="5" Margin="1" 
+								  ItemsSource="{Binding DgCutOffList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.DgCutOffSpec}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="20" Grid.Column="6" Margin="1" Content="消化端数" />
-                        <ComboBox Grid.Row="20" Grid.Column="7" Margin="1" ItemsSource="{Binding ConPurcCateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.ConsignPurcCate}" Style="{StaticResource SearchableComboBox1}"/>
-
+                        <ComboBox Grid.Row="20" Grid.Column="7" Margin="1" 
+								  ItemsSource="{Binding ConPurcCateList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.ConsignPurcCate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
 
                         <Label    Grid.Row="21" Grid.Column="0" Margin="1" Content="POS送信区分" />
-                        <ComboBox Grid.Row="21" Grid.Column="1" Margin="1" ItemsSource="{Binding PosCateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.PosCate}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="21" Grid.Column="1" Margin="1" 
+								  ItemsSource="{Binding PosCateList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.PosCate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="21" Grid.Column="2" Margin="1" Content="代表品番FLG" />
-                        <ComboBox Grid.Row="21" Grid.Column="3" Margin="1" ItemsSource="{Binding RepresNoFlgList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.RepresentNoFLG}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="21" Grid.Column="3" Margin="1" 
+								  ItemsSource="{Binding RepresNoFlgList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.RepresentNoFLG}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="21" Grid.Column="4" Margin="1" Content="商品区分FLG" />
-                        <ComboBox Grid.Row="21" Grid.Column="5" Margin="1" ItemsSource="{Binding ProdCateFlgList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.ProdCateFLG}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="21" Grid.Column="5" Margin="1" 
+								  ItemsSource="{Binding ProdCateFlgList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.ProdCateFLG}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="21" Grid.Column="6" Margin="1" Content="軽減税率" />
-                        <ComboBox Grid.Row="21" Grid.Column="7" Margin="1" ItemsSource="{Binding TaxCDList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.TaxCD}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="21" Grid.Column="7" Margin="1" 
+								  ItemsSource="{Binding TaxCDList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.TaxCD}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  Style="{StaticResource SearchableComboBox1}"/>
 
 
                         <Label      Grid.Row="22" Grid.Column="0" Margin="1" Content="販売開始日"/>
-                        <DatePicker Grid.Row="22" Grid.Column="1" Margin="1" Text="{Binding EditProduct.SaleStDate}"/>
+                        <DatePicker Grid.Row="22" Grid.Column="1" Margin="1"
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									Text="{Binding EditProduct.SaleStDate}"/>
                         <Label      Grid.Row="22" Grid.Column="2" Margin="1" Content="販売終了日" />
-                        <DatePicker Grid.Row="22" Grid.Column="3" Margin="1" />
+						<DatePicker Grid.Row="22" Grid.Column="3" Margin="1"
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									SelectedDate="{Binding EditProduct.SalesPeriod}" />
                         <Label      Grid.Row="22" Grid.Column="4" Margin="1" Content="ｻｲｽﾞ表示" />
-                        <ComboBox   Grid.Row="22" Grid.Column="5" Margin="1" ItemsSource="{Binding ProdSizCateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.ProdSizeCate}" Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox   Grid.Row="22" Grid.Column="5" Margin="1" 
+									ItemsSource="{Binding ProdSizCateList}" 
+									DisplayMemberPath="Value" 
+									SelectedValuePath="Key" 
+									SelectedValue="{Binding EditProduct.ProdSizeCate}"
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									Style="{StaticResource SearchableComboBox1}"/>
+						<Button Grid.Row="22" Grid.Column="6" Margin="1" 
+								Content="連携表示" 
+								IsEnabled="{Binding Shohin3Opt.BtRenkeiAct}"
+								Visibility="{Binding Shohin3Opt.BtRenkeiVis}"/>
 
 
                         <Label   Grid.Row="23" Grid.Column="0" Margin="1" Content="作成日" />
-                        <TextBox Grid.Row="23" Grid.Column="1" Margin="1" d:Text="作成日：Data" Text="{Binding EditProduct.VdateCreate}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="23" Grid.Column="1" Margin="1" d:Text="作成日：Data" 
+								 Text="{Binding EditProduct.VdateCreate}" 
+								 TextWrapping="Wrap" />
                         <Label   Grid.Row="23" Grid.Column="2" Margin="1" Content="修正日" />
-                        <TextBox Grid.Row="23" Grid.Column="3" Margin="1" d:Text="修正日：Data" Text="{Binding EditProduct.VdateUpdate}" TextWrapping="Wrap" />
+                        <TextBox Grid.Row="23" Grid.Column="3" Margin="1" d:Text="修正日：Data" 
+								 Text="{Binding EditProduct.VdateUpdate}" 
+								 TextWrapping="Wrap" />
                         <Label   Grid.Row="23" Grid.Column="4" Margin="1" Content="最終修正者" />
                         <TextBox Grid.Row="23" Grid.Column="5" Margin="1" d:Text="最終修正者：Data" Text="{Binding EditProduct.ModifiedBy}" TextWrapping="Wrap" />
 
 
                         <Button Grid.Row="24" Grid.Column="1" Margin="1" Visibility="Hidden"/>
                         
-                        <Button Grid.Row="25" Grid.Column="1" Margin="1" Content="品質表示(S+F10)" />
-                        <Button Grid.Row="25" Grid.Column="2" Margin="1" Content="原価枝番(S+F11)" />
-                        <Button Grid.Row="25" Grid.Column="3" Margin="1" Content="色サイズ展開(S+F12)" />
-                        <Button Grid.Row="25" Grid.Column="4" Margin="1" Content="発注入力" />
-                        <Button Grid.Row="25" Grid.Column="5" Margin="1" Content="仕入入力" />
-                        <Button Grid.Row="25" Grid.Column="6" Margin="1" Content="発注配分入力" />
+                        <Button Grid.Row="25" Grid.Column="1" Margin="0,0,5,0" 
+								Content="品質表示(S+F10)" 
+								Command="{Binding DoQualityDspCommand}" />
+						<Button Grid.Row="25" Grid.Column="2" Margin="0,0,5,0" 
+								Content="{Binding Shohin3Opt.BtGenkaTitle}" 
+								Command="{Binding DoCostBranchCommand}"/>
+						<Button Grid.Row="25" Grid.Column="3" Margin="0,0,5,0" 
+								Content="色サイズ展開(S+F12)"
+								Command="{Binding DoColorSizCommand}"/>
+						<Button Grid.Row="25" Grid.Column="4" Margin="0,0,5,0" Content="発注入力" />
+						<Button Grid.Row="25" Grid.Column="5" Margin="0,0,5,0" Content="仕入入力" />
+						<Button Grid.Row="25" Grid.Column="6" Margin="0,0,5,0" Content="発注配分入力" />
 
                         <StackPanel Grid.Column="5" Grid.ColumnSpan="3" Grid.RowSpan="4"  Orientation="Horizontal"
 								HorizontalAlignment="Right" >
@@ -592,20 +845,38 @@
                         </Grid.ColumnDefinitions>
 
                         <Label      Grid.Row="0" Grid.Column="0" Margin="3" Content="納品日" />
-                        <DatePicker Grid.Row="0" Grid.Column="1" Margin="3" SelectedDate="{Binding EditProduct.DeliveryDate}"/>
+                        <DatePicker Grid.Row="0" Grid.Column="1" Margin="3"
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									SelectedDate="{Binding EditProduct.DeliveryDate}"/>
                         <Label      Grid.Row="0" Grid.Column="2" Margin="3" Content="店頭投入日" />
-                        <DatePicker Grid.Row="0" Grid.Column="3" Margin="3" SelectedDate="{Binding EditProduct.InitLaunchDate}"/>
+                        <DatePicker Grid.Row="0" Grid.Column="3" Margin="3"
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									SelectedDate="{Binding EditProduct.InitLaunchDate}"/>
                         <Label      Grid.Row="0" Grid.Column="4" Margin="3" Content="売変日" />
-                        <DatePicker Grid.Row="0" Grid.Column="5" Margin="3" SelectedDate="{Binding EditProduct.PriceChgDate}"/>
+                        <DatePicker Grid.Row="0" Grid.Column="5" Margin="3" 
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									SelectedDate="{Binding EditProduct.PriceChgDate}"/>
 
                         <Label      Grid.Row="1" Grid.Column="0" Margin="3" Content="デリバリー日" />
-                        <DatePicker Grid.Row="1" Grid.Column="1" Margin="3" SelectedDate="{Binding EditProduct.CustDeliDate}"/>
+                        <DatePicker Grid.Row="1" Grid.Column="1" Margin="3" 
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									SelectedDate="{Binding EditProduct.CustDeliDate}"/>
                         <Label      Grid.Row="1" Grid.Column="2" Margin="3" Content="リピート日" />
-                        <DatePicker Grid.Row="1" Grid.Column="3" Margin="3" Text="{Binding EditProduct.RepeatDate}"/>
+                        <DatePicker Grid.Row="1" Grid.Column="3" Margin="3"
+									IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+									Text="{Binding EditProduct.RepeatDate}"/>
 
-
-                        <uc:CvnetBtListView Grid.Row="2" Grid.Column="0" Margin="3" Title="予備01" MstName="予備" Param2="Y01" SelectedValue="{Binding EditProduct.Reserve01}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="3" d:Text="予備01：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="2" Grid.Column="0" Margin="3" 
+											Title="{Binding Shohin3Opt.LabelB01}" 
+											MstName="予備" 
+											Param2="Y01" 
+											SelectedValue="{Binding EditProduct.Reserve01}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" 
+								 Margin="3" 
+								 d:Text="予備01：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve01" />
@@ -613,21 +884,35 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="2" Grid.Column="4" Margin="3" Title="予備02" MstName="予備" Param2="Y02" SelectedValue="{Binding EditProduct.Reserve02}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="2" Grid.Column="5" Margin="3" Grid.ColumnSpan="3" d:Text="予備02：Data" TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="EditProduct.Reserve02" />
-                                    <Binding Path="EditProduct.ReserveName02" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
-
-
-
-                        <uc:CvnetBtListView  Grid.Row="3" Grid.Column="0" Margin="3" Title="予備03" MstName="予備" Param2="Y03" 
-								SelectedValue="{Binding EditProduct.Reserve03}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox  Grid.Row="3" Grid.Column="1" Margin="3"  Grid.ColumnSpan="3"  d:Text="予備03：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="2" Grid.Column="4" 
+											Margin="3" 
+											Title="{Binding Shohin3Opt.LabelB02}"
+											MstName="予備" 
+											Param2="Y02" 
+											SelectedValue="{Binding EditProduct.Reserve02}" 
+											Command="{Binding SelReserveCommand}"/>
+						<TextBox Grid.Row="2" Grid.Column="5" Margin="3" Grid.ColumnSpan="3" 
+								 d:Text="予備02：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
+							<TextBox.Text>
+								<MultiBinding StringFormat='{}{0} {1}'>
+									<Binding Path="EditProduct.Reserve02" />
+									<Binding Path="EditProduct.ReserveName02" />
+								</MultiBinding>
+							</TextBox.Text>
+						</TextBox>
+						
+						<uc:CvnetBtListView  Grid.Row="3" Grid.Column="0" Margin="3" 
+											 Title="{Binding Shohin3Opt.LabelB03}"
+											 MstName="予備" 
+											 Param2="Y03" 
+								             SelectedValue="{Binding EditProduct.Reserve03}" 
+											 Command="{Binding SelReserveCommand}"/>
+                        <TextBox  Grid.Row="3" Grid.Column="1" Margin="3"  Grid.ColumnSpan="3"  
+								  d:Text="予備03：Data"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve03" />
@@ -635,9 +920,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="3" Grid.Column="4" Margin="3"  Title="予備04" MstName="予備" Param2="Y04" 
-								SelectedValue="{Binding EditProduct.Reserve04}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="3" Grid.Column="5" Margin="3"  Grid.ColumnSpan="3"  d:Text="予備04：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="3" Grid.Column="4" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB04}"
+											MstName="予備" 
+											Param2="Y04" 
+								            SelectedValue="{Binding EditProduct.Reserve04}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="3" Grid.Column="5" Margin="3"  Grid.ColumnSpan="3"  
+								 d:Text="予備04：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve04" />
@@ -646,10 +938,16 @@
                             </TextBox.Text>
                         </TextBox>
 
-
-                        <uc:CvnetBtListView Grid.Row="4" Grid.Column="0" Margin="3" Title="予備05" MstName="予備" Param2="Y05" 
-								SelectedValue="{Binding EditProduct.Reserve05}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" Margin="3" Grid.ColumnSpan="3" d:Text="予備05：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="4" Grid.Column="0" Margin="3" 
+											Title="{Binding Shohin3Opt.LabelB05}" 
+											MstName="予備" 
+											Param2="Y05" 
+								            SelectedValue="{Binding EditProduct.Reserve05}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Margin="3" Grid.ColumnSpan="3" 
+								 d:Text="予備05：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve05" />
@@ -657,9 +955,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="4" Grid.Column="4" Margin="3" Title="予備06" MstName="予備" Param2="Y06"
-								SelectedValue="{Binding EditProduct.Reserve06}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="4" Grid.Column="5"  Grid.ColumnSpan="3" Margin="3" d:Text="予備06：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="4" Grid.Column="4" Margin="3" 
+											Title="{Binding Shohin3Opt.LabelB06}"
+											MstName="予備" 
+											Param2="Y06"
+								            SelectedValue="{Binding EditProduct.Reserve06}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="4" Grid.Column="5"  Grid.ColumnSpan="3" Margin="3" 
+								 d:Text="予備06：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve06" />
@@ -668,10 +973,16 @@
                             </TextBox.Text>
                         </TextBox>
 
-
-                        <uc:CvnetBtListView Grid.Row="5" Grid.Column="0" Margin="3"  Title="予備07" MstName="予備" Param2="Y07" 
-								SelectedValue="{Binding EditProduct.Reserve07}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="5" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3" d:Text="予備07：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="5" Grid.Column="0" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB07}" 
+											MstName="予備" 
+											Param2="Y07" 
+								            SelectedValue="{Binding EditProduct.Reserve07}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="5" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3" 
+								 d:Text="予備07：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve07" />
@@ -679,9 +990,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="5" Grid.Column="4" Margin="3"  Title="予備08" MstName="予備" Param2="Y08" 
-                                             SelectedValue="{Binding EditProduct.Reserve08}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="5" Grid.Column="5"  Margin="3" Grid.ColumnSpan="3" d:Text="予備08：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="5" Grid.Column="4" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB08}"
+											MstName="予備" 
+											Param2="Y08" 
+                                            SelectedValue="{Binding EditProduct.Reserve08}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="5" Grid.Column="5"  Margin="3" Grid.ColumnSpan="3" 
+								 d:Text="予備08：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve08" />
@@ -690,10 +1008,16 @@
                             </TextBox.Text>
                         </TextBox>
 
-
-                        <uc:CvnetBtListView Grid.Row="6" Grid.Column="0" Margin="3" Title="予備09"  MstName="予備" Param2="Y09" 
-								SelectedValue="{Binding EditProduct.Reserve09}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="6" Grid.Column="1"  Margin="3"  Grid.ColumnSpan="3"  d:Text="予備09：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="6" Grid.Column="0" Margin="3" 
+											Title="{Binding Shohin3Opt.LabelB09}"  
+											MstName="予備" 
+											Param2="Y09" 
+								            SelectedValue="{Binding EditProduct.Reserve09}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="6" Grid.Column="1"  Margin="3"  Grid.ColumnSpan="3"  
+								 d:Text="予備09：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve09" />
@@ -701,21 +1025,34 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="6" Grid.Column="4" Margin="3" Title="予備10" MstName="予備" Param2="Y10" 
-								SelectedValue="{Binding EditProduct.Reserve10}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="6" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3"  d:Text="予備10：Data" TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="EditProduct.Reserve10" />
-                                    <Binding Path="EditProduct.ReserveName10" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
+                        <uc:CvnetBtListView Grid.Row="6" Grid.Column="4" Margin="3" 
+											Title="{Binding Shohin3Opt.LabelB10}"
+											MstName="予備" 
+											Param2="Y10" 
+								            SelectedValue="{Binding EditProduct.Reserve10}" 
+											Command="{Binding SelReserveCommand}"/>
+						<TextBox Grid.Row="6" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3"  
+								 d:Text="予備10：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
+							<TextBox.Text>
+								<MultiBinding StringFormat='{}{0} {1}'>
+									<Binding Path="EditProduct.Reserve10" />
+									<Binding Path="EditProduct.ReserveName10" />
+								</MultiBinding>
+							</TextBox.Text>
+						</TextBox>
 
-
-                        <uc:CvnetBtListView Grid.Row="7" Grid.Column="0" Margin="3"  Title="予備11" MstName="予備" Param2="Y11" 
-								SelectedValue="{Binding EditProduct.Reserve11}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="7" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3"  d:Text="予備11：Data" TextWrapping="Wrap">
+						<uc:CvnetBtListView Grid.Row="7" Grid.Column="0" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB11}" 
+											MstName="予備" 
+											Param2="Y11" 
+								            SelectedValue="{Binding EditProduct.Reserve11}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="7" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3"  
+								 d:Text="予備11：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve11" />
@@ -723,9 +1060,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="7" Grid.Column="4" Margin="3"  Title="予備12" MstName="予備" Param2="Y12" 
-								SelectedValue="{Binding EditProduct.Reserve12}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox  Grid.Row="7" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3"   d:Text="予備12：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="7" Grid.Column="4" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB12}" 
+											MstName="予備" 
+											Param2="Y12" 
+								            SelectedValue="{Binding EditProduct.Reserve12}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox  Grid.Row="7" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3"   
+								  d:Text="予備12：Data"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve12" />
@@ -734,10 +1078,16 @@
                             </TextBox.Text>
                         </TextBox>
 
-
-                        <uc:CvnetBtListView Grid.Row="8" Grid.Column="0"  Margin="3"  Title="予備13" MstName="予備" Param2="Y13"
-								SelectedValue="{Binding EditProduct.Reserve13}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="8" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3"   d:Text="予備13：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="8" Grid.Column="0"  Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB13}"
+											MstName="予備" 
+											Param2="Y13"
+								            SelectedValue="{Binding EditProduct.Reserve13}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="8" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3"   
+								 d:Text="予備13：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve13" />
@@ -745,9 +1095,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="8" Grid.Column="4" Margin="3"  Title="予備14" MstName="予備" Param2="Y14" 
-								SelectedValue="{Binding EditProduct.Reserve14}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="8" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3"   d:Text="予備14：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="8" Grid.Column="4" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB14}" 
+											MstName="予備" 
+											Param2="Y14" 
+								            SelectedValue="{Binding EditProduct.Reserve14}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="8" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3"   
+								 d:Text="予備14：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve14" />
@@ -756,10 +1113,16 @@
                             </TextBox.Text>
                         </TextBox>
 
-
-                        <uc:CvnetBtListView  Grid.Row="9" Grid.Column="0" Margin="3"  Title="予備15" MstName="予備" Param2="Y15"
-								SelectedValue="{Binding EditProduct.Reserve15}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" Margin="3" d:Text="予備15：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView  Grid.Row="9" Grid.Column="0" Margin="3"  
+											 Title="{Binding Shohin3Opt.LabelB15}"
+											 MstName="予備" 
+											 Param2="Y15"
+								             SelectedValue="{Binding EditProduct.Reserve15}" 
+											 Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3" Margin="3" 
+								 d:Text="予備15：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve15" />
@@ -767,21 +1130,34 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="9" Grid.Column="4" Margin="3"  Title="予備16" MstName="予備" Param2="Y16" 
-								SelectedValue="{Binding EditProduct.Reserve16}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="9" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3" d:Text="予備16：Data" TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="EditProduct.Reserve16" />
-                                    <Binding Path="EditProduct.ReserveName16" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
-
-
-                        <uc:CvnetBtListView Grid.Row="10" Grid.Column="0" Margin="3"   Title="予備17" MstName=" 予備" Param2="Y17" 
-								SelectedValue="{Binding EditProduct.Reserve17}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="10" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3" d:Text="予備17：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="9" Grid.Column="4" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB16}" 
+											MstName="予備" 
+											Param2="Y16" 
+								            SelectedValue="{Binding EditProduct.Reserve16}" 
+											Command="{Binding SelReserveCommand}"/>
+						<TextBox Grid.Row="9" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3" 
+								 d:Text="予備16：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
+							<TextBox.Text>
+								<MultiBinding StringFormat='{}{0} {1}'>
+									<Binding Path="EditProduct.Reserve16" />
+									<Binding Path="EditProduct.ReserveName16" />
+								</MultiBinding>
+							</TextBox.Text>
+						</TextBox>
+						
+						<uc:CvnetBtListView Grid.Row="10" Grid.Column="0" Margin="3"   
+											Title="{Binding Shohin3Opt.LabelB17}"
+											MstName=" 予備" 
+											Param2="Y17" 
+								            SelectedValue="{Binding EditProduct.Reserve17}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="10" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3" 
+								 d:Text="予備17：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve17" />
@@ -789,21 +1165,34 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="10" Grid.Column="4" Margin="3"   Title="予備18" MstName="予備" Param2="Y18" 
-								SelectedValue="{Binding EditProduct.Reserve18}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox  Grid.Row="10" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3" d:Text="予備18：Data" TextWrapping="Wrap">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat='{}{0} {1}'>
-                                    <Binding Path="EditProduct.Reserve18" />
-                                    <Binding Path="EditProduct.ReserveName18" />
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
+                        <uc:CvnetBtListView Grid.Row="10" Grid.Column="4" Margin="3"   
+											Title="{Binding Shohin3Opt.LabelB18}" 
+											MstName="予備" 
+											Param2="Y18" 
+								            SelectedValue="{Binding EditProduct.Reserve18}" 
+											Command="{Binding SelReserveCommand}"/>
+						<TextBox  Grid.Row="10" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3" 
+								  d:Text="予備18：Data"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap">
+							<TextBox.Text>
+								<MultiBinding StringFormat='{}{0} {1}'>
+									<Binding Path="EditProduct.Reserve18" />
+									<Binding Path="EditProduct.ReserveName18" />
+								</MultiBinding>
+							</TextBox.Text>
+						</TextBox>
 
-
-                        <uc:CvnetBtListView Grid.Row="11" Grid.Column="0" Margin="3"  Title="予備19" MstName="予備" Param2="Y19" 
-								SelectedValue="{Binding EditProduct.Reserve19}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="11" Grid.Column="1"   Grid.ColumnSpan="3" Margin="3" d:Text="予備19：Data" TextWrapping="Wrap">
+						<uc:CvnetBtListView Grid.Row="11" Grid.Column="0" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB19}"
+											MstName="予備" 
+											Param2="Y19" 
+								            SelectedValue="{Binding EditProduct.Reserve19}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="3" Margin="3" 
+								 d:Text="予備19：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve19" />
@@ -811,9 +1200,16 @@
                                 </MultiBinding>
                             </TextBox.Text>
                         </TextBox>
-                        <uc:CvnetBtListView Grid.Row="11" Grid.Column="4" Margin="3"  Title="予備20" MstName="予備" Param2="Y20" 
-							SelectedValue="{Binding EditProduct.Reserve20}" Command="{Binding SelReserveCommand}"/>
-                        <TextBox Grid.Row="11" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3" d:Text="予備20：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="11" Grid.Column="4" Margin="3"  
+											Title="{Binding Shohin3Opt.LabelB20}"
+											MstName="予備" 
+											Param2="Y20" 
+							                SelectedValue="{Binding EditProduct.Reserve20}" 
+											Command="{Binding SelReserveCommand}"/>
+                        <TextBox Grid.Row="11" Grid.Column="5"   Grid.ColumnSpan="3" Margin="3" 
+								 d:Text="予備20：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.Reserve20" />
@@ -824,15 +1220,30 @@
 
 
                         <Label   Grid.Row="12" Grid.Column="0" Content="メモ" Margin="3" />
-                        <TextBox Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="7" Margin="3" d:Text="メモ：Data" Text="{Binding EditProduct.Memo}" TextWrapping="Wrap" />
-
-
+                        <TextBox Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="7" Margin="3" 
+								 d:Text="メモ：Data" 
+								 Text="{Binding EditProduct.Memo}" 
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap" />
+ 
                         <Label    Grid.Row="13" Grid.Column="0" Content="ゼロ単価区分" Margin="3" />
-                        <ComboBox Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3" Margin="3" ItemsSource="{Binding ZeroPriCateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.ZeroPriceCate}" 
+                        <ComboBox Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="3" Margin="3" 
+								  ItemsSource="{Binding ZeroPriCateList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.ZeroPriceCate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
                                   Style="{StaticResource SearchableComboBox1}"/>
-                        <uc:CvnetBtListView Grid.Row="13" Grid.Column="4" Margin="3" Title="男女区分" MstName="名称" Param2="MLK"
-							SelectedValue="{Binding EditProduct.GenderCate}" Command="{Binding SelGenderCateCommand}"/>
-                        <TextBox Grid.Row="13" Grid.Column="5" Grid.ColumnSpan="3" Margin="3"  d:Text="男女区分：Data" TextWrapping="Wrap">
+                        <uc:CvnetBtListView Grid.Row="13" Grid.Column="4" Margin="3" 
+											Title="男女区分" 
+											MstName="名称" 
+											Param2="MLK"
+							                SelectedValue="{Binding EditProduct.GenderCate}" 
+											Command="{Binding SelGenderCateCommand}"/>
+                        <TextBox Grid.Row="13" Grid.Column="5" Grid.ColumnSpan="3" Margin="3"  
+								 d:Text="男女区分：Data"
+								 IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								 TextWrapping="Wrap">
                             <TextBox.Text>
                                 <MultiBinding StringFormat='{}{0} {1}'>
                                     <Binding Path="EditProduct.GenderCate" />
@@ -841,15 +1252,28 @@
                             </TextBox.Text>
                         </TextBox>
 
-
                         <Label    Grid.Row="14" Grid.Column="0" Margin="3" Content="消費税計算方法" />
-                        <ComboBox Grid.Row="14" Grid.Column="1" Margin="3" ItemsSource="{Binding TaxCalcList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.TaxCalcMethod}" 
-                                   Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="14" Grid.Column="1" Margin="3" 
+								  ItemsSource="{Binding TaxCalcList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.TaxCalcMethod}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+                                  Style="{StaticResource SearchableComboBox1}"/>
                         <Label    Grid.Row="14" Grid.Column="3" Margin="3" Content="下札サイズ" />
-                        <ComboBox Grid.Row="14" Grid.Column="4" Margin="3" ItemsSource="{Binding ColOutCateList}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding EditProduct.CollabOutCate}"
-	                               Style="{StaticResource SearchableComboBox1}"/>
+                        <ComboBox Grid.Row="14" Grid.Column="4" Margin="3" 
+								  ItemsSource="{Binding ColOutCateList}" 
+								  DisplayMemberPath="Value" 
+								  SelectedValuePath="Key" 
+								  SelectedValue="{Binding EditProduct.CollabOutCate}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+	                              Style="{StaticResource SearchableComboBox1}"/>
                         <Button   Grid.Row="14" Grid.Column="6" Margin="3" Content="洗濯表示" />
-                        <TextBox  Grid.Row="14" Grid.Column="7" Margin="3" d:Text="洗濯表示：Data" Text="{Binding EditProduct.CareLabel}" TextWrapping="Wrap" />
+                        <TextBox  Grid.Row="14" Grid.Column="7" Margin="3" 
+								  d:Text="洗濯表示：Data" 
+								  Text="{Binding EditProduct.CareLabel}"
+								  IsEnabled="{Binding Shohin3Opt.ItemListAct}"
+								  TextWrapping="Wrap" />
 
 
                         <Button Grid.Row="15" Grid.Column="0"  Margin="3" Visibility="Hidden"/>
@@ -862,30 +1286,32 @@
             <StackPanel Grid.Row="1" Grid.Column="0"  
 					Orientation="Horizontal" 
 					VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button 
-					Margin="0,0,50,0"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top" 
-					Style="{StaticResource UpdateIconBtn}"/>
+                <Button Margin="0,0,50,0"
+					    HorizontalAlignment="Left"
+					    VerticalAlignment="Top" 
+					    IsEnabled="{Binding Shohin3Opt.BtUpdateAct}"
+					    Visibility="{Binding Shohin3Opt.BtUpdateVis}"
+					    Style="{StaticResource UpdateIconBtn}"/>
 
-                <Button 
-					Margin="0,0,50,0"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Style="{StaticResource DeleteIconBtn}"/>
+                <Button Margin="0,0,50,0"
+					    HorizontalAlignment="Left"
+					    VerticalAlignment="Top"
+						IsEnabled="{Binding Shohin3Opt.BtDeleteAct}"
+						Visibility="{Binding Shohin3Opt.BtDeleteVis}"
+					    Style="{StaticResource DeleteIconBtn}"/>
 
-                <Button 
-					Margin="0,0,50,0"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Style="{StaticResource AddIconBtn}"/>
+                <Button Margin="0,0,50,0"
+					    HorizontalAlignment="Left"
+					    VerticalAlignment="Top"
+					    IsEnabled="{Binding Shohin3Opt.BtInsertAct}"
+					    Visibility="{Binding Shohin3Opt.BtInsertVis}"
+					    Style="{StaticResource AddIconBtn}"/>
 
-                <Button 
-					Margin="0,0,50,0"
-					HorizontalAlignment="Left"
-					VerticalAlignment="Top"
-					Style="{StaticResource PrintIconBtn}"
-					Content="印刷" />
+                <Button Margin="0,0,50,0"
+					    HorizontalAlignment="Left"
+					    VerticalAlignment="Top"
+					    Style="{StaticResource PrintIconBtn}"
+					    Content="印刷" />
 
                 <Button Style="{DynamicResource BackBtn}" Command="{Binding ExitCommand}"/>
             </StackPanel>
