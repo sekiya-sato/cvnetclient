@@ -73,7 +73,7 @@
 					  Content="追加" />
 		</Grid>
 
-		<Grid Grid.Row="1">
+		<Grid Grid.Row="1" Margin="0,5,0,5">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
@@ -158,6 +158,7 @@
 			</ListBox>
 
 			<Button Grid.Column="4"
+					MinHeight="50"
 					Command="{Binding DoAddColSizCommand}"
 					Content="色サイズ&#x0a;展開作成" />
 		</Grid>
@@ -187,6 +188,7 @@
 		</Grid>
 
 		<uc:CvnetFlexView Grid.Row="3"
+						  Margin="0,5,0,5"
 						  d:ItemsSource="{d:SampleData ItemCount=5}" 
 						  ItemsSource="{Binding ShoSh5List}"
 						  IsSynchronizedWithCurrentItem="True"
@@ -220,7 +222,7 @@
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<TextBox Text="{Binding SizCD}"
-								 Background="{Binding SizBgColor}"/>
+									 Background="{Binding SizBgColor}"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>

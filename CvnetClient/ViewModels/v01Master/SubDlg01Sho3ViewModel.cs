@@ -1022,6 +1022,16 @@ namespace CvnetClient.ViewModels
                 }
             }
         }
+
+        /// <summary>
+        /// 発注入力
+        /// </summary>
+        [RelayCommand]
+        private void DoInpOrder()
+        { 
+            
+        }
+
         #endregion
 
         #region Events

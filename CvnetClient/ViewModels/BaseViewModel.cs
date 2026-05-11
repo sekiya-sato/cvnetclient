@@ -28,7 +28,7 @@ namespace CvnetClient.ViewModels {
 
         // Command to close the window
         [RelayCommand]
-        public void Close() => ClientLib.Exit(this);
+        public virtual void Close() => ClientLib.Exit(this);
 
         // Command to DragMove the window
         [RelayCommand]

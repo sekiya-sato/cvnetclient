@@ -62,6 +62,7 @@ namespace CvnetClient.ViewModels
         private int pon = 0;
         private DataTable csv00;
         public int resp_code;
+        public int resp_flg; // ThrowEv Response
         #endregion
 
         public int OnInit(string[] init_para, int? flg = null)
@@ -133,17 +134,18 @@ namespace CvnetClient.ViewModels
             if (flg != null) {
                 if (flg == 3) san_flg = 1;
             }
-             
-            //if (san_flg == 0) { 
-            //    long p_no = long.TryParse(init_para[1], out long _p_no) ? _p_no : 0; 
-            //    var ret_aspx = AppData.Http!.AspxSqlExe(DBDef.DB_DML.LOCK, "Master_SHOHIN", p_no, init_para[2], null, null);
-            //    if (ret_aspx.Code < 0)
-            //    {
-            //        resp_code = ret_aspx.Code;
-            //        ClientLib.ExitDialogResult(this, true);
-            //        return resp_code;
-            //    }
-            //}
+
+            if (san_flg == 0)
+            {
+                long p_no = long.TryParse(init_para[1], out long _p_no) ? _p_no : 0;
+                var ret_aspx = AppData.Http!.AspxSqlExe(DBDef.DB_DML.LOCK, "Master_SHOHIN", p_no, init_para[2], null, null);
+                if (ret_aspx.Code < 0)
+                {
+                    resp_code = ret_aspx.Code;
+                    ClientLib.ExitDialogResult(this, true);
+                    return resp_code;
+                }
+            }
 
             if (!string.IsNullOrEmpty(init_para[0]))
             {
@@ -202,6 +204,43 @@ namespace CvnetClient.ViewModels
                         ShoSh5SearchOpt.LastModifier = ret_csv.Rows[0][16].ToString();
                         double vdate = double.TryParse(ret_csv.Rows[0][1].ToString(), out var vdate_update) ? vdate_update : 0;
                         ShoSh5SearchOpt.VDateCreate = AppData.ClassSatoo.GetVdate(vdate).ToString();
+                    }
+                    /****** 20070111 最終修正者追加対応 END    ******/
+
+                    /****** 20070111 最終修正者追加対応 START ******/
+                    csv00 = new DataTable();
+                    csv00.Columns.Add("商品CD", typeof(string));
+                    csv00.Columns.Add("色CD", typeof(string));
+                    csv00.Columns.Add("サイズCD", typeof(string));
+                    csv00.Columns.Add("自動配分FLG", typeof(string));
+                    csv00.Columns.Add("上代", typeof(string));
+                    csv00.Columns.Add("生産予定数", typeof(string));
+                    csv00.Columns.Add("使用FLG", typeof(string));
+                    csv00.Columns.Add("JANコード1", typeof(string));
+                    csv00.Columns.Add("JANコード2", typeof(string));
+                    csv00.Columns.Add("JANコード3", typeof(string));
+                    csv00.Columns.Add("メモ", typeof(string));
+                    csv00.Columns.Add("入力社員CD", typeof(string));
+                    csv00.Columns.Add("コラボ出力区分", typeof(string));
+
+                    if (AppData.ClassCvnet.config.ColSizMei == 1)
+                    {
+                        csv00 = new DataTable();
+                        csv00.Columns.Add("商品CD", typeof(string));
+                        csv00.Columns.Add("色CD", typeof(string));
+                        csv00.Columns.Add("サイズCD", typeof(string));
+                        csv00.Columns.Add("自動配分FLG", typeof(string));
+                        csv00.Columns.Add("上代", typeof(string));
+                        csv00.Columns.Add("生産予定数", typeof(string));
+                        csv00.Columns.Add("使用FLG", typeof(string));
+                        csv00.Columns.Add("JANコード1", typeof(string));
+                        csv00.Columns.Add("JANコード2", typeof(string));
+                        csv00.Columns.Add("JANコード3", typeof(string));
+                        csv00.Columns.Add("メモ", typeof(string));
+                        csv00.Columns.Add("入力社員CD", typeof(string));
+                        csv00.Columns.Add("コラボ出力区分", typeof(string));
+                        csv00.Columns.Add("色名", typeof(string));
+                        csv00.Columns.Add("サイズ名", typeof(string));
                     }
                     /****** 20070111 最終修正者追加対応 END    ******/
 
@@ -381,9 +420,12 @@ namespace CvnetClient.ViewModels
                         }
                     }
 
-                    DataView dv2 = MakeJan.DefaultView;
-                    dv2.Sort = "COL01 DESC, COL02 DESC";
-                    MakeJan = dv2.ToTable();
+                    if (MakeJan.Rows.Count > 1)
+                    {
+                        DataView dv2 = MakeJan.DefaultView;
+                        dv2.Sort = "COL01 DESC, COL02 DESC";
+                        MakeJan = dv2.ToTable();
+                    }
 
                     /* 参照用 */
                     if (flg != null)
@@ -583,19 +625,320 @@ namespace CvnetClient.ViewModels
                 else MessageBox.Show("各コードを正しく入力して下さい！", "エラー", MessageBoxButton.OK);
                 return;
             }
-            csv00 = new DataTable(); 
-            for (int i = 0; i < 13; i++)
-            {
-                csv00.Columns.Add("COL" + i.ToString("00"), typeof(string));
-            }
             for (int i = 0; i < ShoSh5List?.Count; i++)
             {
                 DataRow row = csv00.NewRow();
 
                 var cb = ShoSh5List[i].CatalogFlg + (ShoSh5List[i].TranInfoFlg * 10);
                 /****** 20070111 最終修正者追加対応 START ******/ /* コラボデータ一番後ろに */
-                //row["COL00"]
+                row["商品CD"] = ShoSh5SearchOpt.ProdCd;
+                row["色CD"] = ShoSh5List[i].ColorCD;
+                row["サイズCD"] = ShoSh5List[i].SizCD;
+                row["自動配分FLG"] = ShoSh5List[i].AutoDist;
+                row["上代"] = ShoSh5List[i].Retail;
+                row["生産予定数"] = ShoSh5List[i].PlannedQty;
+                row["使用FLG"] = ShoSh5List[i].IsUse;
+                row["JANコード1"] = ShoSh5List[i].Jancode1;
+                row["JANコード2"] = ShoSh5List[i].Jancode2;
+                row["JANコード3"] = ShoSh5List[i].Jancode3;
+                row["メモ"] = ShoSh5List[i].Memo;
+                row["入力社員CD"] = AppData.ClassSatoo.SHAIN_CD;
+                row["コラボ出力区分"] = cb.ToString();
+                /********************************
+					Text1：商品CD
+					Line1：色CD
+					Line2：サイズCD
+					Line3：自動配分FLG
+					Line4：上代
+					Line7：生産予定数
+					Line8：使用FLG(発注区分)
+					Line21：JANコード1
+					Line22：JANコード2
+					Line23：JANコード3
+					Line24：メモ
+					SHAIN_CD：入力社員CD
+					cb：コラボ出力区分
+				********************************/
+                if (AppData.ClassCvnet.config.ColSizMei == 1)
+                {
+                    row["色名"] = ShoSh5List[i].ColorName;
+                    row["サイズ名"] = ShoSh5List[i].SizName;
+                }
+                csv00.Rows.Add(row);
+                /****** 20070111 最終修正者追加対応 END    ******/
             }
+
+            int ren = AppData.ClassCvnet.config.janlength1 - AppData.ClassCvnet.config.janlength2;
+            string renketa = "";
+            string tochar = "";
+
+            /* 20070215変更danflg対応 */
+            /* 連番関連は、lengthの差分だけで見る */
+            if (AppData.ClassCvnet.config.janlength1 - AppData.ClassCvnet.config.janlength2 > 0)
+            {
+                for (int i = 0; i < ren; i++)
+                {
+                    renketa += "0";
+                }
+                if (ren != 0)
+                {
+                    tochar = "||trim(to_char(A.JANコード3,'" + renketa + "'))";
+                }
+            }
+            var wrk_para = new BizArray();
+            wrk_para[0] = ShoSh5SearchOpt.ProdCd;
+
+            /* ②JAN生成のための名称CDを呼び出す */
+            string sql_collist = "";
+            /* ※※※注意※※※ danflg==0の場合は、JanPro.rows、JanPattern.rowsは常に0！！※※※ */
+            for (int i = 0; i < JanStyleRec.JanPro.Rows.Count; i++)
+            {
+                /* ?が入っている時はsubstrかける */
+                if (JanStyleRec.JanPro.Rows[i][4].ToString().IndexOf("?") >= 0) 
+                    sql_collist += ",substr(" + JanStyleRec.JanPro.Rows[i][4].ToString().Replace("?", ",") + ") 列" + i;
+                else sql_collist += "," + JanStyleRec.JanPro.Rows[i][4].ToString() + " 列" + i;
+            }
+            /* /② */
+            var sql_query = "select A.JAN先頭桁" + tochar + " JAN先頭 " + sql_collist + ",trim(to_char(A.JANコード3,'" + renketa + "')) 連番 from hc$master_shohin A where A.商品CD=:1";
+
+            var get_jan = AppData.Http?.AspxSqlQuery(sql_query, wrk_para.ToArray());
+            if (get_jan != null && get_jan.Rows.Count == 0)
+            {
+                MessageBox.Show("商品マスタ登録エラー！", "エラー", MessageBoxButton.OK);
+                return;
+            }
+
+            string janProNewCol = "COL" + JanStyleRec.JanPro.Columns.Count.ToString("00");
+            JanStyleRec.JanPro.Columns.Add(janProNewCol, typeof(string));
+            for (int i = 0; i < JanStyleRec.JanPro.Rows.Count; i++)
+            {
+                JanStyleRec.JanPro.Rows[i][5] = get_jan?.Rows[0][1 + i];
+            }
+
+            if (JanStyleRec.JanPro.Rows.Count > 0 && JanStyleRec.JanPro.Columns.Count > 1)
+            {
+                DataView dv = JanStyleRec.JanPro.DefaultView;
+                dv.Sort = "COL01 DESC, COL02 DESC";
+                JanStyleRec.JanPro = dv.ToTable();
+            }
+
+            /* ③いささか強引だが、danflg==1の時、持ってきたJAN先頭桁で、持ってきたマスタアイテムコード、JanPattern分をを上書する。タグを変化させない為 */
+            if (JanStyleRec.danflg == 1)
+            {
+                for (int i = 0; i < JanStyleRec.janPattern.Rows.Count; i++) 
+                {
+                    string cod = JanStyleRec.janPattern.Rows[i][3].ToString();
+                    int itmrow = JanStyleRec.JanPro.AsEnumerable()
+                                                   .Select((row, i) => new { row, i })
+                                                   .FirstOrDefault(x => x.row[0].ToString() == cod)?.i ?? -1;
+                    if (itmrow >= 0)
+                    {
+                        int start = int.TryParse(JanStyleRec.janPattern.Rows[i][1].ToString(), out int _start) ? _start : 0;
+                        int end = int.TryParse(JanStyleRec.janPattern.Rows[i][2].ToString(), out int _end) ? _end : 0;
+                        JanStyleRec.JanPro.Rows[itmrow][5] = get_jan.Rows[0][0].ToString().Substring(start, end); 
+                    }
+                }
+            }
+
+            string jan_ren = get_jan.Rows[0][JanStyleRec.JanPro.Rows.Count + 1].ToString();
+            for (int i = 0; i < csv00.Rows.Count; i++)
+            {
+                /* ※PKGとしては、チェックデジット必須 それ以外はユーザフラグ対応※ */
+                string jan1 = ".";
+                int lastrow = 0;
+
+                /* 3回転。指定段数以上は、元のJANコード1～3そのまま登録↑ */
+                /* バーコード体系=0 49JANならばスルー ここでは入れ込まない */
+                int mstR0C6 = int.TryParse(AppData.ClassCvnet.SysHhtMst.Rows[0][6].ToString(), out int _mstR0C6) ? _mstR0C6 : 0;
+                if (mstR0C6 != 0)
+                {
+                    int n = 0;
+                    for (int m = 0; m < 3; m++)
+                    {
+                        int mstR0C7 = int.TryParse(AppData.ClassCvnet.SysHhtMst.Rows[0][7].ToString(), out int _mstR0C7) ? _mstR0C7 : 0;
+                        if (m < mstR0C7 + 1)
+                        {
+                            /* 1～3段それぞれの桁数が0ならスルー */
+                            int mstR0C29M = int.TryParse(AppData.ClassCvnet.SysHhtMst.Rows[0][29 + m].ToString(), out int _mstR0C29M) ? _mstR0C29M : 0;
+                            if (mstR0C29M == 0) continue;
+
+                            /* getcell(0,34)：1段目JAN先頭ｺｰﾄﾞ 35～36は2～3段目 */
+                            jan1 = AppData.ClassCvnet.SysHhtMst.Rows[0][34 + m].ToString();
+
+                            for (int j = lastrow; j < MakeJan.Rows.Count; j++)
+                            {
+                                /* 段数が0の要素は無視 */
+                                int makeJanC1 = int.TryParse(MakeJan.Rows[j][1].ToString(), out int _makeJanC1) ? _makeJanC1 : 0;
+                                if (makeJanC1 == 0) continue;
+
+                                if (makeJanC1 == m + 1)
+                                {
+                                    string MakeJanC0 = MakeJan.Rows[j][0].ToString();
+                                    string JanProC0 = string.Empty;
+                                    if (JanStyleRec.JanPro.Rows.Count > 0 && JanStyleRec.JanPro.Columns.Count > 0) {
+                                        JanProC0 = JanStyleRec.JanPro.Rows[n][0].ToString();
+                                    }
+
+                                    if (MakeJanC0 == "品番")
+                                    {
+                                        jan1 += get_jan.Rows[0][0].ToString();
+                                    }
+                                    else if (MakeJanC0 == "色")
+                                    {
+                                        jan1 += csv00.Rows[i][1].ToString();
+                                    }
+                                    else if (MakeJanC0 == "サイズ")
+                                    {
+                                        jan1 += csv00.Rows[i][2].ToString();
+                                    }
+                                    else if (MakeJanC0 == "上代")
+                                    {
+                                        /* getcell(0,8)： 上代表示 */
+                                        /* 上代表示にて桁切後、0埋め */
+                                        int tostr = 0;
+                                        int makeJanC3 = int.TryParse(MakeJan.Rows[j][3].ToString(), out int _jan) ? _jan : 0;
+                                        for (int k = 0; k < makeJanC3; k++) { tostr++; } //tostr += "0";
+
+                                        int keta = int.TryParse(MakeJan.Rows[j][8].ToString(), out int _keta) ? _keta : 0;
+                                        int su = 1;
+                                        for (int k = 0; k < keta; k++) { su = su * 10; } /* su： 10のketa乗 */
+
+                                        int jod = 0;
+                                        int csv00C4 = int.TryParse(csv00.Rows[i][4].ToString(), out int _csv00C4) ? _csv00C4 : 0;
+                                        if (csv00C4 == 4) jod = int.TryParse(ShoSh5SearchOpt.Cost.ToString(), out int _cost) ? _cost : 0;
+                                        else jod = csv00C4;
+
+                                        jan1 += GlobalFunc.RoundDown(jod / su, tostr);
+                                    }
+                                    /* シリアル追加 0埋め */
+                                    else if (MakeJanC0 == "シリアル")
+                                    {
+                                        string tostr = "";
+                                        int makeJanC3 = int.TryParse(MakeJan.Rows[j][3].ToString(), out int _jan2) ? _jan2 : 0;
+                                        for (int k = 0; k < makeJanC3; k++) { tostr += "0"; }
+                                        jan1 += tostr;
+                                    }
+                                    /* 原価FLG追加 0埋め */
+                                    else if (MakeJanC0 == "原価FLG")
+                                    {
+                                        string tostr = "";
+                                        int makeJanC3 = int.TryParse(MakeJan.Rows[j][3].ToString(), out int _jan3) ? _jan3 : 0;
+                                        for (int k = 0; k < makeJanC3; k++) { tostr += "0"; }
+                                        jan1 += tostr;
+                                    }
+                                    else if (MakeJanC0 == "連番")
+                                    {
+                                        jan1 += jan_ren;
+                                    }
+                                    else if (MakeJanC0 == JanProC0 && !string.IsNullOrEmpty(JanProC0) && JanStyleRec.JanPro.Columns.Count > 4)
+                                    {
+                                        jan1 += JanStyleRec.JanPro.Rows[n][5].ToString();
+                                        n++;
+                                    }
+                                }
+                                else
+                                {
+                                    lastrow = j;
+                                }
+                            }
+                            /* 1～3段目 JAN桁数チェック バーコード（ハンディ）マスタ参照 総桁数-デジット分 */
+                            /* 41,53,56はダミーで１２桁とする 09.05.13 */
+                            string v_jansv = jan1;
+                            if (AppData.ClassCvnet.config.Set49JAN == 1 || AppData.ClassCvnet.config.janproFlg == 1)
+                                jan1 = "123456789012" + i.ToString();
+
+                            if (AppData.ClassCvnet.config.UserFlg != 32 && AppData.ClassCvnet.config.Set49JAN != 1 && AppData.ClassCvnet.config.janproFlg != 1)
+                            {
+                                /* バーコード体系がその他か先頭桁無しの場合、-1しない */
+                                int v_sento = 1;
+                                if (AppData.ClassCvnet.SysHhtMst.Rows[0][6].ToString() == "2" && AppData.ClassCvnet.SysHhtMst.Rows[0][34].ToString() == "") v_sento = 0;
+                                if (jan1.Length != mstR0C29M - v_sento)
+                                {
+                                    MessageBox.Show((m+1).ToString() + "段目：JAN桁数が設定と違います\nバーコードマスタを再設定して下さい", "確認", MessageBoxButton.OK);
+                                    return;
+                                }
+                                /* チェックデジット計算 (モジュラス10のウェイト3) */
+                                /* バーコード体系がその他はチェックデジットはつけない */
+                                if (AppData.ClassCvnet.SysHhtMst.Rows[0][6].ToString() != "2")
+                                {
+                                    jan1 = AppData.ClassSatoo.GetJanCD(jan1, mstR0C29M-1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+             
+            var csv00Biz = new BizCsvDocument(csv00); 
+            var v_para = new BizArray();
+            v_para[0] = "MASTER_SHOHIN_JAN";
+            v_para[1] = csv00Biz.SaveStr();
+            v_para[2] = "商品CD='" + ShoSh5SearchOpt.ProdCd + "'"; /* 削除条件 */
+            var ret_csv = AppData.Http?.AspxSqlQuery2("mi", v_para.ToArray());
+            if (!string.IsNullOrEmpty(ret_csv))
+            {
+                string[] line_csv2 = ret_csv.Split('\n');
+                if (line_csv2[0] == "-2")
+                {
+                    MessageBox.Show("数分後に再度実行してください", "エラー", MessageBoxButton.OK);
+                    return;
+                }
+                /* 2013/03/07 kosugi ref #3261 商品コード色サイズなどからJANコードを作成、なぜか15桁 ADD START */
+                else if (line_csv2[0] == "-7641" || line_csv2[0] == "-7642")
+                {
+                    MessageBox.Show("エラー名称「JAN連番取得エラー」\n確定時にJAN連番取得エラーが発生しました。\n再度確定を実行して下さい", "エラー", MessageBoxButton.OK);
+                    return;
+                }
+                /* 2021.02.02 #59440_JANコード1の採番チェック	 */
+                else if (line_csv2[0] == "-186")
+                {
+                    var err_str = ""
+                        + "JANコード採番エラー\n"
+                        + "確定時にJANコード採番エラーが発生しました、再度確定を実行して下さい\n"
+                        + line_csv2[1] + "\n"
+                        + line_csv2[2] + "\n";
+                    MessageBox.Show(err_str, "エラー", MessageBoxButton.OK);
+                    csv00.Clear();
+                    return;
+                }
+                /* 2013/03/07 kosugi ref #3261 商品コード色サイズなどからJANコードを作成、なぜか15桁 ADD END */
+                else if (line_csv2[0] != "0")
+                {
+                    MessageBox.Show("更新エラー", "エラー", MessageBoxButton.OK);
+                    csv00.Clear();
+                    return;
+                }
+                else
+                {
+                    if (AppData.ClassCvnet.config.Set49JAN == 1)
+                    {
+                        string sql_ren = "select NVL((select m.連番"
+                                + "		from hc$master_meisho m,"
+                                + "			HC$MASTER_MEISHO m2,"
+                                + "			HC$MASTER_SHOHIN s"
+                                + "		where m.名称区分 = 'JAN'"
+                                + "		and m2.名称区分 = 'BRD'"
+                                + "		and m2.名称CD = s.ブランドCD"
+                                + "		and m2.ランク = m.名称CD"
+                                + "		and s.商品CD = :1), 0) 連番"
+                                + " from dual";
+                        var wrk_para2 = new BizArray();
+                        wrk_para2[0] = ShoSh5SearchOpt.ProdCd;
+                        var ren_wrk = AppData.Http?.AspxSqlQuery(sql_ren, wrk_para2.ToArray());
+                        if (ren_wrk != null)
+                            MessageBox.Show("更新完了しました" + "\n" + "45JAN連番：" + ren_wrk.Rows[0][0].ToString(), "確認", MessageBoxButton.OK);
+                    }
+                    else
+                        MessageBox.Show("更新完了しました","確認", MessageBoxButton.OK);
+                }
+            }
+            resp_flg = 1;
+            if (ShoSh5SearchOpt.DesideVis == Visibility.Visible)
+            {
+                long p_no = long.TryParse(para[1], out long _p_no) ? _p_no : 0;
+                var ret_aspx = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "Master_SHOHIN", p_no, para[2], null, null);
+            }
+            ClientLib.ExitDialogResult(this, true);
         }
 
         /// <summary>
@@ -604,9 +947,24 @@ namespace CvnetClient.ViewModels
         [RelayCommand]
         private void DoExit()
         {
-            long p_no = long.TryParse(para[1], out long _p_no) ? _p_no : 0;
-            var ret_aspx = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "Master_SHOHIN", p_no, para[2], null, null);
+            /* #58636 参照用モードではロックしない */
+            if (ShoSh5List.Count > 0 && ShoSh5SearchOpt.DesideVis == Visibility.Visible)
+            {
+                var mess = MessageBox.Show("データは更新されませんが\n画面を閉じてよろしいですか?", "確認", MessageBoxButton.OKCancel);
+                if (mess == MessageBoxResult.Cancel) return;
+            }
+            resp_flg = 0;
+            if (ShoSh5SearchOpt.DesideVis == Visibility.Visible)
+            {
+                long p_no = long.TryParse(para[1], out long _p_no) ? _p_no : 0;
+                var ret_aspx = AppData.Http!.AspxSqlExe(DBDef.DB_DML.UNLOCK, "Master_SHOHIN", p_no, para[2], null, null);
+            }
             ClientLib.ExitDialogResult(this, true);
+        }
+         
+        public override void Close()
+        { 
+            DoExit();
         }
         #endregion
 

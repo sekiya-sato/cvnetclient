@@ -764,7 +764,8 @@
 						<Button Grid.Row="25" Grid.Column="3" Margin="0,0,5,0" 
 								Content="色サイズ展開(S+F12)"
 								Command="{Binding DoColorSizCommand}"/>
-						<Button Grid.Row="25" Grid.Column="4" Margin="0,0,5,0" Content="発注入力" />
+						<Button Grid.Row="25" Grid.Column="4" Margin="0,0,5,0" 
+								Content="発注入力" />
 						<Button Grid.Row="25" Grid.Column="5" Margin="0,0,5,0" Content="仕入入力" />
 						<Button Grid.Row="25" Grid.Column="6" Margin="0,0,5,0" Content="発注配分入力" />
 
